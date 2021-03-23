@@ -1,7 +1,7 @@
 language: ruby
 
 rvm:
-  - 2.7
+  - 2.7.2
 
 # Cache our bundles to speed up testing
 cache: bundler
