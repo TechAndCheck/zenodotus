@@ -3,4 +3,8 @@ language: ruby
 rvm:
   - 2.7.2
 
+cache: bundler
+
+services:
+  - postgresql
 # install: bundle config set deployment 'true'; bundle install
