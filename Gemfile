@@ -40,6 +40,13 @@ group :development, :test do
 
   # Jard is an improvement on Byebug
   gem "ruby_jard"
+
+  # RuboCop is an excellent linter, we keep it in `test` for CI
+  gem "rubocop", require: false
+  gem "rubocop-rails", require: false # Rails specific styles
+  gem "rubocop-performance", require: false # Performance checks
+  gem "rubocop-sorbet", require: false # Check Sorbet
+  gem "rubocop-minitest", require: false # For checking tests
 end
 
 group :development do
@@ -54,13 +61,6 @@ group :development do
 
   # Sorbet is a type-checker for Ruby. We prefer statically-defined types when possible
   gem "sorbet"
-
-  # RuboCop is an excellent linter
-  gem "rubocop", require: false
-  gem "rubocop-rails", require: false # Rails specific styles
-  gem "rubocop-performance", require: false # Performance checks
-  gem "rubocop-sorbet", require: false # Check Sorbet
-  gem "rubocop-minitest", require: false # For checking tests
 
   # Tmuxinator lets us set up standard development environments easily
   gem "tmuxinator"
