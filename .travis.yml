@@ -7,4 +7,5 @@ cache: bundler
 
 services:
   - postgresql
-# install: bundle config set deployment 'true'; bundle install
+
+before_script: rails db:setup && rails db:migrate
