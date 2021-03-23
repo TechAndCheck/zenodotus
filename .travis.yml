@@ -5,3 +5,5 @@ rvm:
 
 # Cache our bundles to speed up testing
 cache: bundler
+
+install: bundle config set deployment 'true'
