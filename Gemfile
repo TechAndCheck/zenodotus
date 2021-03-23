@@ -18,7 +18,7 @@ gem "turbolinks", "~> 5"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem "jbuilder", "~> 2.7"
 # Use Redis adapter to run Action Cable in production
-gem 'redis', '~> 4.0'
+gem "redis", "~> 4.0"
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -40,6 +40,14 @@ group :development, :test do
 
   # Jard is an improvement on Byebug
   gem "ruby_jard"
+
+  # RuboCop is an excellent linter, we keep it in `test` for CI
+  gem "rubocop", require: false
+  gem "rubocop-rails", require: false # Rails specific styles
+  gem "rubocop-rails_config", require: false # More Rails stuff
+  gem "rubocop-performance", require: false # Performance checks
+  gem "rubocop-sorbet", require: false # Check Sorbet
+  gem "rubocop-minitest", require: false # For checking tests
 end
 
 group :development do
@@ -54,13 +62,6 @@ group :development do
 
   # Sorbet is a type-checker for Ruby. We prefer statically-defined types when possible
   gem "sorbet"
-
-  # RuboCop is an excellent linter
-  gem "rubocop", require: false
-  gem "rubocop-rails", require: false # Rails specific styles
-  gem "rubocop-performance", require: false # Performance checks
-  gem "rubocop-sorbet", require: false # Check Sorbet
-  gem "rubocop-minitest", require: false # For checking tests
 
   # Tmuxinator lets us set up standard development environments easily
   gem "tmuxinator"

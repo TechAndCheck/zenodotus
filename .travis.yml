@@ -1,0 +1,16 @@
+language: ruby
+
+rvm:
+  - 2.7.2
+
+cache: bundler
+
+services:
+  - postgresql
+
+before_install: bundle config set deployment 'true'
+before_script: bundle exec rails db:setup && bundle exec rails db:migrate
+
+script:
+  - bundle exec rubocop
+  - bundle exec rake
