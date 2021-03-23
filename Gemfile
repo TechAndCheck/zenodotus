@@ -94,3 +94,5 @@ gem "figaro"
 
 # Typhoneus handles URL request to outside websites extremely efficiently
 gem "typhoeus"
+
+gem "tailwindcss-rails", "~> 0.3.3"
