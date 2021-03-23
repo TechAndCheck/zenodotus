@@ -95,5 +95,9 @@ gem "figaro"
 # Typhoneus handles URL request to outside websites extremely efficiently
 gem "typhoeus"
 
+
 # Hotwire, to make better website without JS
 gem "hotwire-rails"
+
+# TailwindCSS
+gem "tailwindcss-rails", "~> 0.3.3"
