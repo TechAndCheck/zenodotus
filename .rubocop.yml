@@ -1,0 +1,69 @@
+require:
+  - rubocop-rails
+  - rubocop-performance
+
+inherit_gem:
+  rubocop-rails_config:
+    - config/rails.yml
+
+AllCops:
+  Exclude:
+    - db/schema.rb
+    - 'node_modules/**/*'
+    - 'redis-stable/**/*'
+    - 'bin/**/*'
+    - 'vendor/**/*'
+  TargetRubyVersion: 2.7
+
+# Join tables don't really need timestamps
+Rails/CreateTableWithTimestamps:
+  Exclude:
+    # - 'db/migrate/20180128231930_create_organizations_and_events.rb'
+
+# Rails generates this file
+Style/BlockComments:
+  Exclude:
+    - 'db/seeds.rb'
+
+# This sets us to use the standard Rails format instead of Rubocop's
+# opinionated Ruby style.
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# This sets us to use the standard Rails format instead of Rubocop's
+# opinionated Ruby style.
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+# Rails generates this file
+Layout/IndentationStyle:
+  Exclude:
+    - 'db/seeds.rb'
+
+# Temporarily turn this off
+Metrics/AbcSize:
+  Enabled: true
+
+Metrics/ClassLength:
+  Enabled: true
+
+Lint/RescueException:
+  Enabled: true
+
+Lint/Debugger:
+  Enabled: true
+
+Rails/HasManyOrHasOneDependent:
+  Enabled: true
+
+Rails/HasAndBelongsToMany:
+  Enabled: true
+
+Style/NumericPredicate:
+  Enabled: true
+
+# This sets us to use the standard Rails format instead of Rubocop's
+# opinionated Ruby style.
+Layout/EmptyLinesAroundAccessModifier:
+  Enabled: true
+  EnforcedStyle: 'around'
