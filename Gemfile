@@ -34,6 +34,9 @@ group :development, :test do
 
   # Bullet is a gem to find and detect N+1 queries in development
   gem "bullet"
+
+  # Add the ability to load `.env` files on launch
+  gem 'dotenv-rails'
 end
 
 group :development do
