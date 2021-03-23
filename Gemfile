@@ -81,3 +81,7 @@ gem "sorbet-rails"
 # For validating URL, the fork adds array of urls validation as well (yes, the difference in URL
 # and gem name is on purpose)
 gem "validate_url", git: "https://www.github.com/cguess/validates_url"
+
+# Figaro lets us configure and require environment variable at boot, instead of getting stuck with a
+# bad deployment
+gem "figaro"
