@@ -37,3 +37,6 @@ yarn-debug.log*
 
 # Ignore application configuration
 /config/application.yml
+
+# Tmux workspace config file
+.tmuxinator.yml
