@@ -8,4 +8,5 @@ cache: bundler
 services:
   - postgresql
 
-before_script: rails db:setup && rails db:migrate
+before_install: bundle config set deployment 'true'
+before_script: bundle exec rails db:setup && bundle exec rails db:migrate
