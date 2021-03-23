@@ -37,6 +37,9 @@ group :development, :test do
 
   # Add the ability to load `.env` files on launch
   gem "dotenv-rails"
+
+  # Jard is an improvement on Byebug
+  gem "ruby_jard"
 end
 
 group :development do
