@@ -36,7 +36,7 @@ group :development, :test do
   gem "bullet"
 
   # Add the ability to load `.env` files on launch
-  gem 'dotenv-rails'
+  gem "dotenv-rails"
 end
 
 group :development do
