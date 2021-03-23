@@ -61,6 +61,9 @@ group :development do
   gem "rubocop-performance", require: false # Performance checks
   gem "rubocop-sorbet", require: false # Check Sorbet
   gem "rubocop-minitest", require: false # For checking tests
+
+  # Tmuxinator lets us set up standard development environments easily
+  gem "tmuxinator"
 end
 
 group :test do
