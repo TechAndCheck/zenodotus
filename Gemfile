@@ -31,6 +31,9 @@ gem "bootsnap", ">= 1.4.4", require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
+
+  # Bullet is a gem to find and detect N+1 queries in development
+  gem "bullet"
 end
 
 group :development do
@@ -52,6 +55,7 @@ group :development do
   gem "rubocop-performance", require: false # Performance checks
   gem "rubocop-sorbet", require: false # Check Sorbet
   gem "rubocop-minitest", require: false # For checking tests
+
 end
 
 group :test do
@@ -71,3 +75,5 @@ gem "sorbet-runtime"
 
 # Rails specific features for Sorbet
 gem "sorbet-rails"
+
+
