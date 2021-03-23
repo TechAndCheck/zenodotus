@@ -1,7 +1,7 @@
 language: ruby
 
-# For now, this will automatically pull from `.ruby-version` but if want to test with a migration
-# this is where we'd do that
-#
-# rvm:
-#  - 2.7.2
+rvm:
+  - 2.7
+
+# Cache our bundles to speed up testing
+cache: bundler
