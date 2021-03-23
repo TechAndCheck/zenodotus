@@ -85,3 +85,6 @@ gem "validate_url", git: "https://www.github.com/cguess/validates_url"
 # Figaro lets us configure and require environment variable at boot, instead of getting stuck with a
 # bad deployment
 gem "figaro"
+
+# Typhoneus handles URL request to outside websites extremely efficiently
+gem "typhoeus"
