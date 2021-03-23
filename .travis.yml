@@ -12,5 +12,5 @@ before_install: bundle config set deployment 'true'
 before_script: bundle exec rails db:setup && bundle exec rails db:migrate
 
 script:
-  - rubocop
-  - rake
+  - bundle exec rubocop
+  - bundle exec rake
