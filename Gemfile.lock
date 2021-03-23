@@ -1,3 +1,11 @@
+GIT
+  remote: https://www.github.com/cguess/validates_url
+  revision: 5fcd1baf2f674a7dbebafa963a5056c6fd30abc1
+  specs:
+    validate_url (1.0.13)
+      activemodel (>= 3.0.0)
+      public_suffix
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -284,6 +292,7 @@ DEPENDENCIES
   sorbet-runtime
   spring
   turbolinks (~> 5)
+  validate_url!
   web-console (>= 4.1.0)
   webdrivers
   webpacker (~> 5.0)

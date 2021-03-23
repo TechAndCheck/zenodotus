@@ -55,7 +55,6 @@ group :development do
   gem "rubocop-performance", require: false # Performance checks
   gem "rubocop-sorbet", require: false # Check Sorbet
   gem "rubocop-minitest", require: false # For checking tests
-
 end
 
 group :test do
@@ -76,4 +75,6 @@ gem "sorbet-runtime"
 # Rails specific features for Sorbet
 gem "sorbet-rails"
 
-
+# For validating URL, the fork adds array of urls validation as well (yes, the difference in URL
+# and gem name is on purpose)
+gem "validate_url", git: "https://www.github.com/cguess/validates_url"
