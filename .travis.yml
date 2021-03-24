@@ -3,6 +3,9 @@ language: ruby
 rvm:
   - 2.7.2
 
+node_js:
+  - 15
+
 cache:
   bundler: true
   yarn: true
