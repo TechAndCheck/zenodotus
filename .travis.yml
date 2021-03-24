@@ -14,3 +14,4 @@ before_script: bundle exec rails db:setup && bundle exec rails db:migrate
 script:
   - bundle exec rubocop
   - bundle exec rake
+  - yarn run eslint app/javascript/**

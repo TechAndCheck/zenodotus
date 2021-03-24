@@ -1,0 +1,20 @@
+{
+  "extends": "airbnb",
+  "rules": {
+    "semi": [2, "never"],
+    "max-len": ["error", { "code": 150 }],
+    "prefer-destructuring": ["error", {"array": false, "object": true}],
+    "react/destructuring-assignment": [0, "always"],
+    "react/prop-types": [0, "never"],
+    "react/jsx-props-no-spreading": [0],
+    "no-alert": [0, "never"],
+    "jsx-a11y/label-has-associated-control": [2, {
+      "controlComponents": ["DatePicker"],
+      "depth": 3
+    }]
+  },
+  "env": {
+    "es2021": true,
+    "browser": true
+  }
+}

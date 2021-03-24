@@ -3,13 +3,15 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-import Rails from "@rails/ujs"
-import "@hotwired/turbo-rails"
-import * as ActiveStorage from "@rails/activestorage"
-import "channels"
+/* eslint import/no-unresolved: 0 */
+
+import Rails from '@rails/ujs'
+import '@hotwired/turbo-rails'
+import * as ActiveStorage from '@rails/activestorage'
+import 'channels'
+
+import 'stylesheets/application'
+import 'controllers'
 
 Rails.start()
 ActiveStorage.start()
-
-import "stylesheets/application"
-import "controllers"
