@@ -48,6 +48,9 @@ group :development, :test do
   gem "rubocop-performance", require: false # Performance checks
   gem "rubocop-sorbet", require: false # Check Sorbet
   gem "rubocop-minitest", require: false # For checking tests
+
+  # We use Yard for all of our documentation
+  gem "yard", require: false
 end
 
 group :development do
@@ -87,7 +90,7 @@ gem "sorbet-rails"
 
 # For validating URL, the fork adds array of urls validation as well (yes, the difference in URL
 # and gem name is on purpose)
-gem "validate_url", git: "https://www.github.com/cguess/validates_url"
+gem "validate_url"
 
 # Figaro lets us configure and require environment variable at boot, instead of getting stuck with a
 # bad deployment
@@ -96,9 +99,11 @@ gem "figaro"
 # Typhoneus handles URL request to outside websites extremely efficiently
 gem "typhoeus"
 
-
 # Hotwire, to make better website without JS
 gem "hotwire-rails"
 
 # TailwindCSS
 gem "tailwindcss-rails", "~> 0.3.3"
+
+# A headless chrome browser for interacting with website
+gem "ferrum", "~> 0.11"

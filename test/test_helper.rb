@@ -12,3 +12,10 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
 end
+
+module Minitest::Assertions
+  # Assert return is a Sorbet Void type
+  def assert_void(obj)
+    assert_equal(T::Private::Types::Void::VOID, obj)
+  end
+end

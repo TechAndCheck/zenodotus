@@ -11,7 +11,8 @@
     <%= stylesheet_pack_tag "application", "data-turbo-track": "reload" %>
   </head>
 
-  <body>
+  <body class="bg-green-50">
+    <%= render "layouts/flashes" %>
     <%= yield %>
   </body>
 </html>
