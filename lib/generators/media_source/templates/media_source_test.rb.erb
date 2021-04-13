@@ -1,0 +1,16 @@
+# require "minitest/autorun"
+require "test_helper"
+
+class <%= @file_name.classify %>MediaSourceTest < ActiveSupport::TestCase
+  def setup
+  end
+
+  def test_initializing_returns_nil
+    assert_nil <%= @file_name.classify %>MediaSource.extract("https://www.example.com")
+  end
+
+  def test_extracting_creates_screenshot
+    screenshot_path = <%= @file_name.classify %>MediaSource.extract("https://www.example.com", true)
+    assert File.exist?(screenshot_path)
+  end
+end

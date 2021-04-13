@@ -1,0 +1,9 @@
+Description:
+    This generator creates a new media source for collecting and archiving of content.
+
+Example:
+    bin/rails generate media_source Name
+
+    This will create:
+        app/media_sources/[name]_media_source.rb
+        test/media_sources/[name]_media_source_test.rb
