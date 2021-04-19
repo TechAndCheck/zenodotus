@@ -1,16 +1,14 @@
 # typed: true
-class <%= @file_name.classify %>MediaSource < MediaSource
+
+class TwitterMediaSource < MediaSource
   attr_reader(:url)
 
-  # Limit all urls to the host(s) below, use the private method {#self.check_host} in your initializer
-  # to check for a valid host or not.
-  #
-  # @note If your scraper doesn't enforce a host name (for a basic web scraper for instance),
-  #   just have this return `nil` or any empty array . We can discuss if this should be an
-  #   enforced abstract method if this becomes an issue.
-  # @return [Array] of [String] of valid host names or [nil]
-  sig { abstract.returns(T.nilable(T::Array[String])) }
-  def self.valid_host_name; end
+  # Limit all urls to the host below
+  # @return [String] or [Array] of [String] of valid host names
+  sig { override.returns(T::Array[String]) }
+  def self.valid_host_name
+    ["www.twitter.com", "twitter.com"]
+  end
 
   # Capture a screenshot of the given url
   #
@@ -33,7 +31,8 @@ class <%= @file_name.classify %>MediaSource < MediaSource
   def initialize(url)
     # Verify that the url has the proper host for this source. (@valid_host is set at the top of
     # this class)
-    <%= @file_name.classify %>MediaSource.check_url(url)
+    TwitterMediaSource.check_url(url)
+    TwitterMediaSource.validate_tweet_url(url)
 
     @url = url
   end
@@ -58,4 +57,23 @@ class <%= @file_name.classify %>MediaSource < MediaSource
     File.delete(path)
     nil
   end
+
+private
+
+  # Validate that the url is a direct link to a tweet, poorly
+  #
+  # @note this assumes a valid url or else it'll always (usually, maybe, whatever) fail
+  #
+  # @!scope class
+  # @!visibility private
+  # @params url [String] a url to check if it's a valid Twitter tweet url
+  # @return [Boolean] if the string validates or not
+  sig { params(url: String).returns(T::Boolean) }
+  def self.validate_tweet_url(url)
+    return true if /twitter.com\/[\w]+\/[\w]+\/[0-9]+\z/.match?(url)
+    raise InvalidTweetUrlError, "Tweet url #{url} does not have standard the standard url format"
+  end
 end
+
+# A class to indicate that a tweet url passed in is invalid
+class TwitterMediaSource::InvalidTweetUrlError < StandardError; end

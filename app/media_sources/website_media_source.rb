@@ -15,6 +15,12 @@ class WebsiteMediaSource < MediaSource
     object.capture_screenshot(save_screenshot)
   end
 
+  # Unused. We do not want to check a host name, so we just raise an error here
+  sig { override.returns(T.nilable(T::Array[String])) }
+  def self.valid_host_name
+    raise("Unimplemented. Something went very wrong if you're seeing this.")
+  end
+
   # Initialize the object and capture the screenshot automatically.
   #
   # @params url [String] the url of the page to be collected for archiving

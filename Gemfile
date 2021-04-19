@@ -48,9 +48,6 @@ group :development, :test do
   gem "rubocop-performance", require: false # Performance checks
   gem "rubocop-sorbet", require: false # Check Sorbet
   gem "rubocop-minitest", require: false # For checking tests
-
-  # We use Yard for all of our documentation
-  gem "yard", require: false
 end
 
 group :development do
@@ -68,6 +65,9 @@ group :development do
 
   # Tmuxinator lets us set up standard development environments easily
   gem "tmuxinator"
+
+  # We use Yard for all of our documentation
+  gem "yard", require: false
 end
 
 group :test do
