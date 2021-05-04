@@ -17,12 +17,12 @@ class TwitterMediaSourceTest < ActiveSupport::TestCase
     end
   end
 
-  def test_initializing_returns_nil
-    assert_nil TwitterMediaSource.extract("https://twitter.com/jack/status/20")
+  def test_initializing_returns_blank
+    assert TwitterMediaSource.extract("https://twitter.com/jack/status/1").empty?
   end
 
-  def test_extracting_creates_screenshot
-    screenshot_path = TwitterMediaSource.extract("https://twitter.com/jack/status/20", true)
-    assert File.exist?(screenshot_path)
+  def test_extracting_creates_tweet_object
+    tweet = TwitterMediaSource.extract("https://twitter.com/jack/status/20", true)
+    assert_not tweet.empty?
   end
 end

@@ -107,3 +107,13 @@ gem "tailwindcss-rails", "~> 0.3.3"
 
 # A headless chrome browser for interacting with website
 gem "ferrum", "~> 0.11"
+
+# Some basic OS checks, specifically to check to configure our scrapers for dev/prod
+gem "os"
+
+gem "activegraph", "~> 10.1.0" # For example, see https://rubygems.org/gems/activegraph/versions for the latest versions
+gem "neo4j-ruby-driver", "~> 1.7.0"
+
+# Scraper gems
+# gem "zorki", "0.1.0", path: "~/Repositories/zorki" # instagram
+gem "birdsong", "0.1.0", path: "~/Repositories/birdsong" # twitter

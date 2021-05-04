@@ -1,0 +1,18 @@
+default: &default
+  username: neo4j
+  password: password
+  url: neo4j://localhost:7687
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  url:
+    - neo4j://core1:7687
+    - neo4j://core2:7687
+    - neo4j://core3:7687
+  username: neo4j
+  password: password

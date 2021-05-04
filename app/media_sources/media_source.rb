@@ -22,7 +22,7 @@ class MediaSource
   # @!scope class
   # @param url [String] the url of the page/object to be collected for archiving
   # @return [nil]
-  sig { abstract.params(url: String).returns(T.nilable(String)) }
+  sig { abstract.params(url: String).returns(T.untyped) }
   def self.extract(url); end
 
   # Check if +url+ has a host name the same as indicated by the +@@valid_host+ variable in a
