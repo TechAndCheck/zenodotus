@@ -48,7 +48,6 @@ class MediaSource
     attr_reader :url
     attr_reader :class
 
-
     sig { params(url: String, clazz: Class).returns(MediaSource::HostError) }
     def initialize(url, clazz)
       @url = url

@@ -1,0 +1,17 @@
+<%= turbo_frame_tag "modal" %>
+
+<div class="bg-white py-4 font-display border border-gray-100 rounded">
+  <div class="px-8 flex justify-between">
+    <div class="font-display text-xl">Most Recent Media Archived</div>
+    <div class="text-xl text-pink-200">
+      <a href="#">
+        <%= link_to media_add_path, data: { turbo_frame: "modal" } do %>
+        <i class="fas fa-plus-square"></i>
+        <% end %>
+      </a>
+    </div>
+  </div>
+  <div class="mt-4 mx-1">
+    <%= render partial: "tweets_list", locals: { tweets: @tweets } %>
+  </div>
+</div>

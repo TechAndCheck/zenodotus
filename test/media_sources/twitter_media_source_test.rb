@@ -1,3 +1,4 @@
+# typed: false
 # require "minitest/autorun"
 require "test_helper"
 
@@ -22,7 +23,8 @@ class TwitterMediaSourceTest < ActiveSupport::TestCase
   end
 
   def test_extracting_creates_tweet_object
-    tweet = TwitterMediaSource.extract("https://twitter.com/jack/status/20", true)
+    tweet_hash = TwitterMediaSource.extract("https://twitter.com/jack/status/20", true)
+    tweet = Tweet.create_from_birdsong_hash(tweet_hash)
     assert_not tweet.empty?
   end
 end

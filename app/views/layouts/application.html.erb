@@ -6,13 +6,29 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <!-- Google Fonts -->
+    <%#
+      To modify these you can access the utility with these settings at:
+      https://fonts.google.com/specimen/Barlow+Semi+Condensed?category=Sans+Serif,Display&preview.text=Most%20Recent%20Media%20Archived&preview.text_type=custom#standard-styles
+    -%>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed&family=Open+Sans&display=swap" rel="stylesheet">
+    <!-- /Google Fonts -->
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/96ec0b6a71.js" crossorigin="anonymous"></script>
+    <!-- /FontAwesome -->
+
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= stylesheet_pack_tag "application", "data-turbo-track": "reload" %>
+
   </head>
 
   <body class="bg-green-50">
-    <%= render "layouts/flashes" %>
-    <%= yield %>
+    <%= render "layouts/header" %>
+    <div class="flex flex-col w-1/2 mx-auto mt-4">
+      <%= render "layouts/flashes" %>
+      <%= yield %>
+    </div>
   </body>
 </html>

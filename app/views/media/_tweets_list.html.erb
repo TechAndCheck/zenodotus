@@ -1,0 +1,15 @@
+<%= turbo_frame_tag "tweets_list" do %>
+  <% tweets.each do |tweet| %>
+  <div class="border-t border-b border-gray-100 font-body py-4 hover:bg-gray-100 px-8 flex">
+    <div class="flex-1">
+      <%= tweet.twitter_id %>
+    </div>
+    <div class="flex-1">
+      <%= tweet.text %>
+    </div>
+    <div class="flex-1">
+      <a href="#">Media</a>
+    </div>
+  </div>
+  <% end %>
+<% end %>

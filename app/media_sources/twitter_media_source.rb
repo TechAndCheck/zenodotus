@@ -17,7 +17,7 @@ class TwitterMediaSource < MediaSource
   # @params url [String] the url of the page to be collected for archiving
   # @params save_screenshot [Boolean] whether to save the screenshot image (mostly for testing).
   #   Default: false
-  # @returns Sting or nil] the path of the screenshot if the screenshot was saved
+  # @returns [String or nil] the path of the screenshot if the screenshot was saved
   sig { override.params(url: String, save_screenshot: T::Boolean).returns(T::Array[Birdsong::Tweet]) }
   def self.extract(url, save_screenshot = false)
     object = self.new(url)

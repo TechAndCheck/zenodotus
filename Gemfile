@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "2.7.2"
+ruby "3.0.1"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 6.1.0"
@@ -110,9 +110,6 @@ gem "ferrum", "~> 0.11"
 
 # Some basic OS checks, specifically to check to configure our scrapers for dev/prod
 gem "os"
-
-gem "activegraph", "~> 10.1.0" # For example, see https://rubygems.org/gems/activegraph/versions for the latest versions
-gem "neo4j-ruby-driver", "~> 1.7.0"
 
 # Scraper gems
 # gem "zorki", "0.1.0", path: "~/Repositories/zorki" # instagram

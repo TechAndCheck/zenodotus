@@ -1,20 +1,22 @@
-<% unless flash[:alert].nil? %>
-<div class="ring ring-red-300 rounded-lg text-gray-50 w-3/4 m-auto my-2 px-10 py-4 space-y-4 bg-red-500 relative" data-controller="flash-box">
-  <div class="flex flex-col justify-center items-center">
-    <button data-action="flash-box#closeBox" class="text-gray-50 absolute right-1.5 top-1.5">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6" >
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    </button>
-    <ul class="list-disc">
-      <% if flash[:alert].respond_to?(:each) %>
-        <% flash[:alert].each do |type, msg| %>
-          <li>msg</li>
-        <% end  %>
-      <% else %>
-        <li><%= flash[:alert] %></li>
-      <% end %>
-    </ul>
+<%= turbo_frame_tag "flash" do %>
+  <% unless flash[:alert].nil? %>
+  <div class="ring ring-red-300 rounded-lg text-gray-50 w-3/4 m-auto my-2 px-10 py-4 space-y-4 bg-red-500 relative" data-controller="flash-box">
+    <div class="flex flex-col justify-center items-center">
+      <button data-action="flash-box#closeBox" class="text-gray-50 absolute right-1.5 top-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6" >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </button>
+      <ul class="list-disc">
+        <% if flash[:alert].respond_to?(:each) %>
+          <% flash[:alert].each do |type, msg| %>
+            <li>msg</li>
+          <% end  %>
+        <% else %>
+          <li><%= flash[:alert] %></li>
+        <% end %>
+      </ul>
+    </div>
   </div>
-</div>
+  <% end %>
 <% end %>
