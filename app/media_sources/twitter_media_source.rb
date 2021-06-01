@@ -73,7 +73,8 @@ class TwitterMediaSource < MediaSource
   sig { returns(T::Array[Birdsong::Tweet]) }
   def retrieve_tweet
     id = TwitterMediaSource.extract_tweet_id_from_url(@url)
-    Birdsong::Tweet.lookup(id)
+    tweet = Birdsong::Tweet.lookup(id)
+    # byebug
   end
 
 private

@@ -2,7 +2,7 @@
 
 class MediaController < ApplicationController
   def index
-    @tweets = Tweet.all
+    @media_items = MediaItem.tweets.includes([:mediable])
   end
 
   def add; end
@@ -17,7 +17,11 @@ class MediaController < ApplicationController
       format.turbo_stream { render turbo_stream: [
         turbo_stream.replace("flash", partial: "layouts/flashes", locals: { flash: flash }),
         turbo_stream.replace("modal", partial: "media/add", locals: { render_empty: true }),
-        turbo_stream.replace("tweets_list", partial: "media/tweets_list", locals: { tweets: Tweet.all })
+        turbo_stream.replace(
+          "tweets_list",
+          partial: "media/tweets_list",
+          locals: { media_items: MediaItem.tweets.includes([:mediable]) }
+        )
       ] }
       format.html { redirect_to :root }
     end
