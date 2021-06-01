@@ -92,11 +92,14 @@ GEM
     commander (4.6.0)
       highline (~> 2.0.0)
     concurrent-ruby (1.1.8)
+    content_disposition (1.0.0)
     crass (1.0.6)
     dotenv (2.7.6)
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
       railties (>= 3.2)
+    down (5.2.2)
+      addressable (~> 2.5)
     erubi (1.10.0)
     erubis (2.7.0)
     ethon (0.14.0)
@@ -252,6 +255,9 @@ GEM
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
     semantic_range (3.0.0)
+    shrine (3.3.0)
+      content_disposition (~> 1.0)
+      down (~> 5.1)
     sorbet (0.5.6424)
       sorbet-static (= 0.5.6424)
     sorbet-coerce (0.4.0)
@@ -360,6 +366,7 @@ DEPENDENCIES
   ruby_jard
   sass-rails (>= 6)
   selenium-webdriver
+  shrine (~> 3.0)
   sorbet
   sorbet-rails
   sorbet-runtime

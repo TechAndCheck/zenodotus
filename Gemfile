@@ -111,6 +111,9 @@ gem "ferrum", "~> 0.11"
 # Some basic OS checks, specifically to check to configure our scrapers for dev/prod
 gem "os"
 
+# Shrine is a better alternative to ActiveStorage for handling file attachments and the like
+gem "shrine", "~> 3.0"
+
 # Scraper gems
 # gem "zorki", "0.1.0", path: "~/Repositories/zorki" # instagram
 gem "birdsong", "0.1.0", path: "~/Repositories/birdsong" # twitter
