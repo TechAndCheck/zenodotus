@@ -200,6 +200,7 @@ GEM
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    rbtree (0.4.4)
     redis (4.2.5)
     regexp_parser (2.1.1)
     rexml (3.2.5)
@@ -255,6 +256,7 @@ GEM
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
     semantic_range (3.0.0)
+    set (1.0.1)
     shrine (3.3.0)
       content_disposition (~> 1.0)
       down (~> 5.1)
@@ -279,6 +281,9 @@ GEM
     sorbet-static (0.5.6424-universal-darwin-19)
     sorbet-static (0.5.6424-universal-darwin-20)
     sorbet-static (0.5.6424-x86_64-linux)
+    sorted_set (1.0.3)
+      rbtree
+      set (~> 1.0)
     spring (2.1.1)
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
@@ -370,6 +375,7 @@ DEPENDENCIES
   sorbet
   sorbet-rails
   sorbet-runtime
+  sorted_set
   spring
   tailwindcss-rails (~> 0.3.3)
   tmuxinator

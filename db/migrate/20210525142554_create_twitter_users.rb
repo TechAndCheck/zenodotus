@@ -7,7 +7,7 @@ class CreateTwitterUsers < ActiveRecord::Migration[6.1]
       t.string :twitter_id
       t.text :description
       t.string :url
-      t.string :profile_image_url
+      t.text :profile_image_url
       t.string :location
       t.timestamps
     end

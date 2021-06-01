@@ -62,6 +62,8 @@ group :development do
 
   # Sorbet is a type-checker for Ruby. We prefer statically-defined types when possible
   gem "sorbet"
+  # This is required for Ruby 3 from Sorbet
+  gem "sorted_set"
 
   # Tmuxinator lets us set up standard development environments easily
   gem "tmuxinator"

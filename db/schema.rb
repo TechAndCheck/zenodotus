@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_27_180414) do
+ActiveRecord::Schema.define(version: 2021_06_01_174650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -38,10 +38,11 @@ ActiveRecord::Schema.define(version: 2021_05_27_180414) do
     t.string "twitter_id"
     t.text "description"
     t.string "url"
-    t.string "profile_image_url"
+    t.text "profile_image_url"
     t.string "location"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.jsonb "profile_image_data"
   end
 
   create_table "users", force: :cascade do |t|
