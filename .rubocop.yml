@@ -42,7 +42,7 @@ Layout/IndentationStyle:
 
 # Temporarily turn this off
 Metrics/AbcSize:
-  Enabled: true
+  Enabled: false
 
 Metrics/ClassLength:
   Enabled: true

@@ -1,8 +1,8 @@
 # typed: true
 
-class MediaController < ApplicationController
+class ArchiveController < ApplicationController
   def index
-    @media_items = MediaItem.tweets.includes([:mediable])
+    @archive_items = ArchiveItem.tweets.includes([:archivable_item])
   end
 
   def add; end
@@ -10,17 +10,17 @@ class MediaController < ApplicationController
   def submit_url
     url = params[:url_to_archive]
     birdsong_tweet = TwitterMediaSource.extract(url)
-    tweet = Tweet.create_from_birdsong_hash(birdsong_tweet)
+    Tweet.create_from_birdsong_hash(birdsong_tweet)
 
     respond_to do |format|
       flash.now[:alert] = "Successfully archived your link!"
       format.turbo_stream { render turbo_stream: [
         turbo_stream.replace("flash", partial: "layouts/flashes", locals: { flash: flash }),
-        turbo_stream.replace("modal", partial: "media/add", locals: { render_empty: true }),
+        turbo_stream.replace("modal", partial: "archive/add", locals: { render_empty: true }),
         turbo_stream.replace(
           "tweets_list",
-          partial: "media/tweets_list",
-          locals: { media_items: MediaItem.tweets.includes([:mediable]) }
+          partial: "archive/tweets_list",
+          locals: { archive_items: ArchiveItem.tweets.includes([:archivable_item]) }
         )
       ] }
       format.html { redirect_to :root }

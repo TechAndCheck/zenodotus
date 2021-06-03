@@ -10,15 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_01_174650) do
+ActiveRecord::Schema.define(version: 2021_06_02_122246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "media_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "mediable_id"
-    t.string "mediable_type"
+  create_table "archive_entities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "archivable_entity_id"
+    t.string "archivable_entity_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "archive_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "archivable_item_id"
+    t.string "archivable_item_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -28,6 +35,7 @@ ActiveRecord::Schema.define(version: 2021_06_01_174650) do
     t.string "twitter_id"
     t.string "language"
     t.uuid "author_id"
+    t.datetime "posted_at"
     t.index ["author_id"], name: "index_tweets_on_author_id"
   end
 
@@ -43,6 +51,8 @@ ActiveRecord::Schema.define(version: 2021_06_01_174650) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "profile_image_data"
+    t.integer "followers_count"
+    t.integer "following_count"
   end
 
   create_table "users", force: :cascade do |t|

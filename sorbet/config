@@ -1,3 +1,3 @@
 --dir
 .
---ignore=/vendor/bundle /bin
+--ignore=/vendor/bundle /bin /app/views
