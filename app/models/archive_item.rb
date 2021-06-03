@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 
 class ArchiveItem < ApplicationRecord
   delegated_type :archivable_item, types: %w[ Tweet ]

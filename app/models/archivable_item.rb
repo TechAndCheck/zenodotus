@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 module ArchivableItem
   extend ActiveSupport::Concern
 

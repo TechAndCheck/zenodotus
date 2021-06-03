@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: strict
 
 class TwitterUser < ApplicationRecord
   include ArchivableEntity

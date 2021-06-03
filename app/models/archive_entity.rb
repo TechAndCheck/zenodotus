@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 
 class ArchiveEntity < ApplicationRecord
   delegated_type :archivable_entity, types: %w[ TwitterUser ]

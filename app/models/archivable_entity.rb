@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 module ArchivableEntity
   extend ActiveSupport::Concern
 
