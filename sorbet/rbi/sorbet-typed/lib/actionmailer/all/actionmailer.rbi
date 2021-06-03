@@ -5,7 +5,7 @@
 #
 #   https://github.com/sorbet/sorbet-typed/edit/master/lib/actionmailer/all/actionmailer.rbi
 #
-# typed: strong
+# typed: ignore
 
 class ActionMailer::Base
   sig { params(headers: T.untyped).returns(Mail::Message) }

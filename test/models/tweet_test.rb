@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 require "test_helper"
 
 class TweetTest < ActiveSupport::TestCase

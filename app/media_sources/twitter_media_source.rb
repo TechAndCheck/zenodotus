@@ -1,4 +1,4 @@
-# typed: true
+# typed: ignore
 
 class TwitterMediaSource < MediaSource
   attr_reader(:url)

@@ -1,4 +1,4 @@
-# typed: strict
+# typed: ignore
 
 class Tweet < ApplicationRecord
   include ArchivableItem

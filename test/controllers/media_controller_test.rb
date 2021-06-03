@@ -1,4 +1,4 @@
-# typed: strict
+# typed: ignore
 require "test_helper"
 
 class MediaControllerTest < ActionDispatch::IntegrationTest

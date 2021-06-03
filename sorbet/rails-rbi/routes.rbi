@@ -18,6 +18,48 @@ class ActionMailer::Base
 end
 
 module GeneratedUrlHelpers
+  # Sigs for route /
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def root_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def root_url(*args, **kwargs); end
+
+  # Sigs for route /archive/add(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def archive_add_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def archive_add_url(*args, **kwargs); end
+
+  # Sigs for route /twitter_users/:id(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def twitter_user_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def twitter_user_url(*args, **kwargs); end
+
+  # Sigs for route /recede_historical_location(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def turbo_recede_historical_location_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def turbo_recede_historical_location_url(*args, **kwargs); end
+
+  # Sigs for route /resume_historical_location(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def turbo_resume_historical_location_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def turbo_resume_historical_location_url(*args, **kwargs); end
+
+  # Sigs for route /refresh_historical_location(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def turbo_refresh_historical_location_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def turbo_refresh_historical_location_url(*args, **kwargs); end
+
   # Sigs for route /rails/action_mailbox/postmark/inbound_emails(.:format)
   sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
   def rails_postmark_inbound_emails_path(*args, **kwargs); end

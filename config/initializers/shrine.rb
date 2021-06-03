@@ -1,3 +1,4 @@
+# typed: ignore
 require "shrine"
 
 # Development we want to be local, test ephemeral, production ???? (file for now)

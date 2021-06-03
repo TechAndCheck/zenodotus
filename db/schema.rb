@@ -1,3 +1,4 @@
+# typed: ignore
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -17,15 +18,15 @@ ActiveRecord::Schema.define(version: 2021_06_02_122246) do
   enable_extension "plpgsql"
 
   create_table "archive_entities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "archivable_entity_id"
-    t.string "archivable_entity_type"
+    t.uuid "archivable_entity_id", null: false
+    t.string "archivable_entity_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "archive_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "archivable_item_id"
-    t.string "archivable_item_type"
+    t.uuid "archivable_item_id", null: false
+    t.string "archivable_item_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -35,7 +36,7 @@ ActiveRecord::Schema.define(version: 2021_06_02_122246) do
     t.string "twitter_id"
     t.string "language"
     t.uuid "author_id"
-    t.datetime "posted_at"
+    t.datetime "posted_at", null: false
     t.index ["author_id"], name: "index_tweets_on_author_id"
   end
 
@@ -51,8 +52,8 @@ ActiveRecord::Schema.define(version: 2021_06_02_122246) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "profile_image_data"
-    t.integer "followers_count"
-    t.integer "following_count"
+    t.integer "followers_count", null: false
+    t.integer "following_count", null: false
   end
 
   create_table "users", force: :cascade do |t|

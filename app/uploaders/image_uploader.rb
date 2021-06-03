@@ -1,4 +1,4 @@
-# typed: true
+# typed: ignore
 
 class ImageUploader < Shrine
   # plugins and uploading logic

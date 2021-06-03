@@ -6,7 +6,22 @@ module ApplicationHelper
   include ActionView::Helpers
 end
 
+module MediaHelper
+  include Kernel
+  include ActionView::Helpers
+end
+
+module TwitterUsersHelper
+  include Kernel
+  include ActionView::Helpers
+end
+
+module Stimulus::StimulusHelper
+  include Kernel
+  include ActionView::Helpers
+end
+
 module ActionController::Helpers
-  sig { returns(T.all(ApplicationHelper)) }
+  sig { returns(T.all(ApplicationHelper, MediaHelper, TwitterUsersHelper, Stimulus::StimulusHelper)) }
   def helpers; end
 end

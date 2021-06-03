@@ -1,4 +1,4 @@
-# typed: strict
+# typed: false
 class ApplicationRecord < ActiveRecord::Base
   extend T::Sig
   extend T::Helpers

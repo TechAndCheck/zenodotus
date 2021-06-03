@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 require "test_helper"
 require "generators/media_source/media_source_generator"
 

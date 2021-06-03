@@ -1,3 +1,4 @@
+# typed: ignore
 class TwitterUsersController < ApplicationController
   def show
     @twitter_user = TwitterUser.find(params[:id])
