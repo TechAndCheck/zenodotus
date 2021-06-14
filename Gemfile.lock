@@ -5,6 +5,15 @@ PATH
       oauth (~> 0.5.6)
       typhoeus (~> 1.4.0)
 
+PATH
+  remote: ../../zorki
+  specs:
+    zorki (0.1.0)
+      apparition
+      capybara
+      oj
+      typhoeus
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -69,6 +78,9 @@ GEM
       zeitwerk (~> 2.3)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
+    apparition (0.6.0)
+      capybara (~> 3.13, < 4)
+      websocket-driver (>= 0.6.5)
     ast (2.4.2)
     bindex (0.8.1)
     bootsnap (1.7.5)
@@ -144,6 +156,7 @@ GEM
     nokogiri (1.11.5-x86_64-darwin)
       racc (~> 1.4)
     oauth (0.5.6)
+    oj (3.11.5)
     os (1.1.1)
     parallel (1.20.1)
     parlour (6.0.0)
@@ -386,6 +399,7 @@ DEPENDENCIES
   webdrivers
   webpacker (~> 5.0)
   yard
+  zorki (= 0.1.0)!
 
 RUBY VERSION
    ruby 3.0.1p64

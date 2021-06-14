@@ -11,19 +11,21 @@ class ArchiveController < ApplicationController
   sig { void }
   def add; end
 
-  # Entry point for submitting a URL for archiving
-  #
-  # @params {url_to_archive} the url to pull in
+  # A class representing the allowed params into the `submit_url` endpoint
   class SubmitUrlParams < T::Struct
     const :url_to_archive, String
   end
 
+  # Entry point for submitting a URL for archiving
+  #
+  # @params {url_to_archive} the url to pull in
   sig { void }
   def submit_url
     typed_params = TypedParams[SubmitUrlParams].new.extract!(params)
-    url = typed_params[:url_to_archive]
-    birdsong_tweet = TwitterMediaSource.extract(url)
-    Tweet.create_from_birdsong_hash(birdsong_tweet)
+    url = typed_params.url_to_archive
+    object_model = model_for_url(url)
+    object = object_model.create_from_url(url)
+    byebug
 
     respond_to do |format|
       flash.now[:alert] = "Successfully archived your link!"
@@ -33,7 +35,7 @@ class ArchiveController < ApplicationController
         turbo_stream.replace(
           "tweets_list",
           partial: "archive/tweets_list",
-          locals: { archive_items: ArchiveItem.tweets.includes([:archivable_item]) }
+          locals: { archive_items: ArchiveItem.includes([:archivable_item]) }
         )
       ] }
       format.html { redirect_to :root }

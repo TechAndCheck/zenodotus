@@ -3,10 +3,11 @@
     <div class="flex flex-wrap w-full mb-20">
       <div class="lg:w-1/2 w-full mb-6 lg:mb-0">
         <img src="<%= @twitter_user.profile_image_url %>" class="w-40 h-40 mb-5 rounded-full inline-flex items-center justify-center bg-gray-200 text-gray-400"/>
-        <div class="h-1 w-20 bg-indigo-500 rounded"></div>
+        <div class="h-1 w-20 bg-pink-200 rounded"></div>
         <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 mt-3 text-gray-900">@<%= @twitter_user.handle %></h1>
       </div>
-      <div class="lg:w-1/2 w-full leading-relaxed text-gray-500">
+      <div class="lg:w-1/2 w-full leading-relaxed text-gray-500 bg-white border-gray-200 border p-6 rounded-lg">
+        <h3 class="tracking-widest pb-3 text-green-400 text-xs font-medium title-font">Account Details</h3>
         <ul>
           <li><span class="text-gray-400">Display Name:</span> <span class="text-lg"><%= @twitter_user.display_name %></span></li>
           <li><span class="text-gray-400">Followers:</span> <span class="text-lg"><%= @twitter_user.followers_count %></span></li>
@@ -18,14 +19,17 @@
         </ul>
       </div>
     </div>
+    <div>
+      <h1 class="text-xl text-green-400 font-medium title-font mb-4">Archived Media Items</h1>
+      <div class="h-1 w-50 bg-pink-200 rounded"></div>
+    </div>
     <div class="flex flex-wrap-m-4">
       <% @archive_items.each do |tweet| %>
-      <div class="xl:w-1/4 md:w-1/2 p-4">
-        <div class="bg-gray-100 p-6 rounded-lg">
-          <img class="h-40 rounded w-full object-cover object-center mb-6" src="https://dummyimage.com/720x400" alt="content">
-          <h3 class="tracking-widest text-indigo-500 text-xs font-medium title-font">Twitter</h3>
-          <h2 class="text-lg text-gray-900 font-medium title-font mb-4">Chichen Itza</h2>
-          <p class="leading-relaxed text-base"><%= tweet.text %></p>
+      <div class="xl:w-1/2 md:w-1 p-4">
+        <div class="bg-white border-gray-200 border p-6 rounded-lg">
+          <h3 class="tracking-widest pb-3 text-green-400 text-xs font-medium title-font">Twitter</h3>
+          <p class="leading-relaxed pb-3 text-base"><%= tweet.text %></p>
+          <h3 class="text-lg text-gray-900 font-medium title-font mb-4"><%= tweet.posted_at %></h3>
         </div>
       </div>
       <% end %>

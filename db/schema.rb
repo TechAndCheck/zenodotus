@@ -1,4 +1,3 @@
-# typed: ignore
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_02_122246) do
+ActiveRecord::Schema.define(version: 2021_06_09_215117) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -31,23 +30,57 @@ ActiveRecord::Schema.define(version: 2021_06_02_122246) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "instagram_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "instagram_post_id"
+    t.jsonb "image_data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["instagram_post_id"], name: "index_instagram_images_on_instagram_post_id"
+  end
+
+  create_table "instagram_posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "text", null: false
+    t.string "instagram_id", null: false
+    t.datetime "posted_at", null: false
+    t.integer "number_of_likes", null: false
+    t.uuid "author_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["author_id"], name: "index_instagram_posts_on_author_id"
+  end
+
+  create_table "instagram_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "display_name", null: false
+    t.string "handle", null: false
+    t.integer "number_of_posts", null: false
+    t.integer "followers_count", null: false
+    t.integer "following_count", null: false
+    t.boolean "verified", null: false
+    t.text "profile", null: false
+    t.string "url", null: false
+    t.string "profile_image_url", null: false
+    t.jsonb "profile_image_data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "tweets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.text "text"
-    t.string "twitter_id"
-    t.string "language"
-    t.uuid "author_id"
+    t.text "text", null: false
+    t.string "twitter_id", null: false
+    t.string "language", null: false
+    t.uuid "author_id", null: false
     t.datetime "posted_at", null: false
     t.index ["author_id"], name: "index_tweets_on_author_id"
   end
 
   create_table "twitter_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "handle"
-    t.string "display_name"
-    t.datetime "sign_up_date"
-    t.string "twitter_id"
-    t.text "description"
-    t.string "url"
-    t.text "profile_image_url"
+    t.string "handle", null: false
+    t.string "display_name", null: false
+    t.datetime "sign_up_date", null: false
+    t.string "twitter_id", null: false
+    t.text "description", null: false
+    t.string "url", null: false
+    t.text "profile_image_url", null: false
     t.string "location"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -83,4 +116,5 @@ ActiveRecord::Schema.define(version: 2021_06_02_122246) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "instagram_images", "instagram_posts"
 end

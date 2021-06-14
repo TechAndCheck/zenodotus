@@ -27,4 +27,9 @@ class TweetTest < ActiveSupport::TestCase
 
     assert_equal archive_item.author, archive_item2.author
   end
+
+  test "assert_url_can_be_checked" do
+    assert Tweet.can_handle_url?("https://twitter.com/AmtrakNECAlerts/status/1397922363551870990")
+    assert_not Tweet.can_handle_url?("https://twitter.com/AmtrakNECAlerts/status")
+  end
 end

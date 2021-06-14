@@ -10,7 +10,7 @@ class CreateTwitterUsers < ActiveRecord::Migration[6.1]
       t.text :description, null: false
       t.string :url, null: false
       t.text :profile_image_url, null: false
-      t.string :location, null: false
+      t.string :location # Location may not be in the profile
       t.timestamps
     end
   end

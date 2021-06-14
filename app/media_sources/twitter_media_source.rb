@@ -89,7 +89,7 @@ private
   sig { params(url: String).returns(T::Boolean) }
   def self.validate_tweet_url(url)
     return true if /twitter.com\/[\w]+\/[\w]+\/[0-9]+\z/.match?(url)
-    raise InvalidTweetUrlError, "Tweet url #{url} does not have standard the standard url format"
+    raise InvalidTweetUrlError, "Tweet url #{url} does not have the standard url format"
   end
 
   # Grab the ID from the end of a twitter URL

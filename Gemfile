@@ -117,5 +117,5 @@ gem "os"
 gem "shrine", "~> 3.0"
 
 # Scraper gems
-# gem "zorki", "0.1.0", path: "~/Repositories/zorki" # instagram
+gem "zorki", "0.1.0", path: "~/Repositories/zorki" # instagram
 gem "birdsong", "0.1.0", path: "~/Repositories/birdsong" # twitter

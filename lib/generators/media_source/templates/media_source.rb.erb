@@ -9,7 +9,7 @@ class <%= @file_name.classify %>MediaSource < MediaSource
   #   just have this return `nil` or any empty array . We can discuss if this should be an
   #   enforced abstract method if this becomes an issue.
   # @return [Array] of [String] of valid host names or [nil]
-  sig { abstract.returns(T.nilable(T::Array[String])) }
+  sig { override.returns(T.nilable(T::Array[String])) }
   def self.valid_host_name; end
 
   # Capture a screenshot of the given url
