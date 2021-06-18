@@ -23,6 +23,7 @@
 !/storage/.keep
 
 /public/assets
+/public/uploads
 .byebug_history
 
 # Ignore master key for decrypting credentials and more.
@@ -40,3 +41,7 @@ yarn-debug.log*
 
 # Tmux workspace config file
 .tmuxinator.yml
+
+# We don't want to check in coverage results
+coverage
+

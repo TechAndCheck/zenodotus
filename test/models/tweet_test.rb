@@ -21,6 +21,12 @@ class TweetTest < ActiveSupport::TestCase
     assert_not_nil archive_item.tweet.author
   end
 
+  test "can create from Tweet url" do
+    assert_not_nil Tweet.create_from_url("https://twitter.com/AmtrakNECAlerts/status/1397922363551870990")
+    # a slightly different URL
+    assert_not_nil Tweet.create_from_url("https://twitter.com/Citruscrush/status/1094999286281048070?fbclid=IwAR20aObVHvlSdu-e2L2mTHXytMqgoGvH6tur4vLz0bU4E2p5k4NciEOAgiE")
+  end
+
   test "can create two tweets from same author" do
     archive_item = Tweet.create_from_birdsong_hash(@birdsong_tweet).first.tweet
     archive_item2 = Tweet.create_from_birdsong_hash(@birdsong_tweet2).first.tweet

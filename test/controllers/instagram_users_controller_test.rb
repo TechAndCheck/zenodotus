@@ -1,7 +1,6 @@
-# typed: ignore
 require "test_helper"
 
-class MediaControllerTest < ActionDispatch::IntegrationTest
+class InstagramUsersControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

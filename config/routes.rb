@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   post "/archive/add", to: "archive#submit_url"
 
   resources :twitter_users, only: [:show]
+  resources :instagram_users, only: [:show]
 end

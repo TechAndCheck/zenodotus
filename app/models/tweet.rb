@@ -28,7 +28,7 @@ class Tweet < ApplicationRecord
   sig { params(url: String).returns(ArchiveItem) }
   def self.create_from_url(url)
     birdsong_tweet = TwitterMediaSource.extract(url)
-    Tweet.create_from_birdsong_hash(birdsong_tweet)
+    Tweet.create_from_birdsong_hash(birdsong_tweet).first
   end
 
   # Create a +ArchiveItem+ from a +Birdsong::Tweet+

@@ -38,33 +38,6 @@ class TwitterMediaSource < MediaSource
     @url = url
   end
 
-  # Perform the proper capture of the url passed in
-  #
-  # @params save_screenshot [Boolean] whether to save the screenshot image (mostly for testing).
-  #   Returns the path of the screenshot if true. Default: false
-  # @return [File] file object of the image
-  sig { params(save_screenshot: T::Boolean).returns(T.nilable(String)) }
-  def capture_screenshot(save_screenshot = false)
-    filename = "#{SecureRandom.uuid()}.png"
-    path = Rails.root.join("tmp", filename)
-
-    # For dev purposes we check if we're on a Mac or Linux, since Mac doesn't support xfvb and we need to do non-headless
-    headless = !OS.mac?
-    timeout = 120 # Twitter takes way longer to load than it should, this is annoying
-
-    browser = Ferrum::Browser.new(headless: headless, timeout: timeout)
-    browser.headers.set("User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4464.0 Safari/537.36")
-    browser.go_to(@url)
-    # byebug
-    browser.screenshot(path: path)
-    browser.quit
-
-    return path.to_s if save_screenshot
-
-    File.delete(path)
-    nil
-  end
-
   # Call the Twitter API using the Birdsong gem and get an object
   #
   # @!visibility private
@@ -88,7 +61,7 @@ private
   # @return [Boolean] if the string validates or not
   sig { params(url: String).returns(T::Boolean) }
   def self.validate_tweet_url(url)
-    return true if /twitter.com\/[\w]+\/[\w]+\/[0-9]+\z/.match?(url)
+    return true if /twitter.com\/[\w]+\/[\w]+\/[0-9]+/.match?(url)
     raise InvalidTweetUrlError, "Tweet url #{url} does not have the standard url format"
   end
 

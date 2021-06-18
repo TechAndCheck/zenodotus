@@ -4,7 +4,7 @@ class ArchiveController < ApplicationController
   # It's the index, list all the archived items
   sig { void }
   def index
-    @archive_items = ArchiveItem.tweets.includes({ archivable_item: [:author] })
+    @archive_items = ArchiveItem.includes({ archivable_item: [:author] })
   end
 
   # A form for submitting URLs
@@ -24,8 +24,23 @@ class ArchiveController < ApplicationController
     typed_params = TypedParams[SubmitUrlParams].new.extract!(params)
     url = typed_params.url_to_archive
     object_model = model_for_url(url)
-    object = object_model.create_from_url(url)
-    byebug
+    begin
+      object = object_model.create_from_url(url)
+    rescue StandardError => e
+      respond_to do |format|
+        error = "#{e.class} : #{e.message}"
+        format.turbo_stream { render turbo_stream: [
+          turbo_stream.replace("modal", partial: "archive/add", locals: { error: error })
+          # turbo_stream.replace(
+          #   "tweets_list",
+          #   partial: "archive/tweets_list",
+          #   locals: { archive_items: ArchiveItem.includes({ archivable_item: [:author] }) }
+          # )
+        ] }
+        format.html { redirect_to :root }
+      end
+      return
+    end
 
     respond_to do |format|
       flash.now[:alert] = "Successfully archived your link!"
@@ -35,7 +50,7 @@ class ArchiveController < ApplicationController
         turbo_stream.replace(
           "tweets_list",
           partial: "archive/tweets_list",
-          locals: { archive_items: ArchiveItem.includes([:archivable_item]) }
+          locals: { archive_items: ArchiveItem.includes({ archivable_item: [:author] }) }
         )
       ] }
       format.html { redirect_to :root }

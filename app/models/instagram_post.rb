@@ -32,7 +32,7 @@ class InstagramPost < ApplicationRecord
   sig { params(url: String).returns(ArchiveItem) }
   def self.create_from_url(url)
     zorki_post = InstagramMediaSource.extract(url)
-    InstagramPost.create_from_zorki_hash(zorki_post)
+    InstagramPost.create_from_zorki_hash(zorki_post).first
   end
 
   # Create a +ArchiveItem+ from a +Zorki::Post+

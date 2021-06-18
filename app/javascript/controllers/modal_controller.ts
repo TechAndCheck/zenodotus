@@ -1,8 +1,10 @@
 import { Controller } from 'stimulus'
 
 export default class extends Controller {
-  close(event) {
-    this.element.parentNode.removeChild(this.element)
+  close() {
+    if (this.element && this.element.parentNode) {
+      this.element.parentNode.removeChild(this.element)
+    }
   }
 
   escClose(event) {
@@ -11,7 +13,14 @@ export default class extends Controller {
     }
   }
 
-  onPostSuccess(event) {
-    console.log("success!")
+  onPostSend() {
+    const loader = document.getElementById('loader')
+    if (loader !== null) {
+      loader.classList.remove('hidden')
+    }
+  }
+
+  onPostSuccess() {
+    console.log('success!')
   }
 }

@@ -19,6 +19,10 @@ class InstagramPostTest < ActiveSupport::TestCase
     assert_not_nil archive_item.instagram_post.instagram_images
   end
 
+  test "can create from Instagram url" do
+    assert_not_nil InstagramPost.create_from_url("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
+  end
+
   test "can create two tweets from same author" do
     @zorki_post2 = InstagramMediaSource.extract("https://www.instagram.com/p/CQDeYPhMJLG/")
     archive_item = InstagramPost.create_from_zorki_hash(@zorki_post).first.instagram_post
