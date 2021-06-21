@@ -1,0 +1,113 @@
+#!/usr/bin/env ruby
+
+require "platform-api"
+require "byebug"
+require "securerandom"
+require "httparty"
+require "json"
+require "open3"
+
+# Check if logged in, we check that by checking for a `.herokucreds` file in the top directory
+# TODO: Don't assume this is run from the top directory
+
+class HerokuReviewAppsManager
+  DEFAULT_PIPELINE_ID = "d65e7932-c9d1-4e30-917e-1a38049ef952"
+
+  def initialize(credentials_file = ".herokucreds")
+    @credentials_file = credentials_file
+  end
+
+  def run
+    @heroku = PlatformAPI.connect_oauth(@credentials)
+    @authkey = get_auth_key
+    apps = load_reviews_apps(@authkey)
+    branch = get_current_git_branch
+    app = find_app_for_branch(apps, branch)
+    if app.nil?
+      puts "🦕 No review app found for this branch `#{branch}`."
+      puts "🦕 If you'd like to create one either use Github or `hub` https://github.com/github/hub"
+    else
+      puts "🦖 Review app for branch `#{branch}` available at 🔗 #{app[:web_url]}"
+    end
+  end
+
+  def get_auth_key
+    cli_response = nil
+    Open3.popen3("heroku auth:token") do |stdin, stdout, stderr, thread|
+      cli_response = stdout.read
+    end
+
+    authkey = cli_response.strip
+    raise "Problem checking for your Heroku credential. You either need" +
+          " to `heroku auth:login` or install the Heroku CLI" unless validate_uuid_format(authkey)
+    authkey
+  end
+
+  def find_app_for_branch(apps, branch)
+    apps.select { |app| app[:branch] == branch }.first
+  end
+
+  def get_current_git_branch
+    response = `git branch --show-current`
+
+    # Some older versions of git don't support the previous command
+    if response.empty?
+      puts "🆘 Your version of git is too old to use this feature. Please upgrade (you may need to do so from source)"
+      puts ">  You can find the most recent versions at https://git-scm.com/downloads"
+      exit
+    end
+
+    response.strip
+  end
+
+  def load_reviews_apps(authkey, pipeline = DEFAULT_PIPELINE_ID)
+    parsed_results = get_review_apps(pipeline, authkey)
+
+    # Go through each app, get the id, pull in their info, create an array
+    create_review_apps_array(parsed_results, authkey)
+  end
+
+  def get_review_apps(pipeline, authkey)
+    results = HTTParty.get("https://api.heroku.com/pipelines/#{pipeline}/review-apps",  {
+      headers: { "Accept": "application/vnd.heroku+json; version=3",
+                 "Authorization": "Bearer #{authkey}" }
+      })
+
+    raise_error_if_unauthorized
+
+    JSON.parse(results.response.body)
+  end
+
+  def create_review_apps_array(parsed_results, authkey)
+    parsed_results.map do |result|
+      app_hash = {}
+      app_hash[:branch] = result["branch"]
+      app_hash[:id] = result["app"]["id"]
+
+      result = HTTParty.get("https://api.heroku.com/apps/#{result['app']['id']}", {
+        headers: { "Accept": "application/vnd.heroku+json; version=3",
+                   "Authorization": "Bearer #{authkey}" }
+      })
+
+      raise_error_if_unauthorized
+
+      parsed_result = JSON.parse(result.response.body)
+      app_hash[:web_url] = parsed_result["web_url"]
+      app_hash
+    end
+  end
+
+  def raise_error_if_unauthorized
+    if result.response.code == "401"
+      # Unauthorized, so we thrown an error
+      raise "Unauthorized response from Heroku. Try `heroku auth:login` from the command line"
+    end
+  end
+
+  def validate_uuid_format(uuid)
+    uuid_regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+    uuid_regex.match?(uuid.to_s.downcase)
+  end
+end
+
+HerokuReviewAppsManager.new.run
