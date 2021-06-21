@@ -1,6 +1,8 @@
 # Zenodotus (Ζηνόδοτος)
 Zenodotus is an archive system for media that has been fact checked to provide durable, long-term storage for research purposes primarily. The project is named after [Zenodotus](https://en.wikipedia.org/wiki/Zenodotus), the first superintendent of the Library of Alexandria and the man credited with inventing the first tagging system.
 
+Additional documentation can be found in the `/docs` folder.
+
 ## Setup
 
 ### Requirements
@@ -82,8 +84,11 @@ We use mostly a standard Rails set, with a few new things that are generally rec
 - We use [StimulusJS](https://stimulus.hotwire.dev) for our javascript
 - We use [Turbo](https://turbo.hotwire.dev) for all the page load stuff
 - [Sorbet](https://sorbet.org) is used to add type checking to our Ruby and prevent a bunch of run time bugs early.
+- For linting we use [Rubocop](https://rubocop.org), this makes sure our code lines up
 
+## Development
 
+See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for setup instructions
 
 
 

@@ -1,12 +1,14 @@
-PATH
-  remote: ../../birdsong
+GIT
+  remote: https://github.com/cguess/birdsong
+  revision: ab3a9e11ac690725e8635c90ab837dd6ba6a2f0f
   specs:
     birdsong (0.1.0)
       oauth (~> 0.5.6)
       typhoeus (~> 1.4.0)
 
-PATH
-  remote: ../../zorki
+GIT
+  remote: https://github.com/cguess/zorki
+  revision: 1a15a7498fc78191e8365dc6b58a91c5d4763c98
   specs:
     zorki (0.1.0)
       apparition
@@ -157,7 +159,7 @@ GEM
     nokogiri (1.11.5-x86_64-darwin)
       racc (~> 1.4)
     oauth (0.5.6)
-    oj (3.11.5)
+    oj (3.11.6)
     os (1.1.1)
     parallel (1.20.1)
     parlour (6.0.0)
