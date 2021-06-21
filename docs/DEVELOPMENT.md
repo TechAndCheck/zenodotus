@@ -20,7 +20,7 @@ General setup instructions are here, followed by editor-specific additional step
 
 1. Install ESLint `yarn global add eslint` (this installs globally, which is probably fine)
 
-###### Sublime Text 3
+###### Sublime Text 4
 
 1. Install the [PackageController](https://packagecontrol.io) plugin for Sublime, according to the [instructions](https://packagecontrol.io/installation).
 1. Install the [SublimeLinter](http://www.sublimelinter.com/en/stable/) plugin using PackageManager
@@ -53,7 +53,7 @@ General setup instructions are here, followed by editor-specific additional step
 Good news! RuboCop should be installed by Bundler when you first set up the project. Now just to let your
 editor know.
 
-###### Sublime Text 3
+###### Sublime Text 4
 
 1. Install the [PackageController](https://packagecontrol.io) plugin for Sublime, according to the [instructions](https://packagecontrol.io/installation). (If you haven't already)
 1. Install the [Sublime RuboCop](https://github.com/pderichs/sublime_rubocop) plugin using PackageManager.
@@ -69,3 +69,4 @@ editor know.
 1. Replace the value of the line starting with `rbenv_path` with the response form `which rbenv`
 1. Save the file and restart Sublime
 
+TODO: Add Sorbet instructions
