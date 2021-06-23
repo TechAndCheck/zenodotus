@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_09_215117) do
+ActiveRecord::Schema.define(version: 2021_06_23_193302) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -73,6 +73,14 @@ ActiveRecord::Schema.define(version: 2021_06_09_215117) do
     t.index ["author_id"], name: "index_tweets_on_author_id"
   end
 
+  create_table "twitter_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tweet_id"
+    t.jsonb "image_data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tweet_id"], name: "index_twitter_images_on_tweet_id"
+  end
+
   create_table "twitter_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "handle", null: false
     t.string "display_name", null: false
@@ -117,4 +125,5 @@ ActiveRecord::Schema.define(version: 2021_06_09_215117) do
   end
 
   add_foreign_key "instagram_images", "instagram_posts"
+  add_foreign_key "twitter_images", "tweets"
 end

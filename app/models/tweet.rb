@@ -3,6 +3,9 @@
 class Tweet < ApplicationRecord
   include ArchivableItem
 
+  has_many :twitter_images, dependent: :destroy
+  accepts_nested_attributes_for :twitter_images, allow_destroy: true
+
   # The `TwitterUser` that is the author of this tweet.
   belongs_to :author, class_name: "TwitterUser"
 
@@ -15,7 +18,7 @@ class Tweet < ApplicationRecord
   sig { params(url: String).returns(T::Boolean) }
   def self.can_handle_url?(url)
     TwitterMediaSource.send(:validate_tweet_url, url)
-  rescue TwitterMediaSource::InvalidTweetUrlError => e
+  rescue TwitterMediaSource::InvalidTweetUrlError
     false
   end
 

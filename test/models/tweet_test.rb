@@ -17,6 +17,8 @@ class TweetTest < ActiveSupport::TestCase
     assert_equal @birdsong_tweet.first.id, archive_item.service_id
     assert_equal @birdsong_tweet.first.language, archive_item.tweet.language
     assert_equal @birdsong_tweet.first.created_at, archive_item.tweet.posted_at
+    assert_not_nil @birdsong_tweet.first.images
+    assert_not_nil @birdsong_tweet.first.videos
 
     assert_not_nil archive_item.tweet.author
   end
