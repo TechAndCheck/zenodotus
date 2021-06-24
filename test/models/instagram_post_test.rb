@@ -5,6 +5,12 @@ class InstagramPostTest < ActiveSupport::TestCase
     @zorki_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
   end
 
+  def teardown
+    if File.exist?("tmp/zorki") && File.directory?("tmp/zorki")
+      FileUtils.rm_r "tmp/zorki"
+    end
+  end
+
   test "can create Instagram post" do
     archive_item = InstagramPost.create_from_zorki_hash(@zorki_post).first
     assert_not_nil archive_item
@@ -33,5 +39,13 @@ class InstagramPostTest < ActiveSupport::TestCase
   test "assert_url_can_be_checked" do
     assert InstagramPost.can_handle_url?("https://www.instagram.com/p/CQDeYPhMJLG/")
     assert_not InstagramPost.can_handle_url?("https://www.instagram.com/z/CQDeYPhMJLG/")
+  end
+
+  test "can archive video from Instagram post" do
+    zorki_instagram_post_video = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/?utm_source=ig_embed")
+    archive_item = InstagramPost.create_from_zorki_hash(zorki_instagram_post_video).first
+    assert_not_nil archive_item
+    assert_kind_of ArchiveItem, archive_item
+    assert_not_nil archive_item.instagram_post.videos
   end
 end

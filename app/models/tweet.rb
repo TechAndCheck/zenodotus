@@ -5,6 +5,9 @@ class Tweet < ApplicationRecord
   has_many :images, foreign_key: :tweet_id, class_name: "TwitterImage", dependent: :destroy
   accepts_nested_attributes_for :images, allow_destroy: true
 
+  has_many :videos, foreign_key: :tweet_id, class_name: "TwitterVideo", dependent: :destroy
+  accepts_nested_attributes_for :videos, allow_destroy: true
+
   # The `TwitterUser` that is the author of this tweet.
   belongs_to :author, class_name: "TwitterUser"
 
@@ -48,13 +51,18 @@ class Tweet < ApplicationRecord
         { image: File.open(image_file_name, binmode: true) }
       end
 
+      video_attributes = birdsong_tweet.video_file_names.map do |video_file_name|
+        { video: File.open(video_file_name, binmode: true) }
+      end
+
       ArchiveItem.create! archivable_item: Tweet.create({
         text:                  birdsong_tweet.text,
         twitter_id:            birdsong_tweet.id.to_s,
         language:              birdsong_tweet.language,
         author:                twitter_user,
         posted_at:             birdsong_tweet.created_at,
-        images_attributes:     image_attributes
+        images_attributes:     image_attributes,
+        videos_attributes:     video_attributes
       })
     end
   end
