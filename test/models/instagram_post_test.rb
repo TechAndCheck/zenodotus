@@ -16,7 +16,7 @@ class InstagramPostTest < ActiveSupport::TestCase
     assert_equal @zorki_post.first.date, archive_item.instagram_post.posted_at
 
     assert_not_nil archive_item.instagram_post.author
-    assert_not_nil archive_item.instagram_post.instagram_images
+    assert_not_nil archive_item.instagram_post.images
   end
 
   test "can create from Instagram url" do
