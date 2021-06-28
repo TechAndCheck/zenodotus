@@ -119,6 +119,9 @@ gem "os"
 # Shrine is a better alternative to ActiveStorage for handling file attachments and the like
 gem "shrine", "~> 3.0"
 
+# Stremio-ffmpeg use the ffmpeg library to process our video files
+gem "streamio-ffmpeg"
+
 # Scraper gems
 # Local testing
 gem "zorki", "0.1.0", path: "~/Repositories/zorki" # instagram

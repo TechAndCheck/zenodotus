@@ -47,6 +47,13 @@ If `pg_config` isn't already in your `PATH`, locate it (try looking in `/Library
 ### Yarn
 An open-source Javascript package manager used to install/manage Webpack and some other package dependencies
 
+### FFMPEG
+
+FFMPEG is a video processing library. It's used on that Mars helicopter and at YouTube, so it's fine.
+We need to install it to process previews for videos.
+
+MacOS: `brew install ffmpeg`
+
 ## Setup Steps
 *Note: this is a first pass, there may be odd errors since I wasn't on a pristine box when I wrote it. Please message @cguess with any error messages, it's probably missing dependencies.*
 

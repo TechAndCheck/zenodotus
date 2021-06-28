@@ -1,7 +1,11 @@
 <% if item.images.empty? == false %>
 <img src="<%= item.images.first.image_url %>" />
 <% elsif item.videos.empty? == false %>
-<video width="320" height="240" controls>
+<video
+  width="320"
+  height="240"
+  poster="<%= item.videos.first.video_derivatives[:preview].url %>"
+  controls >
   <source src="<%= item.videos.first.video_url %>" type="video/mp4">
   Your browser does not support the video tag.
 </video>
