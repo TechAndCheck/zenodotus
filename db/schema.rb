@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_09_215117) do
+ActiveRecord::Schema.define(version: 2021_06_24_171825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -64,6 +64,14 @@ ActiveRecord::Schema.define(version: 2021_06_09_215117) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "instagram_videos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "instagram_post_id"
+    t.jsonb "video_data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["instagram_post_id"], name: "index_instagram_videos_on_instagram_post_id"
+  end
+
   create_table "tweets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "text", null: false
     t.string "twitter_id", null: false
@@ -71,6 +79,14 @@ ActiveRecord::Schema.define(version: 2021_06_09_215117) do
     t.uuid "author_id", null: false
     t.datetime "posted_at", null: false
     t.index ["author_id"], name: "index_tweets_on_author_id"
+  end
+
+  create_table "twitter_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tweet_id"
+    t.jsonb "image_data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tweet_id"], name: "index_twitter_images_on_tweet_id"
   end
 
   create_table "twitter_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -87,6 +103,14 @@ ActiveRecord::Schema.define(version: 2021_06_09_215117) do
     t.jsonb "profile_image_data"
     t.integer "followers_count", null: false
     t.integer "following_count", null: false
+  end
+
+  create_table "twitter_videos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tweet_id"
+    t.jsonb "video_data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tweet_id"], name: "index_twitter_videos_on_tweet_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -117,4 +141,7 @@ ActiveRecord::Schema.define(version: 2021_06_09_215117) do
   end
 
   add_foreign_key "instagram_images", "instagram_posts"
+  add_foreign_key "instagram_videos", "instagram_posts"
+  add_foreign_key "twitter_images", "tweets"
+  add_foreign_key "twitter_videos", "tweets"
 end

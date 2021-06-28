@@ -2,6 +2,11 @@
 
 class Tweet < ApplicationRecord
   include ArchivableItem
+  has_many :images, foreign_key: :tweet_id, class_name: "TwitterImage", dependent: :destroy
+  accepts_nested_attributes_for :images, allow_destroy: true
+
+  has_many :videos, foreign_key: :tweet_id, class_name: "TwitterVideo", dependent: :destroy
+  accepts_nested_attributes_for :videos, allow_destroy: true
 
   # The `TwitterUser` that is the author of this tweet.
   belongs_to :author, class_name: "TwitterUser"
@@ -15,7 +20,7 @@ class Tweet < ApplicationRecord
   sig { params(url: String).returns(T::Boolean) }
   def self.can_handle_url?(url)
     TwitterMediaSource.send(:validate_tweet_url, url)
-  rescue TwitterMediaSource::InvalidTweetUrlError => e
+  rescue TwitterMediaSource::InvalidTweetUrlError
     false
   end
 
@@ -42,12 +47,22 @@ class Tweet < ApplicationRecord
     birdsong_tweets.map do |birdsong_tweet|
       twitter_user = TwitterUser.create_from_birdsong_hash([birdsong_tweet.author]).first.twitter_user
 
+      image_attributes = birdsong_tweet.image_file_names.map do |image_file_name|
+        { image: File.open(image_file_name, binmode: true) }
+      end
+
+      video_attributes = birdsong_tweet.video_file_names.map do |video_file_name|
+        { video: File.open(video_file_name.first, binmode: true) }
+      end
+
       ArchiveItem.create! archivable_item: Tweet.create({
-        text: birdsong_tweet.text,
-        twitter_id: "#{birdsong_tweet.id}",
-        language: birdsong_tweet.language,
-        author: twitter_user,
-        posted_at: birdsong_tweet.created_at
+        text:                  birdsong_tweet.text,
+        twitter_id:            birdsong_tweet.id.to_s,
+        language:              birdsong_tweet.language,
+        author:                twitter_user,
+        posted_at:             birdsong_tweet.created_at,
+        images_attributes:     image_attributes,
+        videos_attributes:     video_attributes
       })
     end
   end

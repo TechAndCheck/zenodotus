@@ -19,12 +19,20 @@ class TwitterMediaSourceTest < ActiveSupport::TestCase
   end
 
   def test_initializing_returns_blank
-    assert TwitterMediaSource.extract("https://twitter.com/jack/status/1").empty?
+    assert_raises(Birdsong::NoTweetFoundError) do
+      TwitterMediaSource.extract("https://twitter.com/jack/status/1")
+    end
   end
 
   def test_extracting_creates_tweet_object
     tweet_hash = TwitterMediaSource.extract("https://twitter.com/jack/status/20", true)
     tweet = Tweet.create_from_birdsong_hash(tweet_hash)
     assert_not tweet.empty?
+  end
+
+  def test_bad_url_raises_exception
+    assert_raises TwitterMediaSource::InvalidTweetUrlError do
+      TwitterMediaSource.send(:extract_tweet_id_from_url, "https://twitter.com/")
+    end
   end
 end

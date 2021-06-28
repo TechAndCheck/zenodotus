@@ -8,6 +8,12 @@ class TwitterUserTest < ActiveSupport::TestCase
     ).first.author
   end
 
+  def teardown
+    if File.exist?("tmp/birdsong") && File.directory?("tmp/birdsong")
+      FileUtils.rm_r "tmp/birdsong"
+    end
+  end
+
   test "can create twitter user" do
     archive_entity = TwitterUser.create_from_birdsong_hash([@birdsong_user]).first
     assert_not_nil archive_entity

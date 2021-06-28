@@ -75,8 +75,6 @@ private
   sig { params(url: String).returns(T.nilable(String)) }
   def self.extract_instagram_id_from_url(url)
     uri = URI(url)
-    raise InstagramMediaSource::InvalidInstagramPostUrlError if uri.path.nil?
-
     splits = T.must(uri.path).split("/")
     raise InstagramMediaSource::InvalidInstagramPostUrlError if splits.empty?
 
