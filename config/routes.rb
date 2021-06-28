@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get "/archive/add", to: "archive#add"
   post "/archive/add", to: "archive#submit_url"
 
+  get "/image_search", to: "image_search#index", as: "image_search"
+
   resources :twitter_users, only: [:show]
   resources :instagram_users, only: [:show]
 end
