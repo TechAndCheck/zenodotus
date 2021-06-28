@@ -48,4 +48,10 @@ class InstagramPostTest < ActiveSupport::TestCase
     assert_kind_of ArchiveItem, archive_item
     assert_not_nil archive_item.instagram_post.videos
   end
+
+  test "archiving a video creates a preview screenshot" do
+    zorki_instagram_post_video = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/?utm_source=ig_embed")
+    archive_item = InstagramPost.create_from_zorki_hash(zorki_instagram_post_video).first
+    assert_not_nil archive_item.instagram_post.videos.first.video_derivatives[:preview]
+  end
 end

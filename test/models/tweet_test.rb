@@ -53,4 +53,10 @@ class TweetTest < ActiveSupport::TestCase
     assert_kind_of ArchiveItem, archive_item
     assert_not_nil archive_item.tweet.videos
   end
+
+  test "archiving a video creates a preview screenshot" do
+    birdsong_tweet_video = TwitterMediaSource.extract("https://twitter.com/JoeBiden/status/1258817692448051200")
+    archive_item = Tweet.create_from_birdsong_hash(birdsong_tweet_video).first
+    assert_not_nil archive_item.tweet.videos.first.video_derivatives[:preview]
+  end
 end

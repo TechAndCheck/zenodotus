@@ -31,7 +31,11 @@
           <% if tweet.images.empty? == false %>
           <img src="<%= tweet.images.first.image_url %>" class="w-40 h-40 mb-5 inline-flex items-center justify-center bg-gray-200 text-gray-400"/>
           <% elsif tweet.videos.empty? == false %>
-          <video width="320" height="240" controls>
+          <video
+            width="320"
+            height="240"
+            poster="<%= tweet.videos.first.video_derivatives[:preview].url %>"
+            controls>
             <source src="<%= tweet.videos.first.video_url %>" type="video/mp4">
             Your browser does not support the video tag.
           </video>
