@@ -28,6 +28,14 @@
       <div class="xl:w-1/2 md:w-1 p-4">
         <div class="bg-white border-gray-200 border p-6 rounded-lg">
           <h3 class="tracking-widest pb-3 text-green-400 text-xs font-medium title-font">Twitter</h3>
+          <% if tweet.images.empty? == false %>
+          <img src="<%= tweet.images.first.image_url %>" class="w-40 h-40 mb-5 inline-flex items-center justify-center bg-gray-200 text-gray-400"/>
+          <% elsif tweet.videos.empty? == false %>
+          <video width="320" height="240" controls>
+            <source src="<%= tweet.videos.first.video_url %>" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <% end %>
           <p class="leading-relaxed pb-3 text-base"><%= tweet.text %></p>
           <h3 class="text-lg text-gray-900 font-medium title-font mb-4"><%= tweet.posted_at %></h3>
         </div>
