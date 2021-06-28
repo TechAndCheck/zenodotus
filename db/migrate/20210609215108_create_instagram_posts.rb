@@ -8,16 +8,6 @@ class CreateInstagramPosts < ActiveRecord::Migration[6.1]
       t.datetime  :posted_at, null: false
       t.integer   :number_of_likes, null: false
       t.references :author, index: true, type: :uuid, null: false
-
-    # attr_reader :id,
-    #             :images,
-    #             :text,
-    #             :date,
-    #             :number_of_likes,
-    #             :user,
-    #             :video,
-    #             :video_preview_image
-
       t.timestamps
     end
 

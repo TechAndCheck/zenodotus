@@ -7,6 +7,12 @@ class InstagramUserTest < ActiveSupport::TestCase
     ).first.user
   end
 
+  def teardown
+    if File.exist?("tmp/zorki") && File.directory?("tmp/zorki")
+      FileUtils.rm_r "tmp/zorki"
+    end
+  end
+
   test "can create instagram user" do
     archive_entity = InstagramUser.create_from_zorki_hash([@zorki_user]).first
     assert_not_nil archive_entity

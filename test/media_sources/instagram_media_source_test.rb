@@ -32,4 +32,10 @@ class InstagramMediaSourceTest < ActiveSupport::TestCase
     instagram_post_hash = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed", true)
     assert_not instagram_post_hash.empty?
   end
+
+  def test_bad_url_raises_exception
+    assert_raises InstagramMediaSource::InvalidInstagramPostUrlError do
+      InstagramMediaSource.send(:extract_instagram_id_from_url, "https://instagram.com/")
+    end
+  end
 end

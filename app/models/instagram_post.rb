@@ -2,8 +2,11 @@
 
 class InstagramPost < ApplicationRecord
   include ArchivableItem
-  has_many :instagram_images, dependent: :destroy
-  accepts_nested_attributes_for :instagram_images, allow_destroy: true
+  has_many :images, foreign_key: :instagram_post_id, class_name: "InstagramImage", dependent: :destroy
+  accepts_nested_attributes_for :images, allow_destroy: true
+
+  has_many :videos, foreign_key: :instagram_post_id, class_name: "InstagramVideo", dependent: :destroy
+  accepts_nested_attributes_for :videos, allow_destroy: true
 
   # The `TwitterUser` that is the author of this tweet.
   belongs_to :author, class_name: "InstagramUser"
@@ -16,11 +19,9 @@ class InstagramPost < ApplicationRecord
   # @return a Boolean on whether or not the class can handle the URL
   sig { params(url: String).returns(T::Boolean) }
   def self.can_handle_url?(url)
-    begin
-      InstagramMediaSource.send(:validate_instagram_post_url, url)
-    rescue InstagramMediaSource::InvalidInstagramPostUrlError => e
-      false
-    end
+    InstagramMediaSource.send(:validate_instagram_post_url, url)
+  rescue InstagramMediaSource::InvalidInstagramPostUrlError
+    false
   end
 
   # Create a +ArchiveItem+ from a +url+ as a string
@@ -46,23 +47,35 @@ class InstagramPost < ApplicationRecord
     zorki_posts.map do |zorki_post|
       user = InstagramUser.create_from_zorki_hash([zorki_post.user]).first.instagram_user
 
-      image_attributes = zorki_post.images.map do |image|
-        { image: File.open(image, binmode: true) }
+      unless zorki_post.image_file_names.nil?
+        image_attributes = zorki_post.image_file_names.map do |image_file_name|
+          { image: File.open(image_file_name, binmode: true) }
+        end
+      else
+        image_attributes = []
       end
+
+      unless zorki_post.video_file_name.nil?
+        video_attributes = [{ video: File.open(zorki_post.video_file_name, binmode: true) }]
+      else
+        video_attributes = []
+      end
+
       hash = {
-        text:                       zorki_post.text,
-        instagram_id:               zorki_post.id,
-        posted_at:                  zorki_post.date,
-        number_of_likes:            zorki_post.number_of_likes,
-        author:                     user,
-        instagram_images_attributes: image_attributes
+        text:              zorki_post.text,
+        instagram_id:      zorki_post.id,
+        posted_at:         zorki_post.date,
+        number_of_likes:   zorki_post.number_of_likes,
+        author:            user,
+        images_attributes: image_attributes,
+        videos_attributes: video_attributes
       }
 
       ArchiveItem.create! archivable_item: InstagramPost.create!(hash)
     end
   end
 
-  # Get the `service_id` of the Tweet, in this case the id that Twitter provides
+  # Get the `service_id` of the Instagram Post, in this case the id that Instagram provides
   #
   # @returns String of the ID.
   sig { returns(String) }

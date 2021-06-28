@@ -75,8 +75,6 @@ private
   sig { params(url: String).returns(T.nilable(String)) }
   def self.extract_tweet_id_from_url(url)
     uri = URI(url)
-    raise TwitterMediaSource::InvalidTweetUrlError if uri.path.nil?
-
     splits = T.must(uri.path).split("/")
     raise TwitterMediaSource::InvalidTweetUrlError if splits.empty?
 

@@ -34,7 +34,6 @@ class MediaSource
   #   Raises an error if it's invalid.
   sig { params(url: String).returns(T::Boolean) }
   def self.check_url(url)
-    return true if self.valid_host_name.nil? || T.must(self.valid_host_name).empty?
     return true if T.must(self.valid_host_name).include?(URI(url).host)
 
     raise MediaSource::HostError.new(url, self)
