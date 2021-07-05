@@ -3,9 +3,12 @@
 class Sources::TwitterUser < ApplicationRecord
   include ArchivableEntity
   include ImageUploader::Attachment(:profile_image) # adds an `image` virtual attribute
+  include PgSearch::Model
 
   # The tweets that a TwitterUser have authored
   has_many :tweets, foreign_key: :author_id, dependent: :destroy
+
+  multisearchable against: %i[handle display_name twitter_id]
 
   # Create a +TwitterUser+ from a +Birdsong::User+
   #

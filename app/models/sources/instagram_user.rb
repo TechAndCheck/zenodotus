@@ -3,9 +3,12 @@
 class Sources::InstagramUser < ApplicationRecord
   include ArchivableEntity
   include ImageUploader::Attachment(:profile_image) # adds an `image` virtual attribute
+  include PgSearch::Model
 
   # The tweets that an InstagramUser have authored
   has_many :instagram_posts, foreign_key: :author_id, dependent: :destroy
+
+  multisearchable against: %i[display_name handle]
 
   # Create an +InstagramUser+ from a +Zorki::User+
   #

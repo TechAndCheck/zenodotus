@@ -19,6 +19,8 @@ gem "turbolinks", "~> 5"
 gem "jbuilder", "~> 2.7"
 # Use Redis adapter to run Action Cable in production
 gem "redis", "~> 4.0"
+# Use PgSearch for Postgres multi-table search
+gem "pg_search", "~> 2.3.5"
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -135,9 +137,6 @@ gem "streamio-ffmpeg"
 
 gem "zorki", "0.1.0", git: "https://github.com/cguess/zorki"
 gem "birdsong", "0.1.0", git: "https://github.com/cguess/birdsong"
-
-# gem "zorki", "0.1.0", git: "https://github.com/cguess/zorki"
-# gem "birdsong", "0.1.0", git: "https://github.com/cguess/birdsong"
 
 # A progress bar for our Rake tasks
 gem "ruby-progressbar"
