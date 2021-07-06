@@ -47,6 +47,9 @@ If `pg_config` isn't already in your `PATH`, locate it (try looking in `/Library
 ### Yarn
 An open-source Javascript package manager used to install/manage Webpack and some other package dependencies
 
+### Vips
+A faster image manipulation library than ImageMagick. `brew install vips`. Note: you may have to install the xcode tools if you're on a mac `xcode-select --install`.
+
 ## Setup Steps
 *Note: this is a first pass, there may be odd errors since I wasn't on a pristine box when I wrote it. Please message @cguess with any error messages, it's probably missing dependencies.*
 

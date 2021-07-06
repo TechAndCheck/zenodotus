@@ -53,4 +53,10 @@ class TweetTest < ActiveSupport::TestCase
     assert_kind_of ArchiveItem, archive_item
     assert_not_nil archive_item.tweet.videos
   end
+
+  test "dhash properly generated from image" do
+    birdsong_image_tweet = TwitterMediaSource.extract("https://twitter.com/Bucks/status/1412471909296578563")
+    archive_item = Tweet.create_from_birdsong_hash(birdsong_image_tweet).first
+    assert_not_nil archive_item.tweet.images.first.dhash
+  end
 end

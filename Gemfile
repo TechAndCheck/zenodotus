@@ -40,6 +40,7 @@ group :development, :test do
 
   # Jard is an improvement on Byebug
   gem "ruby_jard"
+  gem "pry-byebug"
 
   # RuboCop is an excellent linter, we keep it in `test` for CI
   gem "rubocop", require: false
@@ -119,10 +120,15 @@ gem "os"
 # Shrine is a better alternative to ActiveStorage for handling file attachments and the like
 gem "shrine", "~> 3.0"
 
+# A differential-hash library for image perceptual hashing. Surprisingly maintained.
+# We don't have it versioned locked because it's been almost a year since one was released, but
+# there's been plenty of commits
+gem "dhash-vips", git: "https://github.com/Nakilon/dhash-vips.git"
+
 # Scraper gems
 # Local testing
-gem "zorki", "0.1.0", path: "~/Repositories/zorki" # instagram
-gem "birdsong", "0.1.0", path: "~/Repositories/birdsong" # twitter
+# gem "zorki", "0.1.0", path: "~/Repositories/zorki" # instagram
+# gem "birdsong", "0.1.0", path: "~/Repositories/birdsong" # twitter
 
-# gem "zorki", "0.1.0", git: "https://github.com/cguess/zorki"
-# gem "birdsong", "0.1.0", git: "https://github.com/cguess/birdsong"
+gem "zorki", "0.1.0", git: "https://github.com/cguess/zorki"
+gem "birdsong", "0.1.0", git: "https://github.com/cguess/birdsong"

@@ -48,4 +48,9 @@ class InstagramPostTest < ActiveSupport::TestCase
     assert_kind_of ArchiveItem, archive_item
     assert_not_nil archive_item.instagram_post.videos
   end
+
+  test "dhash properly generated from image" do
+    archive_item = InstagramPost.create_from_zorki_hash(@zorki_post).first
+    assert_not_nil archive_item.instagram_post.images.first.dhash
+  end
 end

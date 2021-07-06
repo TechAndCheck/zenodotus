@@ -2,6 +2,7 @@
 
 class InstagramPost < ApplicationRecord
   include ArchivableItem
+
   has_many :images, foreign_key: :instagram_post_id, class_name: "InstagramImage", dependent: :destroy
   accepts_nested_attributes_for :images, allow_destroy: true
 
