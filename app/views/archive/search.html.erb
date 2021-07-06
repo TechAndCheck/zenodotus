@@ -1,0 +1,32 @@
+<div>
+  <%= "Search results for \"#{@search_term}\"" %>
+</div>
+<% unless @results_tweets.nil? %>
+  <% @results_tweets.each do |tweet|  %>
+    <%= render partial: "list_item_tweet", locals: { item: tweet } %>
+  <%  end  %>
+<%  end %>
+<% unless @results_ig_posts.nil? %>
+  <% @results_ig_posts.each do |instagram_post|  %>
+    <%= render partial: "list_item_instagram_post", locals: { item: instagram_post } %>
+  <%  end  %>
+<%  end %>
+<% unless @results_twitter_users.nil? %>
+  <% @results_twitter_users.each do |twitter_user|  %>
+    <ul>
+      <li>
+        <%= twitter_user.display_name %>
+      </li>
+    </ul>
+    <%#= render partial: "list_item_instagram_post", locals: { item: instagram_post } %>
+  <%  end  %>
+<%  end %>
+<% unless @results_ig_users.nil? %>
+  <% @results_ig_users.each do |ig_user|  %>
+    <ul>
+      <li>
+        <%= ig_user.display_name %>
+      </li>
+    </ul>
+  <%  end  %>
+<%  end %>
