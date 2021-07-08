@@ -3,12 +3,13 @@
     <div class="font-display text-xl">Image Search</div>
   </div>
   <div class="mt-4 mx-1">
-  <%= form_with url: image_search_path, class: "w-full max-w-sm", html: { data: { action: "submit->image_search#onPostSend ajax:success->image_search#onPostSuccess" } } do |form| %>
+  <%= form_for @search, url: image_search_submit_path, class: "w-full max-w-sm", html: { data: { action: "submit->image_search#onPostSend ajax:success->image_search#onPostSuccess" } } do |form| %>
     <div class="md:flex md:items-center mb-6">
       <div class="md:w-1/3">
-        <%= form.label :url_to_archive, "URL To Archive:", class: "block text-gray-500 md:text-right mb-1 md:mb-0 pr-4" %>
+        <%= form.label :image_to_search_for, "URL To Archive:", class: "block text-gray-500 md:text-right mb-1 md:mb-0 pr-4" %>
       </div>
       <div class="md:w-2/3">
+        <%= f.hidden_field :image, value: @search.cached_image_data %>
         <%= form.file_field :image, class: "bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500" %>
       </div>
     </div>
