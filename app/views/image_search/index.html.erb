@@ -3,19 +3,16 @@
     <div class="font-display text-xl">Image Search</div>
   </div>
   <div class="mt-4 mx-1">
-  <%= form_for @search, url: image_search_submit_path, class: "w-full max-w-sm", html: { data: { action: "submit->image_search#onPostSend ajax:success->image_search#onPostSuccess" } } do |form| %>
+  <%= form_for @search, url: image_search_submit_path, class: "w-full max-w-sm", html: { data: { controller: "image-search", action: "submit->image-search#onPostSend turbo:submit-end->image-search#onPostSuccess" } } do |form| %>
     <div class="md:flex md:items-center mb-6">
-      <div class="md:w-1/3">
+      <div class="md:w-1/4">
         <%= form.label :image_to_search_for, "URL To Archive:", class: "block text-gray-500 md:text-right mb-1 md:mb-0 pr-4" %>
       </div>
-      <div class="md:w-2/3">
-        <%= f.hidden_field :image, value: @search.cached_image_data %>
+      <div class="md:w-2/4">
+        <%= form.hidden_field :image, value: @search.cached_image_data %>
         <%= form.file_field :image, class: "bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500" %>
       </div>
-    </div>
-    <div class="md:flex md:items-center">
-      <div class="md:w-1/3"></div>
-      <div class="md:w-2/3">
+      <div class="md:w-1/4 ml-5">
         <%= form.submit "Search", class: "shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white py-2 px-4 rounded" %>
       </div>
     </div>
@@ -26,4 +23,5 @@
       <div class="text-center mt-2">Searching...</div>
     </span>
   </div>
+  <%= turbo_frame_tag "search_results" %>
 </div>

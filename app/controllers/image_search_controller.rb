@@ -2,7 +2,9 @@
 
 class ImageSearchController < ApplicationController
   sig { void }
-  def index; end
+  def index
+    @search = ImageSearch.new
+  end
 
   # A class representing the allowed params into the `search` endpoint
   class SubmitUrlParams < T::Struct
@@ -11,9 +13,21 @@ class ImageSearchController < ApplicationController
 
   sig { void }
   def search
-    typed_params = TypedParams[SubmitUrlParams].new.extract!(params)
+    # jard
+    typed_params = TypedParams[SubmitUrlParams].new.extract!(params[:image_search])
     # Create a search object
-    search = Search.create(typed_params)
-    @results = search.run
+    search = ImageSearch.create({ image: typed_params.image })
+    results = search.run
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: [
+        turbo_stream.replace(
+          "search_results",
+          partial: "image_search/results",
+          locals: { search: search, results: results }
+        ),
+      ] }
+      format.html { redirect_to :root }
+    end
   end
 end

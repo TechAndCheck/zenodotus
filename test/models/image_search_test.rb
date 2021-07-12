@@ -17,6 +17,7 @@ class ImageSearchTest < ActiveSupport::TestCase
     InstagramPost.create_from_url("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
     InstagramPost.create_from_url("https://www.instagram.com/p/CQDeYPhMJLG/")
     InstagramPost.create_from_url("https://www.instagram.com/p/CBZkDi1nAty/?utm_source=ig_embed")
+    InstagramPost.create_from_url("https://www.instagram.com/reel/CGVzUHYFUwf/")
     results = @image_search.run
 
     assert_not_nil results
