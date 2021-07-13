@@ -16,11 +16,11 @@ class Sources::Tweet < ApplicationRecord
     # We only want to create the derivatives once (since you know, it's a media archive we don't
     # want them to change)
     self.videos.each { |video| video.video_derivatives! }
-
-    UnifiedPost.refresh
   end
 
-  after_commit on: [:destroy] do
+  after_commit on: [:create, :destroy] do
+    # update materialized view when a new tweet is added
+    UnifiedUser.refresh
     UnifiedPost.refresh
   end
 

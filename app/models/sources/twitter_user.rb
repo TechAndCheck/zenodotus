@@ -7,10 +7,6 @@ class Sources::TwitterUser < ApplicationRecord
   # The tweets that a TwitterUser have authored
   has_many :tweets, foreign_key: :author_id, dependent: :destroy
 
-  after_commit on: [:create, :destroy] do
-    UnifiedPost.refresh
-    UnifiedUser.refresh
-  end
   # Create a +TwitterUser+ from a +Birdsong::User+
   #
   # @!scope class
