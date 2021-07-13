@@ -12,12 +12,18 @@ class Sources::InstagramPost < ApplicationRecord
   # The `TwitterUser` that is the author of this tweet.
   belongs_to :author, class_name: "InstagramUser"
 
+
   after_commit on: [:create] do
     # We only want to create the derivatives once (since you know, it's a media archive we don't
     # want them to change)
     self.videos.each { |video| video.video_derivatives! }
+
+    UnifiedPost.refresh
   end
 
+  after_commit on: [:destroy] do
+    UnifiedPost.refresh
+  end
   # Returns a +boolean+ on whether this class can handle the URL passed in.
   # All items that are scraped should implement this class
   #

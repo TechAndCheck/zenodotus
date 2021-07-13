@@ -7,6 +7,11 @@ class Sources::InstagramUser < ApplicationRecord
   # The tweets that an InstagramUser have authored
   has_many :instagram_posts, foreign_key: :author_id, dependent: :destroy
 
+  after_commit on: [:create, :destroy] do
+    UnifiedPost.refresh
+    UnifiedUser.refresh
+  end
+
   # Create an +InstagramUser+ from a +Zorki::User+
   #
   # @!scope class
