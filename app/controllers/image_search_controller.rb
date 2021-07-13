@@ -1,9 +1,16 @@
 # typed: ignore
 
 class ImageSearchController < ApplicationController
+  # A class representing the allowed params into the `index` endpoint
+  class IndexUrlParams < T::Struct
+    const :q_id, T.nilable(String)
+  end
+
   sig { void }
   def index
-    @search = ImageSearch.new
+    typed_params = TypedParams[IndexUrlParams].new.extract!(params)
+    @search = typed_params.q_id.nil? ? ImageSearch.new : ImageSearch.find(typed_params.q_id) includes([:archivable_item])
+    @results = @search.run unless @search.id.nil?
   end
 
   # A class representing the allowed params into the `search` endpoint
@@ -13,12 +20,12 @@ class ImageSearchController < ApplicationController
 
   sig { void }
   def search
-    # jard
     typed_params = TypedParams[SubmitUrlParams].new.extract!(params[:image_search])
     # Create a search object
     search = ImageSearch.create({ image: typed_params.image })
     results = search.run
 
+    response.headers["X-search-id"] = search.id
     respond_to do |format|
       format.turbo_stream { render turbo_stream: [
         turbo_stream.replace(

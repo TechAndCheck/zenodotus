@@ -1,2 +1,5 @@
 <%= search.to_json %>
-<%= results.to_json %>
+<% results.each do |result| %>
+<%= render partial: "search_result_list_item", locals: { result: result } %>
+<% end %>
+<div data-controller="image-search" id="search-id" data-search-id="<%= search.id %>" data-image-search-search-id="<%= search.id %>" ></div>
