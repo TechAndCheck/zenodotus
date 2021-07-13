@@ -51,7 +51,7 @@ Ubuntu:
 
 Postgresql 13 can be downloaded using `apt`. To do so, add the Postgres APT repository to your machine, then download/install the packages listed below.
 ```shell
-sudo apt -y install vim bash-completion wget
+sudo apt -y install bash-completion wget
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" |sudo tee  /etc/apt/sources.list.d/pgdg.list
 sudo apt update
