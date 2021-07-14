@@ -1,5 +1,43 @@
-<hr>
-<%= result[:image].instagram_post.author.handle %>
-<%= result[:image].instagram_post.author.display_name %>
-<%= result[:image].instagram_post.text %>
-<img src="<%= result[:image].image_url %>" />
+<div class="border rounded mb-5 flex flex-row p-6 h-48">
+  <div class="flex-none w-32 overflow-hidden rounded">
+    <img src="<%= result[:image].image_url %>" />
+  </div>
+  <div class="overflow-hidden pl-5 flex flex-col w-full">
+    <div class="flex flex-row flex-wrap justify-around">
+      <div class="flex-none pl-2 pr-2 bg-red-600 text-white rounded">Instagram</div>
+      <div>
+        Retrieved At: <%= result[:image].created_at.to_formatted_s(:long_ordinal) %>
+      </div>
+    </div>
+    <div class="flex flex-row flex-wrap justify-around">
+      <div>
+        Rated: Three Pinocchios
+      </div>
+      <div bl-1>
+        Rating Organization: The Washington Post
+      </div>
+    </div>
+    <div class="flex flex-row flex-wrap justify-around">
+      <div>
+        <a href="#">Fact Check Article <i class="fas fa-external-link-square-alt"></i></a>
+      </div>
+      <div bl-1>
+        Posted At: <%= result[:image].instagram_post.posted_at.to_formatted_s(:long_ordinal) %>
+      </div>
+    </div>
+    <div class="flex flex-row flex-wrap justify-around">
+      <div>
+        Likes: <%= result[:image].instagram_post.number_of_likes %>
+      </div>
+      <div bl-1>
+      </div>
+    </div>
+  </div>
+  <div class="flex-none w-32 pl-5 border-l">
+    <img src="<%= result[:image].instagram_post.author.profile_image_url %>" class="w-20 h-20 rounded-full inline-flex items-center justify-center bg-gray-200 text-gray-400"/>
+    <div class="flex flex-col items-center text-center justify-center">
+      <h2 class="font-medium title-font mt-1 text-gray-900 text-lg">@<%= result[:image].instagram_post.author.handle %></h2>
+      <p class="text-base"><%= result[:image].instagram_post.author.display_name %></p>
+    </div>
+  </div>
+</div>

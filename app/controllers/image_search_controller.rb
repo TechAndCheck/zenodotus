@@ -9,7 +9,7 @@ class ImageSearchController < ApplicationController
   sig { void }
   def index
     typed_params = TypedParams[IndexUrlParams].new.extract!(params)
-    @search = typed_params.q_id.nil? ? ImageSearch.new : ImageSearch.find(typed_params.q_id) includes([:archivable_item])
+    @search = typed_params.q_id.nil? ? ImageSearch.new : ImageSearch.find(typed_params.q_id)
     @results = @search.run unless @search.id.nil?
   end
 
@@ -25,7 +25,9 @@ class ImageSearchController < ApplicationController
     search = ImageSearch.create({ image: typed_params.image })
     results = search.run
 
+    # Add the search id so that we can adjust the URL and make the page reloadable
     response.headers["X-search-id"] = search.id
+
     respond_to do |format|
       format.turbo_stream { render turbo_stream: [
         turbo_stream.replace(
