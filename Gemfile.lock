@@ -388,6 +388,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rails_config
   rubocop-sorbet
+  ruby-progressbar
   ruby_jard
   sass-rails (>= 6)
   selenium-webdriver
