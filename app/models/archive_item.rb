@@ -6,6 +6,14 @@ class ArchiveItem < ApplicationRecord
   delegate :images, to: :archivable_item
   delegate :videos, to: :archivable_item
 
+  # Creates an +ArchiveEntity
+  #
+  # @!scope class
+  # @params media_review String a block of json media_review
+  # @return a Boolean on whether or not the class can handle the URL
+  def self.create_from_media_review(media_review)
+  end
+
   # Note: You may want to use `alias` or `alias_method` here instead of the following functions
   # it *does not* work. Probably because of the `delegated_type` metaprogramming, but hacking that
   # is a bad idea.
