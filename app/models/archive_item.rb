@@ -10,7 +10,7 @@ class ArchiveItem < ApplicationRecord
   # it *does not* work. Probably because of the `delegated_type` metaprogramming, but hacking that
   # is a bad idea.
 
-  # A helper function to make it easier to access the itme, instead of `.sources_tweet`
+  # A helper function to make it easier to access the item, instead of `.sources_tweet`
   # this allows just the use of `.tweet`
   #
   # @returns +Sources::Tweet+
@@ -19,7 +19,7 @@ class ArchiveItem < ApplicationRecord
     self.sources_tweet
   end
 
-  # A helper function to make it easier to access the user, instead of `.sources_instagram_post`
+  # A helper function to make it easier to access the item, instead of `.sources_instagram_post`
   # this allows just the use of `.instagram_post`
   #
   # @returns +Sources::InstagramPost+
