@@ -10,7 +10,7 @@ There's a few prereqs that you need on your machine to run this system. All of t
 
 Things we need to install include (steps below for all this):
 - Homebrew (for MacOS)
-- Ruby (3.0.1 as of writing, but check in [/.ruby-verison](.ruby-version) for the most up to date version)
+- Ruby (3.0.2 as of writing, but check in [/.ruby-verison](.ruby-version) for the most up to date version)
 - Chrome, whatever version is newest
 - Postgresql 13
 - Yarn (1.22.10 as of writing)
@@ -28,7 +28,7 @@ Follow the instructions in any of the repos to properly install it. Make sure to
 *This is the one I (@cguess) use.*
 It's lightweight, well maintained, and works pretty flawlessly. 
 
-Note: one of the Gems used in this project, `dhash-vips`, uses Ruby source files to speed up image similarity processing. To ensure that rbenv stores the Ruby source files locally, using the `--keep` flag when installing a new Ruby version. E.g. `rbenv install 3.0.1 --keep` 
+Note: one of the Gems used in this project, `dhash-vips`, uses Ruby source files to speed up image similarity processing. To ensure that rbenv stores the Ruby source files locally, using the `--keep` flag when installing a new Ruby version. E.g. `rbenv install 3.0.2 --keep` 
 
 ##### [RVM](https://rvm.io)
 This is the classic one. Most people I know have moved on to Rbenv, but it works perfectly fine, if not a little heavier than Rbenv is.
