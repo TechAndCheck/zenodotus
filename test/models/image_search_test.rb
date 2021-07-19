@@ -3,7 +3,7 @@ require "test_helper"
 class ImageSearchTest < ActiveSupport::TestCase
   def setup
     file = File.open("test/fixtures/files/instagram_image_test.jpg", binmode: true)
-    @image_search = Sources::ImageSearch.create(image: file)
+    @image_search = ImageSearch.create(image: file)
   end
 
   test "can create image search" do

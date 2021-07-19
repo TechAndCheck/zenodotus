@@ -22,7 +22,8 @@ class Sources::InstagramUser < ApplicationRecord
 
       # If there's no user, then create it
       if instagram_user.nil?
-        instagram_user = ArchiveEntity.create! archivable_entity: Sources::InstagramUser.create!(zorki_user_hash)
+        user = Sources::InstagramUser.create!(zorki_user_hash)
+        instagram_user = ArchiveEntity.create! archivable_entity: user
       else
         # Update Instagram user with the new data
         #
