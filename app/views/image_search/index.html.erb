@@ -23,6 +23,9 @@
       <div class="text-center mt-2">Searching...</div>
     </span>
   </div>
+  <%= turbo_frame_tag "search_item" do %>
+    <%= render partial: "search_item", locals: { search: @search, results: @results } unless @results.nil? %>
+  <% end %>
   <%= turbo_frame_tag "search_results" do %>
     <%= render partial: "results", locals: { search: @search, results: @results } unless @results.nil? %>
   <% end %>

@@ -35,6 +35,11 @@ class ImageSearchController < ApplicationController
           partial: "image_search/results",
           locals: { search: search, results: results }
         ),
+        turbo_stream.replace(
+          "search_item",
+          partial: "image_search/search_item",
+          locals: { search: search, results: results }
+        )
       ] }
       format.html { redirect_to :root }
     end

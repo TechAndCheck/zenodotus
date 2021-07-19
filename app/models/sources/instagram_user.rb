@@ -1,6 +1,6 @@
 # typed: false
 
-class InstagramUser < ApplicationRecord
+class Sources::InstagramUser < ApplicationRecord
   include ArchivableEntity
   include ImageUploader::Attachment(:profile_image) # adds an `image` virtual attribute
 
@@ -17,12 +17,12 @@ class InstagramUser < ApplicationRecord
   def self.create_from_zorki_hash(zorki_users)
     zorki_users.map do |zorki_user|
       # First check if the user already exists, if so, return that
-      instagram_user = InstagramUser.find_by(handle: zorki_user.username)
+      instagram_user = Sources::InstagramUser.find_by(handle: zorki_user.username)
       zorki_user_hash = self.instagram_user_hash_from_zorki_user(zorki_user)
 
       # If there's no user, then create it
       if instagram_user.nil?
-        instagram_user = ArchiveEntity.create! archivable_entity: InstagramUser.create!(zorki_user_hash)
+        instagram_user = ArchiveEntity.create! archivable_entity: Sources::InstagramUser.create!(zorki_user_hash)
       else
         # Update Instagram user with the new data
         #

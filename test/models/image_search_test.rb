@@ -3,7 +3,7 @@ require "test_helper"
 class ImageSearchTest < ActiveSupport::TestCase
   def setup
     file = File.open("test/fixtures/files/instagram_image_test.jpg", binmode: true)
-    @image_search = ImageSearch.create(image: file)
+    @image_search = Sources::ImageSearch.create(image: file)
   end
 
   test "can create image search" do
@@ -14,10 +14,10 @@ class ImageSearchTest < ActiveSupport::TestCase
 
   test "can run image search" do
     # First we need to create a few posts. The Shrine fixture way doesn't seem to actually work.
-    InstagramPost.create_from_url("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
-    InstagramPost.create_from_url("https://www.instagram.com/p/CQDeYPhMJLG/")
-    InstagramPost.create_from_url("https://www.instagram.com/p/CBZkDi1nAty/?utm_source=ig_embed")
-    InstagramPost.create_from_url("https://www.instagram.com/reel/CGVzUHYFUwf/")
+    Sources::InstagramPost.create_from_url("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
+    Sources::InstagramPost.create_from_url("https://www.instagram.com/p/CQDeYPhMJLG/")
+    Sources::InstagramPost.create_from_url("https://www.instagram.com/p/CBZkDi1nAty/?utm_source=ig_embed")
+    Sources::InstagramPost.create_from_url("https://www.instagram.com/reel/CGVzUHYFUwf/")
     results = @image_search.run
 
     assert_not_nil results

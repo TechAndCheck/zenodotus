@@ -14,7 +14,7 @@ class TweetTest < ActiveSupport::TestCase
   end
 
   test "can create tweet" do
-    archive_item = Tweet.create_from_birdsong_hash(@birdsong_tweet).first
+    archive_item = Sources::Tweet.create_from_birdsong_hash(@birdsong_tweet).first
     assert_not_nil archive_item
     assert_kind_of ArchiveItem, archive_item
 
@@ -29,26 +29,26 @@ class TweetTest < ActiveSupport::TestCase
   end
 
   test "can create from Tweet url" do
-    assert_not_nil Tweet.create_from_url("https://twitter.com/AmtrakNECAlerts/status/1397922363551870990")
+    assert_not_nil Sources::Tweet.create_from_url("https://twitter.com/AmtrakNECAlerts/status/1397922363551870990")
     # a slightly different URL
-    assert_not_nil Tweet.create_from_url("https://twitter.com/Citruscrush/status/1094999286281048070?fbclid=IwAR20aObVHvlSdu-e2L2mTHXytMqgoGvH6tur4vLz0bU4E2p5k4NciEOAgiE")
+    assert_not_nil Sources::Tweet.create_from_url("https://twitter.com/Citruscrush/status/1094999286281048070?fbclid=IwAR20aObVHvlSdu-e2L2mTHXytMqgoGvH6tur4vLz0bU4E2p5k4NciEOAgiE")
   end
 
   test "can create two tweets from same author" do
-    archive_item = Tweet.create_from_birdsong_hash(@birdsong_tweet).first.tweet
-    archive_item2 = Tweet.create_from_birdsong_hash(@birdsong_tweet2).first.tweet
+    archive_item = Sources::Tweet.create_from_birdsong_hash(@birdsong_tweet).first.tweet
+    archive_item2 = Sources::Tweet.create_from_birdsong_hash(@birdsong_tweet2).first.tweet
 
     assert_equal archive_item.author, archive_item2.author
   end
 
   test "assert url can be checked" do
-    assert Tweet.can_handle_url?("https://twitter.com/AmtrakNECAlerts/status/1397922363551870990")
-    assert_not Tweet.can_handle_url?("https://twitter.com/AmtrakNECAlerts/status")
+    assert Sources::Tweet.can_handle_url?("https://twitter.com/AmtrakNECAlerts/status/1397922363551870990")
+    assert_not Sources::Tweet.can_handle_url?("https://twitter.com/AmtrakNECAlerts/status")
   end
 
   test "can archive video from tweet" do
     birdsong_tweet_video = TwitterMediaSource.extract("https://twitter.com/JoeBiden/status/1258817692448051200")
-    archive_item = Tweet.create_from_birdsong_hash(birdsong_tweet_video).first
+    archive_item = Sources::Tweet.create_from_birdsong_hash(birdsong_tweet_video).first
     assert_not_nil archive_item
     assert_kind_of ArchiveItem, archive_item
     assert_not_nil archive_item.tweet.videos
@@ -56,7 +56,7 @@ class TweetTest < ActiveSupport::TestCase
 
   test "dhash properly generated from image" do
     birdsong_image_tweet = TwitterMediaSource.extract("https://twitter.com/Bucks/status/1412471909296578563")
-    archive_item = Tweet.create_from_birdsong_hash(birdsong_image_tweet).first
+    archive_item = Sources::Tweet.create_from_birdsong_hash(birdsong_image_tweet).first
     assert_not_nil archive_item.tweet.images.first.dhash
   end
 end

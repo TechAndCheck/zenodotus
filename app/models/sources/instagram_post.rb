@@ -1,12 +1,12 @@
 # typed: false
 
-class InstagramPost < ApplicationRecord
+class Sources::InstagramPost < ApplicationRecord
   include ArchivableItem
 
-  has_many :images, foreign_key: :instagram_post_id, class_name: "InstagramImage", dependent: :destroy
+  has_many :images, foreign_key: :instagram_post_id, class_name: "MediaModels::Images::InstagramImage", dependent: :destroy
   accepts_nested_attributes_for :images, allow_destroy: true
 
-  has_many :videos, foreign_key: :instagram_post_id, class_name: "InstagramVideo", dependent: :destroy
+  has_many :videos, foreign_key: :instagram_post_id, class_name: "MediaModels::Videos::InstagramVideo", dependent: :destroy
   accepts_nested_attributes_for :videos, allow_destroy: true
 
   # The `TwitterUser` that is the author of this tweet.
@@ -34,7 +34,7 @@ class InstagramPost < ApplicationRecord
   sig { params(url: String).returns(ArchiveItem) }
   def self.create_from_url(url)
     zorki_post = InstagramMediaSource.extract(url)
-    InstagramPost.create_from_zorki_hash(zorki_post).first
+    Sources::InstagramPost.create_from_zorki_hash(zorki_post).first
   end
 
   # Create a +ArchiveItem+ from a +Zorki::Post+
@@ -46,7 +46,7 @@ class InstagramPost < ApplicationRecord
   sig { params(zorki_posts: T::Array[Zorki::Post]).returns(T::Array[ArchiveItem]) }
   def self.create_from_zorki_hash(zorki_posts)
     zorki_posts.map do |zorki_post|
-      user = InstagramUser.create_from_zorki_hash([zorki_post.user]).first.instagram_user
+      user = Sources::InstagramUser.create_from_zorki_hash([zorki_post.user]).first.instagram_user
 
       unless zorki_post.image_file_names.nil?
         image_attributes = zorki_post.image_file_names.map do |image_file_name|
@@ -72,7 +72,7 @@ class InstagramPost < ApplicationRecord
         videos_attributes: video_attributes
       }
 
-      ArchiveItem.create! archivable_item: InstagramPost.create!(hash)
+      ArchiveItem.create! archivable_item: Sources::InstagramPost.create!(hash)
     end
   end
 
