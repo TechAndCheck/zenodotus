@@ -26,7 +26,9 @@ Follow the instructions in any of the repos to properly install it. Make sure to
 
 ##### [Rbenv](https://github.com/rbenv/rbenv)
 *This is the one I (@cguess) use.*
-It's lightweight, well maintained, and works pretty flawlessly. When installing Ruby with rbenv, make sure to keep the source code locally by using the `--keep` flag. E.g. `rbenv install 3.0.1 --keep` 
+It's lightweight, well maintained, and works pretty flawlessly. 
+
+Note: one of the Gems used in this project, `dhash-vips`, uses Ruby source files to speed up image similarity processing. To ensure that rbenv stores the Ruby source files locally, using the `--keep` flag when installing a new Ruby version. E.g. `rbenv install 3.0.1 --keep` 
 
 ##### [RVM](https://rvm.io)
 This is the classic one. Most people I know have moved on to Rbenv, but it works perfectly fine, if not a little heavier than Rbenv is.
@@ -91,7 +93,7 @@ Ubuntu: `sudo apt-get install ffmpeg`
 ## Setup Steps
 *Note: this is a first pass, there may be odd errors since I wasn't on a pristine box when I wrote it. Please message @cguess with any error messages, it's probably missing dependencies.*
 
-1. Install all the prereqs including the latest Ruby version
+1. Install all the prereqs including the latest Ruby version, ensuring Ruby source files are stored locally. 
 1. Clone this repo `git clone https://github.com/TechAndCheck/zenodotus`
 1. Clone the [birdsong](https://github.com/cguess/birdsong) and [zorki](https://github.com/cguess/zorki) repos elsewhere.
 1. Navigate into the project folder `cd zenodotus` (or whatever)
