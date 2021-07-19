@@ -26,7 +26,7 @@ Follow the instructions in any of the repos to properly install it. Make sure to
 
 ##### [Rbenv](https://github.com/rbenv/rbenv)
 *This is the one I (@cguess) use.*
-It's lightweight, well maintained, and works pretty flawlessly.
+It's lightweight, well maintained, and works pretty flawlessly. When installing Ruby with rbenv, make sure to keep the source code locally by using the `--keep` flag. E.g. `rbenv install 3.0.1 --keep` 
 
 ##### [RVM](https://rvm.io)
 This is the classic one. Most people I know have moved on to Rbenv, but it works perfectly fine, if not a little heavier than Rbenv is.
