@@ -47,7 +47,6 @@ class InstagramMediaSource < MediaSource
   def retrieve_instagram_post
     id = InstagramMediaSource.extract_instagram_id_from_url(@url)
     Zorki::Post.lookup(id)
-    end
   end
 
 private
