@@ -15,7 +15,7 @@ class TwitterUserTest < ActiveSupport::TestCase
   end
 
   test "can create twitter user" do
-    archive_entity = TwitterUser.create_from_birdsong_hash([@birdsong_user]).first
+    archive_entity = Sources::TwitterUser.create_from_birdsong_hash([@birdsong_user]).first
     assert_not_nil archive_entity
     assert_kind_of ArchiveEntity, archive_entity
 
@@ -36,13 +36,13 @@ class TwitterUserTest < ActiveSupport::TestCase
   end
 
   test "can update twitter user" do
-    archive_entity = TwitterUser.create_from_birdsong_hash([@birdsong_user]).first
+    archive_entity = Sources::TwitterUser.create_from_birdsong_hash([@birdsong_user]).first
 
     # Set a property to something random
     archive_entity.twitter_user.update!({ followers_count: 2 })
     assert_equal archive_entity.twitter_user.followers_count, 2
     # Now try and save it again, and make sure the followers count is correct
-    archive_entity2 = TwitterUser.create_from_birdsong_hash([@birdsong_user]).first.twitter_user
+    archive_entity2 = Sources::TwitterUser.create_from_birdsong_hash([@birdsong_user]).first.twitter_user
     assert_equal archive_entity.service_id, archive_entity2.service_id
     assert_equal @birdsong_user.followers_count, archive_entity2.followers_count
   end
