@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_28_185327) do
+ActiveRecord::Schema.define(version: 2021_07_19_191103) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -28,6 +28,14 @@ ActiveRecord::Schema.define(version: 2021_06_28_185327) do
     t.string "archivable_item_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.jsonb "media_review"
+  end
+
+  create_table "image_searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "dhash"
+    t.jsonb "image_data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "instagram_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -35,6 +43,7 @@ ActiveRecord::Schema.define(version: 2021_06_28_185327) do
     t.jsonb "image_data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "dhash"
     t.index ["instagram_post_id"], name: "index_instagram_images_on_instagram_post_id"
   end
 
@@ -86,6 +95,7 @@ ActiveRecord::Schema.define(version: 2021_06_28_185327) do
     t.jsonb "image_data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "dhash"
     t.index ["tweet_id"], name: "index_twitter_images_on_tweet_id"
   end
 

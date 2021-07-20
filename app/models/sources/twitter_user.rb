@@ -1,6 +1,6 @@
 # typed: strict
 
-class TwitterUser < ApplicationRecord
+class Sources::TwitterUser < ApplicationRecord
   include ArchivableEntity
   include ImageUploader::Attachment(:profile_image) # adds an `image` virtual attribute
 
@@ -17,12 +17,12 @@ class TwitterUser < ApplicationRecord
   def self.create_from_birdsong_hash(birdsong_users)
     birdsong_users.map do |birdsong_user|
       # First check if the user already exists, if so, return that
-      twitter_user = TwitterUser.find_by(twitter_id: birdsong_user.id)
+      twitter_user = Sources::TwitterUser.find_by(twitter_id: birdsong_user.id)
       twitter_user_hash  = self.twitter_user_hash_from_birdsong_user(birdsong_user)
 
       # If there's no user, then create it
       if twitter_user.nil?
-        twitter_user = ArchiveEntity.create! archivable_entity: TwitterUser.create(twitter_user_hash)
+        twitter_user = ArchiveEntity.create! archivable_entity: Sources::TwitterUser.create(twitter_user_hash)
       else
         # Update twitter user with the new data
         #

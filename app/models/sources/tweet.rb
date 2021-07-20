@@ -1,11 +1,11 @@
 # typed: false
 
-class Tweet < ApplicationRecord
+class Sources::Tweet < ApplicationRecord
   include ArchivableItem
-  has_many :images, foreign_key: :tweet_id, class_name: "TwitterImage", dependent: :destroy
+  has_many :images, foreign_key: :tweet_id, class_name: "MediaModels::Images::TwitterImage", dependent: :destroy
   accepts_nested_attributes_for :images, allow_destroy: true
 
-  has_many :videos, foreign_key: :tweet_id, class_name: "TwitterVideo", dependent: :destroy
+  has_many :videos, foreign_key: :tweet_id, class_name: "MediaModels::Videos::TwitterVideo", dependent: :destroy
   accepts_nested_attributes_for :videos, allow_destroy: true
 
   # The `TwitterUser` that is the author of this tweet.
@@ -39,7 +39,7 @@ class Tweet < ApplicationRecord
   sig { params(url: String).returns(ArchiveItem) }
   def self.create_from_url(url)
     birdsong_tweet = TwitterMediaSource.extract(url)
-    Tweet.create_from_birdsong_hash(birdsong_tweet).first
+    Sources::Tweet.create_from_birdsong_hash(birdsong_tweet).first
   end
 
   # Create a +ArchiveItem+ from a +Birdsong::Tweet+
@@ -51,7 +51,7 @@ class Tweet < ApplicationRecord
   sig { params(birdsong_tweets: T::Array[Birdsong::Tweet]).returns(T::Array[ArchiveItem]) }
   def self.create_from_birdsong_hash(birdsong_tweets)
     birdsong_tweets.map do |birdsong_tweet|
-      twitter_user = TwitterUser.create_from_birdsong_hash([birdsong_tweet.author]).first.twitter_user
+      twitter_user = Sources::TwitterUser.create_from_birdsong_hash([birdsong_tweet.author]).first.twitter_user
 
       image_attributes = birdsong_tweet.image_file_names.map do |image_file_name|
         { image: File.open(image_file_name, binmode: true) }
@@ -61,7 +61,7 @@ class Tweet < ApplicationRecord
         { video: File.open(video_file_name.first, binmode: true) }
       end
 
-      ArchiveItem.create! archivable_item: Tweet.create({
+      ArchiveItem.create! archivable_item: Sources::Tweet.create({
         text:                  birdsong_tweet.text,
         twitter_id:            birdsong_tweet.id.to_s,
         language:              birdsong_tweet.language,

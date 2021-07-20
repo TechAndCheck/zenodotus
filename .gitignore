@@ -25,6 +25,7 @@
 /public/assets
 /public/uploads
 .byebug_history
+jard_errors.txt
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key

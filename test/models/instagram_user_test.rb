@@ -14,7 +14,7 @@ class InstagramUserTest < ActiveSupport::TestCase
   end
 
   test "can create instagram user" do
-    archive_entity = InstagramUser.create_from_zorki_hash([@zorki_user]).first
+    archive_entity = Sources::InstagramUser.create_from_zorki_hash([@zorki_user]).first
     assert_not_nil archive_entity
     assert_kind_of ArchiveEntity, archive_entity
 
@@ -33,13 +33,13 @@ class InstagramUserTest < ActiveSupport::TestCase
   end
 
   test "can update instagram user" do
-    archive_entity = InstagramUser.create_from_zorki_hash([@zorki_user]).first
+    archive_entity = Sources::InstagramUser.create_from_zorki_hash([@zorki_user]).first
 
     # Set a property to something random
     archive_entity.instagram_user.update!({ followers_count: 2 })
     assert_equal archive_entity.instagram_user.followers_count, 2
     # Now try and save it again, and make sure the followers count is correct
-    archive_entity2 = InstagramUser.create_from_zorki_hash([@zorki_user]).first.instagram_user
+    archive_entity2 = Sources::InstagramUser.create_from_zorki_hash([@zorki_user]).first.instagram_user
     assert_equal archive_entity.service_id, archive_entity2.service_id
     assert_equal @zorki_user.number_of_followers, archive_entity2.followers_count
   end
