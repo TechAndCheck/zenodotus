@@ -6,5 +6,9 @@ class MediaModels::Images::TwitterImage < ActiveRecord::Base
 
   # Optional is marked true here because the image is technically saved before
   # it's added to the model itself.
-  belongs_to :tweet, optional: true
+  belongs_to :tweet, optional: true, class_name: "Sources::Tweet"
+
+  def parent_post
+    self.tweet
+  end
 end

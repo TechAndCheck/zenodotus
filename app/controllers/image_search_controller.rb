@@ -9,7 +9,16 @@ class ImageSearchController < ApplicationController
   sig { void }
   def index
     typed_params = TypedParams[IndexUrlParams].new.extract!(params)
-    @search = typed_params.q_id.nil? ? ImageSearch.new : ImageSearch.find(typed_params.q_id)
+
+    @search = ImageSearch.new
+    unless typed_params.q_id.nil?
+      begin
+        @search = ImageSearch.find(typed_params.q_id)
+      rescue ActiveRecord::RecordNotFound
+        # Eat this and just stick with the new one.
+      end
+    end
+
     @results = @search.run unless @search.id.nil?
   end
 
