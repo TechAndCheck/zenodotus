@@ -159,6 +159,7 @@ GEM
     mini_portile2 (2.5.3)
     minitest (5.14.4)
     msgpack (1.4.2)
+    multi_json (1.15.0)
     nio4r (2.5.7)
     nokogiri (1.11.7)
       mini_portile2 (~> 2.5.0)
@@ -328,6 +329,8 @@ GEM
       sprockets (>= 3.0.0)
     stimulus-rails (0.2.4)
       rails (>= 6.0.0)
+    streamio-ffmpeg (3.0.2)
+      multi_json (~> 1.8)
     tailwindcss-rails (0.3.3)
       rails (>= 6.0.0)
     thor (1.1.0)
@@ -404,6 +407,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rails_config
   rubocop-sorbet
+  ruby-progressbar
   ruby_jard
   sass-rails (>= 6)
   selenium-webdriver
@@ -414,6 +418,7 @@ DEPENDENCIES
   sorbet-runtime
   sorted_set
   spring
+  streamio-ffmpeg
   tailwindcss-rails (~> 0.3.3)
   tmuxinator
   turbolinks (~> 5)
@@ -426,7 +431,7 @@ DEPENDENCIES
   zorki (= 0.1.0)!
 
 RUBY VERSION
-   ruby 3.0.1p64
+   ruby 3.0.2p107
 
 BUNDLED WITH
    2.2.17

@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.0.1"
+ruby "3.0.2"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 6.1.0"
@@ -125,6 +125,9 @@ gem "shrine", "~> 3.0"
 # there's been plenty of commits
 gem "dhash-vips", git: "https://github.com/Nakilon/dhash-vips.git"
 
+# Stremio-ffmpeg use the ffmpeg library to process our video files
+gem "streamio-ffmpeg"
+
 # Scraper gems
 # Local testing
 # gem "zorki", "0.1.0", path: "~/Repositories/zorki" # instagram
@@ -132,3 +135,9 @@ gem "dhash-vips", git: "https://github.com/Nakilon/dhash-vips.git"
 
 gem "zorki", "0.1.0", git: "https://github.com/cguess/zorki"
 gem "birdsong", "0.1.0", git: "https://github.com/cguess/birdsong"
+
+# gem "zorki", "0.1.0", git: "https://github.com/cguess/zorki"
+# gem "birdsong", "0.1.0", git: "https://github.com/cguess/birdsong"
+
+# A progress bar for our Rake tasks
+gem "ruby-progressbar"
