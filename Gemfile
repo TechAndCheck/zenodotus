@@ -129,3 +129,6 @@ gem "birdsong", "0.1.0", path: "~/Repositories/birdsong" # twitter
 
 # gem "zorki", "0.1.0", git: "https://github.com/cguess/zorki"
 # gem "birdsong", "0.1.0", git: "https://github.com/cguess/birdsong"
+
+# A progress bar for our Rake tasks
+gem "ruby-progressbar"
