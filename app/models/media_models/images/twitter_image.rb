@@ -1,6 +1,6 @@
 # typed: false
 
-class MediaModels::Images::TwitterImage < ActiveRecord::Base
+class MediaModels::Images::TwitterImage < ApplicationRecord
   include ImageUploader::Attachment(:image)
   include Dhashable
 
@@ -8,6 +8,10 @@ class MediaModels::Images::TwitterImage < ActiveRecord::Base
   # it's added to the model itself.
   belongs_to :tweet, optional: true, class_name: "Sources::Tweet"
 
+  # Returns the parent object of this item. All the MediaModels implement this.
+  #
+  # @return the parent post of this object
+  sig { returns(Sources::Tweet) }
   def parent_post
     self.tweet
   end
