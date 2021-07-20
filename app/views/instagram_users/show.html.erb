@@ -29,8 +29,12 @@
           <% if instagram_post.images.empty? == false %>
           <img src="<%= instagram_post.images.first.image_url %>" class="w-40 h-40 mb-5 inline-flex items-center justify-center bg-gray-200 text-gray-400"/>
           <% elsif instagram_post.videos.empty? == false %>
-          <video width="320" height="240" controls>
-            <source src="<%= item.videos.first.video_url %>" type="video/mp4">
+          <video
+            width="320"
+            height="240"
+            poster="<%= instagram_post.videos.first.video_derivatives[:preview].url %>"
+            controls>
+            <source src="<%= instagram_post.videos.first.video_url %>" type="video/mp4">
             Your browser does not support the video tag.
           </video>
           <% end %>
