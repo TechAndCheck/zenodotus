@@ -4,7 +4,6 @@ class ArchiveController < ApplicationController
   # It's the index, list all the archived items
   sig { void }
   def index
-    # @item_match = []
     @archive_items = ArchiveItem.includes({ archivable_item: [:author, :images, :videos] })
   end
 

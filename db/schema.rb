@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_19_191103) do
+ActiveRecord::Schema.define(version: 2021_07_13_164834) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -79,6 +79,15 @@ ActiveRecord::Schema.define(version: 2021_07_19_191103) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["instagram_post_id"], name: "index_instagram_videos_on_instagram_post_id"
+  end
+
+  create_table "pg_search_documents", force: :cascade do |t|
+    t.text "content"
+    t.string "searchable_type"
+    t.uuid "searchable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
   end
 
   create_table "tweets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -154,4 +163,114 @@ ActiveRecord::Schema.define(version: 2021_07_19_191103) do
   add_foreign_key "instagram_videos", "instagram_posts"
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"
+
+  create_view "unified_posts", materialized: true, sql_definition: <<-SQL
+      WITH post_details AS (
+           SELECT tweets.id AS post_id,
+              tweets.text,
+              tweets.author_id,
+              tweets.posted_at,
+              NULL::integer AS number_of_likes
+             FROM tweets
+          UNION ALL
+           SELECT instagram_posts.id AS post_id,
+              instagram_posts.text,
+              instagram_posts.author_id,
+              instagram_posts.posted_at,
+              instagram_posts.number_of_likes
+             FROM instagram_posts
+          ), some_user_details AS (
+           SELECT DISTINCT instagram_users.id AS author_id,
+              instagram_users.display_name,
+              instagram_users.handle,
+              instagram_users.followers_count,
+              instagram_users.following_count,
+              instagram_users.profile,
+              NULL::text AS description,
+              instagram_users.profile_image_url
+             FROM instagram_users,
+              post_details
+            WHERE (post_details.author_id = instagram_users.id)
+          UNION ALL
+           SELECT DISTINCT twitter_users.id AS author_id,
+              twitter_users.display_name,
+              twitter_users.handle,
+              twitter_users.followers_count,
+              twitter_users.following_count,
+              NULL::text AS profile,
+              twitter_users.description,
+              twitter_users.profile_image_url
+             FROM twitter_users,
+              post_details
+            WHERE (post_details.author_id = twitter_users.id)
+          ), media_details AS (
+           SELECT instagram_images.instagram_post_id AS post_id,
+              instagram_images.image_data,
+              NULL::jsonb AS video_data
+             FROM instagram_images
+          UNION ALL
+           SELECT instagram_videos.instagram_post_id AS post_id,
+              NULL::jsonb AS image_data,
+              instagram_videos.video_data
+             FROM instagram_videos
+          UNION ALL (
+                   SELECT twitter_images.tweet_id AS post_id,
+                      twitter_images.image_data,
+                      NULL::jsonb AS video_data
+                     FROM twitter_images
+                  UNION ALL
+                   SELECT twitter_videos.tweet_id AS post_id,
+                      NULL::jsonb AS image_data,
+                      twitter_videos.video_data
+                     FROM twitter_videos
+          )
+          ), posts_with_media AS (
+           SELECT post_details.post_id,
+              post_details.text,
+              post_details.author_id,
+              post_details.posted_at,
+              post_details.number_of_likes,
+              media_details.image_data,
+              media_details.video_data
+             FROM (post_details
+               FULL JOIN media_details ON ((post_details.post_id = media_details.post_id)))
+          )
+   SELECT posts_with_media.post_id,
+      posts_with_media.text,
+      posts_with_media.author_id,
+      posts_with_media.posted_at,
+      posts_with_media.number_of_likes,
+      posts_with_media.image_data,
+      posts_with_media.video_data,
+      some_user_details.display_name,
+      some_user_details.handle,
+      some_user_details.followers_count,
+      some_user_details.following_count,
+      some_user_details.profile,
+      some_user_details.description,
+      some_user_details.profile_image_url
+     FROM (posts_with_media
+       JOIN some_user_details ON ((posts_with_media.author_id = some_user_details.author_id)));
+  SQL
+  create_view "unified_users", materialized: true, sql_definition: <<-SQL
+      SELECT instagram_users.id AS author_id,
+      instagram_users.display_name,
+      instagram_users.handle,
+      instagram_users.followers_count,
+      instagram_users.following_count,
+      instagram_users.profile,
+      NULL::text AS description,
+      instagram_users.profile_image_url
+     FROM instagram_users
+  UNION ALL
+   SELECT twitter_users.id AS author_id,
+      twitter_users.display_name,
+      twitter_users.handle,
+      twitter_users.followers_count,
+      twitter_users.following_count,
+      NULL::text AS profile,
+      twitter_users.description,
+      twitter_users.profile_image_url
+     FROM twitter_users;
+  SQL
 end

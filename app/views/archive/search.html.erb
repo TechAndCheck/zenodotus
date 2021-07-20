@@ -1,53 +1,29 @@
-<div>
-  <%= "Search results for \"#{@search_term}\"" %>
-</div>
-<% unless @user_search_hits.nil? %>
-  <ul>
-    <% @user_search_hits.each do |user|  %>
-      <li>
-        <%="(Profile) " + user.display_name %>
-      </li>
-    <%#= render partial: "list_item_tweet", locals: { item: tweet } %>
-    <%  end  %>
-  </ul>
-<%  end %>
-
-<% unless @post_search_hits.nil? %>
-    <% @post_search_hits.each do |post|  %>
-      <% if post.description.nil? %> <!-- tweet. should probably add type to schema -->
-        <%= render partial: "search_result_instagram_post", locals: {instagram_post: post} %>
-      <% else %>
-        <%= render partial: "search_result_tweet", locals: { tweet: post } %>
-      <% end %>
-    <%  end  %>
-<%  end %>
-
-<%# unless @results_tweets.nil? %>
-  <%# @results_tweets.each do |tweet|  %>
-    <%#= render partial: "list_item_tweet", locals: { item: tweet } %>
-  <%#  end  %>
-<%#  end %>
-<%# unless @results_ig_posts.nil? %>
-  <%# @results_ig_posts.each do |instagram_post|  %>
-    <%#= render partial: "list_item_instagram_post", locals: { item: instagram_post } %>
-  <%#  end  %>
-<%#  end %>
-<%# unless @results_twitter_users.nil? %>
-  <%# @results_twitter_users.each do |twitter_user|  %>
-<!--    <ul>-->
+<!--<div>-->
+  <%#= "Search results for \"#{@search_term}\"" %>
+<!--</div>-->
+<%# unless @user_search_hits.nil? %>
+<!--  <ul>-->
+    <%# @user_search_hits.each do |user|  %>
 <!--      <li>-->
-        <%#= twitter_user.display_name %>
+        <%#="(Profile) " + user.display_name %>
 <!--      </li>-->
-<!--    </ul>-->
-    <%#= render partial: "list_item_instagram_post", locals: { item: instagram_post } %>
-  <%#  end  %>
+    <%#= render partial: "list_item_tweet", locals: { item: tweet } %>
+    <%#  end  %>
+<!--  </ul>-->
 <%#  end %>
-<%# unless @results_ig_users.nil? %>
-  <%# @results_ig_users.each do |ig_user|  %>
-<!--    <ul>-->
-<!--      <li>-->
-        <%#= ig_user.display_name %>
-<!--      </li>-->
-<!--    </ul>-->
-  <%#  end  %>
+
+<%# unless @post_search_hits.nil? %>
+    <%# @post_search_hits.each do |post|  %>
+      <%# if post.description.nil? %>
+        <%#= render partial: "search_result_instagram_post", locals: {instagram_post: post} %>
+      <%# else %>
+        <%#= render partial: "search_result_tweet", locals: { tweet: post } %>
+      <%# end %>
+    <%#  end  %>
 <%#  end %>
+
+
+<% @post_search_hits.each do |result| %>
+  <%= render partial: "search_result_list_item", locals: { result: result } %>
+  <% break %>
+<% end %>
