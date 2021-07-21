@@ -2,6 +2,7 @@
 <!--  <div class="flex-none h-96 mb-5 md:mb-0 md:h-auto md:w-32 overflow-hidden rounded">-->
 <!--    <a href="#"><img src="<%#= search.image.url %>" /></a>-->
 <!--  </div>-->
+<div class="bg-white py-4 font-display border border-gray-100 rounded">
   <div class="text-xl font-bold self-end ml-8">
    User search results matching "<%=@search_term%>"
   </div>
@@ -9,7 +10,7 @@
 
 <div class="flex overflow-hidden">
   <% @user_search_hits.each do |result| %>
-    <%= render partial: "search_result_user", locals: { result: result } %>
+    <%= render partial: "search_result_#{result.user_type}", locals: { result: result } %>
   <% end %>
 </div>
 
@@ -19,6 +20,7 @@
 </div>
 
 <% @post_search_hits.each do |result| %>
-  <%= render partial: "search_result_list_item", locals: { result: result } %>
-  <% break %>
+  <%= render partial: "search_result_#{result.post_type}", locals: { result: result } %>
+  <%# break %>
 <% end %>
+</div>

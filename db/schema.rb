@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_13_164834) do
+ActiveRecord::Schema.define(version: 2021_07_21_160205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -28,7 +28,6 @@ ActiveRecord::Schema.define(version: 2021_07_13_164834) do
     t.string "archivable_item_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.jsonb "media_review"
   end
 
   create_table "image_searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -170,14 +169,16 @@ ActiveRecord::Schema.define(version: 2021_07_13_164834) do
               tweets.text,
               tweets.author_id,
               tweets.posted_at,
-              NULL::integer AS number_of_likes
+              NULL::integer AS number_of_likes,
+              'tweet'::text AS post_type
              FROM tweets
           UNION ALL
            SELECT instagram_posts.id AS post_id,
               instagram_posts.text,
               instagram_posts.author_id,
               instagram_posts.posted_at,
-              instagram_posts.number_of_likes
+              instagram_posts.number_of_likes,
+              'instagram_post'::text AS post_type
              FROM instagram_posts
           ), some_user_details AS (
            SELECT DISTINCT instagram_users.id AS author_id,
@@ -230,12 +231,14 @@ ActiveRecord::Schema.define(version: 2021_07_13_164834) do
               post_details.author_id,
               post_details.posted_at,
               post_details.number_of_likes,
+              post_details.post_type,
               media_details.image_data,
               media_details.video_data
              FROM (post_details
                FULL JOIN media_details ON ((post_details.post_id = media_details.post_id)))
           )
    SELECT posts_with_media.post_id,
+      posts_with_media.post_type,
       posts_with_media.text,
       posts_with_media.author_id,
       posts_with_media.posted_at,
@@ -260,7 +263,8 @@ ActiveRecord::Schema.define(version: 2021_07_13_164834) do
       instagram_users.following_count,
       instagram_users.profile,
       NULL::text AS description,
-      instagram_users.profile_image_url
+      instagram_users.profile_image_url,
+      'instagram_user'::text AS user_type
      FROM instagram_users
   UNION ALL
    SELECT twitter_users.id AS author_id,
@@ -270,7 +274,8 @@ ActiveRecord::Schema.define(version: 2021_07_13_164834) do
       twitter_users.following_count,
       NULL::text AS profile,
       twitter_users.description,
-      twitter_users.profile_image_url
+      twitter_users.profile_image_url,
+      'twitter_user'::text AS user_type
      FROM twitter_users;
   SQL
 end
