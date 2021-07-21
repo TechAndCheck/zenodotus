@@ -1,0 +1,156 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/Welcome7",
+    "definitions": {
+        "Welcome7": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "@context": {
+                    "type": "string",
+                    "format": "uri",
+                    "qt-uri-protocols": [
+                        "https"
+                    ]
+                },
+                "@type": {
+                    "type": "string"
+                },
+                "datePublished": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "qt-uri-protocols": [
+                        "https"
+                    ]
+                },
+                "author": {
+                    "$ref": "#/definitions/Author"
+                },
+                "mediaAuthenticityCategory": {
+                    "type": "string"
+                },
+                "originalMediaContextDescription": {
+                    "type": "string"
+                },
+                "itemReviewed": {
+                    "$ref": "#/definitions/ItemReviewed"
+                }
+            },
+            "required": [
+                "@context",
+                "@type",
+                "author",
+                "datePublished",
+                "itemReviewed",
+                "mediaAuthenticityCategory",
+                "originalMediaContextDescription",
+                "url"
+            ],
+            "title": "Welcome7"
+        },
+        "Author": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "@type": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "qt-uri-protocols": [
+                        "https"
+                    ]
+                }
+            },
+            "required": [
+                "@type",
+                "name",
+                "url"
+            ],
+            "title": "Author"
+        },
+        "ItemReviewed": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "@type": {
+                    "type": "string"
+                },
+                "creator": {
+                    "$ref": "#/definitions/Author"
+                },
+                "interpretedAsClaim": {
+                    "$ref": "#/definitions/InterpretedAsClaim"
+                },
+                "mediaItemAppearance": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MediaItemAppearance"
+                    }
+                }
+            },
+            "required": [
+                "@type",
+                "creator",
+                "interpretedAsClaim",
+                "mediaItemAppearance"
+            ],
+            "title": "ItemReviewed"
+        },
+        "InterpretedAsClaim": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "@type": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "@type",
+                "description"
+            ],
+            "title": "InterpretedAsClaim"
+        },
+        "MediaItemAppearance": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "@type": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "contentUrl": {
+                    "type": "string",
+                    "format": "uri",
+                    "qt-uri-protocols": [
+                        "https"
+                    ]
+                },
+                "archivedAt": {
+                    "type": "string",
+                    "format": "uri",
+                    "qt-uri-protocols": [
+                        "https"
+                    ]
+                }
+            },
+            "required": [
+                "@type"
+            ],
+            "title": "MediaItemAppearance"
+        }
+    }
+}

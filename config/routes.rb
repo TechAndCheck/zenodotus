@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get "/archive/add", to: "archive#add"
   post "/archive/add", to: "archive#submit_url"
 
-  post "/ingest/submit_mediareview", to: "ingest#submit_mediareview"
+  post "/ingest/submit_media_review", to: "ingest#submit_media_review", as: "ingest_api"
 
   get "/image_search", to: "image_search#index", as: "image_search"
   post "/image_search", to: "image_search#search", as: "image_search_submit"
