@@ -92,5 +92,9 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
     assert_equal 20, json["response_code"]
     assert_equal "Successfully archived media object", json["response"]
     assert_not_empty json["media_object_id"]
+
+    post = ArchiveItem.find(json["media_object_id"])
+    assert_not_nil post
+    assert_not_empty post.media_review
   end
 end
