@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_21_160205) do
+ActiveRecord::Schema.define(version: 2021_07_22_142236) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -163,6 +163,29 @@ ActiveRecord::Schema.define(version: 2021_07_21_160205) do
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"
 
+  create_view "unified_users", materialized: true, sql_definition: <<-SQL
+      SELECT instagram_users.id AS author_id,
+      instagram_users.display_name,
+      instagram_users.handle,
+      instagram_users.followers_count,
+      instagram_users.following_count,
+      instagram_users.profile,
+      NULL::text AS description,
+      instagram_users.profile_image_data,
+      'instagram_user'::text AS user_type
+     FROM instagram_users
+  UNION ALL
+   SELECT twitter_users.id AS author_id,
+      twitter_users.display_name,
+      twitter_users.handle,
+      twitter_users.followers_count,
+      twitter_users.following_count,
+      NULL::text AS profile,
+      twitter_users.description,
+      twitter_users.profile_image_data,
+      'twitter_user'::text AS user_type
+     FROM twitter_users;
+  SQL
   create_view "unified_posts", materialized: true, sql_definition: <<-SQL
       WITH post_details AS (
            SELECT tweets.id AS post_id,
@@ -188,7 +211,7 @@ ActiveRecord::Schema.define(version: 2021_07_21_160205) do
               instagram_users.following_count,
               instagram_users.profile,
               NULL::text AS description,
-              instagram_users.profile_image_url
+              instagram_users.profile_image_data
              FROM instagram_users,
               post_details
             WHERE (post_details.author_id = instagram_users.id)
@@ -200,7 +223,7 @@ ActiveRecord::Schema.define(version: 2021_07_21_160205) do
               twitter_users.following_count,
               NULL::text AS profile,
               twitter_users.description,
-              twitter_users.profile_image_url
+              twitter_users.profile_image_data
              FROM twitter_users,
               post_details
             WHERE (post_details.author_id = twitter_users.id)
@@ -251,31 +274,8 @@ ActiveRecord::Schema.define(version: 2021_07_21_160205) do
       some_user_details.following_count,
       some_user_details.profile,
       some_user_details.description,
-      some_user_details.profile_image_url
+      some_user_details.profile_image_data
      FROM (posts_with_media
        JOIN some_user_details ON ((posts_with_media.author_id = some_user_details.author_id)));
-  SQL
-  create_view "unified_users", materialized: true, sql_definition: <<-SQL
-      SELECT instagram_users.id AS author_id,
-      instagram_users.display_name,
-      instagram_users.handle,
-      instagram_users.followers_count,
-      instagram_users.following_count,
-      instagram_users.profile,
-      NULL::text AS description,
-      instagram_users.profile_image_url,
-      'instagram_user'::text AS user_type
-     FROM instagram_users
-  UNION ALL
-   SELECT twitter_users.id AS author_id,
-      twitter_users.display_name,
-      twitter_users.handle,
-      twitter_users.followers_count,
-      twitter_users.following_count,
-      NULL::text AS profile,
-      twitter_users.description,
-      twitter_users.profile_image_url,
-      'twitter_user'::text AS user_type
-     FROM twitter_users;
   SQL
 end
