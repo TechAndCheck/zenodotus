@@ -21,9 +21,8 @@ class ArchiveController < ApplicationController
   # @param {search_term} a user-submitted search term
   def search
     @search_term = params[:search_term]
-    @user_search_hits = UnifiedUser.where("display_name ~* '#{@search_term}'")
-    @post_search_hits = UnifiedPost.where("text ~* '#{@search_term}'")
-
+    @user_search_hits = UnifiedUser.search_users(@search_term)
+    @post_search_hits = UnifiedPost.search_posts(@search_term)
   end
 
   # Entry point for submitting a URL for archiving
