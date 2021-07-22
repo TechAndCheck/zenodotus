@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_22_142236) do
+ActiveRecord::Schema.define(version: 2021_07_22_180839) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -78,15 +78,6 @@ ActiveRecord::Schema.define(version: 2021_07_22_142236) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["instagram_post_id"], name: "index_instagram_videos_on_instagram_post_id"
-  end
-
-  create_table "pg_search_documents", force: :cascade do |t|
-    t.text "content"
-    t.string "searchable_type"
-    t.uuid "searchable_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
   end
 
   create_table "tweets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -172,6 +163,7 @@ ActiveRecord::Schema.define(version: 2021_07_22_142236) do
       instagram_users.profile,
       NULL::text AS description,
       instagram_users.profile_image_data,
+      (to_tsvector('english'::regconfig, (COALESCE(instagram_users.handle, ''::character varying))::text) || to_tsvector('english'::regconfig, (COALESCE(instagram_users.display_name, ''::character varying))::text)) AS tsv_document,
       'instagram_user'::text AS user_type
      FROM instagram_users
   UNION ALL
@@ -183,6 +175,7 @@ ActiveRecord::Schema.define(version: 2021_07_22_142236) do
       NULL::text AS profile,
       twitter_users.description,
       twitter_users.profile_image_data,
+      (to_tsvector('english'::regconfig, (COALESCE(twitter_users.handle, ''::character varying))::text) || to_tsvector('english'::regconfig, (COALESCE(twitter_users.display_name, ''::character varying))::text)) AS tsv_document,
       'twitter_user'::text AS user_type
      FROM twitter_users;
   SQL
@@ -274,7 +267,8 @@ ActiveRecord::Schema.define(version: 2021_07_22_142236) do
       some_user_details.following_count,
       some_user_details.profile,
       some_user_details.description,
-      some_user_details.profile_image_data
+      some_user_details.profile_image_data,
+      to_tsvector('english'::regconfig, COALESCE(posts_with_media.text, ''::text)) AS tsv_document
      FROM (posts_with_media
        JOIN some_user_details ON ((posts_with_media.author_id = some_user_details.author_id)));
   SQL
