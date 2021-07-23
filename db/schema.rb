@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_19_191103) do
+ActiveRecord::Schema.define(version: 2021_07_21_225247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 2021_07_19_191103) do
     t.integer "following_count", null: false
     t.boolean "verified", null: false
     t.text "profile", null: false
-    t.string "url", null: false
+    t.string "url"
     t.string "profile_image_url", null: false
     t.jsonb "profile_image_data"
     t.datetime "created_at", precision: 6, null: false

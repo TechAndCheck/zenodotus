@@ -122,6 +122,8 @@ GEM
       railties (>= 3.2)
     down (5.2.2)
       addressable (~> 2.5)
+    ecma-re-validator (0.3.0)
+      regexp_parser (~> 2.0)
     erubi (1.10.0)
     erubis (2.7.0)
     ethon (0.14.0)
@@ -136,6 +138,7 @@ GEM
       thor (>= 0.14.0, < 2)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    hana (1.3.7)
     highline (2.0.3)
     hotwire-rails (0.1.3)
       rails (>= 6.0.0)
@@ -145,6 +148,11 @@ GEM
       concurrent-ruby (~> 1.0)
     jbuilder (2.11.2)
       activesupport (>= 5.0.0)
+    json_schemer (0.2.18)
+      ecma-re-validator (~> 0.3)
+      hana (~> 1.3)
+      regexp_parser (~> 2.0)
+      uri_template (~> 0.7)
     listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -167,7 +175,7 @@ GEM
     nokogiri (1.11.7-x86_64-darwin)
       racc (~> 1.4)
     oauth (0.5.6)
-    oj (3.11.7)
+    oj (3.12.1)
     os (1.1.1)
     parallel (1.20.1)
     parlour (6.0.0)
@@ -351,6 +359,7 @@ GEM
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.0.0)
     uniform_notifier (1.14.2)
+    uri_template (0.7.0)
     validate_url (1.0.13)
       activemodel (>= 3.0.0)
       public_suffix
@@ -393,6 +402,7 @@ DEPENDENCIES
   figaro
   hotwire-rails
   jbuilder (~> 2.7)
+  json_schemer
   listen (~> 3.3)
   os
   pg (~> 1.1)
