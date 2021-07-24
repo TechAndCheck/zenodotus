@@ -25,6 +25,9 @@ jobs:
           POSTGRES_DB: zenodotus_test
         ports: ["5432:5432"]
     steps:
+      - name: Install packages
+        run: sudo apt install chromium-driver ffmpeg  libvips libvips-dev
+
       - name: Checkout code
         uses: actions/checkout@v2
 
