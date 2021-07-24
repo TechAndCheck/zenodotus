@@ -46,3 +46,5 @@ yarn-debug.log*
 # We don't want to check in coverage results
 coverage
 
+# IDE config
+.idea/
