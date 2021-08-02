@@ -71,6 +71,12 @@ group :development do
 
   # We use Yard for all of our documentation
   gem "yard", require: false
+  
+  # Devise is used for authentication and user management
+  gem 'devise', '~> 4.8.0'
+
+  # letter opener is used for previewing email in-browser
+  gem 'letter_opener'
 end
 
 group :test do

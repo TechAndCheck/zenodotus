@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_21_225247) do
+ActiveRecord::Schema.define(version: 2021_07_30_143649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -123,8 +123,7 @@ ActiveRecord::Schema.define(version: 2021_07_21_225247) do
     t.index ["tweet_id"], name: "index_twitter_videos_on_tweet_id"
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "name"
+  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"

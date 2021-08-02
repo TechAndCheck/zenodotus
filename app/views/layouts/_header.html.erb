@@ -11,6 +11,13 @@
       <div class="flex-shrink mr-6">
         <a href="#">All Collected Media</a>
       </div>
+      <div class="flex-shrink mr-6">
+        <% if user_signed_in? %>
+          <%= button_to "Logout", destroy_user_session_path, method: :delete%>
+        <% else %>
+          <%= link_to "Login", new_user_session_path%>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
