@@ -1,6 +1,8 @@
 # typed: ignore
 
 class ImageSearchController < ApplicationController
+
+  before_action :authenticate_user!
   # A class representing the allowed params into the `index` endpoint
   class IndexUrlParams < T::Struct
     const :q_id, T.nilable(String)

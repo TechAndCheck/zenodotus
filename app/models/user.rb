@@ -3,6 +3,13 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :confirmable, :timeoutable, :trackable,
-         :lockable
+         :confirmable, :trackable, :lockable
+
+  def active_for_authentication?
+    super && approved?
+  end
+
+  def inactive_message
+    approved ? super : :not_approved   # see config/locales/devise
+  end
 end
