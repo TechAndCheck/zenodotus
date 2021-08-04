@@ -18,6 +18,9 @@
           <%= link_to "Login", new_user_session_path%>
         <% end %>
       </div>
+      <% if current_user.admin? %>
+        <%= link_to "Settings", settings_path %>
+      <% end %>
     </div>
   </div>
 </div>

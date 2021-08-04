@@ -10,6 +10,6 @@ class User < ApplicationRecord
   end
 
   def inactive_message
-    approved ? super : :not_approved   # see config/locales/devise
+    approved? ? super : :not_approved   # see config/locales/devise
   end
 end

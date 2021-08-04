@@ -1,0 +1,50 @@
+
+<div id="nav" class="h-full w-250px fixed left-0  overflow-x-hidden pt-60px z-1">
+<!--  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>-->
+  <a class="block" href="#">Profile</a>
+  <a class="block" href="#">App</a>
+  <% if current_user.admin? %>
+    <a class="block" href="#">Admin</a>
+  <%end %>
+</div>
+<% if current_user.admin? %>
+  <table>
+    <tr>
+      <th>Email</th>
+      <th>Request</th>
+      <th>Action</th>
+    </tr>
+    <% User.all.where(approved: false).each do | user| %>
+      <tr>
+        <td><%= user.email %>, <%=user.approved %></td>
+        <td>please let me be in the zenodotus demo I need the fact checker clout</td>
+        <td>
+          <%= button_to "approve", approve_request_path, params: {user: user}  %>
+          <%= button_to "deny",  deny_request_path, params: {user: user}  %>
+        </td>
+      </tr>
+    <% end %>
+</table>
+
+<!--  User management-->
+<!--  Users:-->
+<!--  <table>-->
+<!--    <tr>-->
+<!--      <th>Email</th>-->
+<!--      <th>Action</th>-->
+<!--    </tr>-->
+    <%# User.all.each do | user| %>
+<!--      <tr>-->
+<!--        <td><%#= user.email %></td>-->
+<!--        <td>-->
+          <%#= button_to "delete",  deny_request_path, params: {user: user}  %>
+<!--        </td>-->
+<!--      </tr>-->
+    <%# end %>
+<!--  </table>-->
+
+<!--  Find User:-->
+  <%#= form_with url: user_search_path %>
+
+<%# else %>
+<% end %>
