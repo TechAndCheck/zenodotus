@@ -3,7 +3,7 @@
 class ArchiveController < ApplicationController
   # It's the index, list all the archived items
 
-  before_action :authenticate_user!
+  # before_action :authenticate_user!
   # before_action :require_login, only: [:submit_url ]
 
   # def require_login

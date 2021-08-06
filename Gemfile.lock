@@ -155,15 +155,15 @@ GEM
       concurrent-ruby (~> 1.0)
     jbuilder (2.11.2)
       activesupport (>= 5.0.0)
-    launchy (2.5.0)
-      addressable (~> 2.7)
-    letter_opener (1.7.0)
-      launchy (~> 2.2)
     json_schemer (0.2.18)
       ecma-re-validator (~> 0.3)
       hana (~> 1.3)
       regexp_parser (~> 2.0)
       uri_template (~> 0.7)
+    launchy (2.5.0)
+      addressable (~> 2.7)
+    letter_opener (1.7.0)
+      launchy (~> 2.2)
     listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -183,10 +183,9 @@ GEM
     nokogiri (1.11.7)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
-    nokogiri (1.11.7-x86_64-darwin)
-      racc (~> 1.4)
     oauth (0.5.6)
     oj (3.12.1)
+    orm_adapter (0.5.0)
     os (1.1.1)
     parallel (1.20.1)
     parlour (6.0.0)
@@ -423,8 +422,8 @@ DEPENDENCIES
   figaro
   hotwire-rails
   jbuilder (~> 2.7)
-  letter_opener
   json_schemer
+  letter_opener
   listen (~> 3.3)
   os
   pg (~> 1.1)
