@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   extend T::Helpers
 
   acts_as_token_authentication_handler_for User
-  protect_from_forgery with: :null_session, if: :json_request?
+  protect_from_forgery with: :null_session, if: :json_request?, prepend: true
 
   protected
 
