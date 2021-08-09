@@ -31,12 +31,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup ruby and install gems
+      - name: Setup ruby 
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: false
+          ruby-version: 3.0.2
           # ruby version set in ruby-version.yml
-
+      - name: Install dependencies
+        run: bundle install
       - name: Setup test database
         env:
           RAILS_ENV: test
