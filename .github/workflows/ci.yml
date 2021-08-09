@@ -23,6 +23,8 @@ jobs:
         image: postgres:13
         env:
           POSTGRES_DB: zenodotus_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
         ports: 
           - 5432:5432
         options: 
