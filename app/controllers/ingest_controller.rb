@@ -1,6 +1,8 @@
 # typed: ignore
 
 class IngestController < ApplicationController
+  before_action :authenticate_user_from_api_key!
+
   class ApiResponseCodes < T::Enum
     extend T::Sig
 

@@ -21,7 +21,6 @@ gem "jbuilder", "~> 2.7"
 gem "redis", "~> 4.0"
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-gem "simple_token_authentication", "~> 1.17.0"
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
@@ -72,10 +71,6 @@ group :development do
 
   # We use Yard for all of our documentation
   gem "yard", require: false
-  
-  # Devise is used for authentication and user management
-  gem 'devise', '~> 4.8.0'
-
 end
 
 group :test do
@@ -146,3 +141,6 @@ gem "ruby-progressbar"
 
 # For validating JSON input on the API
 gem "json_schemer"
+
+# Devise is used for authentication and user management
+gem "devise", "~> 4.8.0"

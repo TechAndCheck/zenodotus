@@ -3,6 +3,11 @@
 require "test_helper"
 
 class IngestControllerTest < ActionDispatch::IntegrationTest
+  test "Submitting an API request without a key will return 401 error" do
+    post ingest_api_path, params: { media_review_json: { title: "Ahoy!" }.to_json }, as: :json
+    assert_response 401
+  end
+
   test "Submitting real JSON but with a bad schemas to the ingest API gives a 400" do
     post ingest_api_path, params: { media_review_json: { title: "Ahoy!" }.to_json }, as: :json
     assert_response 400
