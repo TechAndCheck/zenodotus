@@ -13,3 +13,5 @@
 user1:
   email: "test123@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  approved: true
+  confirmed_at: <%= Time.now %>

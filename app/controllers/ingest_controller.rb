@@ -62,6 +62,7 @@ class IngestController < ApplicationController
   # Submit MediaReview data, which the URL will be scraped from
   sig { void }
   def submit_media_review
+    # byebug
     # TODO: Spin off an active job to handle this
     typed_params = TypedParams[SubmitMediaReviewParams].new.extract!(params)
     media_review_json = JSON.parse(typed_params.media_review_json)

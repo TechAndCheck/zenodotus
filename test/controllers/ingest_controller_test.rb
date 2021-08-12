@@ -8,8 +8,13 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
     assert_response 401
   end
 
+  test "Submitting an API request with a wrong key will return 401 error" do
+    post ingest_api_path, params: { media_review_json: { title: "Ahoy!" }.to_json, api_key: "wrong password" }, as: :json
+    assert_response 401
+  end
+
   test "Submitting real JSON but with a bad schemas to the ingest API gives a 400" do
-    post ingest_api_path, params: { media_review_json: { title: "Ahoy!" }.to_json }, as: :json
+    post ingest_api_path, params: { media_review_json: { title: "Ahoy!" }.to_json, api_key: "123456789" }, as: :json
     assert_response 400
 
     json = nil
@@ -27,7 +32,7 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "Submitting invalid JSON to the ingest API gives a 400" do
-    post ingest_api_path, params: { media_review_json: { title: "Ahoy!" } }, as: :json
+    post ingest_api_path, params: { media_review_json: { title: "Ahoy!" }, api_key: "123456789" }, as: :json
     assert_response 400
 
     json = nil
@@ -82,7 +87,7 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
       }
     }.to_json
 
-    post ingest_api_path, params: { media_review_json: media_review_json }, as: :json
+    post ingest_api_path, params: { media_review_json: media_review_json, api_key: "123456789" }, as: :json
     assert_response 200
 
     json = nil

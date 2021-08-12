@@ -6,6 +6,10 @@ class ApiKey < ApplicationRecord
 
   def create_api_key
     @api_key = SecureRandom.alphanumeric(30)
-    self.hashed_api_key = Digest::SHA512.hexdigest @api_key
+    self.hashed_api_key = ZenoEncryption.hash_string(@api_key)
+  end
+
+  def update_with_use(request)
+    self.update({ last_used: Time.now })
   end
 end
