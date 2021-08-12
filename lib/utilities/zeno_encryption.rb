@@ -9,6 +9,8 @@ class ZenoEncryption
   # @returns String the Sha512 hash value of `string`
   sig { params(string: String).returns(String) }
   def self.hash_string(string)
+    # Tack on a salt for better encryption and to prevent rainbow attacks
+    string = Figaro.env.KEY_ENCRYPTION_SALT + string
     Digest::SHA512.hexdigest(string)
   end
 end
