@@ -56,6 +56,7 @@ jobs:
         run: |
           bin/rails db:setup
       - name: Run tests
+        uses: browser-actions/setup-chrome@latest
         env:
           RAILS_ENV: test
           PGHOST: localhost
