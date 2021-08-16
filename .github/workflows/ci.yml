@@ -55,8 +55,8 @@ jobs:
           PGHOST: localhost
         run: bin/rails db:setup
       - name: Install Google Chrome
-        run: set -ex && \
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+        run: set -ex &&
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb &&
           sudo apt install ./google-chrome-stable_current_amd64.deb
       - name: Run tests
         env:
