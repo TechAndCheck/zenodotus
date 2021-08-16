@@ -39,7 +39,7 @@ jobs:
         uses: browser-actions/setup-chrome@latest
 
       - name: Install packages
-        run: sudo apt install chromium-driver ffmpeg  libvips libvips-dev
+        run: sudo apt install ffmpeg  libvips libvips-dev
 
       - name: Checkout code
         uses: actions/checkout@v2
