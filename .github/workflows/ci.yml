@@ -68,6 +68,9 @@ jobs:
       - name: Compile resources
         run: rails assets:precompile
 
+      - name: Run RuboCop 
+        run: bundle exec rubocop --parallel
+
       - name: Run tests
         env:
           RAILS_ENV: test
