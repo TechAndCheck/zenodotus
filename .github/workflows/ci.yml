@@ -35,9 +35,6 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - name: Setup Chrome
-        uses: browser-actions/setup-chrome@latest
-
       - name: Install packages
         run: sudo apt install ffmpeg  libvips libvips-dev
 
@@ -58,6 +55,10 @@ jobs:
           PGHOST: localhost
         run: |
           bin/rails db:setup
+      - name: Install Google Chrome
+      run: |
+       chmod +x ./scripts/InstallChrome.sh
+        ./scripts/InstallChrome.sh
       - name: Run tests
         env:
           RAILS_ENV: test
