@@ -40,7 +40,7 @@ jobs:
 
       - name: Install Google Chrome
         run: set -ex &&
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb &&
+          wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb &&
           sudo apt install ./google-chrome-stable_current_amd64.deb
 
       - name: Checkout code
