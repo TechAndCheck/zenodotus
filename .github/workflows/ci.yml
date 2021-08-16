@@ -38,6 +38,11 @@ jobs:
       - name: Install packages
         run: sudo apt install ffmpeg  libvips libvips-dev wget
 
+      - name: Install Google Chrome
+        run: set -ex &&
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb &&
+          sudo apt install ./google-chrome-stable_current_amd64.deb
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -47,17 +52,16 @@ jobs:
           bundler-cache: false
           ruby-version: 3.0.2
           # ruby version set in ruby-version.yml
+
       - name: Install dependencies
         run: bundle install
+
       - name: Setup test database
         env:
           RAILS_ENV: test
           PGHOST: localhost
         run: bin/rails db:setup
-      - name: Install Google Chrome
-        run: set -ex &&
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb &&
-          sudo apt install ./google-chrome-stable_current_amd64.deb
+
       - name: Run tests
         env:
           RAILS_ENV: test
