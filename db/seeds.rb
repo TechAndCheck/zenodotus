@@ -10,5 +10,13 @@ User.create([{
   email: "admin@example.com",
   password: "password123",
   approved: true,
+  admin: true,
+  confirmed_at: Time.now
+},
+{
+  email: "user@example.com",
+  password: "password123",
+  approved: true,
+  admin: false,
   confirmed_at: Time.now
 }])
