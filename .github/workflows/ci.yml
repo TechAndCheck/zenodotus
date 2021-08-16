@@ -53,12 +53,9 @@ jobs:
         env:
           RAILS_ENV: test
           PGHOST: localhost
-        run: |
-          bin/rails db:setup
+        run: bin/rails db:setup
       - name: Install Google Chrome
-      run: |
-       chmod +x ./scripts/InstallChrome.sh
-        ./scripts/InstallChrome.sh
+        run: chmod +x ./scripts/InstallChrome.sh && ./scripts/InstallChrome.sh
       - name: Run tests
         env:
           RAILS_ENV: test
