@@ -39,7 +39,7 @@ class ArchiveController < ApplicationController
     # end
     typed_params = TypedParams[SubmitUrlParams].new.extract!(params)
     url = typed_params.url_to_archive
-    object_model = model_for_url(url)
+    object_model = ArchiveItem.model_for_url(url)
     begin
       object_model.create_from_url(url)
     rescue StandardError => e
