@@ -18,6 +18,7 @@ jobs:
   tests:
     name: Tests
     runs-on: ubuntu-latest
+    environment: CI
     services:
       postgres:
         image: postgres:13
