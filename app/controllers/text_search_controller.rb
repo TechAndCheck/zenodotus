@@ -1,7 +1,6 @@
 # typed: ignore
 
 class TextSearchController < ApplicationController
-  # A class representing the allowed params into the `index` endpoint
 
   sig { void }
   def index
@@ -14,6 +13,9 @@ class TextSearchController < ApplicationController
     const :query, String
   end
 
+  # Searches for posts and authors matching a search term
+  #
+  # @param {search_term} a user-submitted search term
   sig { void }
   def search
     typed_params = TypedParams[SubmitUrlParams].new.extract!(params)
@@ -21,7 +23,6 @@ class TextSearchController < ApplicationController
     search = TextSearch.create(query: typed_params.query)
     results = search.run
 
-    # # Add the search id so that we can adjust the URL and make the page reloadable
     response.headers["X-search-id"] = search.id
 
     respond_to do |format|
@@ -30,12 +31,7 @@ class TextSearchController < ApplicationController
           "search_results",
           partial: "text_search/results",
           locals: { search: search, results: results }
-        ) # ,
-        # turbo_stream.replace(
-        #   "search_item",
-        #   partial: "text_search/search_item",
-        #   locals: { search: search, results: results }
-        # )
+        )
       ] }
       format.html { redirect_to :root }
     end

@@ -16,14 +16,6 @@ class ArchiveController < ApplicationController
     const :url_to_archive, String
   end
 
-  # Searches content tables for Regex matches on user-submitted search term.
-  #
-  # @param {search_term} a user-submitted search term
-  def search
-    @search_term = params[:search_term]
-    @user_search_hits = UnifiedUser.search_users(@search_term)
-    @post_search_hits = UnifiedPost.search_posts(@search_term)
-  end
 
   # Entry point for submitting a URL for archiving
   #
