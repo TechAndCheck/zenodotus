@@ -5,7 +5,7 @@ class UnifiedPost < ApplicationRecord
 
   # pg_search_scope :search_by_text, against: :text
   pg_search_scope(
-    :search_,
+    :search_posts,
     against: :tsv_document,
     using: {
       tsearch: {

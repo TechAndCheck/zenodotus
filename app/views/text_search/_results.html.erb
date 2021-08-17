@@ -1,0 +1,22 @@
+<div class="bg-white py-4 font-display border border-gray-100 rounded">
+<!--  <div class="text-xl font-bold self-end ml-8">-->
+<!--    User search results matching "<%#=@search_term%>"-->
+<!--  </div>-->
+  <!--</div>-->
+
+  <div class="flex overflow-hidden">
+    <% results[:user_search_hits].each do |result| %>
+      <%= render partial: "search_result_#{result.user_type}", locals: { result: result } %>
+    <% end %>
+  </div>
+
+  <hr class="border-2 border-grey">
+  <div class="text-xl font-bold self-end ml-8 pt-6">
+    Media search results matching "<%=@search_term%>"
+  </div>
+
+  <% results[:post_search_hits].each do |result| %>
+    <%= render partial: "search_result_#{result.post_type}", locals: { result: result } %>
+    <%# break %>
+  <% end %>
+</div>

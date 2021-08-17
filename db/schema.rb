@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_22_180839) do
+ActiveRecord::Schema.define(version: 2021_08_17_163159) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -78,6 +78,13 @@ ActiveRecord::Schema.define(version: 2021_07_22_180839) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["instagram_post_id"], name: "index_instagram_videos_on_instagram_post_id"
+  end
+
+  create_table "text_searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "query"
+    t.string "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "tweets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -179,6 +186,8 @@ ActiveRecord::Schema.define(version: 2021_07_22_180839) do
       'twitter_user'::text AS user_type
      FROM twitter_users;
   SQL
+  add_index "unified_users", ["author_id"], name: "index_unified_users_on_author_id", unique: true
+
   create_view "unified_posts", materialized: true, sql_definition: <<-SQL
       WITH post_details AS (
            SELECT tweets.id AS post_id,
@@ -272,4 +281,6 @@ ActiveRecord::Schema.define(version: 2021_07_22_180839) do
      FROM (posts_with_media
        JOIN some_user_details ON ((posts_with_media.author_id = some_user_details.author_id)));
   SQL
+  add_index "unified_posts", ["post_id"], name: "index_unified_posts_on_post_id", unique: true
+
 end

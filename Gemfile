@@ -132,9 +132,6 @@ gem "dhash-vips", git: "https://github.com/Nakilon/dhash-vips.git"
 # Stremio-ffmpeg use the ffmpeg library to process our video files
 gem "streamio-ffmpeg"
 
-# Stremio-ffmpeg use the ffmpeg library to process our video files
-gem "streamio-ffmpeg"
-
 # Scraper gems
 # Local testing
 # gem "zorki", "0.1.0", path: "~/Repositories/zorki" # instagram
