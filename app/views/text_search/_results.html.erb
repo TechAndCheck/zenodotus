@@ -10,10 +10,10 @@
     <% end %>
   </div>
 
-  <hr class="border-2 border-grey">
-  <div class="text-xl font-bold self-end ml-8 pt-6">
-    Media search results matching "<%=@search_term%>"
-  </div>
+<!--  <hr class="border-2 border-grey">-->
+<!--  <div class="text-xl font-bold self-end ml-8 pt-6">-->
+<!--    Media search results matching "<%#=@search_term%>"-->
+<!--  </div>-->
 
   <% results[:post_search_hits].each do |result| %>
     <%= render partial: "search_result_#{result.post_type}", locals: { result: result } %>

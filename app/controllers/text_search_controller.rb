@@ -22,7 +22,7 @@ class TextSearchController < ApplicationController
     results = search.run
 
     # # Add the search id so that we can adjust the URL and make the page reloadable
-    # response.headers["X-search-id"] = search.id
+    response.headers["X-search-id"] = search.id
 
     respond_to do |format|
       format.turbo_stream { render turbo_stream: [
