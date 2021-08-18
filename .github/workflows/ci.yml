@@ -36,7 +36,7 @@ jobs:
           --health-retries 5
     steps:
       - name: Install packages
-        run: sudo apt install ffmpeg  libvips libvips-dev wget xvfb
+        run: sudo apt install ffmpeg libvips libvips-dev wget xvfb --fix-missing
 
       - name: Install Google Chrome
         run: set -ex &&
