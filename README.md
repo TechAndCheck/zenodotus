@@ -104,6 +104,9 @@ A faster image manipulation library than ImageMagick. `brew install vips`. Note:
 1. Install all the gems `bundle install`. This may take a few minutes
 1. Make sure Postgres is running
 1. Set up the database: `rails db:create && rails db:setup`
+1. Set up your environment variables.
+  1. If you're on local development `touch application.yml` and ask someone else for their's
+  1. If you're setting up production make sure the environment variables are set properly
 1. Open two terminal windows up
 1. In one, run `./bin/webpack-dev-server`
 1. In another, run `rails s`

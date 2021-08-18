@@ -10,11 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_19_191103) do
+ActiveRecord::Schema.define(version: 2021_08_11_142854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "api_keys", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "hashed_api_key"
+    t.uuid "user_id"
+    t.date "last_used"
+    t.jsonb "usage_logs"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["hashed_api_key"], name: "index_api_keys_on_hashed_api_key"
+    t.index ["user_id"], name: "index_api_keys_on_user_id"
+  end
 
   create_table "archive_entities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "archivable_entity_id", null: false
@@ -66,7 +77,7 @@ ActiveRecord::Schema.define(version: 2021_07_19_191103) do
     t.integer "following_count", null: false
     t.boolean "verified", null: false
     t.text "profile", null: false
-    t.string "url", null: false
+    t.string "url"
     t.string "profile_image_url", null: false
     t.jsonb "profile_image_data"
     t.datetime "created_at", precision: 6, null: false
@@ -123,8 +134,7 @@ ActiveRecord::Schema.define(version: 2021_07_19_191103) do
     t.index ["tweet_id"], name: "index_twitter_videos_on_tweet_id"
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "name"
+  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -144,12 +154,15 @@ ActiveRecord::Schema.define(version: 2021_07_19_191103) do
     t.datetime "locked_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "approved", default: false, null: false
+    t.boolean "admin", default: false, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "api_keys", "users"
   add_foreign_key "instagram_images", "instagram_posts"
   add_foreign_key "instagram_videos", "instagram_posts"
   add_foreign_key "twitter_images", "tweets"
