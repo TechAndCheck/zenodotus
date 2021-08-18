@@ -65,6 +65,9 @@ jobs:
           PGHOST: localhost
         run: bin/rails db:setup
 
+      - name: Compile resources
+        run: rails assets:precompile
+
       - name: Run tests
         env:
           RAILS_ENV: test
