@@ -16,7 +16,7 @@ User.create([{
 {
   email: "user@example.com",
   password: "password123",
-  approved: true,
+  approved: false,
   admin: false,
   confirmed_at: Time.now
 }])
