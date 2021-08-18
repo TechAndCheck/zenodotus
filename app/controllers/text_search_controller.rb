@@ -22,18 +22,17 @@ class TextSearchController < ApplicationController
     # Create a search object
     search = TextSearch.create(query: typed_params.query)
     results = search.run
-
-    response.headers["X-search-id"] = search.id
-
-    respond_to do |format|
-      format.turbo_stream { render turbo_stream: [
-        turbo_stream.replace(
-          "search_results",
-          partial: "text_search/results",
-          locals: { search: search, results: results }
-        )
-      ] }
-      format.html { redirect_to :root }
-    end
+    @user_search_hits = results[:user_search_hits]
+    @post_search_hits = results[:post_search_hits]
+    # respond_to do |format|
+    #   format.turbo_stream { render turbo_stream: [
+    #     turbo_stream.replace(
+    #       "search_results",
+    #       partial: "text_search/results",
+    #       locals: { search: search, results: results }
+    #     )
+    #   ] }
+    #   # format.html { redirect_to :root }
+    # end
   end
 end

@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   post "/image_search", to: "image_search#search", as: "image_search_submit"
 
   get "/text_search", to: "text_search#index", as: "text_search"
-  post "/text_search", to: "text_search#search", as: "text_search_submit"
+  get "/text_search/search", to: "text_search#search", as: "text_search_submit"
 
   get "/archive/search", to: "archive#search"
 
