@@ -12,7 +12,6 @@ class Sources::InstagramPost < ApplicationRecord
   # The `TwitterUser` that is the author of this tweet.
   belongs_to :author, class_name: "InstagramUser"
 
-
   after_commit on: [:create] do
     # We only want to create the derivatives once (since you know, it's a media archive we don't
     # want them to change)

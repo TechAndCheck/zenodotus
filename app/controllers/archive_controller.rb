@@ -28,7 +28,6 @@ class ArchiveController < ApplicationController
     const :url_to_archive, String
   end
 
-
   # Entry point for submitting a URL for archiving
   #
   # @params {url_to_archive} the url to pull in
