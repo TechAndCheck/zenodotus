@@ -53,6 +53,10 @@ General setup instructions are here, followed by editor-specific additional step
 Good news! RuboCop should be installed by Bundler when you first set up the project. Now just to let your
 editor know.
 
+##### Githooks
+
+We have a `pre-commit` githook that will enforce RuboCop style compliance. To install it, copy `githooks/pre-commit' into `.git/hooks/` and `chmod +x` the copied file. 
+
 ###### Sublime Text 4
 
 1. Install the [PackageController](https://packagecontrol.io) plugin for Sublime, according to the [instructions](https://packagecontrol.io/installation). (If you haven't already)
