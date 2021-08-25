@@ -1,9 +1,5 @@
 <%= turbo_frame_tag "modal" %>
 
-<%= form_with url: archive_search_path, method: "get" do |form| %>
-  <%= form.text_field :search_term %>
-<% end %>
-
 <div class="bg-white py-4 font-display border border-gray-100 rounded">
   <div class="px-8 flex justify-between">
     <div class="font-display text-xl">Most Recent Archived Media</div>

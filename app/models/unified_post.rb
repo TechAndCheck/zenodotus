@@ -1,8 +1,9 @@
 # frozen_string_literal: true
+
 class UnifiedPost < ApplicationRecord
   include PgSearch::Model
 
-  self.primary_key = :post_id  # think I need this for the query generation.
+  self.primary_key = :post_id # think I need this for the query generation.
 
   # pg_search_scope :search_by_text, against: :text
   pg_search_scope(
@@ -11,7 +12,7 @@ class UnifiedPost < ApplicationRecord
     using: {
       tsearch: {
         # dictionary: 'english'  #TODO: Uncomment line to enable stemming
-        tsvector_column: 'tsv_document',
+        tsvector_column: "tsv_document",
         prefix: true
       }
     }

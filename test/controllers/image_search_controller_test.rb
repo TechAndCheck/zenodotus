@@ -1,3 +1,5 @@
+# typed: ignore
+
 require "test_helper"
 
 class ImageSearchControllerTest < ActionDispatch::IntegrationTest

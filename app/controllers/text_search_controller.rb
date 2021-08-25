@@ -1,5 +1,4 @@
 # typed: ignore
-
 class TextSearchController < ApplicationController
   sig { void }
   def index

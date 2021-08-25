@@ -11,6 +11,19 @@
       <div class="flex-shrink mr-6">
         <%= link_to "Text Search", text_search_path, "data-turbo-frame": "_top" %>
       </div>
+      <% if user_signed_in? and current_user.admin? %>
+        <%= link_to "Settings", settings_path %>
+      <% end %>
+    </div>
+  </div>
+  <div class="flex flex-row">
+    <div class="flex-shrink mr-6">
+      <% if user_signed_in? %>
+        <%= button_to "Logout", destroy_user_session_path, method: :delete %>
+      <% else %>
+        <%= link_to "Login", new_user_session_path %>
+        <%= link_to "Register", new_user_registration_path, class: "border rounded px-3 py-2 ml-3 bg-white" %>
+      <% end %>
     </div>
   </div>
 </div>
