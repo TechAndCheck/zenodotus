@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class UnifiedUser < ApplicationRecord
   include PgSearch::Model
   self.primary_key = :author_id
@@ -7,7 +8,7 @@ class UnifiedUser < ApplicationRecord
     against: :tsv_document,
     using: {
       tsearch: {
-        tsvector_column: 'tsv_document',
+        tsvector_column: 'tsv_document'
         # prefix: true  # do we really want this for user searches?
       }
     }

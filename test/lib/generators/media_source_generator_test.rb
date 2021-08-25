@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 # typed: ignore
-require "test_helper"
-require "generators/media_source/media_source_generator"
+require 'test_helper'
+require 'generators/media_source/media_source_generator'
 
 class MediaSourceGeneratorTest < Rails::Generators::TestCase
   tests MediaSourceGenerator

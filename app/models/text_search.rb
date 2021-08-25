@@ -1,7 +1,6 @@
 # typed: ignore
 
 class TextSearch < ApplicationRecord
-
   # Searches against all posts and users in the db, returning those which reference the user-provided term +query+
   #
   # @return An ordered array of search results

@@ -22,6 +22,5 @@ class TextSearchTest < ActiveSupport::TestCase
     assert_not_nil results
     assert_equal results[:user_search_hits].length, 2  # POTUS, Biden Foundation
     assert_equal results[:post_search_hits].length, 2  # Greenwald tweet, Biden Foundation tweet
-
   end
 end

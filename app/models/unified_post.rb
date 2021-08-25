@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class UnifiedPost < ApplicationRecord
   include PgSearch::Model
 
@@ -11,7 +12,7 @@ class UnifiedPost < ApplicationRecord
       tsearch: {
         # dictionary: 'english'  #TODO: Uncomment line to enable stemming
         tsvector_column: 'tsv_document',
-        prefix: true,
+        prefix: true
       }
     }
   )
