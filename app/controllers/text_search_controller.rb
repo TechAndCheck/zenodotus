@@ -5,7 +5,7 @@ class TextSearchController < ApplicationController
   sig { void }
   def index
     @search = TextSearch.new
-    @results = nil # @search.run
+    @results = nil
   end
 
   # A class representing the allowed params into the `search` endpoint
@@ -24,15 +24,5 @@ class TextSearchController < ApplicationController
     results = search.run
     @user_search_hits = results[:user_search_hits]
     @post_search_hits = results[:post_search_hits]
-    # respond_to do |format|
-    #   format.turbo_stream { render turbo_stream: [
-    #     turbo_stream.replace(
-    #       "search_results",
-    #       partial: "text_search/results",
-    #       locals: { search: search, results: results }
-    #     )
-    #   ] }
-    #   # format.html { redirect_to :root }
-    # end
   end
 end
