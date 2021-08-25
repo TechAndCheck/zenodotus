@@ -2,23 +2,16 @@
 
   <%=link_to twitter_user_path(result.author_id) do %>
     <div class="p-1 rounded-full bg-gradient-to-r from-blue-600 to-blue-300 inline-block">
-    <img src="<%= prepend_uploads_folder result.profile_image_data["id"] %>" class="w-20 h-20 rounded-full inline-flex items-center justify-center bg-gray-200 text-gray-400"/>
+    <img src="/uploads/<%=result.profile_image_data["id"] %>" class="w-20 h-20 rounded-full inline-flex items-center justify-center bg-gray-200 text-gray-400"/>
   <% end %>
 
   </div>
-<!--  <img src="<%#= result.profile_image_url %>" class="w-20 h-20 rounded-full inline-flex items-center justify-center bg-gray-200 text-gray-400"/>-->
   <div class="flex flex-col items-center text-center justify-center">
     <%=link_to twitter_user_path(result.author_id) do %>
       <h2 class="font-medium title-font mt-4 text-gray-900 text-lg">@<%= result.handle %></h2>
     <% end %>
     <div class="w-12 h-1 bg-gradient-to-r from-blue-600 to-blue-300 rounded mt-2 mb-4"></div>
     <p class="text-base"><%= result.display_name %></p>
-    <%#= link_to instagram_user_path(archive_item.instagram_post.author), class: "text-indigo-500 inline-flex items-center", "data-turbo-frame": "_top" do %>
-<!--      More Info-->
-<!--      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">-->
-<!--        <path d="M5 12h14M12 5l7 7-7 7"></path>-->
-<!--      </svg>-->
-    <%# end %>
     <ul>
       <li><%= result.followers_count %> Followers</li>
       <li><%= result.following_count %> Following</li>

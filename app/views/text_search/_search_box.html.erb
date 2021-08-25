@@ -1,7 +1,4 @@
 <div class="bg-white py-4 font-display border border-gray-100 rounded">
-  <!--  <div class="px-8 flex justify-between">-->
-  <!--    <div class="font-display text-xl">Text Search</div>-->
-  <!--  </div>-->
   <div class="mt-4 mx-1">
     <%= form_with url: text_search_submit_path, method: "get" do |form| %>
       <div class="md:flex md:items-center mb-6 md:w-1/2 m-auto">
@@ -22,8 +19,5 @@
       <div class="text-center mt-2">Searching...</div>
     </span>
     </div>
-    <%#= turbo_frame_tag "search_results" do %>
-      <%#= render partial: "results", locals: { search: @search, results: @results } unless @results.nil? %>
-    <%# end %>
   </div>
 </div>
