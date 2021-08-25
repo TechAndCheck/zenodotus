@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SettingsController < ApplicationController
   # before_action :authenticate_user!
 
@@ -8,7 +10,6 @@ class SettingsController < ApplicationController
   def approveUserRequest
     user = User.find(params[:user])
     user.update(approved: true)
-
   end
 
   def denyUserRequest
@@ -16,7 +17,5 @@ class SettingsController < ApplicationController
     user.destroy
   end
 
-  def admin
-
-  end
+  def admin; end
 end

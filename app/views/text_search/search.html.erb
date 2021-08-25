@@ -1,0 +1,12 @@
+<%= render "search_box"%>
+<div class="bg-white py-4 font-display border border-gray-100 rounded">
+  <div class="flex overflow-hidden">
+    <% @user_search_hits.each do |result| %>
+      <%= render partial: "search_result_#{result.user_type}", locals: { result: result } %>
+    <% end %>
+  </div>
+
+  <% @post_search_hits.each do |result| %>
+    <%= render partial: "search_result_#{result.post_type}", locals: { result: result } %>
+  <% end %>
+</div>

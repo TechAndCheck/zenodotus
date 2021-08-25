@@ -17,6 +17,9 @@ Rails.application.routes.draw do
   get "/image_search", to: "image_search#index", as: "image_search"
   post "/image_search", to: "image_search#search", as: "image_search_submit"
 
+  get "/text_search", to: "text_search#index", as: "text_search"
+  get "/text_search/search", to: "text_search#search", as: "text_search_submit"
+
   get "/settings", to: "settings#index", as: "settings"
   post "/settings/approve", to: "settings#approveUserRequest", as: "approve_request"
   post "/settings/deny", to: "settings#denyUserRequest", as: "deny_request"

@@ -1,7 +1,6 @@
 # typed: ignore
 
 class ImageSearchController < ApplicationController
-
   # before_action :authenticate_user!
   # A class representing the allowed params into the `index` endpoint
   class IndexUrlParams < T::Struct
@@ -40,18 +39,20 @@ class ImageSearchController < ApplicationController
     response.headers["X-search-id"] = search.id
 
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: [
-        turbo_stream.replace(
-          "search_results",
-          partial: "image_search/results",
-          locals: { search: search, results: results }
-        ),
-        turbo_stream.replace(
-          "search_item",
-          partial: "image_search/search_item",
-          locals: { search: search, results: results }
-        )
-      ] }
+      format.turbo_stream {
+        render turbo_stream: [
+          turbo_stream.replace(
+            "search_results",
+            partial: "image_search/results",
+            locals: { search: search, results: results }
+          ),
+          turbo_stream.replace(
+            "search_item",
+            partial: "image_search/search_item",
+            locals: { search: search, results: results }
+          )
+        ]
+      }
       format.html { redirect_to :root }
     end
   end

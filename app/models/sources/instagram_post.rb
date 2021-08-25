@@ -18,6 +18,13 @@ class Sources::InstagramPost < ApplicationRecord
     self.videos.each { |video| video.video_derivatives! }
   end
 
+  # TODO: Run materialized view refreshes asynchronously using ActiveJob
+  after_commit on: [:create, :destroy] do
+    # update materialized view when a new tweet is added
+    UnifiedUser.refresh
+    UnifiedPost.refresh
+  end
+
   # Returns a +boolean+ on whether this class can handle the URL passed in.
   # All items that are scraped should implement this class
   #
