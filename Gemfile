@@ -142,3 +142,9 @@ gem "birdsong", "0.1.0", git: "https://github.com/cguess/birdsong"
 
 # A progress bar for our Rake tasks
 gem "ruby-progressbar"
+
+# For validating JSON input on the API
+gem "json_schemer"
+
+# Devise is used for authentication and user management
+gem "devise", "~> 4.8.0"
