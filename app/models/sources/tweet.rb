@@ -20,8 +20,7 @@ class Sources::Tweet < ApplicationRecord
   # TODO: Run materialized view refreshes asynchronously using ActiveJob
   # update materialized view when a new tweet is added
   after_commit on: [:create, :destroy] do
-    UnifiedUser.refresh
-    UnifiedPost.refresh
+    UnifiedTableRefreshJob.perform_later
   end
 
   # Returns a +boolean+ on whether this class can handle the URL passed in.
