@@ -4,8 +4,5 @@ class UnifiedTableRefreshJob < ApplicationJob
   def perform(*args)
     UnifiedUser.refresh
     UnifiedPost.refresh
-    puts "***********************************"
-    puts "using job"
-    puts "***********************************"
   end
 end
