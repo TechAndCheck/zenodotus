@@ -13,11 +13,11 @@ class Sources::InstagramUser < ApplicationRecord
   # @params birdsong_users [Array[Zorki:User]] an array of tweets grabbed from Zorki
   # @returns [Array[ArchiveEntity]] an array of +ArchiveEntity+ with type of InstagramUser that have been
   #   saved
-  sig { params(zorki_users: T::Array[Zorki::User]).returns(T::Array[ArchiveEntity]) }
+  sig { params(zorki_users: T::Array[Hash]).returns(T::Array[ArchiveEntity]) }
   def self.create_from_zorki_hash(zorki_users)
     zorki_users.map do |zorki_user|
       # First check if the user already exists, if so, return that
-      instagram_user = Sources::InstagramUser.find_by(handle: zorki_user.username)
+      instagram_user = Sources::InstagramUser.find_by(handle: zorki_user["username"])
       zorki_user_hash = self.instagram_user_hash_from_zorki_user(zorki_user)
 
       # If there's no user, then create it
@@ -55,19 +55,31 @@ private
   # @!visibility private
   # @params birdsong_users Zorki:User an tweet grabbed from Zorki
   # @returns Hash a data structure suitable to pass to `create` or `update`
-  sig { params(zorki_user: Zorki::User).returns(Hash) }
+  sig { params(zorki_user: Hash).returns(Hash) }
   def self.instagram_user_hash_from_zorki_user(zorki_user)
-    {
-      handle:              zorki_user.username,
-      display_name:        zorki_user.name,
-      number_of_posts:     zorki_user.number_of_posts,
-      followers_count:     zorki_user.number_of_followers,
-      following_count:     zorki_user.number_of_following,
-      verified:            zorki_user.verified,
-      profile:             zorki_user.profile,
-      url:                 zorki_user.profile_link,
-      profile_image_url:   zorki_user.profile_image_url,
-      profile_image:       File.open(zorki_user.profile_image, "rb"),
+    # We create a temp file and write the image data to it, which yea, is dumb,
+    # and there may be a better way to do it, but this works to fix the encoding issues
+    # (basically, when we call `create` later, Rails tries to convert the string into UTF-8
+    # which obviously breaks everything)
+    tempfile = Tempfile.new(binmode: true)
+    tempfile.write(Base64.decode64(zorki_user["profile_image"]))
+
+    hash_to_return = {
+      handle:              zorki_user["username"],
+      display_name:        zorki_user["name"],
+      number_of_posts:     zorki_user["number_of_posts"],
+      followers_count:     zorki_user["number_of_followers"],
+      following_count:     zorki_user["number_of_following"],
+      verified:            zorki_user["verified"],
+      profile:             zorki_user["profile"],
+      url:                 zorki_user["profile_link"],
+      profile_image_url:   zorki_user["profile_image_url"],
+      profile_image:       File.open(tempfile.path, binmode: true)
     }
+
+    # It's good practice to unlink the tempfile, even though the next time the GC sees it,
+    # it'll be done automatically.
+    tempfile.close!
+    hash_to_return
   end
 end
