@@ -56,30 +56,42 @@ class Sources::InstagramPost < ApplicationRecord
   # @params birdsong_tweets [Array[Zorki::Post]] an array of tweets grabbed from Birdsong
   # @returns [Array[ArchiveItem]] an array of ArchiveItem with type Tweet that have been
   #   saved to the graph database
-  sig { params(zorki_posts: T::Array[Zorki::Post]).returns(T::Array[ArchiveItem]) }
+  sig { params(zorki_posts: T::Array[Hash]).returns(T::Array[ArchiveItem]) }
   def self.create_from_zorki_hash(zorki_posts)
     zorki_posts.map do |zorki_post|
-      user = Sources::InstagramUser.create_from_zorki_hash([zorki_post.user]).first.instagram_user
+      user = Sources::InstagramUser.create_from_zorki_hash([zorki_post["user"]]).first.instagram_user
 
-      unless zorki_post.image_file_names.nil?
-        image_attributes = zorki_post.image_file_names.map do |image_file_name|
-          { image: File.open(image_file_name, binmode: true) }
+      unless zorki_post["image_files"].nil?
+        image_attributes = zorki_post["image_files"].map do |image_file_data|
+          tempfile = Tempfile.new(binmode: true)
+          tempfile.write(Base64.decode64(image_file_data))
+
+          image_attribute = { image: File.open(tempfile.path, binmode: true) }
+
+          tempfile.close!
+          image_attribute
         end
       else
         image_attributes = []
       end
 
-      unless zorki_post.video_file_name.nil?
-        video_attributes = [{ video: File.open(zorki_post.video_file_name, binmode: true) }]
+      unless zorki_post["video_file"].nil?
+        tempfile = Tempfile.new(binmode: true)
+        tempfile.write(Base64.decode64(zorki_post["video_file"]))
+
+        video_attributes = [{ video: File.open(tempfile.path, binmode: true) }]
+
+        tempfile.close!
+        video_attributes
       else
         video_attributes = []
       end
 
       hash = {
-        text:              zorki_post.text,
-        instagram_id:      zorki_post.id,
-        posted_at:         zorki_post.date,
-        number_of_likes:   zorki_post.number_of_likes,
+        text:              zorki_post["text"],
+        instagram_id:      zorki_post["id"],
+        posted_at:         zorki_post["date"],
+        number_of_likes:   zorki_post["number_of_likes"],
         author:            user,
         images_attributes: image_attributes,
         videos_attributes: video_attributes

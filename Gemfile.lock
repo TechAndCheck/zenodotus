@@ -13,17 +13,6 @@ GIT
       oauth (~> 0.5.6)
       typhoeus (~> 1.4.0)
 
-GIT
-  remote: https://github.com/cguess/zorki
-  revision: b6aac3c508905aa200fbef1c96c3c4b8b6221e68
-  specs:
-    zorki (0.1.0)
-      apparition
-      capybara
-      oj
-      selenium-webdriver
-      typhoeus
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -88,9 +77,6 @@ GEM
       zeitwerk (~> 2.3)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
-    apparition (0.6.0)
-      capybara (~> 3.13, < 4)
-      websocket-driver (>= 0.6.5)
     ast (2.4.2)
     bcrypt (3.1.16)
     bindex (0.8.1)
@@ -183,7 +169,6 @@ GEM
     nokogiri (1.12.3-x86_64-darwin)
       racc (~> 1.4)
     oauth (0.5.6)
-    oj (3.13.2)
     orm_adapter (0.5.0)
     os (1.1.1)
     parallel (1.20.1)
@@ -463,7 +448,6 @@ DEPENDENCIES
   webdrivers
   webpacker (~> 5.0)
   yard
-  zorki (= 0.1.0)!
 
 RUBY VERSION
    ruby 3.0.2p107

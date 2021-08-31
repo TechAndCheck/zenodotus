@@ -18,7 +18,7 @@ class InstagramMediaSource < MediaSource
   # @params save_screenshot [Boolean] whether to save the screenshot image (mostly for testing).
   #   Default: false
   # @returns [String or nil] the path of the screenshot if the screenshot was saved
-  sig { override.params(url: String, save_screenshot: T::Boolean).returns(T::Array[Zorki::Post]) }
+  sig { override.params(url: String, save_screenshot: T::Boolean).returns(T::Array[String]) }
   def self.extract(url, save_screenshot = false)
     object = self.new(url)
     object.retrieve_instagram_post
@@ -43,10 +43,17 @@ class InstagramMediaSource < MediaSource
   # @!visibility private
   # @params url [String] a url to grab data for
   # @return [Zorki::Post]
-  sig { returns(T::Array[Zorki::Post]) }
+  sig { returns(T::Array[Hash]) }
   def retrieve_instagram_post
-    id = InstagramMediaSource.extract_instagram_id_from_url(@url)
-    Zorki::Post.lookup(id)
+    response = Typhoeus.get(
+      Figaro.env.ZORKI_SERVER_URL,
+      followlocation: true,
+      params: { auth_key: Figaro.env.ZORKI_AUTH_KEY, url: @url }
+    )
+
+    raise ExternalServerError, "Error: #{response.code} returned from external Zorki server" unless response.code == 200
+
+    JSON.parse(response.body)
   end
 
 private
@@ -84,3 +91,4 @@ end
 
 # A class to indicate that a post url passed in is invalid
 class InstagramMediaSource::InvalidInstagramPostUrlError < StandardError; end
+class InstagramMediaSource::ExternalServerError < StandardError; end
