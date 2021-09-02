@@ -1,0 +1,92 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master, 70-setup-ci ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    environment: CI
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_DB: zenodotus_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports: 
+          - 5432:5432
+        options: 
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Update pacakages
+        run: sudo apt-get update
+
+      - name: Install packages
+        run: sudo apt install ffmpeg libvips libvips-dev wget xvfb --fix-missing
+
+      - name: Install Google Chrome
+        run: set -ex &&
+          wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb &&
+          sudo apt install ./google-chrome-stable_current_amd64.deb
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup ruby 
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: false
+          ruby-version: 3.0.2
+          # ruby version set in ruby-version.yml
+
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Setup test database
+        env:
+          RAILS_ENV: test
+          PGHOST: localhost
+          TWITTER_BEARER_TOKEN: ${{ secrets.TWITTER_BEARER_TOKEN }}
+          INSTAGRAM_USER_NAME: ${{ secrets.INSTAGRAM_USER_NAME }}
+          INSTAGRAM_PASSWORD: ${{ secrets.INSTAGRAM_PASSWORD }}
+          KEY_ENCRYPTION_SALT: ${{ secrets.KEY_ENCRYPTION_SALT }}
+	  ZORKI_SERVER_URL: ${{ secrets.ZORKI_SERVER_URL }}
+	  ZORKI_AUTH_KEY: ${{ secrets.ZORKI_AUTH_KEY }}
+
+        run: bin/rails db:setup
+
+      - name: Compile resources
+        run: rails assets:precompile
+
+      - name: Run RuboCop 
+        run: bundle exec rubocop --parallel
+
+      - name: Run tests
+        env:
+          RAILS_ENV: test
+          PGHOST: localhost
+          TWITTER_BEARER_TOKEN: ${{ secrets.TWITTER_BEARER_TOKEN }}
+          INSTAGRAM_USER_NAME: ${{ secrets.INSTAGRAM_USER_NAME }}
+          INSTAGRAM_PASSWORD: ${{ secrets.INSTAGRAM_PASSWORD }}
+          KEY_ENCRYPTION_SALT: ${{ secrets.KEY_ENCRYPTION_SALT }}
+	  ZORKI_SERVER_URL: ${{ secrets.ZORKI_SERVER_URL }}
+	  ZORKI_AUTH_KEY: ${{ secrets.ZORKI_AUTH_KEY }}
+
+        run: bundle exec rake test

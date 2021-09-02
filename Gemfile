@@ -125,9 +125,8 @@ gem "os"
 gem "shrine", "~> 3.0"
 
 # A differential-hash library for image perceptual hashing. Surprisingly maintained.
-# We don't have it versioned locked because it's been almost a year since one was released, but
-# there's been plenty of commits
-gem "dhash-vips", git: "https://github.com/Nakilon/dhash-vips.git"
+# Version locked in the CI branch to get around ruby installation issues
+gem "dhash-vips", "~> 0.1.1.3"
 
 # Stremio-ffmpeg use the ffmpeg library to process our video files
 gem "streamio-ffmpeg"
