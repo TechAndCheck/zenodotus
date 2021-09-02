@@ -63,6 +63,13 @@ jobs:
         env:
           RAILS_ENV: test
           PGHOST: localhost
+          TWITTER_BEARER_TOKEN: ${{ secrets.TWITTER_BEARER_TOKEN }}
+          INSTAGRAM_USER_NAME: ${{ secrets.INSTAGRAM_USER_NAME }}
+          INSTAGRAM_PASSWORD: ${{ secrets.INSTAGRAM_PASSWORD }}
+          KEY_ENCRYPTION_SALT: ${{ secrets.KEY_ENCRYPTION_SALT }}
+	  ZORKI_SERVER_URL: ${{ secrets.ZORKI_SERVER_URL }}
+	  ZORKI_AUTH_KEY: ${{ secrets.ZORKI_AUTH_KEY }}
+
         run: bin/rails db:setup
 
       - name: Compile resources
@@ -79,4 +86,7 @@ jobs:
           INSTAGRAM_USER_NAME: ${{ secrets.INSTAGRAM_USER_NAME }}
           INSTAGRAM_PASSWORD: ${{ secrets.INSTAGRAM_PASSWORD }}
           KEY_ENCRYPTION_SALT: ${{ secrets.KEY_ENCRYPTION_SALT }}
+	  ZORKI_SERVER_URL: ${{ secrets.ZORKI_SERVER_URL }}
+	  ZORKI_AUTH_KEY: ${{ secrets.ZORKI_AUTH_KEY }}
+
         run: bundle exec rake test
