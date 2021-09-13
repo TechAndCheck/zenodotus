@@ -91,16 +91,6 @@ ActiveRecord::Schema.define(version: 2021_09_13_200056) do
     t.index ["instagram_post_id"], name: "index_instagram_videos_on_instagram_post_id"
   end
 
-  create_table "media_review", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.text "link", null: false
-    t.text "authenticity", null: false
-    t.text "context", null: false
-    t.uuid "archive_item_id"
-    t.index ["archive_item_id"], name: "index_media_review_on_archive_item_id"
-  end
-
   create_table "text_searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "query"
     t.string "user_id"
@@ -172,6 +162,7 @@ ActiveRecord::Schema.define(version: 2021_09_13_200056) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "approved", default: false, null: false
     t.boolean "admin", default: false, null: false
+    t.boolean "restricted", default: false, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -181,7 +172,6 @@ ActiveRecord::Schema.define(version: 2021_09_13_200056) do
   add_foreign_key "api_keys", "users"
   add_foreign_key "instagram_images", "instagram_posts"
   add_foreign_key "instagram_videos", "instagram_posts"
-  add_foreign_key "media_review", "archive_items"
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"
 
