@@ -94,9 +94,9 @@ ActiveRecord::Schema.define(version: 2021_09_13_200056) do
   create_table "media_review", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.text "media_link", null: false
-    t.text "media_authenticity", null: false
-    t.text "media_context", null: false
+    t.text "link", null: false
+    t.text "authenticity", null: false
+    t.text "context", null: false
     t.uuid "archive_item_id"
     t.index ["archive_item_id"], name: "index_media_review_on_archive_item_id"
   end
