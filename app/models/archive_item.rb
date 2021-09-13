@@ -6,6 +6,8 @@ class ArchiveItem < ApplicationRecord
   delegate :images, to: :archivable_item
   delegate :videos, to: :archivable_item
 
+  has_one :media_review, dependent: :destroy
+
   # Creates an +ArchiveEntity
   #
   # @!scope class
