@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_13_200056) do
+ActiveRecord::Schema.define(version: 2021_09_14_143115) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -89,6 +89,16 @@ ActiveRecord::Schema.define(version: 2021_09_13_200056) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["instagram_post_id"], name: "index_instagram_videos_on_instagram_post_id"
+  end
+
+  create_table "media_review", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.text "original_media_link", null: false
+    t.text "media_authenticity_category", null: false
+    t.text "original_media_context_description", null: false
+    t.uuid "archive_item_id"
+    t.index ["archive_item_id"], name: "index_media_review_on_archive_item_id"
   end
 
   create_table "text_searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -172,6 +182,7 @@ ActiveRecord::Schema.define(version: 2021_09_13_200056) do
   add_foreign_key "api_keys", "users"
   add_foreign_key "instagram_images", "instagram_posts"
   add_foreign_key "instagram_videos", "instagram_posts"
+  add_foreign_key "media_review", "archive_items"
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"
 
