@@ -22,5 +22,13 @@ class TextSearchController < ApplicationController
     results = search.run
     @user_search_hits = results[:user_search_hits]
     @post_search_hits = results[:post_search_hits]
+
+    respond_to do | format |
+      if current_user.nil? || current_user.restricted
+        format.html { render "limited_search" }
+      else
+        format.html { render "search" }
+      end
+    end
   end
 end

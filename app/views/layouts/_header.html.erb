@@ -5,9 +5,11 @@
       <div class="flex-shrink mr-6">
         <a href="#">All Collected Media</a>
       </div>
-      <div class="flex-shrink mr-6">
-        <%= link_to "Image Search", image_search_path, "data-turbo-frame": "_top" %>
-      </div>
+      <% unless current_user.nil? || current_user.restricted %>
+        <div class="flex-shrink mr-6">
+          <%= link_to "Image Search", image_search_path, "data-turbo-frame": "_top" %>
+        </div>
+      <% end %>
       <div class="flex-shrink mr-6">
         <%= link_to "Text Search", text_search_path, "data-turbo-frame": "_top" %>
       </div>
