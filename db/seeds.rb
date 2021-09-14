@@ -20,3 +20,25 @@ User.create([{
   admin: false,
   confirmed_at: Time.now
 }])
+
+Sources::Tweet.create_from_url "https://twitter.com/kairyssdal/status/1415029747826905090"
+Sources::Tweet.create_from_url "https://twitter.com/leahstokes/status/1414669810739281920"
+Sources::Tweet.create_from_url "https://twitter.com/dissectpodcast/status/1409323315735384064"
+
+archive_items = ArchiveItem.all
+
+MediaReview.create(original_media_link: "https://twitter.com/kairyssdal/status/1415029747826905090",
+                   media_authenticity_category: "real fake",
+                   original_media_context_description: "not too much context",
+                   archive_item_id: archive_items[0].id)
+
+
+MediaReview.create(original_media_link: "https://twitter.com/leahstokes/status/1414669810739281920",
+                   media_authenticity_category: "Seems legit",
+                   original_media_context_description: "This is an image and that's the context",
+                   archive_item_id: archive_items[1].id)
+
+MediaReview.create(original_media_link: "https://twitter.com/dissectpodcast/status/1409323315735384064",
+                   media_authenticity_category: "Might be real or fake",
+                   original_media_context_description: "Image is warped",
+                   archive_item_id: archive_items[2].id)

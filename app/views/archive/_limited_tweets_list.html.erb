@@ -1,0 +1,7 @@
+<%= turbo_frame_tag "tweets_list" do %>
+  <% archive_items.each do |archive_item| %>
+    <%# This next line introduces a bit of magic to name, it removes the module name before underscoring it all and then assuming the name of the partial. %>
+    <% partial_name = "limited_list_item_#{archive_item.archivable_item_type.gsub("Sources::","").underscore}" %>
+    <%= render partial: partial_name, locals: { archive_item: archive_item } %>
+  <% end %>
+<% end %>
