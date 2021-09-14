@@ -3,17 +3,6 @@
 class ArchiveController < ApplicationController
   # It's the index, list all the archived items
 
-  # before_action :authenticate_user!
-  # before_action :require_login, only: [:submit_url ]
-
-  # def require_login
-  #   unless user_signed_in?
-  #     respond_to do |format|
-  #       format.html { redirect_to new_user_session_path }
-  #     end
-  #   end
-  # end
-
   sig { void }
   def index
     respond_to do | format |
