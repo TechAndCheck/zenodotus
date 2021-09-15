@@ -6,18 +6,30 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-User.create([{
+User.create([
+# admin account
+{
   email: "admin@example.com",
   password: "password123",
   approved: true,
   admin: true,
   confirmed_at: Time.now
 },
+# unapproved account
 {
   email: "user@example.com",
   password: "password123",
   approved: false,
   admin: false,
+  confirmed_at: Time.now
+},
+# restricted account
+{
+  email: "user1@example.com",
+  password: "password123",
+  approved: true,
+  admin: false,
+  restricted: true,
   confirmed_at: Time.now
 }])
 

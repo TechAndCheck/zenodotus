@@ -3,6 +3,8 @@
 class ArchiveController < ApplicationController
   # It's the index, list all the archived items
 
+  before_action :authenticate_user!
+
   sig { void }
   def index
     respond_to do | format |
