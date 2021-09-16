@@ -25,7 +25,14 @@ class ArchiveItem < ApplicationRecord
 
     # This results in two database saves per creation, which isn't great.
     # However, we'll refactor another time after it works
-    object.update!({ media_review: media_review })
+
+    MediaReview.create(
+      original_media_link: url,
+      media_authenticity_category: media_review["mediaAuthenticityCategory"],
+      original_media_context_description: media_review["originalMediaContextDescription"],
+      archive_item_id: object.id
+    )
+    # object.update!({ media_review: media_review })
     object
   end
 

@@ -80,7 +80,7 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
           },
           {
             "@type": "VideoObjectSnapshot",
-            "contentUrl": "https://www.instagram.com/p/CNtao_WA0Dr/",
+            "contentUrl": "https://twitter.com/MariahCarey/status/1438419033267871746",
             "archivedAt": "https://archive.is/EXAMPLE"
           }
         ]
@@ -105,6 +105,5 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
 
     post = ArchiveItem.find(json["media_object_id"])
     assert_not_nil post
-    assert_not_empty post.media_review
   end
 end
