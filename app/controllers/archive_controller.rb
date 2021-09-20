@@ -32,10 +32,6 @@ class ArchiveController < ApplicationController
   # @params {url_to_archive} the url to pull in
   sig { void }
   def submit_url
-    # unless user_signed_in?
-    #   format.html { redirect_to :new_user_session_path }
-    #   return
-    # end
     typed_params = TypedParams[SubmitUrlParams].new.extract!(params)
     url = typed_params.url_to_archive
     object_model = ArchiveItem.model_for_url(url)

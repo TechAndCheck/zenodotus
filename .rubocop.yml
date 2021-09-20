@@ -50,7 +50,7 @@ Metrics/AbcSize:
   Enabled: false
 
 Metrics/ClassLength:
-  Enabled: true
+  Enabled: false
 
 Lint/RescueException:
   Enabled: true
