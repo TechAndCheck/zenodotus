@@ -14,6 +14,7 @@ protected
 
   sig { void }
   def authenticate_user_from_api_key!
+    # return true
     if params[:api_key].blank?
       render json: {
         error: "Unauthorized credentials, please check your API Key"
