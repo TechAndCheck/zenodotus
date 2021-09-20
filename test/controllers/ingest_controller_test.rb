@@ -2,6 +2,7 @@
 
 require "test_helper"
 
+# rubocop:disable ClassLength
 class IngestControllerTest < ActionDispatch::IntegrationTest
   test "Submitting an API request without a key will return 401 error" do
     post ingest_api_raw_path, params: { media_review_json: { title: "Ahoy!" }.to_json }, as: :json
@@ -107,7 +108,7 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
     assert_not_nil post
   end
 
-  test "can process embedded media review" do
+  test "can archive MediaReview from a webpage" do
     post ingest_api_url_path, params: { url: "https://oneroyalace.github.io/MediaReview-Fodder/single_embedded_media_review.html", api_key: "123456789" }
     assert_response 200
 
@@ -123,7 +124,7 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
     assert_equal "Successfully archived 1 MediaReview object(s) and associated media", json["response"]
   end
 
-  test "can process multiple embedded media review" do
+  test "can archive multiple MediaReview from a webpage" do
     post ingest_api_url_path, params: { url: "https://oneroyalace.github.io/MediaReview-Fodder/multiple_embedded_media_review.html", api_key: "123456789" }
     assert_response 200
 
@@ -139,7 +140,7 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
     assert_equal "Successfully archived 2 MediaReview object(s) and associated media", json["response"]
   end
 
-  test "Can process pages with no MediaReview" do
+  test "return 400 if passed a url that points to a page with no MediaReview" do
     post ingest_api_url_path, params: { url: "https://oneroyalace.github.io/MediaReview-Fodder/no_embedded_media_review.html", api_key: "123456789" }
     assert_response 400
 
@@ -155,3 +156,4 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
     assert_equal "Could not find MediaReview in webpage", json["response"]
   end
 end
+# rubocop:enable ClassLength

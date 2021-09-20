@@ -95,7 +95,7 @@ class IngestController < ApplicationController
     typed_params = TypedParams[SubmitMediaReviewSourceParams].new.extract!(params)
     mediareview_array = find_media_review_in_page typed_params.url
 
-    unless mediareview_array.length > 0
+    unless mediareview_array.length.positive?
       failure_response = {
         response_code: 40,
         response: "Could not find MediaReview in webpage"
@@ -109,13 +109,13 @@ class IngestController < ApplicationController
       archive_from_media_review review
     end
 
-    archive_success = responses.all? { |response| !response.has_key?(:error)}
+    archive_success = responses.all? { |response| !response.has_key?(:error) }
     if archive_success
       success_response = {
         response_code: ApiResponseCodes::Success.code,
         response: "Successfully archived #{responses.length} MediaReview object(s) and associated media"
       }
-      render(json: success_response, status:200 )
+      render(json: success_response, status: 200)
       return
     end
 
@@ -178,12 +178,12 @@ class IngestController < ApplicationController
 
   private
 
-  # Validate MediaReview that was passed in
-  sig { params(media_review: Hash).returns(T::Boolean) }
-  def validate_media_review(media_review)
-    schema = File.open("public/json-schemas/claim-review-schema.json").read
-    JSONSchemer.schema(schema).valid?(media_review)
-  rescue StandardError
-    false
-  end
+    # Validate MediaReview that was passed in
+    sig { params(media_review: Hash).returns(T::Boolean) }
+    def validate_media_review(media_review)
+      schema = File.open("public/json-schemas/claim-review-schema.json").read
+      JSONSchemer.schema(schema).valid?(media_review)
+    rescue StandardError
+      false
+    end
 end
