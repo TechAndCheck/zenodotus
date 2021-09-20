@@ -32,7 +32,6 @@ class ArchiveItem < ApplicationRecord
       original_media_context_description: media_review["originalMediaContextDescription"],
       archive_item_id: object.id
     )
-    # object.update!({ media_review: media_review })
     object
   end
 

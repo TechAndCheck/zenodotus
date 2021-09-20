@@ -2,7 +2,6 @@
 
 require "test_helper"
 
-# rubocop:disable ClassLength
 class IngestControllerTest < ActionDispatch::IntegrationTest
   test "Submitting an API request without a key will return 401 error" do
     post ingest_api_raw_path, params: { media_review_json: { title: "Ahoy!" }.to_json }, as: :json
@@ -156,4 +155,3 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
     assert_equal "Could not find MediaReview in webpage", json["response"]
   end
 end
-# rubocop:enable ClassLength
