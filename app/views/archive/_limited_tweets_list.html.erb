@@ -1,0 +1,6 @@
+<%= turbo_frame_tag "tweets_list" do %>
+  <% archive_items.each do |archive_item| %>
+    <% partial_name = "limited_list_item_#{archive_item.archivable_item_type.gsub("Sources::","").underscore}" %>
+    <%= render partial: partial_name, locals: { archive_item: archive_item } %>
+  <% end %>
+<% end %>

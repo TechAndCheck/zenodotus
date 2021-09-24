@@ -8,6 +8,8 @@ class Sources::Tweet < ApplicationRecord
   has_many :videos, foreign_key: :tweet_id, class_name: "MediaModels::Videos::TwitterVideo", dependent: :destroy
   accepts_nested_attributes_for :videos, allow_destroy: true
 
+  # has_one :media_review, foreign_key: :archive_item_id, class_name: "MediaReview", dependent: :destroy
+
   # The `TwitterUser` that is the author of this tweet.
   belongs_to :author, class_name: "TwitterUser"
 

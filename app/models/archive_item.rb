@@ -5,9 +5,9 @@ class ArchiveItem < ApplicationRecord
   delegate :service_id, to: :archivable_item
   delegate :images, to: :archivable_item
   delegate :videos, to: :archivable_item
+  # delegate :media_review, to: :archivable_item
 
-  has_one :media_review, dependent: :destroy
-
+  has_one :media_review, dependent: :destroy, foreign_key: :archive_item_id
   # Creates an +ArchiveEntity
   #
   # @!scope class
@@ -25,7 +25,13 @@ class ArchiveItem < ApplicationRecord
 
     # This results in two database saves per creation, which isn't great.
     # However, we'll refactor another time after it works
-    object.update!({ media_review: media_review })
+
+    MediaReview.create(
+      original_media_link: url,
+      media_authenticity_category: media_review["mediaAuthenticityCategory"],
+      original_media_context_description: media_review["originalMediaContextDescription"],
+      archive_item_id: object.id
+    )
     object
   end
 
