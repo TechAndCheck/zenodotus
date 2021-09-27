@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_14_145948) do
+ActiveRecord::Schema.define(version: 2021_09_27_202952) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -91,6 +91,32 @@ ActiveRecord::Schema.define(version: 2021_09_14_145948) do
     t.index ["instagram_post_id"], name: "index_instagram_videos_on_instagram_post_id"
   end
 
+  create_table "media_item_appearances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "type"
+    t.text "description"
+    t.text "content_url"
+    t.text "archived_at"
+    t.uuid "media_review_item_id", null: false
+    t.index ["media_review_item_id"], name: "index_media_item_appearances_on_media_review_item_id"
+  end
+
+  create_table "media_review_authors", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "type"
+    t.text "name"
+    t.text "url"
+  end
+
+  create_table "media_review_item_authors", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "type"
+    t.text "name"
+    t.text "url"
+    t.uuid "media_review_item_id", null: false
+    t.index ["media_review_item_id"], name: "index_media_review_item_authors_on_media_review_item_id"
+  end
+
+  create_table "media_review_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  end
+
   create_table "media_reviews", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -98,6 +124,7 @@ ActiveRecord::Schema.define(version: 2021_09_14_145948) do
     t.text "media_authenticity_category", null: false
     t.text "original_media_context_description", null: false
     t.uuid "archive_item_id", null: false
+    t.datetime "date_published"
     t.index ["archive_item_id"], name: "index_media_reviews_on_archive_item_id"
   end
 
@@ -182,6 +209,8 @@ ActiveRecord::Schema.define(version: 2021_09_14_145948) do
   add_foreign_key "api_keys", "users"
   add_foreign_key "instagram_images", "instagram_posts"
   add_foreign_key "instagram_videos", "instagram_posts"
+  add_foreign_key "media_item_appearances", "media_review_items"
+  add_foreign_key "media_review_item_authors", "media_review_items"
   add_foreign_key "media_reviews", "archive_items"
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"
