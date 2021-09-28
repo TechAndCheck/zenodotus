@@ -1,11 +1,12 @@
 # typed:false
 
 class ArchiveItem < ApplicationRecord
+  include ::ApplicationHelper
+
   delegated_type :archivable_item, types: %w[ Sources::Tweet Sources::InstagramPost ]
   delegate :service_id, to: :archivable_item
   delegate :images, to: :archivable_item
   delegate :videos, to: :archivable_item
-  # delegate :media_review, to: :archivable_item
 
   has_one :media_review, dependent: :destroy, foreign_key: :archive_item_id
   # Creates an +ArchiveEntity
@@ -26,14 +27,23 @@ class ArchiveItem < ApplicationRecord
     # This results in two database saves per creation, which isn't great.
     # However, we'll refactor another time after it works
 
-    MediaReview.create(
-      original_media_link: url,
-      media_authenticity_category: media_review["mediaAuthenticityCategory"],
+    # byebug
+    media_review_object = MediaReviewModels::MediaReview.create(
+      original_media_link: url,  # remove? Not in schema
+      media_authenticity_category: media_review["mediaAuthenticityCategory"], # enum?
       original_media_context_description: media_review["originalMediaContextDescription"],
-      archive_item_id: object.id
+      archive_item_id: object.id,
+      date_published: media_review["datePublished"],
+      media_review_author_attributes: ApplicationHelper.clean_schema_org_hash(media_review["author"]),
+      media_review_item_attributes: {
+        media_item_appearance_attributes: media_review["itemReviewed"]["mediaItemAppearance"].map { |item| ApplicationHelper.clean_schema_org_hash(item) },
+        media_review_item_author_attributes: ApplicationHelper.clean_schema_org_hash(media_review["itemReviewed"]["creator"]),
+        interpreted_as_claim: media_review["itemReviewed"]["interpretedAsClaim"]["description"]
+      }
     )
     object
   end
+
 
   # Return a class that can handle a given +url+
   sig { params(url: String).returns(T.nilable(Class)) }
@@ -74,4 +84,5 @@ class ArchiveItem < ApplicationRecord
   def instagram_post
     self.sources_instagram_post
   end
+
 end

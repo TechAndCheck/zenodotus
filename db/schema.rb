@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(version: 2021_09_27_202952) do
   end
 
   create_table "media_item_appearances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.text "type"
+    t.text "_type"
     t.text "description"
     t.text "content_url"
     t.text "archived_at"
@@ -101,13 +101,15 @@ ActiveRecord::Schema.define(version: 2021_09_27_202952) do
   end
 
   create_table "media_review_authors", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.text "type"
+    t.text "_type"
     t.text "name"
     t.text "url"
+    t.uuid "media_review_id", null: false
+    t.index ["media_review_id"], name: "index_media_review_authors_on_media_review_id"
   end
 
   create_table "media_review_item_authors", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.text "type"
+    t.text "_type"
     t.text "name"
     t.text "url"
     t.uuid "media_review_item_id", null: false
@@ -115,6 +117,10 @@ ActiveRecord::Schema.define(version: 2021_09_27_202952) do
   end
 
   create_table "media_review_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "interpreted_as_claim"
+    t.uuid "media_review_id", null: false
+    t.index ["media_review_id"], name: "index_media_review_items_on_media_review_id"
+
   end
 
   create_table "media_reviews", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -210,6 +216,8 @@ ActiveRecord::Schema.define(version: 2021_09_27_202952) do
   add_foreign_key "instagram_images", "instagram_posts"
   add_foreign_key "instagram_videos", "instagram_posts"
   add_foreign_key "media_item_appearances", "media_review_items"
+  add_foreign_key "media_review_authors", "media_reviews"
+  add_foreign_key "media_review_items", "media_reviews"
   add_foreign_key "media_review_item_authors", "media_review_items"
   add_foreign_key "media_reviews", "archive_items"
   add_foreign_key "twitter_images", "tweets"

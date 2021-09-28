@@ -1,7 +1,7 @@
 class CreateMediaReviewItemAuthor < ActiveRecord::Migration[6.1]
   def change
     create_table :media_review_item_authors, id: :uuid do |t|
-      t.text :type
+      t.text :_type
       t.text :name
       t.text :url
 

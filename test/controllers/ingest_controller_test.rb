@@ -105,6 +105,15 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
 
     post = ArchiveItem.find(json["media_object_id"])
     assert_not_nil post
+
+    # Check that MediaReview and associated models were properly created
+    media_review = MediaReviewModels::MediaReview.first
+    assert_equal media_review.date_published, "2021-04-27"
+    assert_not_nil media_review.media_review_author
+    assert_equal media_review.media_review_author.name, "PolitiFact"
+    assert_not_nil media_review.media_review_item
+    assert_equal media_review.media_review_item.media_item_appearance[1]._type, "VideoObjectSnapshot"
+
   end
 
   test "can archive MediaReview from a webpage" do
