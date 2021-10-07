@@ -1,5 +1,7 @@
 # typed: ignore
 class TextSearchController < ApplicationController
+  before_action :authenticate_user!
+
   sig { void }
   def index
     @search = TextSearch.new
@@ -18,7 +20,7 @@ class TextSearchController < ApplicationController
   def search
     typed_params = TypedParams[SubmitUrlParams].new.extract!(params)
     # Create a search object
-    search = TextSearch.create(query: typed_params.query)
+    search = TextSearch.create(query: typed_params.query, user_id: current_user.id)
     results = search.run
     @user_search_hits = results[:user_search_hits]
     @post_search_hits = results[:post_search_hits]
