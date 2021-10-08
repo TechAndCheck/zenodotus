@@ -20,7 +20,7 @@ class TextSearchController < ApplicationController
   def search
     typed_params = TypedParams[SubmitUrlParams].new.extract!(params)
     # Create a search object
-    search = TextSearch.create(query: typed_params.query, user_id: current_user.id)
+    search = TextSearch.create(query: typed_params.query, user: current_user)
     results = search.run
     @user_search_hits = results[:user_search_hits]
     @post_search_hits = results[:post_search_hits]
