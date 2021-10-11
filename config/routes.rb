@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   get "/archive/add", to: "archive#add"
   post "/archive/add", to: "archive#submit_url"
 
+  get "/archive/download", to: "archive#export_archive_data", as: "archive_download"
+
   post "/ingest/submit_media_review", to: "ingest#submit_media_review", as: "ingest_api_raw"
   post "/ingest/submit_media_review_source", to: "ingest#submit_media_review_source", as: "ingest_api_url"
 
@@ -26,5 +28,6 @@ Rails.application.routes.draw do
   post "/settings/deny", to: "settings#denyUserRequest", as: "deny_request"
 
   resources :twitter_users, only: [:show]
+  get "/twitter_users/:id/download", to: "twitter_users#export_tweeter_data", as: "user_download"
   resources :instagram_users, only: [:show]
 end

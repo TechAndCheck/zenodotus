@@ -70,4 +70,9 @@ class ArchiveController < ApplicationController
       format.html { redirect_to :root }
     end
   end
+
+  def export_archive_data
+    archive_json = helpers.prune_archive_items(ArchiveItem.all)
+    send_data archive_json, type: "application/json; header=present", disposition: "attachment; filename=archive.json"
+  end
 end
