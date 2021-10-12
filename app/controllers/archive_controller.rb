@@ -71,8 +71,9 @@ class ArchiveController < ApplicationController
     end
   end
 
+  # Export entire archive of reviewed media to a JSON File
   def export_archive_data
-    archive_json = helpers.prune_archive_items(ArchiveItem.all)
+    archive_json = ArchiveItem.prune_archive_items
     send_data archive_json, type: "application/json; header=present", disposition: "attachment; filename=archive.json"
   end
 end

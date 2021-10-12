@@ -19,15 +19,15 @@
         </ul>
       </div>
     </div>
-    <div>
+    <div class="flex">
       <h1 class="text-xl text-green-400 font-medium title-font mb-4">Archived Media Items</h1>
-      <a href="#">
+      <a class="px-2" href="#">
         <%= link_to user_download_path do %>
-          ↓
+          <span class="text-xl font-medium title-font mb-4">↓</span>
         <% end %>
       </a>
-      <div class="h-1 w-50 bg-pink-200 rounded"></div>
     </div>
+    <div class="h-1 w-50 bg-pink-200 rounded"></div>
     <div class="flex flex-wrap-m-4">
       <% @archive_items.each do |tweet| %>
       <div class="xl:w-1/2 md:w-1 p-4">
