@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   post "/settings/deny", to: "settings#denyUserRequest", as: "deny_request"
 
   resources :twitter_users, only: [:show]
-  get "/twitter_users/:id/download", to: "twitter_users#export_tweeter_data", as: "user_download"
   resources :instagram_users, only: [:show]
+  get "/instagram_users/:id/download", to: "instagram_users#export_instagram_user_data", as: "instagram_user_download"
+  get "/twitter_users/:id/download", to: "twitter_users#export_tweeter_data", as: "twitter_user_download"
 end
