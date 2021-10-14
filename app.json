@@ -1,0 +1,83 @@
+{
+  "name": "zenodotus",
+  "description": "An archive for MediaReview media by the Duke Reporters' Lab at Duke University.",
+  "scripts": {
+    "postdeploy": "bin/setup"
+  },
+  "addons": [
+    "memcachier",
+    {
+      "plan" : "heroku-postgresql:hobby-basic"
+    },
+    "scheduler",
+    "heroku-redis",
+  ],
+  "env": {
+    "HEROKU_APP_NAME": {
+      "description": "Heroku auto-injects this app's hostname into the env when using review apps. We use it to determine if we're in a review app. https://devcenter.heroku.com/articles/github-integration-review-apps#injected-environment-variables",
+      "required": false
+    },
+    "LANG": {
+      "description": "Document language and encoding supplied with HTTP responses",
+      "value": "en_US.UTF-8",
+      "required": true
+    },
+    "RACK_ENV": {
+      "description": "Rack environment; defaults to same as RAILS_ENV",
+      "required": true
+    },
+    "RAILS_LOG_TO_STDOUT": {
+      "description": "Configures Rails to log to stdout, which we pick up with log monitoring add-ons",
+      "value": "true",
+      "required": true
+    },
+    "RAILS_SERVE_STATIC_FILES": {
+      "description": "Configures Rails to generate and serve static files directly without using an external asset server",
+      "value": "true",
+      "required": true
+    },
+    "SECRET_KEY_BASE": {
+      "description": "Secret salt used for generating random things such as UUIDs; required, but generated and rotated by hand to control session kills",
+      "required": true
+    },
+    "MEMCACHIER_SERVERS": {
+      "description": "Server address for Memcachier, Heroku's memcache add-on",
+      "required": false
+    },
+    "MEMCACHIER_USERNAME": {
+      "description": "Username for Memcachier, Heroku's memcache add-on",
+      "required": false
+    },
+    "MEMCACHIER_PASSWORD": {
+      "description": "Password for Memcachier, Heroku's memcache add-on",
+      "required": false
+    },
+    "MALLOC_ARENA_MAX": {
+      "description": "Recommended to be set to '2' to manage Sidekiq's memory usage.",
+      "value": "2",
+      "required": false
+    }
+  },
+  "formation": {
+    "worker": {
+      "quantity": 1
+    },
+    "web": {
+      "quantity": 1
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-activestorage-preview"
+    },
+    {
+      "url": "https://github.com/brandoncc/heroku-buildpack-vips"
+    },
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku/ruby"
+    }
+  ]
+}
