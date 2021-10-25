@@ -71,7 +71,7 @@
       "url": "https://github.com/heroku/heroku-buildpack-activestorage-preview"
     },
     {
-      "url": "https://github.com/brandoncc/heroku-buildpack-vips"
+      "url": "heroku-community/apt"
     },
     {
       "url": "heroku/nodejs"
