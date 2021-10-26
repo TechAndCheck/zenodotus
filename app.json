@@ -4,6 +4,7 @@
   "scripts": {
     "postdeploy": "bin/setup"
   },
+  "stack": "heroku-20-build",
   "addons": [
     "memcachier",
     {
