@@ -139,6 +139,7 @@ gem "streamio-ffmpeg"
 
 # gem "zorki", "0.1.0", git: "https://github.com/cguess/zorki"
 gem "birdsong", "0.1.0", git: "https://github.com/cguess/birdsong"
+gem "forki", git: "https://www.github.com/oneroyalace/forki"
 
 # A progress bar for our Rake tasks
 gem "ruby-progressbar"
