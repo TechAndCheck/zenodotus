@@ -7,4 +7,3 @@ class MediaModels::Videos::FacebookVideo < ApplicationRecord
   # it's added to the model itself.
   belongs_to :facebook_post, optional: true
 end
-

@@ -16,4 +16,3 @@ class MediaModels::Images::FacebookImage < ApplicationRecord
     self.facebook_post
   end
 end
-

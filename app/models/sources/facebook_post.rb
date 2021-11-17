@@ -110,4 +110,3 @@ class Sources::FacebookPost < ApplicationRecord
     facebook_id
   end
 end
-
