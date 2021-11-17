@@ -1,5 +1,6 @@
 # typed: true
 class FacebookMediaSource < MediaSource
+  include Forki
   attr_reader(:url)
 
   # Limit all urls to the host below
@@ -23,6 +24,20 @@ class FacebookMediaSource < MediaSource
     object.retrieve_facebook_post
   end
 
+  # Validate that the url is a direct link to a post, poorly
+  #
+  # @note this assumes a valid url or else it'll always (usually, maybe, whatever) fail
+  #
+  # @!scope class
+  # @!visibility private
+  # @params url [String] a url to check if it's a valid Instagram post url
+  # @return [Boolean] if the string validates or not
+  sig { params(url: String).returns(T::Boolean) }
+  def self.validate_facebook_post_url(url)
+    return true if /facebook.com\//.match?(url)
+    raise InvalidFacebookPostUrlError, "Facebook url #{url} does not have the standard url format"
+  end
+
   # Initialize the object and capture the screenshot automatically.
   #
   # @params url [String] the url of the page to be collected for archiving
@@ -42,6 +57,7 @@ class FacebookMediaSource < MediaSource
   # @return [Forki::Post]
   sig { returns(T::Array[Hash]) }
   def retrieve_facebook_post
+    # Forki::Post.lookup(@url)
     response = Typhoeus.get(
       Figaro.env.FORKI_SERVER_URL,
       followlocation: true,

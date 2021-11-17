@@ -9,5 +9,5 @@ Figaro.require_keys("ZORKI_SERVER_URL")
 Figaro.require_keys("ZORKI_AUTH_KEY")
 
 # The URL and auth key for the external Forki gem scraper
-Figaro.require_keys("FORKI_SERVER_URL")
-Figaro.require_keys("FORKI_AUTH_KEY")
+# Figaro.require_keys("FORKI_SERVER_URL")
+# Figaro.require_keys("FORKI_AUTH_KEY")

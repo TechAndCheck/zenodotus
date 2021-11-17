@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_14_145948) do
+ActiveRecord::Schema.define(version: 2021_11_14_190655) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -39,6 +39,49 @@ ActiveRecord::Schema.define(version: 2021_09_14_145948) do
     t.string "archivable_item_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "facebook_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "facebook_post_id"
+    t.jsonb "image_data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["facebook_post_id"], name: "index_facebook_images_on_facebook_post_id"
+  end
+
+  create_table "facebook_posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "text"
+    t.index ["author_id"], name: "index_facebook_posts_on_author_id"
+    t.datetime "posted_at"
+    t.text "facebook_id"
+    t.jsonb "reactions"
+    t.integer "num_comments"
+    t.integer "num_shares"
+    t.integer "num_views"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.uuid "author_id", null: false
+    t.text "url", null: false
+  end
+
+  create_table "facebook_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.boolean "verified"
+    t.integer "followers_count"
+    t.integer "likes_count"
+    t.string "url"
+    t.jsonb "profile_image_data"
+    t.string "profile_image_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "facebook_videos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "facebook_post_id"
+    t.jsonb "video_data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["facebook_post_id"], name: "index_facebook_videos_on_facebook_post_id"
   end
 
   create_table "image_searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -181,6 +224,8 @@ ActiveRecord::Schema.define(version: 2021_09_14_145948) do
   end
 
   add_foreign_key "api_keys", "users"
+  add_foreign_key "facebook_images", "facebook_posts"
+  add_foreign_key "facebook_videos", "facebook_posts"
   add_foreign_key "instagram_images", "instagram_posts"
   add_foreign_key "instagram_videos", "instagram_posts"
   add_foreign_key "media_reviews", "archive_items"
