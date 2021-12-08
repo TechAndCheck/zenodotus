@@ -15,21 +15,28 @@ class ScraperJob < ApplicationJob
 
       puts "----queue------"
       puts queue
+      ActionCable.server.broadcast("jobs_channel", {jobs: queue})
       # Send queue to ActionCable
     end
   end
 
   after_perform do |job|
-    Sidekiq::Queue.new.map do |job|
-      {
-        task: "scrape",
-        url: JSON.parse(job.value)["args"]["arguments"].last
-      }
+    if Sidekiq::Queue.new.size.zero?
+      ActionCable.server.broadcast("jobs_channel", { jobs: [] })
+    else
+      queue = Sidekiq::Queue.new.map do |job|
+        {
+          task: "scrape",
+          url: JSON.parse(job.value)["args"]["arguments"].last
+        }
+      end
+      ActionCable.server.broadcast("jobs_channel", { jobs: queue })
     end
   end
 
   def perform(media_source_class, media_model, url)
     media_item = media_source_class.extract(url)
     media_model.create_from_hash(media_item)
+    byebug
   end
 end
