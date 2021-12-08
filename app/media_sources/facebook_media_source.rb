@@ -30,7 +30,7 @@ class FacebookMediaSource < MediaSource
   #
   # @!scope class
   # @!visibility private
-  # @params url [String] a url to check if it's a valid Instagram post url
+  # @params url [String] a url to check if it's a valid Facebook post url
   # @return [Boolean] if the string validates or not
   sig { params(url: String).returns(T::Boolean) }
   def self.validate_facebook_post_url(url)

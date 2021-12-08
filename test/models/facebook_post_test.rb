@@ -34,7 +34,7 @@ class FacebookPostTest < ActiveSupport::TestCase
     @forki_post2 = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/a.108824087345859/166370841591183")
     archive_item = Sources::FacebookPost.create_from_forki_hash(@forki_post).first.facebook_post
     archive_item2 = Sources::FacebookPost.create_from_forki_hash(@forki_post2).first.facebook_post
-    assert_equal archive_item.author, archive_item2.author
+    assert_equal archive_item.author.name, archive_item2.author.name
   end
 
   test "assert_url_can_be_checked" do
