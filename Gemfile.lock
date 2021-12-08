@@ -103,6 +103,7 @@ GEM
     commander (4.6.0)
       highline (~> 2.0.0)
     concurrent-ruby (1.1.9)
+    connection_pool (2.2.5)
     content_disposition (1.0.0)
     crass (1.0.6)
     devise (4.8.0)
@@ -301,6 +302,10 @@ GEM
     shrine (3.4.0)
       content_disposition (~> 1.0)
       down (~> 5.1)
+    sidekiq (6.3.1)
+      connection_pool (>= 2.2.2)
+      rack (~> 2.0)
+      redis (>= 4.2.0)
     simplecov (0.21.2)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -423,6 +428,7 @@ DEPENDENCIES
   scenic (~> 1.5.4)
   selenium-webdriver
   shrine (~> 3.0)
+  sidekiq (~> 6.3.1)
   simplecov
   sorbet
   sorbet-rails
