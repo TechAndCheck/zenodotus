@@ -29,6 +29,12 @@ class InstagramPostTest < ActiveSupport::TestCase
     assert_not_nil Sources::InstagramPost.create_from_url("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
   end
 
+  test "can create from Instagram url using ActiveJob" do
+    Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
+    perform_enqueued_jobs
+    assert_not_nil Sources::InstagramPost.where(instagram_id: "CBcqOkyDDH8")
+  end
+
   test "can create two tweets from same author" do
     @zorki_post2 = InstagramMediaSource.extract("https://www.instagram.com/p/CQDeYPhMJLG/")
     archive_item = Sources::InstagramPost.create_from_zorki_hash(@zorki_post).first.instagram_post
