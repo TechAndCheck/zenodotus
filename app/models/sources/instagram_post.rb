@@ -22,7 +22,7 @@ class Sources::InstagramPost < ApplicationRecord
 
   # update materialized view when a new tweet is added
   after_commit on: [:create, :destroy] do
-    UnifiedTableRefreshJob.perform_later
+    # UnifiedTableRefreshJob.perform_later
   end
 
   # Returns a +boolean+ on whether this class can handle the URL passed in.

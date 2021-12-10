@@ -57,7 +57,6 @@ class FacebookMediaSource < MediaSource
   # @return [Forki::Post]
   sig { returns(T::Array[Hash]) }
   def retrieve_facebook_post
-    # Forki::Post.lookup(@url)
     response = Typhoeus.get(
       Figaro.env.FORKI_SERVER_URL,
       followlocation: true,

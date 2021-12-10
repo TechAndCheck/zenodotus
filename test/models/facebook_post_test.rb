@@ -1,6 +1,8 @@
 require "test_helper"
 
 class FacebookPostTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
   def setup
     @forki_post = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/a.108824087345859/336596487901950")
   end
@@ -26,8 +28,16 @@ class FacebookPostTest < ActiveSupport::TestCase
     assert_not_nil archive_item.facebook_post.images
   end
 
-  test "can create from Facebook url" do
+  test "can archive Facebook post from url" do
     assert_not_nil Sources::FacebookPost.create_from_url("https://www.facebook.com/Meta/photos/460964425465155")
+  end
+
+  test "can create Facebook post from url using activejob" do
+    Sources::FacebookPost.create_from_url!("https://www.facebook.com/Meta/photos/460964425465155")
+    perform_enqueued_jobs
+
+    facebook_post = Sources::FacebookPost.where(url: "https://www.facebook.com/Meta/photos/460964425465155").first
+    assert_not_nil facebook_post
   end
 
   test "can create two facebook posts from same author" do

@@ -48,6 +48,20 @@ class Sources::FacebookPost < ApplicationRecord
     Sources::FacebookPost.create_from_forki_hash(forki_post).first
   end
 
+  # Spawns an ActiveJob tasked with creating an +ArchiveItem+ from a +url+ as a string
+  #
+  # @!scope class
+  # @params url String a string of a url
+  # returns ScraperJob
+  sig { params(url: String).returns(ScraperJob) }
+  def self.create_from_url!(url)
+    ScraperJob.perform_later(FacebookMediaSource, Sources::FacebookPost, url)
+  end
+
+  def self.create_from_hash(forki_posts)
+    create_from_forki_hash(forki_posts)
+  end
+
   # Create a +ArchiveItem+ from a +Zorki::Post+
   #
   # @!scope class
