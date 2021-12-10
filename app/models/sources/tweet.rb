@@ -37,16 +37,29 @@ class Sources::Tweet < ApplicationRecord
     false
   end
 
-  # Create a +ArchiveItem+ from a +url+ as a string
+  # Create an +ArchiveItem+ from a +url+ as a string
   #
   # @!scope class
   # @params url String a string of a url
-  # returns ArchiveItem with type Tweet that have been
-  #   saved to the graph database
+  # returns ArchiveItem with type Tweet that has been saved to the database
   sig { params(url: String).returns(ArchiveItem) }
   def self.create_from_url(url)
     birdsong_tweet = TwitterMediaSource.extract(url)
     Sources::Tweet.create_from_birdsong_hash(birdsong_tweet).first
+  end
+
+  # Spawns an ActiveJob tasked with creating an +ArchiveItem+ from a +url+ as a string
+  #
+  # @!scope class
+  # @params url String a string of a url
+  # returns ScraperJob
+  sig { params(url: String).returns(ScraperJob) }
+  def self.create_from_url!(url)
+    ScraperJob.perform_later(TwitterMediaSource, Sources::Tweet, url)
+  end
+
+  def self.create_from_hash(birdsong_tweets)
+    create_from_birdsong_hash(birdsong_tweets)
   end
 
   # Create a +ArchiveItem+ from a +Birdsong::Tweet+
@@ -55,7 +68,7 @@ class Sources::Tweet < ApplicationRecord
   # @params birdsong_tweets [Array[Birdsong:Tweet]] an array of tweets grabbed from Birdsong
   # @returns [Array[ArchiveItem]] an array of ArchiveItem with type Tweet that have been
   #   saved to the graph database
-  sig { params(birdsong_tweets: T::Array[Birdsong::Tweet]).returns(T::Array[ArchiveItem]) }
+  # sig { params(birdsong_tweets: T::Array[Birdsong::Tweet]).returns(T::Array[ArchiveItem]) }
   def self.create_from_birdsong_hash(birdsong_tweets)
     birdsong_tweets.map do |birdsong_tweet|
       twitter_user = Sources::TwitterUser.create_from_birdsong_hash([birdsong_tweet.author]).first.twitter_user
