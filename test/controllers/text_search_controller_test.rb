@@ -13,11 +13,9 @@ class ArchiveControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:user1)
 
     # And then search
-    get text_search_submit_url, params: {query: "Biden"}
+    get text_search_submit_url, params: { query: "Biden" }
 
     assert_response 200
     assert_equal TextSearch.all.length, 1
   end
-
 end
-
