@@ -25,6 +25,8 @@ Rails.application.routes.draw do
   post "/settings/approve", to: "settings#approveUserRequest", as: "approve_request"
   post "/settings/deny", to: "settings#denyUserRequest", as: "deny_request"
 
+  get "/jobs", to: "jobs_status#index", as: "jobs_status"
+
   resources :twitter_users, only: [:show]
   resources :instagram_users, only: [:show]
 end

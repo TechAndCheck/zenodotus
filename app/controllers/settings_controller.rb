@@ -1,11 +1,8 @@
 # frozen_string_literal: true
 
 class SettingsController < ApplicationController
-  # before_action :authenticate_user!
+  require 'sidekiq/api'
 
-  def index
-    puts "what's there to say?"
-  end
 
   def approveUserRequest
     user = User.find(params[:user])
