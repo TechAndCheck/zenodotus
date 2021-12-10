@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SettingsController < ApplicationController
-  require 'sidekiq/api'
+  require "sidekiq/api"
 
 
   def approveUserRequest
