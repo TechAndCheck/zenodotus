@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.0.2"
+ruby "3.0.3"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 6.1.0"
@@ -51,8 +51,8 @@ group :development, :test do
   gem "rubocop-rails", require: false # Rails specific styles
   gem "rubocop-rails_config", require: false # More Rails stuff
   gem "rubocop-performance", require: false # Performance checks
-  # gem "rubocop-sorbet", require: false # Check Sorbet
-  # gem "rubocop-minitest", require: false # For checking tests
+  gem "rubocop-sorbet", require: false # Check Sorbet
+  gem "rubocop-minitest", require: false # For checking tests
 end
 
 group :development do
@@ -66,7 +66,7 @@ group :development do
   gem "spring"
 
   # Sorbet is a type-checker for Ruby. We prefer statically-defined types when possible
-  # gem "sorbet"
+  gem "sorbet"
   # This is required for Ruby 3 from Sorbet
   gem "sorted_set"
 
@@ -93,10 +93,10 @@ end
 # gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # The production runtime for sorbet
-# gem "sorbet-runtime"
+gem "sorbet-runtime"
 
 # Rails specific features for Sorbet
-# gem "sorbet-rails"
+gem "sorbet-rails"
 
 # For validating URL, the fork adds array of urls validation as well (yes, the difference in URL
 # and gem name is on purpose)
@@ -129,8 +129,8 @@ gem "shrine", "~> 3.0"
 # there's been plenty of commits
 # gem "dhash-vips", git: "https://github.com/nakilon/dhash-vips/", tag: "v0.1.1.2"
 
-gem "eikon", path: "~/Repositories/eikón/eikon"
-
+#gem "eikon", path: "~/Repositories/eikón/eikon"
+gem "eikon", git: "https://github.com/cguess/eikon"
 # Stremio-ffmpeg use the ffmpeg library to process our video files
 gem "streamio-ffmpeg"
 

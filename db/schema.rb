@@ -39,7 +39,6 @@ ActiveRecord::Schema.define(version: 2021_09_14_145948) do
     t.string "archivable_item_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.jsonb "media_review"
   end
 
   create_table "image_searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

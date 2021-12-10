@@ -1,5 +1,5 @@
 # typed: false
-require "dhash-vips"
+# require "dhash-vips"
 
 module Dhashable
   extend ActiveSupport::Concern
