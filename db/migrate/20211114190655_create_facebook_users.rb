@@ -1,6 +1,7 @@
 class CreateFacebookUsers < ActiveRecord::Migration[6.1]
   def change
     create_table :facebook_users, id: :uuid do |t|
+      t.string :facebook_id
       t.string :name
       t.boolean :verified
       t.integer :followers_count

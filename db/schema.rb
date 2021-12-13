@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 2021_11_14_190655) do
   end
 
   create_table "facebook_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "facebook_id"
     t.string "name"
     t.boolean "verified"
     t.integer "followers_count"
