@@ -67,6 +67,7 @@ class Sources::FacebookUser < ApplicationRecord
       hash_to_return = {
         facebook_id:         forki_user["id"],
         name:                forki_user["name"],
+        profile:             forki_user["profile"],
         followers_count:     forki_user["number_of_followers"],
         likes_count:         forki_user["number_of_likes"],
         verified:            forki_user["verified"],

@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 2021_11_14_190655) do
     t.string "facebook_id"
     t.string "name"
     t.boolean "verified"
+    t.string "profile"
     t.integer "followers_count"
     t.integer "likes_count"
     t.string "url"
