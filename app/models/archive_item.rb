@@ -35,6 +35,18 @@ class ArchiveItem < ApplicationRecord
     object
   end
 
+  # Returns an array of ArchiveItems modiefied for JSON export
+  def self.prune_archive_items(relation = nil)
+    unless relation
+      relation = ArchiveItem.includes(:media_review, archivable_item: [:author])
+    end
+    relation.to_json(only: [:id, :created_at],
+                     include: [ { media_review: { except: [:id, :created_at, :updated_at, :archive_item_id] } },
+                                { archivable_item: { include: { author: { only: [:handle, :display_name, :twitter_id] } },
+                                                     except: [:language, :author_id, :id] }
+                                }])
+  end
+
   # Return a class that can handle a given +url+
   sig { params(url: String).returns(T.nilable(Class)) }
   def self.model_for_url(url)

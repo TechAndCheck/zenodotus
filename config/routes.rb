@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   get "/archive/add", to: "archive#add"
   post "/archive/add", to: "archive#submit_url"
 
+  get "/archive/download", to: "archive#export_archive_data", as: "archive_download"
+
   post "/ingest/submit_media_review", to: "ingest#submit_media_review", as: "ingest_api_raw"
   post "/ingest/submit_media_review_source", to: "ingest#submit_media_review_source", as: "ingest_api_url"
 
@@ -27,4 +29,6 @@ Rails.application.routes.draw do
 
   resources :twitter_users, only: [:show]
   resources :instagram_users, only: [:show]
+  get "/instagram_users/:id/download", to: "instagram_users#export_instagram_user_data", as: "instagram_user_download"
+  get "/twitter_users/:id/download", to: "twitter_users#export_tweeter_data", as: "twitter_user_download"
 end

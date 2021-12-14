@@ -70,4 +70,10 @@ class ArchiveController < ApplicationController
       format.html { redirect_to :root }
     end
   end
+
+  # Export entire archive of reviewed media to a JSON File
+  def export_archive_data
+    archive_json = ArchiveItem.prune_archive_items
+    send_data archive_json, type: "application/json; header=present", disposition: "attachment; filename=archive.json"
+  end
 end

@@ -18,8 +18,9 @@ class ImageSearch < ApplicationRecord
       next if archive_item.images.empty?
       image = archive_item.images.first
 
-      dhash = DHashVips::IDHash.distance3 self.dhash.to_i, image.dhash.to_i
-      { image: image, score: dhash }
+      dhash_score = Eikon::Comparator.compare(self.dhash, image.dhash)
+      # dhash = DHashVips::IDHash.distance3 self.dhash.to_i, image.dhash.to_i
+      { image: image, score: dhash_score }
     end
 
     images.sort do |image1, image2|
