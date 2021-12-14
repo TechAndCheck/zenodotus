@@ -11,7 +11,7 @@ export default class extends Controller {
     }
   }
 
-  onPostSuccess(event): void {
+  onPostSuccess(event) {
     // Remove the loader overlay
     const loader = document.getElementById('loader')
     if (loader !== null) {

@@ -38,16 +38,29 @@ class Sources::InstagramPost < ApplicationRecord
     false
   end
 
-  # Create a +ArchiveItem+ from a +url+ as a string
+  # Create an +ArchiveItem+ from a +url+ as a string
   #
   # @!scope class
   # @params url String a string of a url
-  # returns ArchiveItem with type InstagramPost that have been
-  #   saved to the graph database
+  # returns ArchiveItem with type InstagramPost that has been saved to the database
   sig { params(url: String).returns(ArchiveItem) }
   def self.create_from_url(url)
     zorki_post = InstagramMediaSource.extract(url)
     Sources::InstagramPost.create_from_zorki_hash(zorki_post).first
+  end
+
+  # Spawns an ActiveJob tasked with creating an +ArchiveItem+ from a +url+ as a string
+  #
+  # @!scope class
+  # @params url String a string of a url
+  # returns ScraperJob
+  sig { params(url: String).returns(ScraperJob) }
+  def self.create_from_url!(url)
+    ScraperJob.perform_later(InstagramMediaSource, Sources::InstagramPost, url)
+  end
+
+  def self.create_from_hash(zorki_posts)
+    create_from_zorki_hash(zorki_posts)
   end
 
   # Create a +ArchiveItem+ from a +Zorki::Post+

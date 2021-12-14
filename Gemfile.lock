@@ -1,12 +1,4 @@
 GIT
-  remote: https://github.com/Nakilon/dhash-vips.git
-  revision: 768e495d8da2dd5426dba818b9f33c7d43dd6918
-  branch: master
-  specs:
-    dhash-vips (0.1.1.3)
-      ruby-vips (~> 2.0)
-
-GIT
   remote: https://github.com/cguess/birdsong
   revision: d314c04b11376db0f623289a8f24068a72f76c17
   specs:
@@ -24,6 +16,11 @@ GIT
       oj
       selenium-webdriver
       typhoeus
+  remote: https://github.com/cguess/eikon
+  revision: f5bf25bcba6bd8a0280d2663eb23a52164547ac1
+  specs:
+    eikon (0.1.0)
+      ruby-vips (~> 2.1)
 
 GEM
   remote: https://rubygems.org/
@@ -95,7 +92,7 @@ GEM
     ast (2.4.2)
     bcrypt (3.1.16)
     bindex (0.8.1)
-    bootsnap (1.9.1)
+    bootsnap (1.9.3)
       msgpack (~> 1.0)
     builder (3.2.4)
     bullet (6.1.5)
@@ -146,7 +143,7 @@ GEM
     ffi (1.15.4)
     figaro (1.2.0)
       thor (>= 0.14.0, < 2)
-    globalid (0.5.2)
+    globalid (1.0.0)
       activesupport (>= 5.0)
     hana (1.3.7)
     highline (2.0.3)
@@ -166,7 +163,7 @@ GEM
     listen (3.7.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    loofah (2.12.0)
+    loofah (2.13.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -179,7 +176,7 @@ GEM
     msgpack (1.4.2)
     multi_json (1.15.0)
     nio4r (2.5.8)
-    nokogiri (1.12.5-x86_64-darwin)
+    nokogiri (1.12.5-x86_64-linux)
       racc (~> 1.4)
     oauth (0.5.8)
     oj (3.13.9)
@@ -191,7 +188,7 @@ GEM
       parser
       rainbow (~> 3.0)
       sorbet-runtime (>= 0.5)
-    parser (3.0.2.0)
+    parser (3.0.3.2)
       ast (~> 2.4.1)
     pg (1.2.3)
     pg_search (2.3.5)
@@ -248,12 +245,12 @@ GEM
       ffi (~> 1.0)
     rbtree (0.4.4)
     redis (4.5.1)
-    regexp_parser (2.1.1)
+    regexp_parser (2.2.0)
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
     rexml (3.2.5)
-    rubocop (1.22.3)
+    rubocop (1.23.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -262,9 +259,10 @@ GEM
       rubocop-ast (>= 1.12.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.13.0)
+    rubocop-ast (1.14.0)
       parser (>= 3.0.1.1)
     rubocop-minitest (0.16.0)
+    rubocop-minitest (0.17.0)
       rubocop (>= 0.90, < 2.0)
     rubocop-packaging (0.5.1)
       rubocop (>= 0.89, < 2.0)
@@ -275,7 +273,7 @@ GEM
       activesupport (>= 4.2.0)
       rack (>= 1.1)
       rubocop (>= 1.7.0, < 2.0)
-    rubocop-rails_config (1.7.4)
+    rubocop-rails_config (1.7.5)
       railties (>= 5.0)
       rubocop (>= 1.19)
       rubocop-ast (>= 1.0.1)
@@ -283,10 +281,10 @@ GEM
       rubocop-packaging (~> 0.5)
       rubocop-performance (~> 1.11)
       rubocop-rails (~> 2.0)
-    rubocop-sorbet (0.6.2)
-      rubocop
+    rubocop-sorbet (0.6.4)
+      rubocop (>= 0.90.0)
     ruby-progressbar (1.11.0)
-    ruby-vips (2.1.3)
+    ruby-vips (2.1.4)
       ffi (~> 1.12)
     ruby_jard (0.3.1)
       byebug (>= 9.1, < 12.0)
@@ -307,7 +305,7 @@ GEM
     scenic (1.5.4)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
-    selenium-webdriver (4.0.3)
+    selenium-webdriver (4.1.0)
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2)
@@ -328,7 +326,7 @@ GEM
       polyfill (~> 1.8)
       safe_type (~> 1.1, >= 1.1.1)
       sorbet-runtime (>= 0.4.4704)
-    sorbet-rails (0.7.25)
+    sorbet-rails (0.7.27)
       method_source (>= 0.9.2)
       parlour (>= 4.0.1)
       parser (>= 2.7)
@@ -340,15 +338,15 @@ GEM
     sorted_set (1.0.3)
       rbtree
       set (~> 1.0)
-    spring (3.0.0)
+    spring (3.1.1)
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
-    sprockets-rails (3.3.0)
+    sprockets-rails (3.4.1)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    stimulus-rails (0.7.2)
+    stimulus-rails (0.7.3)
       rails (>= 6.0.0)
     streamio-ffmpeg (3.0.2)
       multi_json (~> 1.8)
@@ -361,7 +359,7 @@ GEM
       thor (~> 1.0)
       xdg (~> 2.2, >= 2.2.5)
     tty-screen (0.8.1)
-    turbo-rails (0.8.3)
+    turbo-rails (0.9.0)
       rails (>= 6.0.0)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
@@ -378,7 +376,7 @@ GEM
       public_suffix
     warden (1.2.9)
       rack (>= 2.0.9)
-    web-console (4.1.0)
+    web-console (4.2.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
@@ -392,18 +390,23 @@ GEM
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
+    webrick (1.7.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     xdg (2.2.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    yard (0.9.26)
+    yard (0.9.27)
+      webrick (~> 1.7.0)
     zeitwerk (2.5.1)
 
 PLATFORMS
+
   x86_64-darwin-19
   x86_64-darwin-20
+  x86_64-linux
+
 
 DEPENDENCIES
   birdsong (= 0.1.0)!
@@ -412,8 +415,8 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   devise (~> 4.8.0)
-  dhash-vips!
   dotenv-rails
+  eikon!
   ferrum (~> 0.11)
   figaro
   forki!
@@ -459,7 +462,7 @@ DEPENDENCIES
   yard
 
 RUBY VERSION
-   ruby 3.0.2p107
+   ruby 3.0.3p157
 
 BUNDLED WITH
-   2.2.23
+   2.2.32

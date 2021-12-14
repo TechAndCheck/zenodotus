@@ -15,3 +15,5 @@ import 'controllers'
 
 Rails.start()
 ActiveStorage.start()
+
+import "stylesheets/application"
