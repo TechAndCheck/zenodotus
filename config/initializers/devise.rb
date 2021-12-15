@@ -180,10 +180,10 @@ Devise.setup do |config|
   # Range for password length.
   config.password_length = 6..128
 
-  # Email regex used to validate email formats. It simply asserts that
-  # one (and only one) @ exists in the given string. This is mainly
-  # to give user feedback and not to assert the e-mail validity.
-  config.email_regexp = /\A[^@\s]+@[^@\s]+\z/
+  # Email regex used to validate email formats.
+  # This regex has been changed from the overly permissive default expression
+  # See https://github.com/heartcombo/devise/issues/3820
+  config.email_regexp = URI::MailTo::EMAIL_REGEXP
 
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this

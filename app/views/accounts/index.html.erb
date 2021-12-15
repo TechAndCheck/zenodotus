@@ -1,0 +1,74 @@
+<div id="nav" class="h-full w-250px fixed left-0  overflow-x-hidden pt-60px z-1">
+  <!--  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>-->
+  <a class="block" href="#">Profile</a>
+  <a class="block" href="#">App</a>
+  <% if current_user.admin? %>
+    <a class="block" href="#" onclick="document.getElementById('approvals').classList.toggle('invisible')">Approvals</a>
+    <a class="block">API key</a>
+  <%end %>
+</div>
+<h1>Reset password</h1>
+<%= form_with url:change_password_path, html: { data: { action: "submit->modal#onPostSend ajax:success->modal#onPostSuccess" } }  do |form| %>
+  <div>
+    <%= form.text_field :password, type: "password" %>
+    <%= form.text_field :confirmed_password, type: "password" %>
+    <%= form.submit "submit" %>
+  </div>
+<% end %>
+<%= form_with url:change_email_path, html: { data: { action: "submit->modal#onPostSend ajax:success->modal#onPostSuccess" } }  do |form| %>
+  <div>
+    Current email: <%= current_user.email %>
+    <%= form.text_field :email %>
+    <%= form.submit "submit" %>
+  </div>
+<% end %>
+<% if current_user.admin? %>
+  <h1>User approvals</h1>
+  <table id="approvals" class="table-auto">
+    <thead>
+    <tr>
+      <th class="border">Email</th>
+      <th class="border">Request</th>
+      <th class="border">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% User.all.where(approved: false).each do | user| %>
+      <tr class="border text-gray-600 hover:text-black">
+        <td><%= user.email %>, <%=user.approved %></td>
+        <td>Please let me be in the zenodotus demo I need the fact checker clout</td>
+        <td>
+          <!-- re-render from controller on approve/deny? -->
+          <%= button_to "approve", approve_request_path, params: {user: user}, class:"float-left bg-blue-400 hover:bg-blue-500 p-2 text-white hover:shadow-lg text-xs font-thin" %>
+          <%= button_to "deny",  deny_request_path, params: {user: user}, class:"float-left bg-red-400 hover:bg-red-500 p-2 text-white hover:shadow-lg text-xs font-thin"  %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <br>
+  <hr>
+
+  <!--  User management-->
+  <!--  Users:-->
+  <!--  <table>-->
+  <!--    <tr>-->
+  <!--      <th>Email</th>-->
+  <!--      <th>Action</th>-->
+  <!--    </tr>-->
+  <%# User.all.each do | user| %>
+  <!--      <tr>-->
+  <!--        <td><%#= user.email %></td>-->
+  <!--        <td>-->
+  <%#= button_to "delete",  deny_request_path, params: {user: user}  %>
+  <!--        </td>-->
+  <!--      </tr>-->
+  <%# end %>
+  <!--  </table>-->
+
+  <!--  Find User:-->
+  <%#= form_with url: user_search_path %>
+
+<%# else %>
+<% end %>

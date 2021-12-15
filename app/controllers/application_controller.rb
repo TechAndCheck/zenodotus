@@ -37,4 +37,8 @@ protected
     end
     true
   end
+
+  def after_sign_out_path_for(user)
+    new_user_session_path
+  end
 end

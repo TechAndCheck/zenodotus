@@ -14,7 +14,7 @@
         <%= link_to "Text Search", text_search_path, "data-turbo-frame": "_top" %>
       </div>
       <% if user_signed_in? and current_user.admin? %>
-        <%= link_to "Settings", settings_path %>
+        <%= link_to "Account", account_path %>
       <% end %>
     </div>
   </div>

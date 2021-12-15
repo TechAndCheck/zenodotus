@@ -5,7 +5,8 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :confirmable, :trackable, :lockable
+         :trackable, :lockable # , :confirmable
+  # TODO: re-enable :confirmable after mailer is set up
 
   def active_for_authentication?
     super && approved?
