@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 2021_11_14_190655) do
 
   create_table "facebook_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "facebook_post_id"
+    t.string "dhash"
     t.jsonb "image_data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
