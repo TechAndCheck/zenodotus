@@ -22,6 +22,9 @@ services:
     # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
     network_mode: service:db
 
+    environment:
+      ON_DOCKER: true
+
     # Uncomment the next line to use a non-root user for all processes.
     # user: vscode
 
