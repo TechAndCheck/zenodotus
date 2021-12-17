@@ -80,7 +80,7 @@ class Sources::InstagramPost < ApplicationRecord
   sig { params(zorki_posts: T::Array[Hash], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
   def self.create_from_zorki_hash(zorki_posts, user = nil)
     zorki_posts.map do |zorki_post|
-      user = Sources::InstagramUser.create_from_zorki_hash([zorki_post["user"]]).first.instagram_user
+      instagram_user = Sources::InstagramUser.create_from_zorki_hash([zorki_post["user"]]).first.instagram_user
 
       unless zorki_post["image_files"].nil?
         image_attributes = zorki_post["image_files"].map do |image_file_data|
@@ -113,7 +113,7 @@ class Sources::InstagramPost < ApplicationRecord
         instagram_id:      zorki_post["id"],
         posted_at:         zorki_post["date"],
         number_of_likes:   zorki_post["number_of_likes"],
-        author:            user,
+        author:            instagram_user,
         images_attributes: image_attributes,
         videos_attributes: video_attributes
       }
