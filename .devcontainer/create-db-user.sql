@@ -1,2 +1,2 @@
-CREATE USER vscode CREATEDB;
-CREATE DATABASE vscode WITH OWNER vscode;
+CREATE USER postgres CREATEDB;
+CREATE DATABASE zenodotus_development WITH OWNER postgres;
