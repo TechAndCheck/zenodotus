@@ -1,6 +1,7 @@
 require "test_helper"
 
 class InstagramPostTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
   def setup
     @zorki_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
   end

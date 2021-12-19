@@ -36,7 +36,7 @@ class ArchiveController < ApplicationController
     url = typed_params.url_to_archive
     object_model = ArchiveItem.model_for_url(url)
     begin
-      object_model.create_from_url(url)
+      object_model.create_from_url(url, current_user)
     rescue StandardError => e
       respond_to do |format|
         error = "#{e.class} : #{e.message}"

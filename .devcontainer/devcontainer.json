@@ -18,8 +18,8 @@
 				"port": 5432,
 
 				// update this to match config/database.yml
-				"database": "app_development",
-				"username": "vscode"
+				"database": "zenodotus_development",
+				"username": "postgres"
 			},
 			{
 				"name": "Rails Test Database",
@@ -29,8 +29,8 @@
 				"port": 5432,
 
 				// update this to match config/database.yml
-				"database": "app_test",
-				"username": "vscode"
+				"database": "zenodotus_test",
+				"username": "postgres"
 			}
 		]
 	},
