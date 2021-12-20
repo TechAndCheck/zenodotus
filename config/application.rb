@@ -19,5 +19,6 @@ module Zenodotus
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
     config.eager_load_paths << Rails.root.join("lib/utilities")
+    config.action_view.form_with_generates_remote_forms = false
   end
 end

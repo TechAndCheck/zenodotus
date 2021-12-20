@@ -347,9 +347,6 @@ GEM
     turbo-rails (1.0.0)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
-    turbolinks (5.2.1)
-      turbolinks-source (~> 5.2)
-    turbolinks-source (5.2.0)
     typhoeus (1.4.0)
       ethon (>= 0.9.0)
     tzinfo (2.0.4)
@@ -434,7 +431,6 @@ DEPENDENCIES
   streamio-ffmpeg
   tailwindcss-rails (~> 0.3.3)
   tmuxinator
-  turbolinks (~> 5)
   typhoeus
   validate_url
   web-console (>= 4.1.0)

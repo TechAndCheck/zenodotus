@@ -3,7 +3,8 @@
   "private": true,
   "dependencies": {
     "@babel/preset-typescript": "^7.13.0",
-    "@hotwired/turbo-rails": "^7.0.0-beta.5",
+    "@hotwired/stimulus": "^3.0.1",
+    "@hotwired/turbo-rails": "^7.1.0",
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^7.0.0",
     "@rails/ujs": "^7.0.0",
