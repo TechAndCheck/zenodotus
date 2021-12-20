@@ -42,37 +42,45 @@ class Sources::InstagramPost < ApplicationRecord
   #
   # @!scope class
   # @params url String a string of a url
+  # @params user User: the user creating an ArchiveItem
   # returns ArchiveItem with type InstagramPost that has been saved to the database
-  sig { params(url: String).returns(ArchiveItem) }
-  def self.create_from_url(url)
+  sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
+  def self.create_from_url(url, user = nil)
     zorki_post = InstagramMediaSource.extract(url)
-    Sources::InstagramPost.create_from_zorki_hash(zorki_post).first
+    Sources::InstagramPost.create_from_zorki_hash(zorki_post, user).first
   end
 
   # Spawns an ActiveJob tasked with creating an +ArchiveItem+ from a +url+ as a string
   #
   # @!scope class
   # @params url String a string of a url
+  # @params user User: the user creating an ArchiveItem
   # returns ScraperJob
-  sig { params(url: String).returns(ScraperJob) }
-  def self.create_from_url!(url)
-    ScraperJob.perform_later(InstagramMediaSource, Sources::InstagramPost, url)
+  sig { params(url: String, user: T.nilable(User)).returns(ScraperJob) }
+  def self.create_from_url!(url, user = nil)
+    ScraperJob.perform_later(InstagramMediaSource, Sources::InstagramPost, url, user)
   end
 
-  def self.create_from_hash(zorki_posts)
-    create_from_zorki_hash(zorki_posts)
+  # An alias for create_from_zorki_hash painted with a generic name so it can be called in a model agnostic fashion
+  # @params zorki_posts [Array[Zorki:Post]] an array of Instagram Posts grabbed from Zorki
+  # @returns [Array[ArchiveItem]] an array of ArchiveItem with type Tweet that have been
+  #   saved to the graph database
+  sig { params(zorki_posts: T::Array[Hash], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
+  def self.create_from_hash(zorki_posts, user = nil)
+    create_from_zorki_hash(zorki_posts, user)
   end
 
   # Create a +ArchiveItem+ from a +Zorki::Post+
   #
   # @!scope class
   # @params birdsong_tweets [Array[Zorki::Post]] an array of tweets grabbed from Birdsong
+  # @params user User the current user creating an ArchiveItem
   # @returns [Array[ArchiveItem]] an array of ArchiveItem with type Tweet that have been
   #   saved to the graph database
-  sig { params(zorki_posts: T::Array[Hash]).returns(T::Array[ArchiveItem]) }
-  def self.create_from_zorki_hash(zorki_posts)
+  sig { params(zorki_posts: T::Array[Hash], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
+  def self.create_from_zorki_hash(zorki_posts, user = nil)
     zorki_posts.map do |zorki_post|
-      user = Sources::InstagramUser.create_from_zorki_hash([zorki_post["user"]]).first.instagram_user
+      instagram_user = Sources::InstagramUser.create_from_zorki_hash([zorki_post["user"]]).first.instagram_user
 
       unless zorki_post["image_files"].nil?
         image_attributes = zorki_post["image_files"].map do |image_file_data|
@@ -105,12 +113,12 @@ class Sources::InstagramPost < ApplicationRecord
         instagram_id:      zorki_post["id"],
         posted_at:         zorki_post["date"],
         number_of_likes:   zorki_post["number_of_likes"],
-        author:            user,
+        author:            instagram_user,
         images_attributes: image_attributes,
         videos_attributes: video_attributes
       }
 
-      ArchiveItem.create! archivable_item: Sources::InstagramPost.create!(hash)
+      ArchiveItem.create! archivable_item: Sources::InstagramPost.create!(hash), submitter: user
     end
   end
 
