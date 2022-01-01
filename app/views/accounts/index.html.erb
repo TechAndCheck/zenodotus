@@ -25,6 +25,9 @@
 <% end %>
 <h1>Delete account</h1>
 <%= link_to "Delete my account", user_registration_path, confirm: "Are you sure?", method: :delete %>
+<h1>Search history</h1>
+<% byebug %>
+<%== pagy_nav(@text_searches_paginated) %>
 <% if current_user.admin? %>
   <h1>User approvals</h1>
   <table id="approvals" class="table-auto">

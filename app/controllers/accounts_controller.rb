@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
 class AccountsController < ApplicationController
+  include Pagy::Backend
+
   before_action :authenticate_user!
 
   def index
+    @text_searches_paginated, @text_searches = pagy(TextSearch.where(user_id: current_user.id).order("created_at DESC"))
+    # @image_searches_paginated, @image_searches = pagy(ImageSearch.where(user_id: current_user.id).order("created_at DESC"))
   end
 
   # A class representing the allowed params into the `change_password` endpoint

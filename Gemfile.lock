@@ -169,6 +169,7 @@ GEM
     oauth (0.5.8)
     orm_adapter (0.5.0)
     os (1.1.4)
+    pagy (5.6.6)
     parallel (1.21.0)
     parlour (6.0.1)
       commander (~> 4.5)
@@ -406,6 +407,7 @@ DEPENDENCIES
   json_schemer
   listen (~> 3.3)
   os
+  pagy (~> 5.6)
   pg (~> 1.1)
   pg_search (~> 2.3.5)
   pry-byebug
