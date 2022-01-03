@@ -1,33 +1,50 @@
-<div id="nav" class="h-full w-250px fixed left-0  overflow-x-hidden pt-60px z-1">
+<div id="nav" class="h-full w-350px fixed left-0  overflow-x-hidden pt-60px z-1">
   <!--  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>-->
-  <a class="block" href="#">Profile</a>
-  <a class="block" href="#">App</a>
+  <a class="block" href="#">Settings</a>
+  <a class="block" href="#">Searches</a>
   <% if current_user.admin? %>
     <a class="block" href="#" onclick="document.getElementById('approvals').classList.toggle('invisible')">Approvals</a>
     <a class="block">API key</a>
   <%end %>
 </div>
-<h1>Change password</h1>
+<h1 class="text-2xl font-light">Update account details</h1>
+<h2 class="text-lg font-semibold">Change password</h1>
 <%= form_with url:change_password_path, html: { data: { action: "submit->modal#onPostSend ajax:success->modal#onPostSuccess" } }  do |form| %>
   <div>
-    <%= form.text_field :password, type: "password" %>
-    <%= form.text_field :confirmed_password, type: "password" %>
+    Enter a new password: <%= form.text_field :password, type: "password" %>
+    Confirm your new password: <%= form.text_field :confirmed_password, type: "password" %>
     <%= form.submit "submit" %>
   </div>
 <% end %>
-<h1>Change email</h1>
+<br>
+<h2 class="text-lg font-semibold">Change email</h1>
 <%= form_with url:change_email_path, html: { data: { action: "submit->modal#onPostSend ajax:success->modal#onPostSuccess" } }  do |form| %>
   <div>
-    Current email: <%= current_user.email %>
-    <%= form.text_field :email %>
+    <%= form.text_field :email, placeholder: current_user.email %>
     <%= form.submit "submit" %>
   </div>
 <% end %>
-<h1>Delete account</h1>
+<br>
+<h2 class="text-lg font-semibold">Delete account</h1>
 <%= link_to "Delete my account", user_registration_path, confirm: "Are you sure?", method: :delete %>
-<h1>Search history</h1>
-<% byebug %>
-<%== pagy_nav(@text_searches_paginated) %>
+<br><br>
+<h1 class="text-2xl font-light">Searches</h1>
+<table>
+  <tr>
+    <th>Searched at</th>
+    <th>Search query</th>
+  <tr>
+  <% @text_searches.each do |text_search| %>
+    <tr>
+      <td><%= text_search.created_at %></td>
+      <td><%= text_search.query %></td>
+    </tr>
+  <% end %>
+</table>
+<%== pagy_nav(@pagy) %>
+
+<%# byebug %>
+
 <% if current_user.admin? %>
   <h1>User approvals</h1>
   <table id="approvals" class="table-auto">

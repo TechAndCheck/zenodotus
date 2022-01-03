@@ -2,6 +2,7 @@
 class ApplicationController < ActionController::Base
   extend T::Sig
   extend T::Helpers
+  include Pagy::Backend
 
   protect_from_forgery with: :null_session, if: :json_request?, prepend: true
 
