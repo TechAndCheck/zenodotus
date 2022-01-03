@@ -3,6 +3,7 @@
 class ImageSearch < ApplicationRecord
   include ImageUploader::Attachment(:image) # adds an `image` virtual attribute
   include Dhashable
+  belongs_to :user, optional: false, class_name: "User"
 
   # Runs the search against all images in the database given the +image+ attached
   #

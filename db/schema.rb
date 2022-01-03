@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_15_214250) do
+ActiveRecord::Schema.define(version: 2022_01_03_202619) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -48,6 +48,8 @@ ActiveRecord::Schema.define(version: 2021_12_15_214250) do
     t.jsonb "image_data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "submitter_id"
+    t.index ["submitter_id"], name: "index_image_searches_on_submitter_id"
   end
 
   create_table "instagram_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

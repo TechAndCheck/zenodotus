@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class AccountsController < ApplicationController
-
   before_action :authenticate_user!
 
   def index
     @pagy, @text_searches = pagy(TextSearch.where(user_id: current_user.id).order("created_at DESC"))
+    @pagy_, @image_searches = pagy(ImageSearch.where(submitter_id: current_user.id).order("created_at DESC"))
   end
 
   # A class representing the allowed params into the `change_password` endpoint
