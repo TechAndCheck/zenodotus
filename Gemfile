@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.0.2"
+ruby "3.0.3"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 6.1.0"
@@ -128,8 +128,10 @@ gem "shrine", "~> 3.0"
 # A differential-hash library for image perceptual hashing. Surprisingly maintained.
 # We don't have it versioned locked because it's been almost a year since one was released, but
 # there's been plenty of commits
-gem "dhash-vips", git: "https://github.com/Nakilon/dhash-vips.git", branch: "master"
+# gem "dhash-vips", git: "https://github.com/nakilon/dhash-vips/", tag: "v0.1.1.2"
 
+#gem "eikon", path: "~/Repositories/eikón/eikon"
+gem "eikon", git: "https://github.com/cguess/eikon"
 # Stremio-ffmpeg use the ffmpeg library to process our video files
 gem "streamio-ffmpeg"
 
@@ -140,7 +142,6 @@ gem "streamio-ffmpeg"
 
 # gem "zorki", "0.1.0", git: "https://github.com/cguess/zorki"
 gem "birdsong", "0.1.0", git: "https://github.com/cguess/birdsong"
-gem "forki", git: "https://www.github.com/oneroyalace/forki"
 
 # A progress bar for our Rake tasks
 gem "ruby-progressbar"

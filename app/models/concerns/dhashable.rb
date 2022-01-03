@@ -1,5 +1,5 @@
 # typed: false
-require "dhash-vips"
+# require "dhash-vips"
 
 module Dhashable
   extend ActiveSupport::Concern
@@ -11,7 +11,9 @@ module Dhashable
   def generate_dhash
     self.image.open
     tempfile_path = image.tempfile.path
-    self.dhash = DHashVips::IDHash.fingerprint(tempfile_path, 3)
+    self.dhash = Eikon.dhash_for_file(tempfile_path)
+
+    # self.dhash = DHashVips::IDHash.fingerprint(tempfile_path, 3)
 
     # This is commented out because otherwise it causes an error when uploading it up
     # Let's hope it doesn't cause memory leaks

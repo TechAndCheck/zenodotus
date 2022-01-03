@@ -36,7 +36,7 @@ class ArchiveController < ApplicationController
     url = typed_params.url_to_archive
     object_model = ArchiveItem.model_for_url(url)
     begin
-      object_model.create_from_url(url)
+      object_model.create_from_url(url, current_user)
     rescue StandardError => e
       respond_to do |format|
         error = "#{e.class} : #{e.message}"
@@ -69,5 +69,11 @@ class ArchiveController < ApplicationController
       ] }
       format.html { redirect_to :root }
     end
+  end
+
+  # Export entire archive of reviewed media to a JSON File
+  def export_archive_data
+    archive_json = ArchiveItem.prune_archive_items
+    send_data archive_json, type: "application/json; header=present", disposition: "attachment; filename=archive.json"
   end
 end

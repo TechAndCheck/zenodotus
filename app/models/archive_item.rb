@@ -5,9 +5,10 @@ class ArchiveItem < ApplicationRecord
   delegate :service_id, to: :archivable_item
   delegate :images, to: :archivable_item
   delegate :videos, to: :archivable_item
-  # delegate :media_review, to: :archivable_item
 
   has_one :media_review, dependent: :destroy, foreign_key: :archive_item_id
+  belongs_to :submitter, optional: true, class_name: "User"
+
   # Creates an +ArchiveEntity
   #
   # @!scope class
@@ -33,6 +34,18 @@ class ArchiveItem < ApplicationRecord
       archive_item_id: object.id
     )
     object
+  end
+
+  # Returns an array of ArchiveItems modiefied for JSON export
+  def self.prune_archive_items(relation = nil)
+    unless relation
+      relation = ArchiveItem.includes(:media_review, archivable_item: [:author])
+    end
+    relation.to_json(only: [:id, :created_at],
+                     include: [ { media_review: { except: [:id, :created_at, :updated_at, :archive_item_id] } },
+                                { archivable_item: { include: { author: { only: [:handle, :display_name, :twitter_id] } },
+                                                     except: [:language, :author_id, :id] }
+                                }])
   end
 
   # Return a class that can handle a given +url+
