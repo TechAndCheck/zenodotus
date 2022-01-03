@@ -13,6 +13,6 @@ changed_files = `git status --porcelain`.split(/\n/).
       File.extname(file_name) == ".rb"
     }.join(" ")
 
-system("rubocop #{changed_files}") unless changed_files.empty?
+system("rubocop -a #{changed_files}") unless changed_files.empty?
 
 exit $?.to_s[-1].to_i
