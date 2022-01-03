@@ -22,10 +22,10 @@ class ScraperJob < ApplicationJob
     end
   end
 
-  def perform(media_source_class, media_model, url)
+  def perform(media_source_class, media_model, url, user)
     puts "Beginning to scrape #{url} @ #{Time.now}"
     media_item = media_source_class.extract(url)
-    media_model.create_from_hash(media_item)
+    media_model.create_from_hash(media_item, user)
     puts "Done scraping #{url} @ #{Time.now}"
   end
 
