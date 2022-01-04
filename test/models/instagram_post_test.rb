@@ -34,7 +34,7 @@ class InstagramPostTest < ActiveSupport::TestCase
     assert_not_nil Sources::InstagramPost.where(instagram_id: "CBcqOkyDDH8")
   end
 
-  test "can create two tweets from same author" do
+  test "can create two Instagram posts from same author" do
     @zorki_post2 = InstagramMediaSource.extract("https://www.instagram.com/p/CQDeYPhMJLG/")
     archive_item = Sources::InstagramPost.create_from_zorki_hash(@zorki_post).first.instagram_post
     archive_item2 = Sources::InstagramPost.create_from_zorki_hash(@zorki_post2).first.instagram_post
