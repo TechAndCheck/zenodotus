@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 2021_12_15_214250) do
 
   create_table "facebook_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "facebook_post_id"
+    t.string "dhash"
     t.jsonb "image_data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -67,8 +68,10 @@ ActiveRecord::Schema.define(version: 2021_12_15_214250) do
   end
 
   create_table "facebook_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "facebook_id"
     t.string "name"
     t.boolean "verified"
+    t.string "profile"
     t.integer "followers_count"
     t.integer "likes_count"
     t.string "url"
