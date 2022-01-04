@@ -1,7 +1,6 @@
 require "test_helper"
 
 class InstagramPostTest < ActiveSupport::TestCase
-  include ActiveJob::TestHelper
   def setup
     @zorki_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
   end
@@ -32,7 +31,6 @@ class InstagramPostTest < ActiveSupport::TestCase
 
   test "can create from Instagram url using ActiveJob" do
     Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
-    perform_enqueued_jobs
     assert_not_nil Sources::InstagramPost.where(instagram_id: "CBcqOkyDDH8")
   end
 

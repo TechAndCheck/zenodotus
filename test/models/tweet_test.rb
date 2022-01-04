@@ -2,8 +2,6 @@
 require "test_helper"
 
 class TweetTest < ActiveSupport::TestCase
-  include ActiveJob::TestHelper
-
   def setup
     @birdsong_tweet = TwitterMediaSource.extract("https://twitter.com/AmtrakNECAlerts/status/1397922363551870990")
     @birdsong_tweet2 = TwitterMediaSource.extract("https://twitter.com/AmtrakNECAlerts/status/1400055826170191874")
@@ -40,7 +38,6 @@ class TweetTest < ActiveSupport::TestCase
   test "can archive tweet from url using ActiveJob" do
     Sources::Tweet.create_from_url!("https://twitter.com/AmtrakNECAlerts/status/1397922363551870990")
     Sources::Tweet.create_from_url!("https://twitter.com/Citruscrush/status/1094999286281048070?fbclid=IwAR20aObVHvlSdu-e2L2mTHXytMqgoGvH6tur4vLz0bU4E2p5k4NciEOAgiE")
-    perform_enqueued_jobs
 
     tweet_1 = Sources::Tweet.where(twitter_id: 1397922363551870990).first
     tweet_2 = Sources::Tweet.where(twitter_id: 1094999286281048070).first
