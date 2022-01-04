@@ -40,24 +40,45 @@ class Sources::FacebookPost < ApplicationRecord
   #
   # @!scope class
   # @params url String a string of a url
+  # @params user the user adding the ArchiveItem
   # returns ArchiveItem with type InstagramPost that have been
   #   saved to the graph database
-  sig { params(url: String).returns(ArchiveItem) }
-  def self.create_from_url(url)
+  sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
+  def self.create_from_url(url, user = nil)
     forki_post = FacebookMediaSource.extract(url)
-    Sources::FacebookPost.create_from_forki_hash(forki_post).first
+    Sources::FacebookPost.create_from_forki_hash(forki_post, user).first
   end
 
-  # Create a +ArchiveItem+ from a +Zorki::Post+
+  # Spawns an ActiveJob tasked with creating an +ArchiveItem+ from a +url+ as a string
   #
   # @!scope class
-  # @params birdsong_tweets [Array[Zorki::Post]] an array of tweets grabbed from Birdsong
+  # @params url String a string of a url
+  # @params user The user adding the ArchiveItem
+  # returns ScraperJob
+  sig { params(url: String, user: T.nilable(User)).returns(ScraperJob) }
+  def self.create_from_url!(url, user = nil)
+    ScraperJob.perform_later(FacebookMediaSource, Sources::FacebookPost, url, user)
+  end
+
+  # A generically-named alias for create_from_forki_hash used for model-agnostic method calls
+  # @params forki_posts [Array[Forki:ForkiPost]] an array of Facebook posts grabbed from Forki
+  # @returns [Array[ArchiveItem]] an array of ArchiveItems with type FacebbokPost that have been
+  #    saved to the graph database
+  sig { params(forki_posts: T::Array[Hash], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
+  def self.create_from_hash(forki_posts, user)
+    create_from_forki_hash(forki_posts, user)
+  end
+
+  # Create a +ArchiveItem+ from a +Forki::Post+
+  #
+  # @!scope class
+  # @params forki_posts [Array[Forki::Post]] an array of Facebook posts grabbed from Forki
   # @returns [Array[ArchiveItem]] an array of ArchiveItem with type Tweet that have been
   #   saved to the graph database
-  sig { params(forki_posts: T::Array[Hash]).returns(T::Array[ArchiveItem]) }
-  def self.create_from_forki_hash(forki_posts)
+  sig { params(forki_posts: T::Array[Hash], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
+  def self.create_from_forki_hash(forki_posts, user = nil)
     forki_posts.map do |forki_post|
-      user = Sources::FacebookUser.create_from_forki_hash([forki_post["user"]]).first.facebook_user
+      facebook_user = Sources::FacebookUser.create_from_forki_hash([forki_post["user"]]).first.facebook_user
 
       unless forki_post["image_file"].nil?
         # image_attributes = forki_post["image_files"].map do |image_file_data|
@@ -93,12 +114,12 @@ class Sources::FacebookPost < ApplicationRecord
         num_comments:      forki_post["num_comments"],
         num_shares:        forki_post["num_shares"],
         num_views:         forki_post["num_views"],
-        author:            user,
+        author:            facebook_user,
         images_attributes: image_attributes,
         videos_attributes: video_attributes
       }
 
-      ArchiveItem.create! archivable_item: Sources::FacebookPost.create!(hash)
+      ArchiveItem.create!(archivable_item: Sources::FacebookPost.create!(hash), submitter: user)
     end
   end
 

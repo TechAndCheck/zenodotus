@@ -7,7 +7,3 @@ class CreateFacebookVideos < ActiveRecord::Migration[6.1]
     end
   end
 end
-#             :user,
-#             :video_file_name,
-#             :video_preview_image_file_name,
-#             :video_preview_image_url
