@@ -7,7 +7,6 @@ class JobsStatusController < ApplicationController
       @jobs_queue = Sidekiq::Queue.new.to_a.reverse.each_with_index.map do |job, ind|
         {
           queue_position: ind + 1,
-          # task: "scrape",
           url: job.item["args"][0]["arguments"].last,
           enqueued_at: Time.at(job.item["enqueued_at"]),
         }
