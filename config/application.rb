@@ -1,4 +1,3 @@
-# typed: ignore
 require_relative "boot"
 
 require "rails/all"
@@ -18,8 +17,9 @@ module Zenodotus
     # in config/environments, which are processed later.
     #
     # config.time_zone = "Central Time (US & Canada)"
+    # config.eager_load_paths << Rails.root.join("extras")
     config.eager_load_paths << Rails.root.join("lib/utilities")
-
+    config.action_view.form_with_generates_remote_forms = false
     config.active_job.queue_adapter = :sidekiq
   end
 end
