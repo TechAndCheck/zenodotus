@@ -1,0 +1,22 @@
+<div id="jobs-div">
+  <table id="jobs-table" class="table-auto w-full">
+    <thead id="jobs-table-head">
+    <tr>
+      <th class="border text-center">Queue position</th>
+      <th class="border text-center">Enqueued at</th>
+      <th class="border text-center">Url to scrape</th>
+    </tr>
+    </thead>
+    <tbody id="jobs-table-body">
+      <%# unless @jobs_queue.empty? %>
+        <% @jobs_queue.each do |job| %>
+          <tr class="border text-gray-600 text-center">
+            <td><%= job[:queue_position] %></td>
+            <td><%=  job[:enqueued_at] %></td>
+            <td><%=  job[:url] %></td>
+          </tr>
+        <% end %>
+      <%# end %>
+    </tbody>
+  </table>
+</div>

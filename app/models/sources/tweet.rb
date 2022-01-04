@@ -19,11 +19,6 @@ class Sources::Tweet < ApplicationRecord
     self.videos.each { |video| video.video_derivatives! }
   end
 
-  # update materialized view when a new tweet is added
-  after_commit on: [:create, :destroy] do
-    UnifiedTableRefreshJob.perform_later
-  end
-
   # Returns a +boolean+ on whether this class can handle the URL passed in.
   # All items that are scraped should implement this class
   #
@@ -41,25 +36,32 @@ class Sources::Tweet < ApplicationRecord
   #
   # @!scope class
   # @params url String a string of a url
+  # @params user The user adding the ArchiveItem
   # returns ArchiveItem with type Tweet that has been saved to the database
-  sig { params(url: String).returns(ArchiveItem) }
-  def self.create_from_url(url)
+  sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
+  def self.create_from_url(url, user = nil)
     birdsong_tweet = TwitterMediaSource.extract(url)
-    Sources::Tweet.create_from_birdsong_hash(birdsong_tweet).first
+    Sources::Tweet.create_from_birdsong_hash(birdsong_tweet, user).first
   end
 
   # Spawns an ActiveJob tasked with creating an +ArchiveItem+ from a +url+ as a string
   #
   # @!scope class
   # @params url String a string of a url
+  # @params user User the current user creating an ArchiveItem
   # returns ScraperJob
-  sig { params(url: String).returns(ScraperJob) }
-  def self.create_from_url!(url)
-    ScraperJob.perform_later(TwitterMediaSource, Sources::Tweet, url)
+  sig { params(url: String, user: T.nilable(User)).returns(ScraperJob) }
+  def self.create_from_url!(url, user = nil)
+    ScraperJob.perform_later(TwitterMediaSource, Sources::Tweet, url, user)
   end
 
-  def self.create_from_hash(birdsong_tweets)
-    create_from_birdsong_hash(birdsong_tweets)
+  # An alias for create_from_birdsong_hash painted with a generic name so it can be called in a model agnostic fashion
+  # @params birdsong_tweets [Array[Birdsong:Tweet]] an array of tweets grabbed from Birdsong
+  # @returns [Array[ArchiveItem]] an array of ArchiveItem with type Tweet that have been
+  #   saved to the graph database
+  sig { params(birdsong_tweets: T::Array[Birdsong::Tweet], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
+  def self.create_from_hash(birdsong_tweets, user = nil)
+    create_from_birdsong_hash(birdsong_tweets, user)
   end
 
   # Create a +ArchiveItem+ from a +Birdsong::Tweet+
@@ -68,8 +70,8 @@ class Sources::Tweet < ApplicationRecord
   # @params birdsong_tweets [Array[Birdsong:Tweet]] an array of tweets grabbed from Birdsong
   # @returns [Array[ArchiveItem]] an array of ArchiveItem with type Tweet that have been
   #   saved to the graph database
-  # sig { params(birdsong_tweets: T::Array[Birdsong::Tweet]).returns(T::Array[ArchiveItem]) }
-  def self.create_from_birdsong_hash(birdsong_tweets)
+  sig { params(birdsong_tweets: T::Array[Birdsong::Tweet], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
+  def self.create_from_birdsong_hash(birdsong_tweets, user = nil)
     birdsong_tweets.map do |birdsong_tweet|
       twitter_user = Sources::TwitterUser.create_from_birdsong_hash([birdsong_tweet.author]).first.twitter_user
 
@@ -81,7 +83,7 @@ class Sources::Tweet < ApplicationRecord
         { video: File.open(video_file_name.first, binmode: true) }
       end
 
-      ArchiveItem.create! archivable_item: Sources::Tweet.create({
+      tweet_hash = {
         text:                  birdsong_tweet.text,
         twitter_id:            birdsong_tweet.id.to_s,
         language:              birdsong_tweet.language,
@@ -89,7 +91,8 @@ class Sources::Tweet < ApplicationRecord
         posted_at:             birdsong_tweet.created_at,
         images_attributes:     image_attributes,
         videos_attributes:     video_attributes
-      })
+      }
+      ArchiveItem.create!(archivable_item: Sources::Tweet.create!(tweet_hash), submitter: user)
     end
   end
 

@@ -1,7 +1,7 @@
 # typed: false
 
 class ArchiveEntity < ApplicationRecord
-  delegated_type :archivable_entity, types: %w[ Sources::TwitterUser Sources::InstagramUser]
+  delegated_type :archivable_entity, types: %w[ Sources::TwitterUser Sources::InstagramUser Sources::FacebookUser]
   delegate :service_id, to: :archivable_entity
 
   # Note: You may want to use `alias` or `alias_method` here instead of the following functions
@@ -24,5 +24,14 @@ class ArchiveEntity < ApplicationRecord
   sig { returns(T.nilable(Sources::InstagramUser)) }
   def instagram_user
     self.sources_instagram_user
+  end
+
+  # A helper function to make it easier to access the user, instead of `.sources_facebook_user`
+  # this allows just the use of `.facebook_user`
+  #
+  # @returns +Sources::FacebookUser+
+  sig { returns(T.nilable(Sources::FacebookUser)) }
+  def facebook_user
+    self.sources_facebook_user
   end
 end

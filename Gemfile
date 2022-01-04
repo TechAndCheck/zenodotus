@@ -23,7 +23,8 @@ gem "pg_search", "~> 2.3.5"
 gem "scenic", "~> 1.5.4"
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-
+# use sidekiq for job queueing
+gem "sidekiq", "~> 6.3.1"
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
@@ -127,7 +128,7 @@ gem "shrine", "~> 3.0"
 # there's been plenty of commits
 # gem "dhash-vips", git: "https://github.com/nakilon/dhash-vips/", tag: "v0.1.1.2"
 
-#gem "eikon", path: "~/Repositories/eikón/eikon"
+# gem "eikon", path: "~/Repositories/eikón/eikon"
 gem "eikon", git: "https://github.com/cguess/eikon"
 # Stremio-ffmpeg use the ffmpeg library to process our video files
 gem "streamio-ffmpeg"
@@ -139,6 +140,7 @@ gem "streamio-ffmpeg"
 
 # gem "zorki", "0.1.0", git: "https://github.com/cguess/zorki"
 gem "birdsong", "0.1.0", git: "https://github.com/cguess/birdsong"
+gem "forki", git: "https://github.com/oneroyalace/forki"
 
 # A progress bar for our Rake tasks
 gem "ruby-progressbar"

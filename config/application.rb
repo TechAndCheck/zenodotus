@@ -20,5 +20,6 @@ module Zenodotus
     # config.eager_load_paths << Rails.root.join("extras")
     config.eager_load_paths << Rails.root.join("lib/utilities")
     config.action_view.form_with_generates_remote_forms = false
+    config.active_job.queue_adapter = :sidekiq
   end
 end
