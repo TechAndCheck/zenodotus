@@ -44,7 +44,7 @@ class Sources::FacebookUser < ApplicationRecord
   # @returns String the id assigned by Facebook to this user
   sig { returns(String) }
   def service_id
-    handle
+    facebook_id
   end
 
   private
@@ -53,7 +53,7 @@ class Sources::FacebookUser < ApplicationRecord
     #
     # @!scope class
     # @!visibility private
-    # @params birdsong_users Forki:User an tweet grabbed from Forki
+    # @params forki_user Forki:User
     # @returns Hash a data structure suitable to pass to `create` or `update`
     sig { params(forki_user: Hash).returns(Hash) }
     def self.facebook_user_hash_from_forki_user(forki_user)
@@ -65,9 +65,11 @@ class Sources::FacebookUser < ApplicationRecord
       tempfile.write(Base64.decode64(forki_user["profile_image_file"]))
 
       hash_to_return = {
+        facebook_id:         forki_user["id"],
         name:                forki_user["name"],
+        profile:             forki_user["profile"],
         followers_count:     forki_user["number_of_followers"],
-        likes_count:          forki_user["number_of_likes"],
+        likes_count:         forki_user["number_of_likes"],
         verified:            forki_user["verified"],
         url:                 forki_user["profile_link"],
         profile_image_url:   forki_user["profile_image_url"],

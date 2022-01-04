@@ -13,6 +13,17 @@ GIT
     eikon (0.1.0)
       ruby-vips (~> 2.1)
 
+GIT
+  remote: https://www.github.com/oneroyalace/forki
+  revision: 12eafead1ef30ec7109d9b66b0546828644b121c
+  specs:
+    forki (0.1.0)
+      apparition
+      capybara
+      oj
+      selenium-webdriver
+      typhoeus
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -77,6 +88,9 @@ GEM
       zeitwerk (~> 2.3)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
+    apparition (0.6.0)
+      capybara (~> 3.13, < 4)
+      websocket-driver (>= 0.6.5)
     ast (2.4.2)
     bcrypt (3.1.16)
     bindex (0.8.1)
@@ -169,6 +183,7 @@ GEM
     nokogiri (1.12.5-x86_64-linux)
       racc (~> 1.4)
     oauth (0.5.8)
+    oj (3.13.10)
     orm_adapter (0.5.0)
     os (1.1.4)
     parallel (1.21.0)
@@ -407,6 +422,7 @@ DEPENDENCIES
   eikon!
   ferrum (~> 0.11)
   figaro
+  forki!
   hotwire-rails
   jbuilder (~> 2.7)
   json_schemer
