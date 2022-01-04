@@ -10,7 +10,8 @@ gem "pg", "~> 1.1"
 # Use Puma as the app server
 gem "puma", "~> 5.0"
 # Use SCSS for stylesheets
-gem "sass-rails", ">= 6"
+# gem "sass-rails", ">= 6"
+
 # # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 # gem "turbolinks", "~> 5"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -157,3 +158,5 @@ gem "importmap-rails"
 
 # Use Stimulus for Rails 7
 gem "stimulus-rails"
+
+gem "sprockets-rails", :require => "sprockets/railtie"
