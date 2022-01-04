@@ -11,8 +11,6 @@ gem "pg", "~> 1.1"
 gem "puma", "~> 5.0"
 # Use SCSS for stylesheets
 gem "sass-rails", ">= 6"
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem "webpacker", "~> 5.0"
 # # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 # gem "turbolinks", "~> 5"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -150,3 +148,10 @@ gem "json_schemer"
 
 # Devise is used for authentication and user management
 gem "devise", "~> 4.8.0"
+
+# New way to bundle CSS and JS for Rails 7
+gem "cssbundling-rails"
+gem "importmap-rails"
+
+# Use Stimulus for Rails 7
+gem "stimulus-rails"
