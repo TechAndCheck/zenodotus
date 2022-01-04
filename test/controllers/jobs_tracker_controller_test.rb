@@ -1,7 +1,4 @@
 require "test_helper"
 
 class JobsTrackerControllerTest < ActionDispatch::IntegrationTest
-  # test "the truth" do
-  #   assert true
-  # end
 end
