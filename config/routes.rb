@@ -29,8 +29,12 @@ Rails.application.routes.draw do
   post "/settings/approve", to: "settings#approveUserRequest", as: "approve_request"
   post "/settings/deny", to: "settings#denyUserRequest", as: "deny_request"
 
+  get "/jobs", to: "jobs_status#index", as: "jobs_status"
+
   resources :twitter_users, only: [:show]
   resources :instagram_users, only: [:show]
+  resources :facebook_users, only: [:show]
+
   get "/instagram_users/:id/download", to: "instagram_users#export_instagram_user_data", as: "instagram_user_download"
   get "/twitter_users/:id/download", to: "twitter_users#export_tweeter_data", as: "twitter_user_download"
 end

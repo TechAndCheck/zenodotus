@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2022_01_03_202619) do
 
   create_table "facebook_posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "text"
+    t.index ["author_id"], name: "index_facebook_posts_on_author_id"
     t.datetime "posted_at"
     t.text "facebook_id"
     t.jsonb "reactions"
@@ -64,7 +65,6 @@ ActiveRecord::Schema.define(version: 2022_01_03_202619) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "author_id", null: false
     t.text "url", null: false
-    t.index ["author_id"], name: "index_facebook_posts_on_author_id"
   end
 
   create_table "facebook_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
