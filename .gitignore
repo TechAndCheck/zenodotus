@@ -7,6 +7,9 @@
 # Ignore bundler config.
 /.bundle
 
+# Ignore asset builds
+app/assets/builds/
+
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
@@ -47,3 +50,4 @@ yarn-debug.log*
 coverage
 
 .idea/
+.vscode/
