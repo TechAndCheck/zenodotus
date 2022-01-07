@@ -32,6 +32,7 @@ Rails.application.routes.draw do
   resources :twitter_users, only: [:show]
   resources :instagram_users, only: [:show]
   resources :facebook_users, only: [:show]
+  resources :organizations, only: [:index]
 
   get "/instagram_users/:id/download", to: "instagram_users#export_instagram_user_data", as: "instagram_user_download"
   get "/twitter_users/:id/download", to: "twitter_users#export_tweeter_data", as: "twitter_user_download"

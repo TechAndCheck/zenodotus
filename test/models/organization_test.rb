@@ -18,4 +18,8 @@ class OrganizationTest < ActiveSupport::TestCase
       Organization.create!({ name: "Test Org", admin: User.first })
     end
   end
+
+  test "organization has users" do
+    assert Organization.first.users.count.positive?
+  end
 end

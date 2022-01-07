@@ -6,22 +6,27 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-User.create([
-# admin account
-{
-  email: "admin@example.com",
-  password: "password123",
-  approved: true,
-  admin: true,
-  confirmed_at: Time.now
-},
+
+organization = Organization.create(
+  name: "Test Organization",
+  users: [User.new({
+    email: "admin@example.com",
+    password: "password123",
+    approved: true,
+    admin: true,
+    confirmed_at: Time.now,
+    organization: organization
+  })]
+)
+
 # unapproved account
-{
+User.create([{
   email: "user@example.com",
   password: "password123",
   approved: false,
   admin: false,
-  confirmed_at: Time.now
+  confirmed_at: Time.now,
+  organization_id: organization.id
 },
 # restricted account
 {
@@ -30,7 +35,8 @@ User.create([
   approved: true,
   admin: false,
   restricted: true,
-  confirmed_at: Time.now
+  confirmed_at: Time.now,
+  organization_id: organization.id
 }])
 
 Sources::Tweet.create_from_url "https://twitter.com/kairyssdal/status/1415029747826905090"

@@ -4,6 +4,10 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one:
+organization1:
   name: "Test Organization"
   admin: user1
+
+organization2:
+  name: "Another Org"
+  admin: user2
