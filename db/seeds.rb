@@ -7,20 +7,20 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-organization = Organization.create(
-  name: "Test Organization",
-  users: [User.new({
-    email: "admin@example.com",
-    password: "password123",
-    approved: true,
-    admin: true,
-    confirmed_at: Time.now,
-    organization: organization
-  })]
+organization = Organization.create!(
+  name: "Test Organization"
 )
 
+User.create!([
+{ email: "admin@example.com",
+  password: "password123",
+  approved: true,
+  admin: true,
+  confirmed_at: Time.now,
+  organization_id: organization.id
+},
 # unapproved account
-User.create([{
+{
   email: "user@example.com",
   password: "password123",
   approved: false,
@@ -38,6 +38,8 @@ User.create([{
   confirmed_at: Time.now,
   organization_id: organization.id
 }])
+
+organization.update({ admin_id: User.first })
 
 Sources::Tweet.create_from_url "https://twitter.com/kairyssdal/status/1415029747826905090"
 Sources::Tweet.create_from_url "https://twitter.com/leahstokes/status/1414669810739281920"
