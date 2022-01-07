@@ -1,16 +1,16 @@
 <div id="nav" class="h-full w-350px fixed left-0  overflow-x-hidden pt-60px z-1">
   <!--  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>-->
-  <a class="block" href="#" onclick="toggleView('accountSettings')">Settings</a>
-  <a class="block" href="#" onclick="toggleView('textSearchHistory')">Text searches</a>
-  <a class="block" href="#" onclick="toggleView('imageSearchHistory')">Image searches</a>
+  <a class="block" href="javascript:;" onclick="toggleView('accountSettings')">Settings</a>
+  <a class="block" href="javascript:;" onclick="toggleView('textSearchHistory')">Text searches</a>
+  <a class="block" href="javascript:;" onclick="toggleView('imageSearchHistory')">Image searches</a>
   <% if current_user.admin? %>
-    <a class="block" href="#" onclick="toggleView('userApprovals')">Approvals</a>
+    <a class="block" href="javascript:;" onclick="toggleView('userApprovals')">Approvals</a>
     <a class="block">API key</a>
   <%end %>
 </div>
 <div id="accountSettings" class="settingsBlock">
   <h1 class="text-2xl font-light">Update account details</h1>
-  <h2 class="text-lg font-semibold">Change password</h1>
+  <h2 class="text-lg font-semibold">Change password</h2>
   <%= form_with url:change_password_path, html: { data: { action: "submit->modal#onPostSend ajax:success->modal#onPostSuccess" } }  do |form| %>
     <div>
       Enter a new password: <%= form.text_field :password, type: "password" %>
@@ -19,7 +19,7 @@
     </div>
   <% end %>
   <br>
-  <h2 class="text-lg font-semibold">Change email</h1>
+  <h2 class="text-lg font-semibold">Change email</h2>
   <%= form_with url:change_email_path, html: { data: { action: "submit->modal#onPostSend ajax:success->modal#onPostSuccess" } }  do |form| %>
     <div>
       <%= form.text_field :email, placeholder: current_user.email %>
@@ -27,7 +27,7 @@
     </div>
   <% end %>
   <br>
-  <h2 class="text-lg font-semibold">Delete account</h1>
+  <h2 class="text-lg font-semibold">Delete account</h2>
   <%= link_to "Delete my account", user_registration_path, confirm: "Are you sure?", method: :delete %>
 </div>
 <div id="textSearchHistory" class="settingsBlock" hidden=true>
@@ -65,7 +65,7 @@
   <%== pagy_nav(@pagy_) %>
 </div>
 
-<div id="userApprovals" class="setingsBlock" hidden=true>
+<div id="userApprovals" class="settingsBlock" hidden=true>
   <% if current_user.admin? %>
     <h1>User approvals</h1>
     <table id="approvals" class="table-auto">
@@ -93,30 +93,35 @@
   <% end %>
 </div>
 <script>
-  let currentView = "accountSettings";
 
+  console.log("SCRIPTED")
   // Sidebar navigation
-  function toggleView(newView) {
-      if (newView == currentView) 
+  function toggleView(newViewId) {
+      let currentView = [...document.getElementsByClassName("settingsBlock")].filter(i => i.getAttribute("hidden") == null)[0];
+      let newView = document.getElementById(newViewId);
+      if (newView === currentView) {
+        console.log("Not toggling view")
         return
-
-      document.getElementById(currentView).hidden = true;
-      document.getElementById(newView).hidden = false;
-      currentView = newView;
+      }
+      console.log("Toggling view from", currentView.id, "to", newView.id);
+      currentView.setAttribute("hidden", true);
+      console.log(newView)
+      newView.removeAttribute("hidden");
   }
 
   // Return to the correct view on search page loads
-  window.onload = function() {
-      let url = window.location.href;
+      url = window.location.href;
+      console.log("load", url);
       if (url.includes("text_search")) {
         document.getElementById("accountSettings").hidden = true;
-        document.getElementById("textSearchHistory").hidden = false;
+        document.getElementById("textSearchHistory").removeAttribute("hidden")
+        console.log("accountSettings.hidden is now", document.getElementById("accountSettings").hidden);
+        console.log("textSearchHistory.hidden is now", document.getElementById("textSearchHistory").hidden);
         currentView = "textSearchHistory";
       }
       else if (url.includes("image_search")) {
         document.getElementById("accountSettings").hidden = true;
-        document.getElementById("imageSearchHistory").hidden = false;
+        document.getElementById("imageSearchHistory").removeAttribute("hidden");
         currentView = "imageSearchHistory";
       }
-  };
 </script>
