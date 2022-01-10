@@ -1,12 +1,6 @@
 require "test_helper"
 
 class OrganizationTest < ActiveSupport::TestCase
-  test "creating an organization without an admin fails" do
-    assert_raises ActiveRecord::RecordInvalid do
-      Organization.create!({ name: "Test Org" })
-    end
-  end
-
   test "creating an organization without a name fails" do
     assert_raises ActiveRecord::NotNullViolation do
       Organization.create!({ admin: User.first })
@@ -21,5 +15,14 @@ class OrganizationTest < ActiveSupport::TestCase
 
   test "organization has users" do
     assert Organization.first.users.count.positive?
+  end
+
+  test "an organization with users but no admin raises an error" do
+    organization = Organization.create!({ name: "Test Org" })
+    organization.users << User.first
+
+    assert_raises Organization::NoAdminError do
+      organization.save!
+    end
   end
 end

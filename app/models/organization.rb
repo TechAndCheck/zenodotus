@@ -9,4 +9,19 @@ class Organization < ApplicationRecord
   belongs_to :admin, class_name: :User, required: false
 
   has_many :users, dependent: :destroy
+
+  before_save :ensure_admin_if_users
+
+private
+
+  # If there are any users we want to make sure at least one is an admin. Throw an error if there are users
+  # but there is no admin. If there's no users then just let it go for the reasons described in the comment
+  # above.
+  def ensure_admin_if_users
+    return if users.empty?
+
+    raise Organization::NoAdminError if admin.nil?
+  end
 end
+
+class Organization::NoAdminError < StandardError; end

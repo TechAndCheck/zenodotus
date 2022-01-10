@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_many :api_keys, dependent: :destroy
+  has_many :api_keys, dependent: :delete_all
   has_many :archive_items, foreign_key: :submitter_id, dependent: :nullify
 
   belongs_to :organization, required: true
@@ -10,6 +10,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :confirmable, :trackable, :lockable
 
+  before_destroy :check_if_admin_before_destorying
+
   def active_for_authentication?
     super && approved?
   end
@@ -17,4 +19,18 @@ class User < ApplicationRecord
   def inactive_message
     approved? ? super : :not_approved   # see config/locales/devise
   end
+
+  def admin?
+    # The Bullet gem throws an eager loading error if we don't do it like this. There shouldn't be a
+    # slow down in any way, since this is the same thing as `self.organization`
+    Organization.find(self.organization_id).admin == self
+  end
+
+private
+
+  def check_if_admin_before_destorying
+    raise User::DontDestroyIfAdminError.new("Replace #{self.email} as admin of #{self.organization.name} before deleting the user.") if self.admin?
+  end
 end
+
+class User::DontDestroyIfAdminError < StandardError; end
