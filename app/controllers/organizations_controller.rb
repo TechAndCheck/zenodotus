@@ -19,6 +19,8 @@ class OrganizationsController < ApplicationController
   # Only available to super admins
   def list; end
 
+  def update_admin; end
+
 private
 
   def setup_variables

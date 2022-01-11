@@ -4,17 +4,16 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.0.3"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "~> 6.1.0"
+gem "rails", "~> 7.0"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 # Use Puma as the app server
 gem "puma", "~> 5.0"
 # Use SCSS for stylesheets
-gem "sass-rails", ">= 6"
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem "webpacker", "~> 5.0"
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem "turbolinks", "~> 5"
+# gem "sass-rails", ">= 6"
+
+# # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
+# gem "turbolinks", "~> 5"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem "jbuilder", "~> 2.7"
 # Use Redis adapter to run Action Cable in production
@@ -142,7 +141,7 @@ gem "streamio-ffmpeg"
 
 # gem "zorki", "0.1.0", git: "https://github.com/cguess/zorki"
 gem "birdsong", "0.1.0", git: "https://github.com/cguess/birdsong"
-gem "forki", git: "https://www.github.com/oneroyalace/forki"
+gem "forki", git: "https://github.com/oneroyalace/forki"
 
 # A progress bar for our Rake tasks
 gem "ruby-progressbar"
@@ -152,3 +151,12 @@ gem "json_schemer"
 
 # Devise is used for authentication and user management
 gem "devise", "~> 4.8.0"
+
+# New way to bundle CSS and JS for Rails 7
+gem "cssbundling-rails"
+gem "importmap-rails"
+
+# Use Stimulus for Rails 7
+gem "stimulus-rails"
+
+gem "sprockets-rails", :require => "sprockets/railtie"
