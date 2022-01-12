@@ -39,5 +39,11 @@ class AccountsController < ApplicationController
     user.destroy
   end
 
+  def destroy
+    user = User.find(params[:user])
+    user.destroy
+    redirect_to "/users/sign_in"
+  end
+
   def admin; end
 end
