@@ -30,3 +30,11 @@ user3:
   approved: true
   confirmed_at: <%= Time.now %>
   organization: organization1
+
+super_admin:
+  email: "super_admin@example.com"
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  approved: true
+  admin: true
+  confirmed_at: <%= Time.now %>
+  organization: organization1

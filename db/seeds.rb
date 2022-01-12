@@ -37,9 +37,19 @@ User.create!([
   restricted: true,
   confirmed_at: Time.now,
   organization_id: organization.id
+},
+# approved account
+{
+  email: "user2@example.com",
+  password: "password123",
+  approved: true,
+  admin: true,
+  restricted: true,
+  confirmed_at: Time.now,
+  organization_id: organization.id
 }])
 
-organization.update({ admin_id: User.first })
+organization.update({ admin_id: User.where(email: "user2@example.com").first.id })
 
 Sources::Tweet.create_from_url "https://twitter.com/kairyssdal/status/1415029747826905090"
 Sources::Tweet.create_from_url "https://twitter.com/leahstokes/status/1414669810739281920"

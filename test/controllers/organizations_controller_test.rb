@@ -14,10 +14,36 @@ class OrganizationsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  # This will test vs super admin, eventually
-  # test "cannot load if not a member of the organization" do
-  #   sign_in users(:user2)
-  #   get organizations_url
-  #   assert_response :success
-  # end
+  test "can set admin for organization as super admin" do
+    # This user is a super admin
+    sign_in users(:super_admin)
+    put organization_update_admin_url(organizations(:organization1), users(:user3))
+    assert_redirected_to controller: :organizations, action: :index
+  end
+
+  test "can set admin for organization as organization admin" do
+    sign_in users(:user1)
+
+    organization = organizations(:organization1)
+    user = users(:user3)
+
+    put organization_update_admin_url(organization, user)
+    assert_redirected_to controller: :organizations, action: :index
+
+    organization.reload
+    assert organization.admin == user
+  end
+
+  test "cannot set admin for organization unless admin" do
+    sign_in users(:user3)
+
+    organization = organizations(:organization1)
+    user = users(:user3)
+
+    put organization_update_admin_url(organization, user)
+    assert_redirected_to "/"
+
+    organization.reload
+    assert organization.admin != user
+  end
 end
