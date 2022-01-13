@@ -23,8 +23,8 @@
               <div >
                 <span class="relative left-5"><%= form.text_field :confirmed_password, placeholder: "Confirm password", type: "password", class: "bg-gray-200 rounded h-3" %></span>
               </div>
-              <div>
-                <%= form.submit "Update", class: "relative left-5 rounded" %>
+              <div class="relative left-5">
+                <%= form.submit "Update", class: "shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white  px-2 rounded" %>
               </div>
             <% end %>
           </div>
@@ -41,8 +41,8 @@
               <div class="relative left-5">
                 <%= form.text_field :email, placeholder: current_user.email, class: "bg-gray-200 rounded h-3"%>
               </div>
-              <div>
-                <%= form.submit "Update", class: "relative left-5 rounded" %>
+              <div class="relative left-5">
+                <%= form.submit "Update", class: "shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white  px-2 rounded" %>
               </div>
               </div>
             <% end %>
@@ -56,7 +56,7 @@
           </div>
           <div id="deleteAccount-right" class="w-1/3">
             <div class="relative left-5">
-              <%= button_to "Delete my account", "/account/users/", params: { user: current_user }, class: "bg-gray-150 font-medium cursor-pointer rounded-md border-1  text-red-700 transition-colors hover:text-gray-50 hover:bg-red-700 px-3", data: { confirm: "Are you sure?" }, method: :delete %>
+              <%= button_to "Delete my account", "/account/users/", params: { user: current_user }, class: "shadow bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white  px-2 rounded", data: { confirm: "Are you sure?" }, method: :delete %>
             </div>
           </div>
         </div>
@@ -71,7 +71,7 @@
             <% searches.each do |search| %>
               <div>
                 <span class=""><%= search.created_at.strftime("%H:%M:%S") %></span>
-                <span class=""><%= search.query %></span>
+                <span class="pl-3"><%= search.query %></span>
               </div>
             <% end %>
           </div>
@@ -89,9 +89,9 @@
             <% date = "Thursday, December 5, 1032" %>
             <p class="font-bold pb-3"><%= date %></p>
             <% searches.each do |search| %>
-              <div class="flex flex-row py-2 items-center">
+              <div class="flex flex-row py-2 items-center border">
                 <div class="flex justify-center items-center w-1/12">
-                  <p class="relative inset-y-1/2 align-middle">19:03:42</p>
+                <p class="relative inset-y-1/2 align-middle"><%= search.created_at.strftime("%H:%M:%S") %></p>
                 </div>
                 <div class="w-1/12">
                   <img src="<%= search.image_url %>">
