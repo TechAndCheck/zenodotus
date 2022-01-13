@@ -27,6 +27,16 @@ class OrganizationsController < ApplicationController
     redirect_to action: :index
   end
 
+  def delete_user
+    organization = Organization.find(params[:organization_id])
+    user = User.find(params[:user_id])
+
+    raise "User must belong to an organization to be an admin" unless organization.users.include? user
+
+    user.destroy!
+    redirect_to action: :index
+  end
+
 private
 
   def setup_variables

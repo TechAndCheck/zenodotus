@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   resources :organizations, only: [:index]
 
   put "/organizations/:organization_id/update_admin/:user_id", to: "organizations#update_admin", as: "organization_update_admin"
+  delete "/organizations/:organization_id/update_admin/:user_id", to: "organizations#delete_user", as: "organization_delete_user"
 
   get "/instagram_users/:id/download", to: "instagram_users#export_instagram_user_data", as: "instagram_user_download"
   get "/twitter_users/:id/download", to: "twitter_users#export_tweeter_data", as: "twitter_user_download"

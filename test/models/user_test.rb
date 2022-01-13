@@ -7,22 +7,31 @@ class UserTest < ActiveSupport::TestCase
 
   test "user cannot be destroyed if admin of an organization" do
     assert_raises User::DontDestroyIfAdminError do
-      User.first.destroy!
+      user = Organization.first.admin
+      user.destroy!
     end
   end
 
   test "user can be destroyed if not an admin" do
     organization = Organization.where(name: "Test Organization").first
-    first_user = organization.users.first
+    # Get a user that's not an admin
+    nonadmin_user = nil
+    organization.users.each do |user|
+      next if organization.admin == user
 
-    assert_raises User::DontDestroyIfAdminError do
-      first_user.destroy!
+      nonadmin_user = user
+      break
     end
 
-    organization.update({ admin: organization.users.second })
+    admin_user = organization.admin
+    assert_raises User::DontDestroyIfAdminError do
+      organization.admin.destroy!
+    end
+
+    organization.update({ admin: nonadmin_user })
 
     assert_nothing_raised do
-      first_user.destroy!
+      admin_user.destroy!
     end
   end
 end

@@ -12,8 +12,7 @@
   </div>
   <% @organization.users.each_with_index do |user, index| %>
   <div class="w-full flex px-5 pt-3 pb-3 hover:bg-pink-50
-    <%= index % 2 != 0 ? "bg-green-50" : "bg-gray-50" %>
-  ">
+    <%= index % 2 != 0 ? "bg-green-50" : "bg-gray-50" %>" data-controller="organization">
     <div class="w-1/4"><%= user.email %></div>
     <div class="w-1/4"><%= user.created_at %></div>
     <div class="w-1/4">
@@ -23,7 +22,11 @@
         <%= button_to "Set as admin", organization_update_admin_path(@organization, user), method: "put", class: "underline" %>
       <% end %>
     </div>
-    <div class="w-1/4">Delete User</div>
+    <div class="w-1/4">
+      <% if user.admin? || current_user.admin %>
+        <%= button_to "Delete User", organization_delete_user_path(@organization, user), method: "delete", class: "underline", data: { action: "click->organzation#deleteUser" }  %>
+      <% end %>
+    </div>
   </div>
   <% end %>
 </div>

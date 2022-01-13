@@ -6,14 +6,12 @@ export default class extends Controller {
     userId: String
   }
 
-  setUserAsAdmin(event) {
-    let body = JSON.stringify({
-              event_id: this.eventId,
-              user_id: this.userId
-            })
-    fetch('/organizations/update_admin', { method: 'PUT', body: body })
-      .then(response => response.text())
-      .then(html => this.element.innerHTML = html)
+  deleteUser(event) {
+    let confirmed = confirm("Are you sure?")
+
+    if(!confirmed) {
+      event.preventDefault()
+    }
   }
 
   close() {
