@@ -65,39 +65,46 @@
     </div>
     <div id="textSearchHistory" class="settingsBlock " hidden=true>
       <h1 class="text-2xl font-light py-2">Text Search History</h1>
-      <div style="background-color: rgb(245 254 250); width: fit-content" >
-        <table>
-          <tr>
-            <th class="text-left">Searched at</th>
-            <th class="text-left">Searched for</th>
-          <tr>
-            <% @text_searches.each do |text_search| %>
-            <tr>
-              <td class="border-2"><%= text_search.created_at %></td>
-              <td class="border-2"><%= text_search.query %></td>
-            </tr>
-          <% end %>
-        </table>
-        <%== pagy_nav(@pagy) %>
+      <div style="width: fit-content" >
+        <% split_searches_by_date(@text_searches).each do |date, searches| %>
+          <div class="pb-5">
+            <p class="font-bold pb-3"><%= date %></p>
+            <% searches.each do |search| %>
+              <div>
+                <span class=""><%= search.created_at.strftime("%H:%M:%S") %></span>
+                <span class=""><%= search.query %></span>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+        <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
       </div>
 
     </div>
 
     <div id="imageSearchHistory" class="settingsBlock" hidden=true>
-      <h1 class="text-2xl font-light">Searches</h1>
-      <table>
-        <tr>
-          <th>Searched at</th>
-          <th>Searched for</th>
-        <tr>
-          <% @image_searches.each do |image_search| %>
-          <tr>
-            <td><%= image_search.created_at %></td>
-            <td><img src="<%= image_search.image_url %>"></td>
-          </tr>
+      <h1 class="text-2xl font-light py-2">Image Search History</h1>
+      <div>
+        <%# split_searches_by_date(@image_searches).each do |date, searches| %>
+        <% (0...2).each do |ind| %>
+          <div>
+            <% date = "Thursday, December 5, 1032" %>
+            <p class="font-bold pb-3"><%= date %></p>
+            <%# searches.each do |search| %>
+            <% (0...2).each do |ind| %>
+              <div class="flex flex-row py-2 items-center">
+                <div class="flex justify-center items-center w-1/12">
+                  <p class="relative inset-y-1/2 align-middle">19:03:42</p>
+                </div>
+                <div class="w-1/12">
+                  <td><img src="https://upload.wikimedia.org/wikipedia/commons/d/dc/Ras_J._Baraka_%281%29.jpg"></td>
+                </div>
+              </div>
+            <% end %>
+          </div>
         <% end %>
-      </table>
-      <%== pagy_nav(@pagy_) %>
+        </div>
+      <%== pagy_nav(@pagy_) if @pagy_.pages > 1 %>
     </div>
 
     <div id="userApprovals" class="settingsBlock" hidden=true>
