@@ -23,8 +23,8 @@
       <% end %>
     </div>
     <div class="w-1/4">
-      <% if user.admin? || current_user.admin %>
-        <%= button_to "Delete User", organization_delete_user_path(@organization, user), method: "delete", class: "underline", data: { action: "click->organzation#deleteUser" }  %>
+      <% if user.admin? || current_user.admin && current_user != user %>
+        <%= button_to "Delete User", organization_delete_user_path(@organization, user), method: "delete", class: "underline", data: { action: "click->organization#deleteUser" }  %>
       <% end %>
     </div>
   </div>

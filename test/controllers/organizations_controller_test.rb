@@ -79,4 +79,18 @@ class OrganizationsControllerTest < ActionDispatch::IntegrationTest
     organization.reload
     assert organization.users.include?(user)
   end
+
+
+  test "cannot delete self from organization" do
+    sign_in users(:user3)
+
+    organization = organizations(:organization1)
+    user = users(:user3)
+
+    delete organization_delete_user_url(organization, user)
+    assert_redirected_to "/"
+
+    organization.reload
+    assert organization.users.include?(user)
+  end
 end

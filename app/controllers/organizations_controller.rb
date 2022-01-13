@@ -31,9 +31,20 @@ class OrganizationsController < ApplicationController
     organization = Organization.find(params[:organization_id])
     user = User.find(params[:user_id])
 
+    if user == current_user
+      flash[:alert] = "You cannot delete yourself"
+      redirect_to action: :index
+      return
+    end
+
     raise "User must belong to an organization to be an admin" unless organization.users.include? user
 
-    user.destroy!
+    begin
+      user.destroy!
+    rescue User::DontDestroyIfAdminError => e
+      flash[:alert] = e.message
+    end
+
     redirect_to action: :index
   end
 
