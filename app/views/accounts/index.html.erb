@@ -4,7 +4,6 @@
     <a class="block" href="javascript:;" onclick="toggleView('textSearchHistory')">Text searches</a>
     <a class="block" href="javascript:;" onclick="toggleView('imageSearchHistory')">Image searches</a>
     <% if current_user.admin? %>
-      <a class="block" href="javascript:;" onclick="toggleView('userApprovals')">Approvals</a>
       <a class="block">API key</a>
     <%end %>
   </div>
@@ -85,19 +84,17 @@
     <div id="imageSearchHistory" class="settingsBlock" hidden=true>
       <h1 class="text-2xl font-light py-2">Image Search History</h1>
       <div>
-        <%# split_searches_by_date(@image_searches).each do |date, searches| %>
-        <% (0...2).each do |ind| %>
+        <% split_searches_by_date(@image_searches).each do |date, searches| %>
           <div>
             <% date = "Thursday, December 5, 1032" %>
             <p class="font-bold pb-3"><%= date %></p>
-            <%# searches.each do |search| %>
-            <% (0...2).each do |ind| %>
+            <% searches.each do |search| %>
               <div class="flex flex-row py-2 items-center">
                 <div class="flex justify-center items-center w-1/12">
                   <p class="relative inset-y-1/2 align-middle">19:03:42</p>
                 </div>
                 <div class="w-1/12">
-                  <td><img src="https://upload.wikimedia.org/wikipedia/commons/d/dc/Ras_J._Baraka_%281%29.jpg"></td>
+                  <img src="<%= search.image_url %>">
                 </div>
               </div>
             <% end %>
@@ -105,34 +102,6 @@
         <% end %>
         </div>
       <%== pagy_nav(@pagy_) if @pagy_.pages > 1 %>
-    </div>
-
-    <div id="userApprovals" class="settingsBlock" hidden=true>
-      <% if current_user.admin? %>
-        <h1>User approvals</h1>
-        <table id="approvals" class="table-auto">
-          <thead>
-          <tr>
-            <th class="border">Email</th>
-            <th class="border">Request</th>
-            <th class="border">Action</th>
-          </tr>
-          </thead>
-          <tbody>
-          <% User.all.where(approved: false).each do | user| %>
-            <tr class="border text-gray-600 hover:text-black">
-              <td><%= user.email %>, <%=user.approved %></td>
-              <td>Please let me be in the zenodotus demo I need the fact checker clout</td>
-              <td>
-                <!-- re-render from controller on approve/deny? -->
-                <%= button_to "approve", approve_request_path, params: {user: user}, class:"float-left bg-blue-400 hover:bg-blue-500 p-2 text-white hover:shadow-lg text-xs font-thin" %>
-                <%= button_to "deny",  deny_request_path, params: {user: user}, class:"float-left bg-red-400 hover:bg-red-500 p-2 text-white hover:shadow-lg text-xs font-thin"  %>
-              </td>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
-      <% end %>
     </div>
   </div>
 </div>
