@@ -1,6 +1,6 @@
 <%= turbo_frame_tag "modal" do %>
   <% unless defined?(render_empty) && render_empty == true %>
-  <div  data-controller="modal" class="w-screen h-screen absolute inset-0" data-action="keyup@document->modal#escClose">
+  <div data-controller="modal" class="w-screen h-screen absolute inset-0" data-action="keyup@document->modal#escClose">
     <div class="bg-black opacity-50 w-screen h-screen absolute inset-0" data-action="click->modal#close"></div>
     <div class="absolute inset-52 bg-white py-3 font-display border border-gray-100 rounded px-4">
       <button class="text-xl text-pink-200 float-right" data-action="click->modal#close"><i class="fas fa-window-close"></i></button>

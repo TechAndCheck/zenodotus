@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
 protected
 
-  sig { void }
+  sig { returns(T::Boolean) }
   def json_request?
     request.format.json?
   end
@@ -36,5 +36,23 @@ protected
       return false
     end
     true
+  end
+
+  sig { returns(T::Boolean) }
+  def authenticate_super_user
+    # First we make sure they're logged in at all, this also sets the current user so we can check it
+    return false unless authenticate_user!
+    current_user.admin
+  end
+
+
+  sig { void }
+  def authenticate_super_user!
+    # First we make sure they're logged in at all, this also sets the current user so we can check it
+    authenticate_user!
+
+    unless current_user.admin
+      redirect_back_or_to "/", allow_other_host: false, alert: "You must be a super user/admin to access this page."
+    end
   end
 end

@@ -15,10 +15,10 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
   end
 
   test "destroying a user resets the submitter_id of ArchiveItems it created" do
-    sign_in users(:user1)
-    Sources::Tweet.create_from_url "https://twitter.com/unsung_son/status/1470963204855578626", User.first
+    sign_in users(:user3)
+    Sources::Tweet.create_from_url "https://twitter.com/unsung_son/status/1470963204855578626", users(:user3)
     assert_not_nil ArchiveItem.first.submitter
-    User.destroy(User.first.id)
+    User.destroy(users(:user3).id)
     assert_nil ArchiveItem.first.submitter
   end
 end
