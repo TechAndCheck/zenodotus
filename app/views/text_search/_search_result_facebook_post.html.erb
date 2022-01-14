@@ -9,7 +9,7 @@
   <div class="overflow-hidden md:pl-5 mr-5 flex flex-col md:flex-row w-full text-left justify-around">
     <div class="flex flex-col flex-wrap justify-around">
       <div class="h-8">
-        <div class="pl-2 pr-2 bg-gradient-to-r from-blue-600 to-blue-300 text-white rounded">Tweet</div>
+        <div class="pl-2 pr-2 bg-gradient-to-r from-purple-500 to-red-600 text-white rounded">Facebook</div>
       </div>
       <div class="h-8">
         Fact Check Rating: Three Pinocchios
@@ -17,10 +17,12 @@
       <div class="h-8">
         <a href="#">Fact Check Link <i class="fas fa-external-link-square-alt"></i></a>
       </div>
+      <div class="h-8">
+        Likes: <%= result.number_of_likes %>
+      </div>
     </div>
     <div class="flex flex-col flex-wrap justify-around">
       <div class="h-8">
-        <!--        Retrieved At: <%#= result[:image].created_at.to_formatted_s(:long_ordinal) %>-->
         Retrieved at: right now
       </div>
       <div class="h-8">
@@ -34,10 +36,10 @@
       </div>
     </div>
     <div class="flex flex-col justify-between md:w-1/3">
-      <div class="h-8 pb-2">
+      <div class="h-8">
         Claim: This is a sample claim of some sort of thing, it may be long, so let's see how this goes.
       </div>
-      <div class="h-8" title="<%= result.text %>" >
+      <div class="h-8" title="<%= result.text%>" >
         Post text: <%= result.text[0..80] %>...
       </div>
       <div class="h-8 text-right text-green-400">
@@ -47,13 +49,14 @@
   </div>
   <div class="flex-none md:w-32 pl-5 border-t md:border-t-0 md:border-l mt-5 md:mt-0">
     <div class="flex flex-col items-center text-center justify-center">
-      <%= link_to twitter_user_path(result.author_id) do %>
-        <div class="p-1 rounded-full bg-gradient-to-r from-blue-600 to-blue-300 inline-block">
-          <img src="/uploads/<%= result.author.profile_image_data["id"] %>" class="w-20 h-20 rounded-full inline-flex items-center justify-center bg-gray-200 text-gray-400"/>
+      <%=link_to facebook_user_path(result.author) do %>
+        <div class="p-1 rounded-full bg-gradient-to-r from-purple-500 to-red-600 inline-block">
+            <img src="/uploads/<%= result.author.profile_image_data["id"] %>" class="w-20 h-20 rounded-full inline-flex items-center justify-center bg-gray-200 text-gray-400"/>
         </div>
-        <div class="font-medium title-font mt-1 text-gray-900 text-lg">@<%= result.author.handle %></div>
-      <% end %>
-      <p class="text-base"><%= result.author.display_name %></p>
+        <%= result.author.handle %>
+      <%end%>
+      <a href="#"><p class="text-base"><%= result.author.display_name %></p></a>
     </div>
   </div>
 </div>
+
