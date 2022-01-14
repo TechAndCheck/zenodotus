@@ -5,7 +5,7 @@ class AccountsController < ApplicationController
 
   def index
     @pagy, @text_searches = pagy(TextSearch.where(user_id: current_user.id).order("created_at DESC"), page_param: :text_search_page, items: 10)
-    @pagy_, @image_searches = pagy(ImageSearch.where(submitter_id: current_user.id).order("created_at DESC"), page_param: :image_search_page, items: 10)
+    @pagy_, @image_searches = pagy(ImageSearch.where(submitter_id: current_user.id).order("created_at DESC"), page_param: :image_search_page, items: 7)
   end
 
   # A class representing the allowed params into the `change_password` endpoint
