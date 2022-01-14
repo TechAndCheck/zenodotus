@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_many :api_keys, dependent: :destroy
   has_many :archive_items, foreign_key: :submitter_id, dependent: :nullify
   has_many :image_searches, foreign_key: :submitter_id, dependent: :destroy
+  has_many :text_searches, foreign_key: :submitter_id, dependent: :destroy
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable

@@ -155,8 +155,8 @@ ActiveRecord::Schema.define(version: 2022_01_03_202619) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "query"
-    t.uuid "user_id", null: false
-    t.index ["user_id"], name: "index_text_searches_on_user_id"
+    t.uuid "submitter_id", null: false
+    t.index ["submitter_id"], name: "index_text_searches_on_submitter_id"
   end
 
   create_table "tweets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -236,7 +236,6 @@ ActiveRecord::Schema.define(version: 2022_01_03_202619) do
   add_foreign_key "instagram_images", "instagram_posts"
   add_foreign_key "instagram_videos", "instagram_posts"
   add_foreign_key "media_reviews", "archive_items"
-  add_foreign_key "text_searches", "users"
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"
 
