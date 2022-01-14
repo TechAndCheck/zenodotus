@@ -15,7 +15,7 @@ class ApiKeyTest < ActiveSupport::TestCase
   end
 
   test "deleting a user deletes all of its api keys" do
-    user = users(:user1)
+    user = users(:user3)
     api_key = ApiKey.create(user: user)
     assert_not_nil api_key
     user.destroy!
