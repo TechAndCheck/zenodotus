@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_03_202619) do
+
+ActiveRecord::Schema.define(version: 2022_01_07_142219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -54,7 +55,6 @@ ActiveRecord::Schema.define(version: 2022_01_03_202619) do
 
   create_table "facebook_posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "text"
-    t.index ["author_id"], name: "index_facebook_posts_on_author_id"
     t.datetime "posted_at"
     t.text "facebook_id"
     t.jsonb "reactions"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 2022_01_03_202619) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "author_id", null: false
     t.text "url", null: false
+    t.index ["author_id"], name: "index_facebook_posts_on_author_id"
   end
 
   create_table "facebook_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -151,6 +152,14 @@ ActiveRecord::Schema.define(version: 2022_01_03_202619) do
     t.index ["archive_item_id"], name: "index_media_reviews_on_archive_item_id"
   end
 
+  create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.uuid "admin_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["admin_id"], name: "index_organizations_on_admin_id"
+  end
+
   create_table "text_searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -224,8 +233,10 @@ ActiveRecord::Schema.define(version: 2022_01_03_202619) do
     t.boolean "approved", default: false, null: false
     t.boolean "admin", default: false, null: false
     t.boolean "restricted", default: false, null: false
+    t.uuid "organization_id", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["organization_id"], name: "index_users_on_organization_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
@@ -236,6 +247,7 @@ ActiveRecord::Schema.define(version: 2022_01_03_202619) do
   add_foreign_key "instagram_images", "instagram_posts"
   add_foreign_key "instagram_videos", "instagram_posts"
   add_foreign_key "media_reviews", "archive_items"
+  add_foreign_key "organizations", "users", column: "admin_id"
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"
 

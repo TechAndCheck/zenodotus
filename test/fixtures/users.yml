@@ -15,3 +15,26 @@ user1:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   approved: true
   confirmed_at: <%= Time.now %>
+  organization: organization1
+
+user2:
+  email: "test456@example.com"
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  approved: true
+  confirmed_at: <%= Time.now %>
+  organization: organization2
+
+user3:
+  email: "test789@example.com"
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  approved: true
+  confirmed_at: <%= Time.now %>
+  organization: organization1
+
+super_admin:
+  email: "super_admin@example.com"
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  approved: true
+  admin: true
+  confirmed_at: <%= Time.now %>
+  organization: organization1
