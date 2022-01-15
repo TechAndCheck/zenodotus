@@ -6,6 +6,6 @@ class TextSearch < ApplicationRecord
   #
   # @return An ActiveRecord relation of matching records across all media source models
   def run
-    PgSearch.multisearch(self.query).includes(:searchable).map { |document| document.searchable }
+    PgSearch.multisearch(self.query).includes(searchable: [:author, :images, :videos]).map { |document| document.searchable }
   end
 end
