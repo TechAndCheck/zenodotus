@@ -3,6 +3,7 @@
 class Sources::FacebookPost < ApplicationRecord
   include ArchivableItem
   include PgSearch::Model
+
   multisearchable against: :text
 
   has_many :images, foreign_key: :facebook_post_id, class_name: "MediaModels::Images::FacebookImage", dependent: :destroy

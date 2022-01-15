@@ -5,6 +5,7 @@ class Sources::Tweet < ApplicationRecord
   include PgSearch::Model
 
   multisearchable against: :text
+
   has_many :images, foreign_key: :tweet_id, class_name: "MediaModels::Images::TwitterImage", dependent: :destroy
   accepts_nested_attributes_for :images, allow_destroy: true
 
