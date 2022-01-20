@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_07_142219) do
+ActiveRecord::Schema.define(version: 2022_01_14_161106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 2022_01_07_142219) do
 
   create_table "facebook_posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "text"
-    t.datetime "posted_at"
+    t.datetime "posted_at", precision: 6
     t.text "facebook_id"
     t.jsonb "reactions"
     t.integer "num_comments"
@@ -108,7 +108,7 @@ ActiveRecord::Schema.define(version: 2022_01_07_142219) do
   create_table "instagram_posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "text", null: false
     t.string "instagram_id", null: false
-    t.datetime "posted_at", null: false
+    t.datetime "posted_at", precision: 6, null: false
     t.integer "number_of_likes", null: false
     t.uuid "author_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -157,6 +157,15 @@ ActiveRecord::Schema.define(version: 2022_01_07_142219) do
     t.index ["admin_id"], name: "index_organizations_on_admin_id"
   end
 
+  create_table "pg_search_documents", force: :cascade do |t|
+    t.text "content"
+    t.string "searchable_type"
+    t.uuid "searchable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
+  end
+
   create_table "text_searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -170,7 +179,7 @@ ActiveRecord::Schema.define(version: 2022_01_07_142219) do
     t.string "twitter_id", null: false
     t.string "language", null: false
     t.uuid "author_id", null: false
-    t.datetime "posted_at", null: false
+    t.datetime "posted_at", precision: 6, null: false
     t.index ["author_id"], name: "index_tweets_on_author_id"
   end
 
@@ -186,7 +195,7 @@ ActiveRecord::Schema.define(version: 2022_01_07_142219) do
   create_table "twitter_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "handle", null: false
     t.string "display_name", null: false
-    t.datetime "sign_up_date", null: false
+    t.datetime "sign_up_date", precision: 6, null: false
     t.string "twitter_id", null: false
     t.text "description", null: false
     t.string "url", null: false
@@ -211,20 +220,20 @@ ActiveRecord::Schema.define(version: 2022_01_07_142219) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: 6
+    t.datetime "remember_created_at", precision: 6
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: 6
+    t.datetime "last_sign_in_at", precision: 6
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
+    t.datetime "confirmed_at", precision: 6
+    t.datetime "confirmation_sent_at", precision: 6
     t.string "unconfirmed_email"
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
-    t.datetime "locked_at"
+    t.datetime "locked_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "approved", default: false, null: false
@@ -248,127 +257,5 @@ ActiveRecord::Schema.define(version: 2022_01_07_142219) do
   add_foreign_key "text_searches", "users"
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"
-
-  create_view "unified_users", materialized: true, sql_definition: <<-SQL
-      SELECT instagram_users.id AS author_id,
-      instagram_users.display_name,
-      instagram_users.handle,
-      instagram_users.followers_count,
-      instagram_users.following_count,
-      instagram_users.profile,
-      NULL::text AS description,
-      instagram_users.profile_image_data,
-      (to_tsvector('english'::regconfig, (COALESCE(instagram_users.handle, ''::character varying))::text) || to_tsvector('english'::regconfig, (COALESCE(instagram_users.display_name, ''::character varying))::text)) AS tsv_document,
-      'instagram_user'::text AS user_type
-     FROM instagram_users
-  UNION ALL
-   SELECT twitter_users.id AS author_id,
-      twitter_users.display_name,
-      twitter_users.handle,
-      twitter_users.followers_count,
-      twitter_users.following_count,
-      NULL::text AS profile,
-      twitter_users.description,
-      twitter_users.profile_image_data,
-      (to_tsvector('english'::regconfig, (COALESCE(twitter_users.handle, ''::character varying))::text) || to_tsvector('english'::regconfig, (COALESCE(twitter_users.display_name, ''::character varying))::text)) AS tsv_document,
-      'twitter_user'::text AS user_type
-     FROM twitter_users;
-  SQL
-  add_index "unified_users", ["author_id"], name: "index_unified_users_on_author_id", unique: true
-
-  create_view "unified_posts", materialized: true, sql_definition: <<-SQL
-      WITH post_details AS (
-           SELECT tweets.id AS post_id,
-              tweets.text,
-              tweets.author_id,
-              tweets.posted_at,
-              NULL::integer AS number_of_likes,
-              'tweet'::text AS post_type
-             FROM tweets
-          UNION ALL
-           SELECT instagram_posts.id AS post_id,
-              instagram_posts.text,
-              instagram_posts.author_id,
-              instagram_posts.posted_at,
-              instagram_posts.number_of_likes,
-              'instagram_post'::text AS post_type
-             FROM instagram_posts
-          ), some_user_details AS (
-           SELECT DISTINCT instagram_users.id AS author_id,
-              instagram_users.display_name,
-              instagram_users.handle,
-              instagram_users.followers_count,
-              instagram_users.following_count,
-              instagram_users.profile,
-              NULL::text AS description,
-              instagram_users.profile_image_data
-             FROM instagram_users,
-              post_details
-            WHERE (post_details.author_id = instagram_users.id)
-          UNION ALL
-           SELECT DISTINCT twitter_users.id AS author_id,
-              twitter_users.display_name,
-              twitter_users.handle,
-              twitter_users.followers_count,
-              twitter_users.following_count,
-              NULL::text AS profile,
-              twitter_users.description,
-              twitter_users.profile_image_data
-             FROM twitter_users,
-              post_details
-            WHERE (post_details.author_id = twitter_users.id)
-          ), media_details AS (
-           SELECT instagram_images.instagram_post_id AS post_id,
-              instagram_images.image_data,
-              NULL::jsonb AS video_data
-             FROM instagram_images
-          UNION ALL
-           SELECT instagram_videos.instagram_post_id AS post_id,
-              NULL::jsonb AS image_data,
-              instagram_videos.video_data
-             FROM instagram_videos
-          UNION ALL (
-                   SELECT twitter_images.tweet_id AS post_id,
-                      twitter_images.image_data,
-                      NULL::jsonb AS video_data
-                     FROM twitter_images
-                  UNION ALL
-                   SELECT twitter_videos.tweet_id AS post_id,
-                      NULL::jsonb AS image_data,
-                      twitter_videos.video_data
-                     FROM twitter_videos
-          )
-          ), posts_with_media AS (
-           SELECT post_details.post_id,
-              post_details.text,
-              post_details.author_id,
-              post_details.posted_at,
-              post_details.number_of_likes,
-              post_details.post_type,
-              media_details.image_data,
-              media_details.video_data
-             FROM (post_details
-               FULL JOIN media_details ON ((post_details.post_id = media_details.post_id)))
-          )
-   SELECT posts_with_media.post_id,
-      posts_with_media.post_type,
-      posts_with_media.text,
-      posts_with_media.author_id,
-      posts_with_media.posted_at,
-      posts_with_media.number_of_likes,
-      posts_with_media.image_data,
-      posts_with_media.video_data,
-      some_user_details.display_name,
-      some_user_details.handle,
-      some_user_details.followers_count,
-      some_user_details.following_count,
-      some_user_details.profile,
-      some_user_details.description,
-      some_user_details.profile_image_data,
-      to_tsvector('english'::regconfig, COALESCE(posts_with_media.text, ''::text)) AS tsv_document
-     FROM (posts_with_media
-       JOIN some_user_details ON ((posts_with_media.author_id = some_user_details.author_id)));
-  SQL
-  add_index "unified_posts", ["post_id"], name: "index_unified_posts_on_post_id", unique: true
 
 end

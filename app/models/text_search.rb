@@ -1,13 +1,12 @@
 # typed: ignore
 class TextSearch < ApplicationRecord
   belongs_to :user, optional: false, class_name: "User"
-  # Searches against all posts and users in the db, returning those which reference the user-provided term +query+
+
+  # Searches against posts and users in the db, returning those which reference the search term +query+
   #
-  # @return An ordered array of search results
+  # @return An ActiveRecord relation of matching records across all media source models
   def run
-    {
-      user_search_hits: UnifiedUser.search_users(self.query),
-      post_search_hits: UnifiedPost.search_posts(self.query)
-    }
+    # TODO: Optimize this query to avoid sorting the entire set of ArchivableItems (#129)
+    PgSearch.multisearch(self.query).includes(searchable: [:author, :images, :videos]).map { |document| document.searchable }
   end
 end
