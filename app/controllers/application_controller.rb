@@ -41,6 +41,7 @@ protected
 
   def after_sign_out_path_for(user)
     new_user_session_path
+  end
 
   sig { returns(T::Boolean) }
   def authenticate_super_user

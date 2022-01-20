@@ -1,8 +1,8 @@
-<div class="flex">
-  <div id="nav" class="h-full overflow-visible w-fit pt-60px shrink-0">
-    <a class="block" href="javascript:;" onclick="toggleView('accountSettings')">Settings</a>
-    <a class="block" href="javascript:;" onclick="toggleView('textSearchHistory')">Text searches</a>
-    <a class="block" href="javascript:;" onclick="toggleView('imageSearchHistory')">Image searches</a>
+<div class="flex" data-controller="account">
+  <div id="nav" class="h-full overflow-visible w-fit pt-60px shrink-0" >
+    <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="accountSettings">Settings</a>
+    <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="textSearchHistory">Text searches</a>
+    <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="imageSearchHistory">Image searches</a>
     <% if current_user.admin? %>
       <a class="block">API key</a>
     <%end %>
@@ -24,7 +24,7 @@
                 <span class="relative left-5"><%= form.text_field :confirmed_password, placeholder: "Confirm password", type: "password", class: "bg-gray-100 rounded h-3 changePassword" %></span>
               </div>
               <div class="relative left-5">
-                <%= form.submit "Update", class: "shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white  px-2 rounded", onclick: "resetForm('changePassword')"%>
+                <%= form.submit "Update", class: "shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white  px-2 rounded", data: { action: "account#resetForm", "account-form-param": 'changePassword' } %>
               </div>
             <% end %>
           </div>
@@ -42,7 +42,7 @@
                 <%= form.text_field :email, placeholder: current_user.email, class: "bg-gray-100 rounded h-3 changeEmail"%>
               </div>
               <div class="relative left-5">
-                <%= form.submit "Update", class: "shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white  px-2 rounded", onclick: "resetForm('changeEmail')" %>
+                <%= form.submit "Update", class: "shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white  px-2 rounded", data: { action: "account#resetForm", "account-form-param": 'changeEmail' } %>
               </div>
               </div>
             <% end %>
@@ -122,40 +122,3 @@
     </div>
   </div>
 </div>
-<script>
-
-  console.log("SCRIPTED")
-  // Sidebar navigation
-  function toggleView(newViewId) {
-      let currentView = [...document.getElementsByClassName("settingsBlock")].filter(i => i.getAttribute("hidden") == null)[0];
-      let newView = document.getElementById(newViewId);
-      if (newView === currentView) {
-        console.log("Not toggling view")
-        return
-      }
-      console.log("Toggling view from", currentView.id, "to", newView.id);
-      currentView.setAttribute("hidden", true);
-      console.log(newView)
-      newView.removeAttribute("hidden");
-  }
-
-  function resetForm(form) {
-      setTimeout(() => [...document.getElementsByClassName(form)].forEach(inputElement => inputElement.value = ""), 300);
-  }
-
-  // Return to the correct view on search page loads
-      url = window.location.href;
-      console.log("load", url);
-      if (url.includes("text_search")) {
-        document.getElementById("accountSettings").hidden = true;
-        document.getElementById("textSearchHistory").removeAttribute("hidden")
-        console.log("accountSettings.hidden is now", document.getElementById("accountSettings").hidden);
-        console.log("textSearchHistory.hidden is now", document.getElementById("textSearchHistory").hidden);
-        currentView = "textSearchHistory";
-      }
-      else if (url.includes("image_search")) {
-        document.getElementById("accountSettings").hidden = true;
-        document.getElementById("imageSearchHistory").removeAttribute("hidden");
-        currentView = "imageSearchHistory";
-      }
-</script>
