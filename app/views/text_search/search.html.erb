@@ -1,12 +1,12 @@
 <%= render "search_box"%>
 <div class="bg-white py-4 font-display border border-gray-100 rounded">
   <div class="flex overflow-hidden">
-    <% @user_search_hits.each do |result| %>
-      <%= render partial: "search_result_#{result.user_type}", locals: { result: result } %>
+    <% @user_search_hits.each do |record| %>
+      <%= render partial: "search_result_#{record.class.to_s.delete_prefix('Sources::').downcase.gsub(/user/, '_user')}", locals: { result: record } %>
     <% end %>
   </div>
 
-  <% @post_search_hits.each do |result| %>
-    <%= render partial: "search_result_#{result.post_type}", locals: { result: result } %>
+  <% @post_search_hits.each do |record| %>
+      <%= render partial: "search_result_#{record.class.to_s.delete_prefix('Sources::').downcase.gsub(/post/, '_post')}", locals: { result: record } %>
   <% end %>
 </div>

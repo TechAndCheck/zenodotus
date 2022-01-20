@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.0.3"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "~> 7.0"
+gem "rails", "~> 7.0.1"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 # Use Puma as the app server
@@ -20,6 +20,7 @@ gem "jbuilder", "~> 2.7"
 gem "redis", "~> 4.0"
 # Use PgSearch for Postgres multi-table search
 gem "pg_search", "~> 2.3.5"
+<<<<<<< HEAD
 # Use Scenic to create and maintain a materialized view
 gem "scenic", "~> 1.5.4"
 # Use pagy to paginate ActiveRecord relations
