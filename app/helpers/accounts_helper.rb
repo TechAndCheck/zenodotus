@@ -1,4 +1,5 @@
 module AccountsHelper
+  # Given a list of search results, retabulates them into a list of date-keyed dictionaries
   # sig { params(search_records: TextSearch::ActiveRecordRelation}
   def split_searches_by_date(search_records)
     dated_searches = {}
