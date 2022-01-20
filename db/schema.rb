@@ -93,8 +93,8 @@ ActiveRecord::Schema.define(version: 2022_01_14_161106) do
     t.jsonb "image_data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.uuid "submitter_id"
-    t.index ["submitter_id"], name: "index_image_searches_on_submitter_id"
+    t.uuid "user_id"
+    t.index ["user_id"], name: "index_image_searches_on_user_id"
   end
 
   create_table "instagram_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -171,8 +171,8 @@ ActiveRecord::Schema.define(version: 2022_01_14_161106) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "query"
-    t.uuid "submitter_id", null: false
-    t.index ["submitter_id"], name: "index_text_searches_on_submitter_id"
+    t.uuid "user_id", null: false
+    t.index ["user_id"], name: "index_text_searches_on_user_id"
   end
 
   create_table "tweets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
