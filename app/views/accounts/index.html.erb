@@ -79,22 +79,7 @@
           <% end %>
         </div>
       </div>
-      <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
-<!--      <div style="width: fit-content" >-->
-        <%# split_searches_by_date(@text_searches).each do |date, searches| %>
-<!--          <div class="pb-5">-->
-<!--            <p class="font-bold pb-3"><%#= date %></p>-->
-            <%# searches.each do |search| %>
-<!--              <div>-->
-<!--                <span class=""><%#= search.created_at.strftime("%H:%M:%S") %></span>-->
-<!--                <span class="pl-3"><%#= search.query %></span>-->
-<!--              </div>-->
-            <%# end %>
-<!--          </div>-->
-        <%# end %>
-        <%#== pagy_nav(@pagy) if @pagy.pages > 1 %>
-<!--      </div>-->
-
+      <%== pagy_nav(@pagy_text_searches) if @pagy_text_searches.pages > 1 %>
     </div>
 
     <div id="imageSearchHistory" class="settingsBlock" hidden=true>
@@ -118,7 +103,7 @@
         <% end %>
           </div>
         </div>
-      <%== pagy_nav(@pagy_) if @pagy_.pages > 1 %>
+      <%== pagy_nav(@pagy_image_searches) if @pagy_image_searches.pages > 1 %>
     </div>
   </div>
 </div>
