@@ -37,4 +37,12 @@ export default class extends Controller {
   resetForm({ params }) {
     setTimeout(() => [...document.getElementsByClassName(params.form)].forEach(inputElement => inputElement.value = ''), 100)
   }
+
+  deleteAccount(event) {
+    const confirmed = confirm('Are you sure?')
+
+    if (!confirmed) {
+      event.preventDefault()
+    }
+  }
 }
