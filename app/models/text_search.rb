@@ -6,6 +6,7 @@ class TextSearch < ApplicationRecord
   #
   # @return An ActiveRecord relation of matching records across all media source models
   def run
+    # TODO: Optimize this query to avoid sorting the entire set of ArchivableItems (#129)
     PgSearch.multisearch(self.query).includes(searchable: [:author, :images, :videos]).map { |document| document.searchable }
   end
 end
