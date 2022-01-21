@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: strict
 
 class ImageSearch < ApplicationRecord
   include ImageUploader::Attachment(:image) # adds an `image` virtual attribute

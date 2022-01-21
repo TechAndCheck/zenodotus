@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: strict
 
 class ArchiveController < ApplicationController
   # It's the index, list all the archived items
@@ -72,6 +72,7 @@ class ArchiveController < ApplicationController
   end
 
   # Export entire archive of reviewed media to a JSON File
+  sig { void }
   def export_archive_data
     archive_json = ArchiveItem.prune_archive_items
     send_data archive_json, type: "application/json; header=present", disposition: "attachment; filename=archive.json"

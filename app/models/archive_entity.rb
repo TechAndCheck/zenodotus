@@ -1,7 +1,7 @@
-# typed: false
+# typed: strict
 
 class ArchiveEntity < ApplicationRecord
-  delegated_type :archivable_entity, types: %w[ Sources::TwitterUser Sources::InstagramUser Sources::FacebookUser]
+  delegated_type :archivable_entity, types: %w[Sources::TwitterUser Sources::InstagramUser Sources::FacebookUser]
   delegate :service_id, to: :archivable_entity
 
   # Note: You may want to use `alias` or `alias_method` here instead of the following functions

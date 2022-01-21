@@ -1,3 +1,4 @@
+# typed: strict
 class OrganizationsController < ApplicationController
   before_action :authenticate_user!, :setup_variables
   before_action :authenticate_ability_to_edit!, except: [:index]
@@ -17,6 +18,7 @@ class OrganizationsController < ApplicationController
   # Only available to super admins
   def list; end
 
+  sig { void }
   def update_admin
     organization = Organization.find(params[:organization_id])
     user = User.find(params[:user_id])
@@ -27,6 +29,7 @@ class OrganizationsController < ApplicationController
     redirect_to action: :index
   end
 
+  sig { void }
   def delete_user
     organization = Organization.find(params[:organization_id])
     user = User.find(params[:user_id])
@@ -48,25 +51,30 @@ class OrganizationsController < ApplicationController
     redirect_to action: :index
   end
 
-private
+  private
 
-  def setup_variables
-    @organization = current_user.organization
-  end
+    sig { void }
+    def setup_variables
+      @organization = current_user.organization
+    end
 
-  def authenticate_organization_admin
-    current_user.organization.admin == current_user
-  end
+    sig { void }
+    def authenticate_organization_admin
+      current_user.organization.admin == current_user
+    end
 
-  def authenticate_organization_admin!
-    redirect_to "/" unless authenticate_organization_admin
-  end
+    sig { void }
+    def authenticate_organization_admin!
+      redirect_to "/" unless authenticate_organization_admin
+    end
 
-  def authenticate_ability_to_edit
-    authenticate_super_user || authenticate_organization_admin
-  end
+    sig { void }
+    def authenticate_ability_to_edit
+      authenticate_super_user || authenticate_organization_admin
+    end
 
-  def authenticate_ability_to_edit!
-    redirect_to "/" unless authenticate_ability_to_edit
-  end
+    sig { void }
+    def authenticate_ability_to_edit!
+      redirect_to "/" unless authenticate_ability_to_edit
+    end
 end

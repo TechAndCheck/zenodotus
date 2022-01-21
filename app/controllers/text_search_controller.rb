@@ -1,4 +1,5 @@
-# typed: ignore
+# typed: strict
+
 class TextSearchController < ApplicationController
   before_action :authenticate_user!
 
