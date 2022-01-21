@@ -1,9 +1,10 @@
 require "test_helper"
 
 class ImageSearchTest < ActiveSupport::TestCase
+  include Devise::Test::IntegrationHelpers
   def setup
     file = File.open("test/fixtures/files/instagram_image_test.jpg", binmode: true)
-    @image_search = ImageSearch.create(image: file)
+    @image_search = ImageSearch.create!(image: file, user: users(:user1))
   end
 
   test "can create image search" do
