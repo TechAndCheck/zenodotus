@@ -1,25 +1,23 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
+  /**
+    * Shows the view corresponding to the user's search if they've just loaded a new page
+   */
   connect() {
     const url = window.location.href
-    console.log('load', url)
     if (url.includes('text_search')) {
       document.getElementById('accountSettings').hidden = true
       document.getElementById('textSearchHistory').removeAttribute('hidden')
-      console.log('accountSettings.hidden is now', document.getElementById('accountSettings').hidden)
-      console.log('textSearchHistory.hidden is now', document.getElementById('textSearchHistory').hidden)
-      currentView = "textSearchHistory"
     }
-    else if (url.includes("image_search")) {
-      document.getElementById("accountSettings").hidden = true;
-      document.getElementById("imageSearchHistory").removeAttribute("hidden");
-      currentView = "imageSearchHistory";
+    else if (url.includes('image_search')) {
+      document.getElementById('accountSettings').hidden = true
+      document.getElementById('imageSearchHistory').removeAttribute('hidden')
     }
   }
 
   /**
-   * Toggle the section visible on the accounts page
+   * Toggles the section visible on the accounts page
    */
   toggleView({ params: { id } }) {
     const currentView = [...document.getElementsByClassName('settingsBlock')].filter((i) => i.getAttribute('hidden') == null)[0]
