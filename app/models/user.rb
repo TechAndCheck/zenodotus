@@ -16,7 +16,7 @@ class User < ApplicationRecord
          :trackable, :lockable # , :confirmable
   # TODO: re-enable :confirmable after mailer is set up
 
-  before_destroy :check_if_admin_before_destorying
+  before_destroy :check_if_admin_before_destroying
 
   sig { returns(T::Boolean) }
   def active_for_authentication?

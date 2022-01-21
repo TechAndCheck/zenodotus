@@ -137,7 +137,7 @@ class IngestController < ApplicationController
   #
   # @param [String] url: the url to look at
   # @return An array of MediaReview hashes
-  sig { params(url: String).returns(T::Array[Hash])
+  sig { params(url: String).returns(T::Array[Hash]) }
   def find_media_review_in_page(url)
     mediareview_javascript = /<script.*?>(\[.*MediaReview.*\]).*<\/script>/
 
