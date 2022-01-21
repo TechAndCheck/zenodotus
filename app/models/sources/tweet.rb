@@ -1,4 +1,4 @@
-# typed: false
+# typed: strict
 
 class Sources::Tweet < ApplicationRecord
   include ArchivableItem

@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
+# typed: strict
+
 class AccountsController < ApplicationController
   before_action :authenticate_user!
-
-  def index
-    @pagy_text_searches, @text_searches = pagy(TextSearch.where(user: current_user).order("created_at DESC"), page_param: :text_search_page, items: 10)
-    @pagy_image_searches, @image_searches = pagy(ImageSearch.where(user: current_user).order("created_at DESC"), page_param: :image_search_page, items: 7)
-  end
 
   # A class representing the allowed params into the `change_password` endpoint
   class ChangePasswordParams < T::Struct
@@ -18,6 +15,13 @@ class AccountsController < ApplicationController
     const :email, String
   end
 
+  sig { void }
+  def index
+    @pagy_text_searches, @text_searches = pagy(TextSearch.where(user: current_user).order("created_at DESC"), page_param: :text_search_page, items: 10)
+    @pagy_image_searches, @image_searches = pagy(ImageSearch.where(user: current_user).order("created_at DESC"), page_param: :image_search_page, items: 7)
+  end
+
+  sig { void }
   def change_password
     typed_params = TypedParams[ChangePasswordParams].new.extract!(params)
     current_user.reset_password(typed_params.password, typed_params.confirmed_password)
@@ -34,6 +38,7 @@ class AccountsController < ApplicationController
     end
   end
 
+  sig { void }
   def change_email
     typed_params = TypedParams[ChangeEmailParams].new.extract!(params)
     current_user.email = typed_params.email
@@ -46,21 +51,13 @@ class AccountsController < ApplicationController
     end
   end
 
-  def approveUserRequest
-    user = User.find(params[:user])
-    user.update(approved: true)
-  end
-
-  def denyUserRequest
-    user = User.find(params[:user])
-    user.destroy
-  end
-
+  sig { void }
   def destroy
     user = User.find(params[:user])
     user.destroy
     redirect_to "/users/sign_in"
   end
 
+  sig { void }
   def admin; end
 end

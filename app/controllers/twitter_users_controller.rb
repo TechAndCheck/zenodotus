@@ -1,11 +1,14 @@
-# typed: ignore
+# typed: strict
+
 class TwitterUsersController < ApplicationController
+  sig { void }
   def show
     @twitter_user = Sources::TwitterUser.find(params[:id])
-    @archive_items = Sources::Tweet.where(author_id: @twitter_user.id).includes([:images, :videos])
+    @archive_items = Sources::Tweet.where(author_id: @twitter_user.id).includes(%i[images videos])
   end
 
   # Exports all media items created by the currently viewed Twitter user to a JSON file
+  sig { vid }
   def export_tweeter_data
     tweet_archive_items = ArchiveItem.includes(archivable_item: [:author])
                                      .where(archivable_item_type: "Sources::Tweet")
