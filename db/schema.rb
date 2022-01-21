@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2022_01_14_161106) do
 
   create_table "api_keys", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "hashed_api_key"
-    t.uuid "user_id"
+    t.uuid "user_id", null: false
     t.date "last_used"
     t.jsonb "usage_logs"
     t.datetime "created_at", precision: 6, null: false
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 2022_01_14_161106) do
     t.jsonb "image_data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.uuid "user_id"
+    t.uuid "user_id", null: false
     t.index ["user_id"], name: "index_image_searches_on_user_id"
   end
 
@@ -257,5 +257,7 @@ ActiveRecord::Schema.define(version: 2022_01_14_161106) do
   add_foreign_key "organizations", "users", column: "admin_id"
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"
+  add_foreign_key "text_searches", "users"
+  add_foreign_key "image_searches", "users"
 
 end
