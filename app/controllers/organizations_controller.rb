@@ -58,7 +58,7 @@ class OrganizationsController < ApplicationController
       @organization = current_user.organization
     end
 
-    sig { void }
+    sig { returns(T::Boolean) }
     def authenticate_organization_admin
       current_user.organization.admin == current_user
     end
@@ -68,7 +68,7 @@ class OrganizationsController < ApplicationController
       redirect_to "/" unless authenticate_organization_admin
     end
 
-    sig { void }
+    sig { returns(T::Boolean) }
     def authenticate_ability_to_edit
       authenticate_super_user || authenticate_organization_admin
     end
