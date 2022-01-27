@@ -6,8 +6,8 @@ class Sources::InstagramPost < ApplicationRecord
 
   multisearchable using: {
                     tsearch: {
-                      dictionary: 'english',
-                      tsvector_column: 'content_tsvector'
+                      dictionary: "english",
+                      tsvector_column: "content_tsvector"
                     }
                   }
 
