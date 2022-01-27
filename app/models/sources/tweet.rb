@@ -4,7 +4,6 @@ class Sources::Tweet < ApplicationRecord
   include ArchivableItem
   include PgSearch::Model
 
-                  }
   multisearchable using: {
                     tsearch: {
                       dictionary: 'english',
