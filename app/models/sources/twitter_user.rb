@@ -5,7 +5,13 @@ class Sources::TwitterUser < ApplicationRecord
   include ImageUploader::Attachment(:profile_image) # adds an `image` virtual attribute
   include PgSearch::Model
 
-  multisearchable against: [:handle, :display_name]
+
+  multisearchable using: {
+                    tsearch: {
+                      dictionary: 'english',
+                      tsvector_column: 'content_tsvector'
+                    }
+                  }
 
   # The tweets that a TwitterUser have authored
   has_many :tweets, foreign_key: :author_id, dependent: :destroy

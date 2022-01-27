@@ -4,7 +4,12 @@ class Sources::InstagramPost < ApplicationRecord
   include ArchivableItem
   include PgSearch::Model
 
-  multisearchable against: :text
+  multisearchable using: {
+                    tsearch: {
+                      dictionary: 'english',
+                      tsvector_column: 'content_tsvector'
+                    }
+                  }
 
   has_many :images, foreign_key: :instagram_post_id, class_name: "MediaModels::Images::InstagramImage", dependent: :destroy
   accepts_nested_attributes_for :images, allow_destroy: true
