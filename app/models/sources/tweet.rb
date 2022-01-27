@@ -6,11 +6,11 @@ class Sources::Tweet < ApplicationRecord
 
   multisearchable using: {
                     tsearch: {
-                      dictionary: 'english',
-                      tsvector_column: 'content_tsvector'
+                      dictionary: "english",
+                      tsvector_column: "content_tsvector"
                     }
                   }
-                  
+
 
   has_many :images, foreign_key: :tweet_id, class_name: "MediaModels::Images::TwitterImage", dependent: :destroy
   accepts_nested_attributes_for :images, allow_destroy: true
