@@ -5,12 +5,7 @@ class Sources::InstagramUser < ApplicationRecord
   include ImageUploader::Attachment(:profile_image) # adds an `image` virtual attribute
   include PgSearch::Model
 
-  multisearchable using: {
-                    tsearch: {
-                      dictionary: "english",
-                      tsvector_column: "content_tsvector"
-                    }
-                  }
+  multisearchable against: :text
 
   # The tweets that an InstagramUser have authored
   has_many :instagram_posts, foreign_key: :author_id, dependent: :destroy

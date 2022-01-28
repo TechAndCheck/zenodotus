@@ -4,12 +4,7 @@ class Sources::Tweet < ApplicationRecord
   include ArchivableItem
   include PgSearch::Model
 
-  multisearchable using: {
-                    tsearch: {
-                      dictionary: "english",
-                      tsvector_column: "content_tsvector"
-                    }
-                  }
+  multisearchable against: :text
 
 
   has_many :images, foreign_key: :tweet_id, class_name: "MediaModels::Images::TwitterImage", dependent: :destroy

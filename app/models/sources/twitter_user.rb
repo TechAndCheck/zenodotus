@@ -6,12 +6,7 @@ class Sources::TwitterUser < ApplicationRecord
   include PgSearch::Model
 
 
-  multisearchable using: {
-                    tsearch: {
-                      dictionary: "english",
-                      tsvector_column: "content_tsvector"
-                    }
-                  }
+  multisearchable against: :text
 
   # The tweets that a TwitterUser have authored
   has_many :tweets, foreign_key: :author_id, dependent: :destroy
