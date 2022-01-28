@@ -6,7 +6,7 @@ class Sources::TwitterUser < ApplicationRecord
   include PgSearch::Model
 
 
-  multisearchable against: :text
+  multisearchable against: :handle
 
   # The tweets that a TwitterUser have authored
   has_many :tweets, foreign_key: :author_id, dependent: :destroy
