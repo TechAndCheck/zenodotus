@@ -166,6 +166,7 @@ ActiveRecord::Schema.define(version: 2022_01_27_171324) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.virtual "content_tsvector", type: :tsvector, as: "to_tsvector('english'::regconfig, content)", stored: true
+    t.index ["content_tsvector"], name: "index_pg_search_documents_on_content_tsvector", using: :gin
     t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
   end
 
