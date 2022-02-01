@@ -5,7 +5,6 @@ class Sources::TwitterUser < ApplicationRecord
   include ImageUploader::Attachment(:profile_image) # adds an `image` virtual attribute
   include PgSearch::Model
 
-
   multisearchable against: [:handle, :display_name]
 
   # The tweets that a TwitterUser have authored
