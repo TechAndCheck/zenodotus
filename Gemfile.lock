@@ -1,6 +1,7 @@
 GIT
   remote: https://github.com/cguess/birdsong
-  revision: d314c04b11376db0f623289a8f24068a72f76c17
+  revision: 95498447f2272d757986c292ed8376d11023a7dc
+  branch: archive-gifs
   specs:
     birdsong (0.1.0)
       oauth (~> 0.5.6)
@@ -210,6 +211,8 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.13.1-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.13.1-x86_64-linux)
+      racc (~> 1.4)
     oauth (0.5.8)
     oj (3.13.11)
     orm_adapter (0.5.0)
@@ -321,9 +324,6 @@ GEM
       tty-screen (~> 0.8.1)
     rubyzip (2.3.2)
     safe_type (1.1.1)
-    scenic (1.5.5)
-      activerecord (>= 4.0.0)
-      railties (>= 4.0.0)
     selenium-webdriver (4.1.0)
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
@@ -356,6 +356,7 @@ GEM
       sorbet-runtime (>= 0.5)
     sorbet-runtime (0.5.9519)
     sorbet-static (0.5.9519-universal-darwin-21)
+    sorbet-static (0.5.9519-x86_64-linux)
     sorted_set (1.0.3)
       rbtree
       set (~> 1.0)
@@ -454,7 +455,6 @@ DEPENDENCIES
   rubocop-sorbet
   ruby-progressbar
   ruby_jard
-  scenic (~> 1.5.4)
   selenium-webdriver
   shrine (~> 3.0)
   sidekiq (~> 6.3.1)

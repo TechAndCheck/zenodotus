@@ -138,7 +138,7 @@ gem "streamio-ffmpeg"
 # gem "birdsong", "0.1.0", path: "~/Repositories/birdsong" # twitter
 
 # gem "zorki", "0.1.0", git: "https://github.com/cguess/zorki"
-gem "birdsong", "0.1.0", git: "https://github.com/cguess/birdsong"
+gem "birdsong", "0.1.0", git: "https://github.com/cguess/birdsong", branch: "archive-gifs"
 gem "forki", git: "https://github.com/oneroyalace/forki"
 
 # A progress bar for our Rake tasks
