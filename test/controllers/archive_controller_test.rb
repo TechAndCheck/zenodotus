@@ -23,4 +23,12 @@ class ArchiveControllerTest < ActionDispatch::IntegrationTest
     assert_equal model_for_instagram_url, Sources::InstagramPost
     assert_equal model_for_facebook_url, Sources::FacebookPost
   end
+
+  test "scrape results update errors if there's no scrape found" do
+    post scrape_result_callback_url
+    assert_response :missing
+
+    post scrape_result_callback_url, as: :json, params: { scrape_id: "XXXX" }
+    assert_response :missing
+  end
 end
