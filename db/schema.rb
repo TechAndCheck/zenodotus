@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(version: 2022_02_03_211301) do
     t.jsonb "image_data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.uuid "user_id", null: false
+    t.uuid "user_id"
     t.index ["user_id"], name: "index_image_searches_on_user_id"
   end
 
@@ -174,7 +174,7 @@ ActiveRecord::Schema.define(version: 2022_02_03_211301) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "query"
-    t.uuid "user_id", null: false
+    t.uuid "user_id"
     t.index ["user_id"], name: "index_text_searches_on_user_id"
   end
 

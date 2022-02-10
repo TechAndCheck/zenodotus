@@ -34,6 +34,6 @@ class ImageSearchTest < ActiveSupport::TestCase
       end
     end
     assert in_order, "Images should be returned in order of similarity (lower is better)"
-    assert_equal 0, results.first[:score], "First image should be equal to passed in image"
+    assert results.first[:score] <= 1 # Identical images have score 0, but downloading images may introduce artifacts, so we add some tolerance
   end
 end
