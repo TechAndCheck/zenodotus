@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_14_161106) do
+
+ActiveRecord::Schema.define(version: 2022_01_27_171324) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -164,6 +165,8 @@ ActiveRecord::Schema.define(version: 2022_01_14_161106) do
     t.uuid "searchable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.virtual "content_tsvector", type: :tsvector, as: "to_tsvector('english'::regconfig, content)", stored: true
+    t.index ["content_tsvector"], name: "index_pg_search_documents_on_content_tsvector", using: :gin
     t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
   end
 
@@ -251,13 +254,12 @@ ActiveRecord::Schema.define(version: 2022_01_14_161106) do
   add_foreign_key "api_keys", "users"
   add_foreign_key "facebook_images", "facebook_posts"
   add_foreign_key "facebook_videos", "facebook_posts"
+  add_foreign_key "image_searches", "users"
   add_foreign_key "instagram_images", "instagram_posts"
   add_foreign_key "instagram_videos", "instagram_posts"
   add_foreign_key "media_reviews", "archive_items"
   add_foreign_key "organizations", "users", column: "admin_id"
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"
-  add_foreign_key "text_searches", "users"
-  add_foreign_key "image_searches", "users"
 
 end
