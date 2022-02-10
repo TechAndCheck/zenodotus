@@ -38,7 +38,8 @@ class ArchiveItem < ApplicationRecord
 
   # Returns an array of ArchiveItems modified for JSON export
   # @params relation T.Array[ArchiveItem] a set of ArchiveItems to be exported
-  sig { params(relation: T.nillable(T.Array[ArchiveItem])) }
+  # @return a stringified representation of ArchiveItems for export
+  sig { params(relation: T.nilable(T::Array[ArchiveItem])).returns(String) }
   def self.prune_archive_items(relation = nil)
     relation ||= ArchiveItem.includes(:media_review, archivable_item: [:author])
     relation.to_json(only: [:id, :created_at],
