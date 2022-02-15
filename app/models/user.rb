@@ -10,7 +10,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :confirmable, :trackable, :lockable
 
-  before_destroy :check_if_admin_before_destorying
+  before_destroy :check_if_admin_before_destroying
 
   def active_for_authentication?
     super && approved?
@@ -28,7 +28,7 @@ class User < ApplicationRecord
 
 private
 
-  def check_if_admin_before_destorying
+  def check_if_admin_before_destroying
     raise User::DontDestroyIfAdminError.new("Replace #{self.email} as admin of #{self.organization.name} before deleting the user.") if self.admin?
   end
 end
