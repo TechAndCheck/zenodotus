@@ -1,12 +1,13 @@
 # Models
-## Archive and Media Models
+## Media Models
 
-Zenodotus is designed to store data on media posts. At the heart of its architecture are two models,`ArchiveItem` and `ArchiveEntity`, that act as "containers" for child models that store different segements of data
+Zenodotus is designed to store data on media posts. At the heart of its architecture are two models,`ArchiveItem` and `ArchiveEntity`, that act as "containers" for child models. 
 
-Specifically, `ArchiveItem`s are containers for models that store data on media posts (e.g. Tweets or Instagram Posts), and `ArchiveEntities` are containers for models that store data on media post authors (e.g. Tweeters or Facebook users). 
+`ArchiveItem`s act as containers for models that store data on media posts (e.g. Tweets or Instagram Posts) while `ArchiveEntities` do the same for models that store data on media post authors (e.g. Tweeters or Facebook users). 
 
-To explain a couple concepts, I'll describe how the model architecture works for `ArchiveItems`, but `ArchiveEntities` work almost identically. 
+To explain a couple concepts, I'll describe how the model architecture works for `ArchiveItems`, but `ArchiveEntities` operate nearly identically. 
 
+### Delegated post types
 Because `ArchiveItems` act as containers for different types of posts (e.g. Tweets and Instagram posts), the child post model they hold has a delegated, rather than static, type. This child model, `ArchivableItem`, can vary type between `Sources::Tweet`, `Sources::FacebookPost`, `Sources::InstagramPost`, and so on.  (For more on delegated types in Rails, [see here](https://edgeapi.rubyonrails.org/classes/ActiveRecord/DelegatedType.html)). 
 
 Because of the delegated types, an `ArchiveItem`'s post data is accessed like `archive_item.tweet`, as opposed to `archive_item.archivable_item`. 
