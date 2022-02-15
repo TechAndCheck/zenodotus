@@ -1,13 +1,15 @@
 # Models
 ## Archive and Media Models
 
-Zenodotus' model architecture is, unsurprisingly, designed to store data on archived media posts. At the heart of the architecture are two models: `ArchiveItem` and `ArchiveEntity`. 
+Zenodotus is designed to store data on media posts. At the heart of its architecture are two models,`ArchiveItem` and `ArchiveEntity`, that act as "containers" for child models that store different segements of data
 
-Both models act as "containers" for child models that actually store data. `ArchiveItems` are containers for models that describe media posts (e.g. Tweets or Instagram Posts); `ArchiveEntities` are containers for models that describe media post authors (e.g. Tweeters or Facebook users). 
+Specifically, `ArchiveItem`s are containers for models that store data on media posts (e.g. Tweets or Instagram Posts), and `ArchiveEntities` are containers for models that store data on media post authors (e.g. Tweeters or Facebook users). 
 
-Because `ArchiveItems` and `ArchiveEntities` act as containers for many different types of posts and users across platforms, the post/user model they hold has a delegated type. Specifically, `ArchiveItem` has a child model named `ArchivableItem` whose type can vary between `Sources::Tweet`, `Sources::FacebookPost`, `Sources::InstagramPost`, and so on. `ArchiveEntities` mirror this delegated type pattern with social media user models. (For more on delegated types in Rails, [see here](https://edgeapi.rubyonrails.org/classes/ActiveRecord/DelegatedType.html)). 
+To explain a couple concepts, I'll describe how the model architecture works for `ArchiveItems`, but `ArchiveEntities` work almost identically. 
 
-As per above, an `ArchiveItem`'s post data might be accessed like `archive_item.tweet`; an `ArchiveEntity`'s like `archive_entity.twitter_user`. These statements use delegated types to access data.j
+Because `ArchiveItems` act as containers for different types of posts (e.g. Tweets and Instagram posts), the child post model they hold has a delegated, rather than static, type. This child model, `ArchivableItem`, can vary type between `Sources::Tweet`, `Sources::FacebookPost`, `Sources::InstagramPost`, and so on.  (For more on delegated types in Rails, [see here](https://edgeapi.rubyonrails.org/classes/ActiveRecord/DelegatedType.html)). 
+
+Because of the delegated types, an `ArchiveItem`'s post data is accessed like `archive_item.tweet`, as opposed to `archive_item.archivable_item`. 
 
 Further downstream, the model architecture is traditional. Posts belong to `author`s of varying types (`Sources::TwitterUser`, `Sources::Instagramuser`, and so on) and may have `images` and `videos` attached (accessed like, e.g., `Sources::Tweet.images`).
 
