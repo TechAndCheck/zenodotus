@@ -2,7 +2,7 @@ require "test_helper"
 
 class InstagramPostTest < ActiveSupport::TestCase
   def setup
-    @zorki_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
+    @zorki_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed", true)
   end
 
   def teardown
@@ -26,28 +26,32 @@ class InstagramPostTest < ActiveSupport::TestCase
   end
 
   test "can create from Instagram url" do
-    assert_not_nil Sources::InstagramPost.create_from_url("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
+    assert_not_nil Sources::InstagramPost.create_from_url("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed", force: true)
   end
 
   test "can create from Instagram url using ActiveJob" do
-    Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
-    assert_not_nil Sources::InstagramPost.where(instagram_id: "CBcqOkyDDH8")
+    assert Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
   end
 
-  test "can create two Instagram posts from same author" do
-    @zorki_post2 = InstagramMediaSource.extract("https://www.instagram.com/p/CQDeYPhMJLG/")
-    archive_item = Sources::InstagramPost.create_from_zorki_hash(@zorki_post).first.instagram_post
-    archive_item2 = Sources::InstagramPost.create_from_zorki_hash(@zorki_post2).first.instagram_post
-    assert_equal archive_item.author, archive_item2.author
-  end
+  # test "can create two Instagram posts from same author" do
+  #   @zorki_post2 = InstagramMediaSource.extract("https://www.instagram.com/p/CQDeYPhMJLG/")
+  #   archive_item = Sources::InstagramPost.create_from_zorki_hash(@zorki_post).first.instagram_post
+  #   archive_item2 = Sources::InstagramPost.create_from_zorki_hash(@zorki_post2).first.instagram_post
+  #   assert_equal archive_item.author, archive_item2.author
+  # end
 
   test "assert_url_can_be_checked" do
     assert Sources::InstagramPost.can_handle_url?("https://www.instagram.com/p/CQDeYPhMJLG/")
     assert_not Sources::InstagramPost.can_handle_url?("https://www.instagram.com/z/CQDeYPhMJLG/")
   end
 
+  test "can kick off archive from Instagram post" do
+    result = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/?utm_source=ig_embed", true)
+    assert result
+  end
+
   test "can archive video from Instagram post" do
-    zorki_instagram_post_video = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/?utm_source=ig_embed")
+    zorki_instagram_post_video = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/?utm_source=ig_embed", true)
     archive_item = Sources::InstagramPost.create_from_zorki_hash(zorki_instagram_post_video).first
     assert_not_nil archive_item
     assert_kind_of ArchiveItem, archive_item
@@ -60,7 +64,7 @@ class InstagramPostTest < ActiveSupport::TestCase
   end
 
   test "archiving a video creates a preview screenshot" do
-    zorki_instagram_post_video = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/?utm_source=ig_embed")
+    zorki_instagram_post_video = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/?utm_source=ig_embed", true)
     archive_item = Sources::InstagramPost.create_from_zorki_hash(zorki_instagram_post_video).first
     assert_not_nil archive_item.instagram_post.videos.first.video_derivatives[:preview]
   end

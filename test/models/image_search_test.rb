@@ -14,10 +14,10 @@ class ImageSearchTest < ActiveSupport::TestCase
 
   test "can run image search" do
     # First we need to create a few posts. The Shrine fixture way doesn't seem to actually work.
-    Sources::InstagramPost.create_from_url("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
-    Sources::InstagramPost.create_from_url("https://www.instagram.com/p/CQDeYPhMJLG/")
-    Sources::InstagramPost.create_from_url("https://www.instagram.com/p/CBZkDi1nAty/?utm_source=ig_embed")
-    Sources::InstagramPost.create_from_url("https://www.instagram.com/reel/CGVzUHYFUwf/")
+    Sources::InstagramPost.create_from_url("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed", force: true)
+    Sources::InstagramPost.create_from_url("https://www.instagram.com/p/CQDeYPhMJLG/", force: true)
+    Sources::InstagramPost.create_from_url("https://www.instagram.com/p/CBZkDi1nAty/?utm_source=ig_embed", force: true)
+    Sources::InstagramPost.create_from_url("https://www.instagram.com/p/CZ3_P6FrtMO/", force: true)
     results = @image_search.run
 
     assert_not_nil results
@@ -34,6 +34,6 @@ class ImageSearchTest < ActiveSupport::TestCase
       end
     end
     assert in_order, "Images should be returned in order of similarity (lower is better)"
-    assert_equal 0, results.first[:score], "First image should be equal to passed in image"
+    assert_equal 1, results.first[:score], "First image should be equal to passed in image"
   end
 end
