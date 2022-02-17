@@ -43,9 +43,9 @@ class Sources::InstagramPost < ApplicationRecord
   # @params url String a string of a url
   # @params user User: the user creating an ArchiveItem
   # returns ArchiveItem with type InstagramPost that has been saved to the database
-  sig { params(url: String, user: T.nilable(User), force: T::Boolean).returns(ArchiveItem) }
-  def self.create_from_url(url, user = nil, force: false)
-    zorki_response = InstagramMediaSource.extract(url, force)
+  sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
+  def self.create_from_url!(url, user = nil)
+    zorki_response = InstagramMediaSource.extract(url, true)
     raise "Error sending job to Zorki" unless zorki_response.respond_to?(:first) && zorki_response.first.has_key?("id")
     result = Sources::InstagramPost.create_from_zorki_hash(zorki_response, user).first
     result
@@ -58,7 +58,7 @@ class Sources::InstagramPost < ApplicationRecord
   # @params user User: the user creating an ArchiveItem
   # returns ScraperJob
   sig { params(url: String, user: T.nilable(User)).returns(ScraperJob) }
-  def self.create_from_url!(url, user = nil)
+  def self.create_from_url(url, user = nil)
     ScraperJob.perform_later(InstagramMediaSource, Sources::InstagramPost, url, user)
   end
 

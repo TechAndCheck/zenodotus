@@ -28,7 +28,21 @@ class ArchiveControllerTest < ActionDispatch::IntegrationTest
     post scrape_result_callback_url
     assert_response :missing
 
-    post scrape_result_callback_url, as: :json, params: { scrape_id: "XXXX" }
+    post(scrape_result_callback_url, as: :json, params: { scrape_id: "XXXX", scrape_result: [{}] })
     assert_response :missing
+  end
+
+  test "scrape callback works" do
+    # First we need to construct a callback response. Since we can't really test the callback flow we
+    # construct a mock callback. Since doing that by hard coding is actually annoying as hell we first
+    # make a forced scrape call to Hypatia, then create it from there
+    forced_scrape_result = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed", true)
+    scrape = Scrape.create!({ url: "https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed", scrape_type: :instagram })
+    callback_response_json = { scrape_id: scrape.id, scrape_result: forced_scrape_result }
+    post scrape_result_callback_url, as: :json, params: callback_response_json
+    assert_response :success
+
+    scrape.reload
+    assert_not_nil scrape.archive_item
   end
 end

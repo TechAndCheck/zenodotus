@@ -26,7 +26,7 @@ class InstagramPostTest < ActiveSupport::TestCase
   end
 
   test "can create from Instagram url" do
-    assert_not_nil Sources::InstagramPost.create_from_url("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed", force: true)
+    assert_not_nil Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
   end
 
   test "can create from Instagram url using ActiveJob" do
