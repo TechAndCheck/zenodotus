@@ -1,4 +1,5 @@
 # typed: ignore
+# rubocop:disable Rails/CreateTableWithTimestamps
 
 class CreateTweets < ActiveRecord::Migration[6.1]
   def change

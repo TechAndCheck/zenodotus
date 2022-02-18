@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/cguess/birdsong
-  revision: d314c04b11376db0f623289a8f24068a72f76c17
+  revision: 24d87688d1750686ae22fd4f848cce39c0fe098b
   specs:
     birdsong (0.1.0)
       oauth (~> 0.5.6)
@@ -214,6 +214,10 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.13.1-x86_64-linux)
       racc (~> 1.4)
+    nokogiri (1.13.1-x86_64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.13.1-x86_64-linux)
+      racc (~> 1.4)
     oauth (0.5.8)
     oj (3.13.11)
     orm_adapter (0.5.0)
@@ -357,6 +361,7 @@ GEM
       sorbet-coerce (>= 0.2.6)
       sorbet-runtime (>= 0.5)
     sorbet-runtime (0.5.9519)
+    sorbet-static (0.5.9519-universal-darwin-19)
     sorbet-static (0.5.9519-universal-darwin-21)
     sorbet-static (0.5.9519-x86_64-linux)
     sorted_set (1.0.3)
@@ -421,6 +426,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  x86_64-darwin-19
   x86_64-linux
 
 DEPENDENCIES
