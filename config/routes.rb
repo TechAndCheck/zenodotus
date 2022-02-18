@@ -23,7 +23,10 @@ Rails.application.routes.draw do
   get "/text_search", to: "text_search#index", as: "text_search"
   get "/text_search/search", to: "text_search#search", as: "text_search_submit"
 
-  get "/settings", to: "settings#index", as: "settings"
+  get "/account", to: "accounts#index", as: "account"
+  post "/account/change_password", to: "accounts#change_password", as: "change_password"
+  post "/account/change_email", to: "accounts#change_email", as: "change_email"
+  delete "/account/users/", to: "accounts#destroy", as: "destroy_user"
   post "/settings/approve", to: "settings#approveUserRequest", as: "approve_request"
   post "/settings/deny", to: "settings#denyUserRequest", as: "deny_request"
 
