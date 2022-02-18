@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_16_220131) do
+ActiveRecord::Schema.define(version: 2022_02_18_200034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 2022_02_16_220131) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "submitter_id"
+    t.uuid "scrape_id"
     t.index ["submitter_id"], name: "index_archive_items_on_submitter_id"
   end
 
@@ -176,7 +177,6 @@ ActiveRecord::Schema.define(version: 2022_02_16_220131) do
     t.boolean "fulfilled", default: false, null: false
     t.string "url", null: false
     t.enum "scrape_type", null: false, enum_type: "scrape_type"
-    t.uuid "archive_item_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

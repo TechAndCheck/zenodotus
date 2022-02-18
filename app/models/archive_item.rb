@@ -8,6 +8,7 @@ class ArchiveItem < ApplicationRecord
 
   has_one :media_review, dependent: :destroy, foreign_key: :archive_item_id
   belongs_to :submitter, optional: true, class_name: "User"
+  belongs_to :scrape, optional: true
 
   # Creates an +ArchiveEntity
   #

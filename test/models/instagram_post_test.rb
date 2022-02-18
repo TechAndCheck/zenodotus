@@ -33,12 +33,12 @@ class InstagramPostTest < ActiveSupport::TestCase
     assert Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
   end
 
-  # test "can create two Instagram posts from same author" do
-  #   @zorki_post2 = InstagramMediaSource.extract("https://www.instagram.com/p/CQDeYPhMJLG/")
-  #   archive_item = Sources::InstagramPost.create_from_zorki_hash(@zorki_post).first.instagram_post
-  #   archive_item2 = Sources::InstagramPost.create_from_zorki_hash(@zorki_post2).first.instagram_post
-  #   assert_equal archive_item.author, archive_item2.author
-  # end
+  test "can create two Instagram posts from same author" do
+    @zorki_post2 = InstagramMediaSource.extract("https://www.instagram.com/p/CQDeYPhMJLG/", true)
+    archive_item = Sources::InstagramPost.create_from_zorki_hash(@zorki_post).first.instagram_post
+    archive_item2 = Sources::InstagramPost.create_from_zorki_hash(@zorki_post2).first.instagram_post
+    assert_equal archive_item.author, archive_item2.author
+  end
 
   test "assert_url_can_be_checked" do
     assert Sources::InstagramPost.can_handle_url?("https://www.instagram.com/p/CQDeYPhMJLG/")
