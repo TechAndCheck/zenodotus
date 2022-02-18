@@ -11,16 +11,17 @@ class FacebookMediaSource < MediaSource
     ["www.facebook.com"]
   end
 
-  # Capture a screenshot of the given url
+  # Extracts the post at the input URL by forwarding a scraping request to Hypatia
   #
   # @!scope class
   # @params url [String] the url of the page to be collected for archiving
-  # @params save_screenshot [Boolean] whether to save the screenshot image (mostly for testing).
+  # @params force [Boolean] force Hypatia to not queue a request but to scrape immediately.
   #   Default: false
   # @returns [String or nil] the path of the screenshot if the screenshot was saved
-  sig { override.params(url: String, save_screenshot: T::Boolean).returns(T::Array[String]) }
-  def self.extract(url, save_screenshot = false)
+  sig { override.params(url: String, force: T::Boolean).returns(T::Array[String]) }
+  def self.extract(url, force=false)
     object = self.new(url)
+    return object.retrieve_facebook_post! if force
     object.retrieve_facebook_post
   end
 
@@ -50,7 +51,7 @@ class FacebookMediaSource < MediaSource
     @url = url
   end
 
-  # Scrape the page using the Forki gem and get an object
+  # Scrape the page by sending it to Hypatia
   #
   # @!visibility private
   # @params url [String] a url to grab data for
@@ -64,31 +65,33 @@ class FacebookMediaSource < MediaSource
       followlocation: true,
       params: { auth_key: Figaro.env.FORKI_AUTH_KEY, url: @url, callback_id: scrape.id }
     )
+    byebug
 
     raise ExternalServerError, "Error: #{response.code} returned from external Forki server" unless response.code == 200
 
     JSON.parse(response.body)
   end
 
-private
-
-  # Grab the ID from the end of an Instagram URL
+  # Scrape the page by sending it to Hypatia and forcing the server to process the job immediately. Should only be used for tests
   #
-  # @note this assumes a valid url or else it'll return weird stuff
-  # @!scope class
-  # @!visibility private
-  # @params url [String] a url to extract an id from
-  # @return [String] the id from the url or [Nil]
-  sig { params(url: String).returns(T.nilable(String)) }
-  def self.extract_instagram_id_from_url(url)
-    uri = URI(url)
-    splits = T.must(uri.path).split("/")
-    raise FacebookMediaSource::InvalidFacebookPostUrlError if splits.empty?
+  # @return [Hash]
+  sig { returns(Array) }
+  def retrieve_facebook_post!
+    scrape = Scrape.create!({ url: @url, scrape_type: :instagram })
 
-    splits[2]
+    response = Typhoeus.get(
+      Figaro.env.FORKI_SERVER_URL,
+      followlocation: true,
+      params: { auth_key: Figaro.env.FORKI_AUTH_KEY, url: @url, callback_id: scrape.id, force: "true" }
+    )
+
+    raise ExternalServerError, "Error: #{response.code} returned from external Forki server" unless response.code == 200
+
+    JSON.parse(response.body)
   end
 end
-
+  
 # A class to indicate that a post url passed in is invalid
 class FacebookMediaSource::InvalidFacebookPostUrlError < StandardError; end
 class FacebookMediaSource::ExternalServerError < StandardError; end
+

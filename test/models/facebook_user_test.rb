@@ -3,7 +3,7 @@ require "test_helper"
 class FacebookUserTest < ActiveSupport::TestCase
   def setup
     @forki_user = FacebookMediaSource.extract(
-      "https://www.facebook.com/Meta/photos/a.108824087345859/336596487901950"
+      "https://www.facebook.com/Meta/photos/a.108824087345859/336596487901950", force=true
     ).first["user"]
   end
 

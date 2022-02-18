@@ -34,7 +34,7 @@ class Sources::FacebookPost < ApplicationRecord
     false
   end
 
-  # Create a +ArchiveItem+ from a +url+ as a string
+  # Spawns an ActiveJob tasked with creating an +ArchiveItem+ from a +url+ as a string
   #
   # @!scope class
   # @params url String a string of a url
@@ -43,11 +43,10 @@ class Sources::FacebookPost < ApplicationRecord
   #   saved to the graph database
   sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
   def self.create_from_url(url, user = nil)
-    forki_post = FacebookMediaSource.extract(url)
-    Sources::FacebookPost.create_from_forki_hash(forki_post, user).first
+    ScraperJob.perform_later(FacebookMediaSource, Sources::FacebookPost, url, user)
   end
 
-  # Spawns an ActiveJob tasked with creating an +ArchiveItem+ from a +url+ as a string
+  # Create a +ArchiveItem+ from a +url+ as a string. Skips Hypatia's queue. 
   #
   # @!scope class
   # @params url String a string of a url
@@ -55,7 +54,9 @@ class Sources::FacebookPost < ApplicationRecord
   # returns ScraperJob
   sig { params(url: String, user: T.nilable(User)).returns(ScraperJob) }
   def self.create_from_url!(url, user = nil)
-    ScraperJob.perform_later(FacebookMediaSource, Sources::FacebookPost, url, user)
+    forki_response = FacebookMediaSource.extract(url, force=true)
+    raise "Error sending job to Forki" unless forki_response.respond_to?(:first) && forki_response.first.has_key?("id")
+    Sources::FacebookPost.create_from_forki_hash(forki_response, user).first
   end
 
   # A generically-named alias for create_from_forki_hash used for model-agnostic method calls
