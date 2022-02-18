@@ -20,12 +20,16 @@ gem "jbuilder", "~> 2.7"
 gem "redis", "~> 4.0"
 # Use PgSearch for Postgres multi-table search
 gem "pg_search", "~> 2.3.5"
+# Use pagy to paginate ActiveRecord relations
+gem "pagy", "~> 5.6"
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 # use sidekiq for job queueing
 gem "sidekiq", "~> 6.3.1"
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
+# Use jquery-rails to force confirmation dialogs
+gem "jquery-rails"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.4.4", require: false
@@ -157,4 +161,4 @@ gem "importmap-rails"
 # Use Stimulus for Rails 7
 gem "stimulus-rails"
 
-gem "sprockets-rails", :require => "sprockets/railtie"
+gem "sprockets-rails", require: "sprockets/railtie"

@@ -1,4 +1,4 @@
-# typed: false
+# typed: strict
 
 class Sources::InstagramPost < ApplicationRecord
   include ArchivableItem

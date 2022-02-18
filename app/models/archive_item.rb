@@ -1,7 +1,7 @@
-# typed:false
+# typed: strict
 
 class ArchiveItem < ApplicationRecord
-  delegated_type :archivable_item, types: %w[ Sources::Tweet Sources::InstagramPost Sources::FacebookPost ]
+  delegated_type :archivable_item, types: %w[Sources::Tweet Sources::InstagramPost Sources::FacebookPost ]
   delegate :service_id, to: :archivable_item
   delegate :images, to: :archivable_item
   delegate :videos, to: :archivable_item
@@ -37,11 +37,12 @@ class ArchiveItem < ApplicationRecord
     object
   end
 
-  # Returns an array of ArchiveItems modiefied for JSON export
+  # Returns an array of ArchiveItems modified for JSON export
+  # @params relation T.Array[ArchiveItem] a set of ArchiveItems to be exported
+  # @return a stringified representation of ArchiveItems for export
+  sig { params(relation: T.nilable(T::Array[ArchiveItem])).returns(String) }
   def self.prune_archive_items(relation = nil)
-    unless relation
-      relation = ArchiveItem.includes(:media_review, archivable_item: [:author])
-    end
+    relation ||= ArchiveItem.includes(:media_review, archivable_item: [:author])
     relation.to_json(only: [:id, :created_at],
                      include: [ { media_review: { except: [:id, :created_at, :updated_at, :archive_item_id] } },
                                 { archivable_item: { include: { author: { only: [:handle, :display_name, :twitter_id] } },

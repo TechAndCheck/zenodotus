@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: strict
 
 class ArchiveController < ApplicationController
   # It's the index, list all the archived items

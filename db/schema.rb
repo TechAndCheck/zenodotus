@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_18_200034) do
-
+ActiveRecord::Schema.define(version: 2022_02_03_211301) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -99,7 +98,7 @@ ActiveRecord::Schema.define(version: 2022_02_18_200034) do
     t.jsonb "image_data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.uuid "user_id", null: false
+    t.uuid "user_id"
     t.index ["user_id"], name: "index_image_searches_on_user_id"
   end
 
@@ -187,7 +186,7 @@ ActiveRecord::Schema.define(version: 2022_02_18_200034) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "query"
-    t.uuid "user_id", null: false
+    t.uuid "user_id"
     t.index ["user_id"], name: "index_text_searches_on_user_id"
   end
 
@@ -230,6 +229,7 @@ ActiveRecord::Schema.define(version: 2022_02_18_200034) do
     t.jsonb "video_data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "video_type"
     t.index ["tweet_id"], name: "index_twitter_videos_on_tweet_id"
   end
 
@@ -268,11 +268,12 @@ ActiveRecord::Schema.define(version: 2022_02_18_200034) do
   add_foreign_key "facebook_images", "facebook_posts"
   add_foreign_key "facebook_videos", "facebook_posts"
   add_foreign_key "image_searches", "users"
+  add_foreign_key "text_searches", "users"
   add_foreign_key "instagram_images", "instagram_posts"
   add_foreign_key "instagram_videos", "instagram_posts"
   add_foreign_key "media_reviews", "archive_items"
   add_foreign_key "organizations", "users", column: "admin_id"
-  add_foreign_key "text_searches", "users"
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"
+
 end

@@ -1,3 +1,5 @@
+# typed: strict
+
 class Organization < ApplicationRecord
   # Things this class should do:
   # Send an email to the admin when a user is crud'd
@@ -17,6 +19,7 @@ private
   # If there are any users we want to make sure at least one is an admin. Throw an error if there are users
   # but there is no admin. If there's no users then just let it go for the reasons described in the comment
   # above.
+  sig { void }
   def ensure_admin_if_users
     return if users.empty?
 

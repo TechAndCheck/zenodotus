@@ -135,7 +135,9 @@ class IngestController < ApplicationController
 
   # Finds MediaReview JSON objects embedded in <script> tags at the page pointed to by the url param
   #
-  # @{url}: the url to look at
+  # @param [String] url: the url to look at
+  # @return An array of MediaReview hashes
+  sig { params(url: String).returns(T::Array[Hash]) }
   def find_media_review_in_page(url)
     mediareview_javascript = /<script.*?>(\[.*MediaReview.*\]).*<\/script>/
 
@@ -152,8 +154,10 @@ class IngestController < ApplicationController
     JSON.parse mediareview_array
   end
 
-  # Creates ArchiveItems (and MediaReview objects) based on a MediaReview JSON object
-  # {media_review_json}: A MediaReview JSON object
+  # Creates an ArchiveITem and MediaReview object based on a MediaReview hash
+  # @param [Hash] media_review_json: A MediaReview hash object
+  # @return [Hash]: A hash containing response codes and a reference to the newly created ArchiveItem
+  sig { params(media_review_json: Hash).returns(Hash) }
   def archive_from_media_review(media_review_json)
     return {
       error_code: ApiErrors::JSONValidationError.code,

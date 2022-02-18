@@ -2,6 +2,7 @@
 class ApplicationController < ActionController::Base
   extend T::Sig
   extend T::Helpers
+  include Pagy::Backend
 
   protect_from_forgery with: :null_session, if: :json_request?, prepend: true
 
@@ -38,13 +39,19 @@ protected
     true
   end
 
+  # Routes users to the sign in page after they've logged out
+  # Overrides the Devise default method, which re-routes users to the root page
+  sig { params(user: Symbol).returns(String) }
+  def after_sign_out_path_for(user)
+    new_user_session_path
+  end
+
   sig { returns(T::Boolean) }
   def authenticate_super_user
     # First we make sure they're logged in at all, this also sets the current user so we can check it
     return false unless authenticate_user!
     current_user.admin
   end
-
 
   sig { void }
   def authenticate_super_user!

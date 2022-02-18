@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: strict
 
 class ImageSearchController < ApplicationController
   # before_action :authenticate_user!
@@ -32,7 +32,7 @@ class ImageSearchController < ApplicationController
   def search
     typed_params = TypedParams[SubmitUrlParams].new.extract!(params[:image_search])
     # Create a search object
-    search = ImageSearch.create({ image: typed_params.image })
+    search = ImageSearch.create!({ image: typed_params.image, user: current_user })
     results = search.run
 
     # Add the search id so that we can adjust the URL and make the page reloadable

@@ -17,7 +17,99 @@ class ActionMailer::Base
   include GeneratedUrlHelpers
 end
 
+class ActionDispatch::IntegrationTest
+  include GeneratedUrlHelpers
+end
+
+class ActionDispatch::SystemTestCase
+  include GeneratedUrlHelpers
+end
+
 module GeneratedUrlHelpers
+  # Sigs for route /users/sign_in(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def new_user_session_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def new_user_session_url(*args, **kwargs); end
+
+  # Sigs for route /users/sign_in(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def user_session_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def user_session_url(*args, **kwargs); end
+
+  # Sigs for route /users/sign_out(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def destroy_user_session_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def destroy_user_session_url(*args, **kwargs); end
+
+  # Sigs for route /users/password/new(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def new_user_password_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def new_user_password_url(*args, **kwargs); end
+
+  # Sigs for route /users/password/edit(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def edit_user_password_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def edit_user_password_url(*args, **kwargs); end
+
+  # Sigs for route /users/password(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def user_password_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def user_password_url(*args, **kwargs); end
+
+  # Sigs for route /users/cancel(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def cancel_user_registration_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def cancel_user_registration_url(*args, **kwargs); end
+
+  # Sigs for route /users/sign_up(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def new_user_registration_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def new_user_registration_url(*args, **kwargs); end
+
+  # Sigs for route /users/edit(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def edit_user_registration_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def edit_user_registration_url(*args, **kwargs); end
+
+  # Sigs for route /users(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def user_registration_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def user_registration_url(*args, **kwargs); end
+
+  # Sigs for route /users/unlock/new(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def new_user_unlock_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def new_user_unlock_url(*args, **kwargs); end
+
+  # Sigs for route /users/unlock(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def user_unlock_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def user_unlock_url(*args, **kwargs); end
+
   # Sigs for route /
   sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
   def root_path(*args, **kwargs); end
@@ -32,12 +124,159 @@ module GeneratedUrlHelpers
   sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
   def archive_add_url(*args, **kwargs); end
 
+  # Sigs for route /archive/download(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def archive_download_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def archive_download_url(*args, **kwargs); end
+
+  # Sigs for route /ingest/submit_media_review(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def ingest_api_raw_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def ingest_api_raw_url(*args, **kwargs); end
+
+  # Sigs for route /ingest/submit_media_review_source(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def ingest_api_url_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def ingest_api_url_url(*args, **kwargs); end
+
+  # Sigs for route /image_search(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def image_search_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def image_search_url(*args, **kwargs); end
+
+  # Sigs for route /image_search(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def image_search_submit_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def image_search_submit_url(*args, **kwargs); end
+
+  # Sigs for route /text_search(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def text_search_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def text_search_url(*args, **kwargs); end
+
+  # Sigs for route /text_search/search(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def text_search_submit_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def text_search_submit_url(*args, **kwargs); end
+
+  # Sigs for route /account(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def account_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def account_url(*args, **kwargs); end
+
+  # Sigs for route /account/change_password(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def change_password_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def change_password_url(*args, **kwargs); end
+
+  # Sigs for route /account/change_email(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def change_email_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def change_email_url(*args, **kwargs); end
+
+  # Sigs for route /account/users(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def destroy_user_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def destroy_user_url(*args, **kwargs); end
+
+  # Sigs for route /settings/approve(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def approve_request_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def approve_request_url(*args, **kwargs); end
+
+  # Sigs for route /settings/deny(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def deny_request_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def deny_request_url(*args, **kwargs); end
+
+  # Sigs for route /jobs(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def jobs_status_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def jobs_status_url(*args, **kwargs); end
+
   # Sigs for route /twitter_users/:id(.:format)
   sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
   def twitter_user_path(*args, **kwargs); end
 
   sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
   def twitter_user_url(*args, **kwargs); end
+
+  # Sigs for route /instagram_users/:id(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def instagram_user_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def instagram_user_url(*args, **kwargs); end
+
+  # Sigs for route /facebook_users/:id(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def facebook_user_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def facebook_user_url(*args, **kwargs); end
+
+  # Sigs for route /organizations(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def organizations_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def organizations_url(*args, **kwargs); end
+
+  # Sigs for route /organizations/:organization_id/update_admin/:user_id(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def organization_update_admin_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def organization_update_admin_url(*args, **kwargs); end
+
+  # Sigs for route /organizations/:organization_id/update_admin/:user_id(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def organization_delete_user_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def organization_delete_user_url(*args, **kwargs); end
+
+  # Sigs for route /instagram_users/:id/download(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def instagram_user_download_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def instagram_user_download_url(*args, **kwargs); end
+
+  # Sigs for route /twitter_users/:id/download(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def twitter_user_download_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def twitter_user_download_url(*args, **kwargs); end
 
   # Sigs for route /recede_historical_location(.:format)
   sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
@@ -150,6 +389,13 @@ module GeneratedUrlHelpers
 
   sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
   def rails_conductor_inbound_email_reroute_url(*args, **kwargs); end
+
+  # Sigs for route /rails/conductor/action_mailbox/:inbound_email_id/incinerate(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def rails_conductor_inbound_email_incinerate_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def rails_conductor_inbound_email_incinerate_url(*args, **kwargs); end
 
   # Sigs for route /rails/active_storage/blobs/redirect/:signed_id/*filename(.:format)
   sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
