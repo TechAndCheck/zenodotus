@@ -29,7 +29,7 @@ gem "sidekiq", "~> 6.3.1"
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 # Use jquery-rails to force confirmation dialogs
-gem 'jquery-rails'
+gem "jquery-rails"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.4.4", require: false

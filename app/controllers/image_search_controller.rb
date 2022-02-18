@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: strict
 
 class ImageSearchController < ApplicationController
   # before_action :authenticate_user!

@@ -256,10 +256,12 @@ ActiveRecord::Schema.define(version: 2022_02_03_211301) do
   add_foreign_key "facebook_images", "facebook_posts"
   add_foreign_key "facebook_videos", "facebook_posts"
   add_foreign_key "image_searches", "users"
+  add_foreign_key "text_searches", "users"
   add_foreign_key "instagram_images", "instagram_posts"
   add_foreign_key "instagram_videos", "instagram_posts"
   add_foreign_key "media_reviews", "archive_items"
   add_foreign_key "organizations", "users", column: "admin_id"
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"
+
 end

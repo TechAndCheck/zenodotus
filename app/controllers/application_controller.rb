@@ -39,6 +39,9 @@ protected
     true
   end
 
+  # Routes users to the sign in page after they've logged out
+  # Overrides the Devise default method, which re-routes users to the root page
+  sig { params(user: Symbol).returns(String) }
   def after_sign_out_path_for(user)
     new_user_session_path
   end

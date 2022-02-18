@@ -5,5 +5,5 @@ class MediaModels::Videos::FacebookVideo < ApplicationRecord
 
   # Optional is marked true here because the image is technically saved before
   # it's added to the model itself.
-  belongs_to :facebook_post, optional: true
+  belongs_to :facebook_post, optional: true, class_name: "Sources::FacebookPost"
 end
