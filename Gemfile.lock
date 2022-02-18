@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/cguess/birdsong
-  revision: d314c04b11376db0f623289a8f24068a72f76c17
+  revision: 24d87688d1750686ae22fd4f848cce39c0fe098b
   specs:
     birdsong (0.1.0)
       oauth (~> 0.5.6)
