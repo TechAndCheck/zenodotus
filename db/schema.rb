@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2022_02_18_200034) do
 
   create_table "api_keys", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "hashed_api_key"
-    t.uuid "user_id"
+    t.uuid "user_id", null: false
     t.date "last_used"
     t.jsonb "usage_logs"
     t.datetime "created_at", precision: 6, null: false
@@ -99,6 +99,8 @@ ActiveRecord::Schema.define(version: 2022_02_18_200034) do
     t.jsonb "image_data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "user_id", null: false
+    t.index ["user_id"], name: "index_image_searches_on_user_id"
   end
 
   create_table "instagram_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -265,6 +267,7 @@ ActiveRecord::Schema.define(version: 2022_02_18_200034) do
   add_foreign_key "api_keys", "users"
   add_foreign_key "facebook_images", "facebook_posts"
   add_foreign_key "facebook_videos", "facebook_posts"
+  add_foreign_key "image_searches", "users"
   add_foreign_key "instagram_images", "instagram_posts"
   add_foreign_key "instagram_videos", "instagram_posts"
   add_foreign_key "media_reviews", "archive_items"
