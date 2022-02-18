@@ -157,4 +157,4 @@ gem "importmap-rails"
 # Use Stimulus for Rails 7
 gem "stimulus-rails"
 
-gem "sprockets-rails", :require => "sprockets/railtie"
+gem "sprockets-rails", require: "sprockets/railtie"
