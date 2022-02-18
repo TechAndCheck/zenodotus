@@ -85,7 +85,7 @@ class Sources::Tweet < ApplicationRecord
       end
 
       video_attributes = birdsong_tweet.video_file_names.map do |video_file_name|
-        { video: File.open(video_file_name.first, binmode: true) }
+        { video: File.open(video_file_name.first, binmode: true), video_type: birdsong_tweet.video_file_type }
       end
 
       tweet_hash = {

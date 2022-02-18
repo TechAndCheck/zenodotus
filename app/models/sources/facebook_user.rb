@@ -5,7 +5,7 @@ class Sources::FacebookUser < ApplicationRecord
   include ImageUploader::Attachment(:profile_image) # adds an `image` virtual attribute
   include PgSearch::Model
 
-  multisearchable against: :display_name
+  multisearchable against: :name
   # The tweets that an FacebookUser have authored
   has_many :facebook_posts, class_name: "Sources::FacebookPost", foreign_key: :author_id, dependent: :destroy
 

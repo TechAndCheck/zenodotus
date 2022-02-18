@@ -1,9 +1,14 @@
 # frozen_string_literal: true
-
 # typed: strict
 
 class AccountsController < ApplicationController
   before_action :authenticate_user!
+
+  sig { void }
+  def index
+    @pagy_text_searches, @text_searches = pagy(TextSearch.where(user: current_user).order("created_at DESC"), page_param: :text_search_page, items: 10)
+    @pagy_image_searches, @image_searches = pagy(ImageSearch.where(user: current_user).order("created_at DESC"), page_param: :image_search_page, items: 7)
+  end
 
   # A class representing the allowed params into the `change_password` endpoint
   class ChangePasswordParams < T::Struct
@@ -13,12 +18,6 @@ class AccountsController < ApplicationController
 
   class ChangeEmailParams < T::Struct
     const :email, String
-  end
-
-  sig { void }
-  def index
-    @pagy_text_searches, @text_searches = pagy(TextSearch.where(user: current_user).order("created_at DESC"), page_param: :text_search_page, items: 10)
-    @pagy_image_searches, @image_searches = pagy(ImageSearch.where(user: current_user).order("created_at DESC"), page_param: :image_search_page, items: 7)
   end
 
   sig { void }

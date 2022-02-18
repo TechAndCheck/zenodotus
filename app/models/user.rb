@@ -36,10 +36,10 @@ class User < ApplicationRecord
 
   private
 
-    sig { void }
-    def check_if_admin_before_destroying
-      raise User::DontDestroyIfAdminError.new("Replace #{self.email} as admin of #{self.organization.name} before deleting the user.") if self.admin?
-    end
+  sig { void }
+  def check_if_admin_before_destroying
+    raise User::DontDestroyIfAdminError.new("Replace #{self.email} as admin of #{self.organization.name} before deleting the user.") if self.admin?
+  end
 end
 
 class User::DontDestroyIfAdminError < StandardError; end
