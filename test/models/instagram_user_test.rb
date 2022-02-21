@@ -3,7 +3,7 @@ require "test_helper"
 class InstagramUserTest < ActiveSupport::TestCase
   def setup
     @zorki_user = InstagramMediaSource.extract(
-      "https://www.instagram.com/p/CQDeYPhMJLG/"
+      "https://www.instagram.com/p/CQDeYPhMJLG/", true
     ).first["user"]
   end
 

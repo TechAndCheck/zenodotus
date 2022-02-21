@@ -11,16 +11,18 @@ class InstagramMediaSource < MediaSource
     ["www.instagram.com", "instagram.com"]
   end
 
-  # Capture a screenshot of the given url
+  # Set off a scrape on Instagram using a Hypatia instance. This will then be finished up when the
+  # callback is instantiated.
   #
   # @!scope class
   # @params url [String] the url of the page to be collected for archiving
-  # @params save_screenshot [Boolean] whether to save the screenshot image (mostly for testing).
+  # @params force [Boolean] whether to force Hypatia to not queue a request but to scrape immediately.
   #   Default: false
-  # @returns [String or nil] the path of the screenshot if the screenshot was saved
-  sig { override.params(url: String, save_screenshot: T::Boolean).returns(T::Array[String]) }
-  def self.extract(url, save_screenshot = false)
+  # @returns [Boolean or Hash] if `force` is set to `true` returns the scraped hash, otherwise the status of the Hypatia job.
+  sig { override.params(url: String, force: T::Boolean).returns(T::Array[T.any(T::Boolean, Hash)]) }
+  def self.extract(url, force = false)
     object = self.new(url)
+    return object.retrieve_instagram_post! if force
     object.retrieve_instagram_post
   end
 
@@ -38,21 +40,44 @@ class InstagramMediaSource < MediaSource
     @url = url
   end
 
-  # Scrape the page using the Zorki gem and get an object
+  # Set off a scrape on Instagram using a Hypatia instance. This will then be finished up when the
+  # callback is instantiated.
   #
-  # @!visibility private
-  # @params url [String] a url to grab data for
-  # @return [Zorki::Post]
-  sig { returns(T::Array[Hash]) }
+  # @return [Boolean]
+  sig { returns(T::Boolean) }
   def retrieve_instagram_post
+    scrape = Scrape.create!({ url: @url, scrape_type: :instagram })
+
     response = Typhoeus.get(
       Figaro.env.ZORKI_SERVER_URL,
       followlocation: true,
-      params: { auth_key: Figaro.env.ZORKI_AUTH_KEY, url: @url }
+      params: { auth_key: Figaro.env.ZORKI_AUTH_KEY, url: @url, callback_id: scrape.id }
+    )
+
+    raise ExternalServerError, "Error: #{response.code} returned from external Zorki server" unless response.code == 200
+    response_body = JSON.parse(response.body)
+    # _ = JSON.parse(response.body)
+    # TODO:  Parse response body properly and check for errors
+    raise InstagramMediaSource::ExternalServerError if response_body["success"] == false
+    true
+  end
+
+  # Forces a Hypatia instance to run immediately. This should only be used for testing purposes.
+  #
+  # @return [Hash]
+  sig { returns(Array) }
+  def retrieve_instagram_post!
+    scrape = Scrape.create!({ url: @url, scrape_type: :instagram })
+
+    response = Typhoeus.get(
+      Figaro.env.ZORKI_SERVER_URL,
+      followlocation: true,
+      params: { auth_key: Figaro.env.ZORKI_AUTH_KEY, url: @url, callback_id: scrape.id, force: "true" }
     )
 
     raise ExternalServerError, "Error: #{response.code} returned from external Zorki server" unless response.code == 200
 
+    # Hypatia returns arrays always so we grab the first
     JSON.parse(response.body)
   end
 

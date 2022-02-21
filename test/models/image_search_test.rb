@@ -15,10 +15,10 @@ class ImageSearchTest < ActiveSupport::TestCase
 
   test "can run image search" do
     # First we need to create a few posts. The Shrine fixture way doesn't seem to actually work.
-    Sources::InstagramPost.create_from_url("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
-    Sources::InstagramPost.create_from_url("https://www.instagram.com/p/CQDeYPhMJLG/")
-    Sources::InstagramPost.create_from_url("https://www.instagram.com/p/CBZkDi1nAty/?utm_source=ig_embed")
-    Sources::InstagramPost.create_from_url("https://www.instagram.com/reel/CGVzUHYFUwf/")
+    Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
+    Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CQDeYPhMJLG/")
+    Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CBZkDi1nAty/?utm_source=ig_embed")
+    Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CZ3_P6FrtMO/")
     results = @image_search.run
 
     assert_not_nil results

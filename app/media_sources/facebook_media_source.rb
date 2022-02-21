@@ -57,10 +57,12 @@ class FacebookMediaSource < MediaSource
   # @return [Forki::Post]
   sig { returns(T::Array[Hash]) }
   def retrieve_facebook_post
+    scrape = Scrape.create!({ url: @url, scrape_type: :facebook })
+
     response = Typhoeus.get(
       Figaro.env.FORKI_SERVER_URL,
       followlocation: true,
-      params: { auth_key: Figaro.env.FORKI_AUTH_KEY, url: @url }
+      params: { auth_key: Figaro.env.FORKI_AUTH_KEY, url: @url, callback_id: scrape.id }
     )
 
     raise ExternalServerError, "Error: #{response.code} returned from external Forki server" unless response.code == 200

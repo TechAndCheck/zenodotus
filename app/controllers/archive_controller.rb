@@ -3,7 +3,7 @@
 class ArchiveController < ApplicationController
   # It's the index, list all the archived items
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: :scrape_result_callback
 
   sig { void }
   def index
@@ -76,5 +76,28 @@ class ArchiveController < ApplicationController
   def export_archive_data
     archive_json = ArchiveItem.prune_archive_items
     send_data archive_json, type: "application/json; header=present", disposition: "attachment; filename=archive.json"
+  end
+
+  # A class representing the allowed params into the `submit_url` endpoint
+  class ScrapeResultCallbackParams < T::Struct
+    const :scrape_id, String
+    const :scrape_result, Array
+  end
+
+  # When a scrape is over the scraper will call this
+  sig { void }
+  def scrape_result_callback
+    render json: { error: "Missing scrape id" }, status: 404 and return unless params.has_key?(:scrape_id)
+
+    typed_params = TypedParams[ScrapeResultCallbackParams].new.extract!(params)
+
+    # Validate id for auth purposes (auth key too?)
+    begin
+      scrape = Scrape.find(typed_params.scrape_id)
+    rescue ActiveRecord::RecordNotFound
+      render json: { error: "Invalid scrape id" }, status: 404 and return
+    end
+
+    scrape.fulfill(typed_params.scrape_result.first)
   end
 end
