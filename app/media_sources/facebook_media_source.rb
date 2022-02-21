@@ -19,7 +19,7 @@ class FacebookMediaSource < MediaSource
   #   Default: false
   # @returns [String or nil] the path of the screenshot if the screenshot was saved
   sig { override.params(url: String, force: T::Boolean).returns(T::Array[String]) }
-  def self.extract(url, force=false)
+  def self.extract(url, force = false)
     object = self.new(url)
     return object.retrieve_facebook_post! if force
     object.retrieve_facebook_post
@@ -65,7 +65,6 @@ class FacebookMediaSource < MediaSource
       followlocation: true,
       params: { auth_key: Figaro.env.FORKI_AUTH_KEY, url: @url, callback_id: scrape.id }
     )
-    byebug
 
     raise ExternalServerError, "Error: #{response.code} returned from external Forki server" unless response.code == 200
 
@@ -90,8 +89,7 @@ class FacebookMediaSource < MediaSource
     JSON.parse(response.body)
   end
 end
-  
+
 # A class to indicate that a post url passed in is invalid
 class FacebookMediaSource::InvalidFacebookPostUrlError < StandardError; end
 class FacebookMediaSource::ExternalServerError < StandardError; end
-

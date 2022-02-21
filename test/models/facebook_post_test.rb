@@ -3,7 +3,7 @@ require "test_helper"
 class FacebookPostTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
   def setup
-    @forki_post = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/a.108824087345859/336596487901950", force=true)
+    @forki_post = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/a.108824087345859/336596487901950", true)
   end
 
   def teardown
@@ -40,7 +40,7 @@ class FacebookPostTest < ActiveSupport::TestCase
   end
 
   test "can create two facebook posts from same author" do
-    @forki_post2 = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/a.108824087345859/166370841591183", force=true)
+    @forki_post2 = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/a.108824087345859/166370841591183", true)
     archive_item = Sources::FacebookPost.create_from_forki_hash(@forki_post).first.facebook_post
     archive_item2 = Sources::FacebookPost.create_from_forki_hash(@forki_post2).first.facebook_post
     assert_equal archive_item.author.name, archive_item2.author.name
@@ -52,7 +52,7 @@ class FacebookPostTest < ActiveSupport::TestCase
   end
 
   test "can archive video from Facebook post" do
-    forki_facebook_post_video = FacebookMediaSource.extract("https://www.facebook.com/Meta/videos/264436895517475", force=true)
+    forki_facebook_post_video = FacebookMediaSource.extract("https://www.facebook.com/Meta/videos/264436895517475", true)
     archive_item = Sources::FacebookPost.create_from_forki_hash(forki_facebook_post_video).first
     assert_not_nil archive_item
     assert_kind_of ArchiveItem, archive_item
@@ -65,7 +65,7 @@ class FacebookPostTest < ActiveSupport::TestCase
   end
 
   test "archiving a video creates a preview screenshot" do
-    forki_facebook_post_video = FacebookMediaSource.extract("https://www.facebook.com/Meta/videos/264436895517475", force=true)
+    forki_facebook_post_video = FacebookMediaSource.extract("https://www.facebook.com/Meta/videos/264436895517475", true)
     archive_item = Sources::FacebookPost.create_from_forki_hash(forki_facebook_post_video).first
     assert_not_nil archive_item.facebook_post.videos.first.video_derivatives[:preview]
   end

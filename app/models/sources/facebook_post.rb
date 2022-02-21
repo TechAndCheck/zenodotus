@@ -46,7 +46,7 @@ class Sources::FacebookPost < ApplicationRecord
     ScraperJob.perform_later(FacebookMediaSource, Sources::FacebookPost, url, user)
   end
 
-  # Create a +ArchiveItem+ from a +url+ as a string. Skips Hypatia's queue. 
+  # Create a +ArchiveItem+ from a +url+ as a string. Skips Hypatia's queue.
   #
   # @!scope class
   # @params url String a string of a url
@@ -54,7 +54,7 @@ class Sources::FacebookPost < ApplicationRecord
   # returns ScraperJob
   sig { params(url: String, user: T.nilable(User)).returns(ScraperJob) }
   def self.create_from_url!(url, user = nil)
-    forki_response = FacebookMediaSource.extract(url, force=true)
+    forki_response = FacebookMediaSource.extract(url, true)
     raise "Error sending job to Forki" unless forki_response.respond_to?(:first) && forki_response.first.has_key?("id")
     Sources::FacebookPost.create_from_forki_hash(forki_response, user).first
   end
