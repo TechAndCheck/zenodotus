@@ -17,10 +17,10 @@ class InstagramPostTest < ActiveSupport::TestCase
     assert_not_nil archive_item
     assert_kind_of ArchiveItem, archive_item
 
-    assert_equal @zorki_post.first["text"], archive_item.instagram_post.text
+    assert_equal @zorki_post.first["post"]["text"], archive_item.instagram_post.text
     assert_equal @zorki_post.first["id"], archive_item.instagram_post.instagram_id
     assert_equal @zorki_post.first["id"], archive_item.service_id
-    assert_equal @zorki_post.first["date"], archive_item.instagram_post.posted_at.strftime("%FT%T%:z")
+    assert_equal @zorki_post.first["post"]["date"], archive_item.instagram_post.posted_at.strftime("%FT%T%:z")
 
     assert_not_nil archive_item.instagram_post.author
     assert_not_nil archive_item.instagram_post.images

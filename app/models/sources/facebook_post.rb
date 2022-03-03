@@ -41,7 +41,7 @@ class Sources::FacebookPost < ApplicationRecord
   # @params user the user adding the ArchiveItem
   # returns ArchiveItem with type InstagramPost that have been
   #   saved to the graph database
-  sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
+  sig { params(url: String, user: T.nilable(User)).returns(ScraperJob) }
   def self.create_from_url(url, user = nil)
     ScraperJob.perform_later(FacebookMediaSource, Sources::FacebookPost, url, user)
   end
@@ -52,7 +52,7 @@ class Sources::FacebookPost < ApplicationRecord
   # @params url String a string of a url
   # @params user The user adding the ArchiveItem
   # returns ScraperJob
-  sig { params(url: String, user: T.nilable(User)).returns(ScraperJob) }
+  sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
   def self.create_from_url!(url, user = nil)
     forki_response = FacebookMediaSource.extract(url, true)
     raise "Error sending job to Forki" unless forki_response.respond_to?(:first) && forki_response.first.has_key?("id")
@@ -77,6 +77,7 @@ class Sources::FacebookPost < ApplicationRecord
   sig { params(forki_posts: T::Array[Hash], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
   def self.create_from_forki_hash(forki_posts, user = nil)
     forki_posts.map do |forki_post|
+      forki_post = forki_post["post"]
       facebook_user = Sources::FacebookUser.create_from_forki_hash([forki_post["user"]]).first.facebook_user
 
       unless forki_post["image_file"].nil?

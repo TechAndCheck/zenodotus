@@ -4,7 +4,7 @@ class InstagramUserTest < ActiveSupport::TestCase
   def setup
     @zorki_user = InstagramMediaSource.extract(
       "https://www.instagram.com/p/CQDeYPhMJLG/", true
-    ).first["user"]
+    ).first["post"]["user"]
   end
 
   def teardown
