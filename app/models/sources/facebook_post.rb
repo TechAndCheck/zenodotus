@@ -39,7 +39,12 @@ class Sources::FacebookPost < ApplicationRecord
   # @!scope class
   # @params url String a string of a url
   # @params user the user adding the ArchiveItem
+<<<<<<< HEAD
   # returns ScraperJob
+=======
+  # returns ArchiveItem with type InstagramPost that have been
+  #   saved to the graph database
+>>>>>>> c14fa79828bc71e6e6d802794298ee387576deea
   sig { params(url: String, user: T.nilable(User)).returns(ScraperJob) }
   def self.create_from_url(url, user = nil)
     ScraperJob.perform_later(FacebookMediaSource, Sources::FacebookPost, url, user)
@@ -50,7 +55,11 @@ class Sources::FacebookPost < ApplicationRecord
   # @!scope class
   # @params url String a string of a url
   # @params user The user adding the ArchiveItem
+<<<<<<< HEAD
   # returns ArchiveItem
+=======
+  # returns ScraperJob
+>>>>>>> c14fa79828bc71e6e6d802794298ee387576deea
   sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
   def self.create_from_url!(url, user = nil)
     forki_response = FacebookMediaSource.extract(url, true)

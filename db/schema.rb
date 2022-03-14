@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_18_200034) do
-
+ActiveRecord::Schema.define(version: 2022_03_03_150343) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -22,7 +21,7 @@ ActiveRecord::Schema.define(version: 2022_02_18_200034) do
 
   create_table "api_keys", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "hashed_api_key"
-    t.uuid "user_id", null: false
+    t.uuid "user_id"
     t.date "last_used"
     t.jsonb "usage_logs"
     t.datetime "created_at", precision: 6, null: false
@@ -50,24 +49,24 @@ ActiveRecord::Schema.define(version: 2022_02_18_200034) do
 
   create_table "facebook_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "facebook_post_id"
-    t.string "dhash"
     t.jsonb "image_data"
+    t.string "dhash"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["facebook_post_id"], name: "index_facebook_images_on_facebook_post_id"
   end
 
   create_table "facebook_posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "posted_at"
     t.text "text"
-    t.datetime "posted_at", precision: 6
     t.text "facebook_id"
+    t.uuid "author_id", null: false
     t.jsonb "reactions"
     t.integer "num_comments"
     t.integer "num_shares"
     t.integer "num_views"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.uuid "author_id", null: false
     t.text "url", null: false
     t.index ["author_id"], name: "index_facebook_posts_on_author_id"
   end
@@ -115,7 +114,7 @@ ActiveRecord::Schema.define(version: 2022_02_18_200034) do
   create_table "instagram_posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "text", null: false
     t.string "instagram_id", null: false
-    t.datetime "posted_at", precision: 6, null: false
+    t.datetime "posted_at", null: false
     t.integer "number_of_likes", null: false
     t.uuid "author_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -196,7 +195,7 @@ ActiveRecord::Schema.define(version: 2022_02_18_200034) do
     t.string "twitter_id", null: false
     t.string "language", null: false
     t.uuid "author_id", null: false
-    t.datetime "posted_at", precision: 6, null: false
+    t.datetime "posted_at", null: false
     t.index ["author_id"], name: "index_tweets_on_author_id"
   end
 
@@ -212,7 +211,7 @@ ActiveRecord::Schema.define(version: 2022_02_18_200034) do
   create_table "twitter_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "handle", null: false
     t.string "display_name", null: false
-    t.datetime "sign_up_date", precision: 6, null: false
+    t.datetime "sign_up_date", null: false
     t.string "twitter_id", null: false
     t.text "description", null: false
     t.string "url", null: false
@@ -238,20 +237,20 @@ ActiveRecord::Schema.define(version: 2022_02_18_200034) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at", precision: 6
-    t.datetime "remember_created_at", precision: 6
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at", precision: 6
-    t.datetime "last_sign_in_at", precision: 6
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.string "confirmation_token"
-    t.datetime "confirmed_at", precision: 6
-    t.datetime "confirmation_sent_at", precision: 6
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
-    t.datetime "locked_at", precision: 6
+    t.datetime "locked_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "approved", default: false, null: false
