@@ -4,7 +4,7 @@ class FacebookUserTest < ActiveSupport::TestCase
   def setup
     @forki_user = FacebookMediaSource.extract(
       "https://www.facebook.com/Meta/photos/a.108824087345859/336596487901950", true
-    ).first["user"]
+    ).first["post"]["user"]
   end
 
   def teardown
