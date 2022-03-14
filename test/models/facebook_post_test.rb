@@ -17,11 +17,11 @@ class FacebookPostTest < ActiveSupport::TestCase
     assert_not_nil archive_item
     assert_kind_of ArchiveItem, archive_item
 
-    assert_equal @forki_post.first["text"], archive_item.facebook_post.text
-    assert_equal @forki_post.first["id"], archive_item.facebook_post.facebook_id
+    assert_equal @forki_post.first["post"]["text"], archive_item.facebook_post.text
+    assert_equal @forki_post.first["post"]["id"], archive_item.facebook_post.facebook_id
     assert_equal @forki_post.first["id"], archive_item.service_id
-    assert_equal @forki_post.first["url"], archive_item.facebook_post.url
-    assert_equal Time.at(@forki_post.first["created_at"]).utc.strftime("%FT%T%:z"), archive_item.facebook_post.posted_at.strftime("%FT%T%:z")
+    assert_equal @forki_post.first["post"]["url"], archive_item.facebook_post.url
+    assert_equal Time.at(@forki_post.first["post"]["created_at"]).utc.strftime("%FT%T%:z"), archive_item.facebook_post.posted_at.strftime("%FT%T%:z")
 
     assert_not_nil archive_item.facebook_post.author
     assert_not_nil archive_item.facebook_post.images
