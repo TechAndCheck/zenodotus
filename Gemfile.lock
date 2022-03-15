@@ -452,7 +452,7 @@ DEPENDENCIES
   pry-byebug
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)
-  rails (~> 7.0.1)
+  rails (~> 7.0.2.3)
   redis (~> 4.0)
   rubocop
   rubocop-minitest
@@ -483,7 +483,7 @@ DEPENDENCIES
   yard
 
 RUBY VERSION
-   ruby 3.0.3p157
+   ruby 3.1.1p18
 
 BUNDLED WITH
    2.2.32
