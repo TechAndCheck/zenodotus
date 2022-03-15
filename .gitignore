@@ -56,3 +56,5 @@ coverage
 !/app/assets/builds/.keep
 
 dump.rdb
+
+.env
