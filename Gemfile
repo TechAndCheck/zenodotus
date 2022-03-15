@@ -44,10 +44,6 @@ group :development, :test do
   # Add the ability to load `.env` files on launch
   gem "dotenv-rails"
 
-  # Jard is an improvement on Byebug
-  gem "ruby_jard"
-  gem "pry-byebug"
-
   # RuboCop is an excellent linter, we keep it in `test` for CI
   gem "rubocop", require: false
   gem "rubocop-rails", require: false # Rails specific styles
@@ -162,3 +158,7 @@ gem "importmap-rails"
 gem "stimulus-rails"
 
 gem "sprockets-rails", require: "sprockets/railtie"
+
+# Jard is an improvement on Byebug
+gem "ruby_jard"
+gem "pry-byebug"
