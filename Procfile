@@ -1,4 +1,3 @@
 release: rails db:migrate
 web: bundle exec puma -C config/puma.rb
 worker: bundle exec sidekiq -e production -C config/sidekiq.yml -t 25 -v
-clock: bundle exec clockwork scheduler.rb
