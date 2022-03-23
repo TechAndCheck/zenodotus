@@ -69,10 +69,13 @@ class InstagramMediaSource < MediaSource
   def retrieve_instagram_post!
     scrape = Scrape.create!({ url: @url, scrape_type: :instagram })
 
+    params = { auth_key: Figaro.env.ZORKI_AUTH_KEY, url: @url, callback_id: scrape.id, force: "true" }
+    params[:callback_url] = Figaro.env.URL unless Figaro.env.URL.blank?
+
     response = Typhoeus.get(
       Figaro.env.ZORKI_SERVER_URL,
       followlocation: true,
-      params: { auth_key: Figaro.env.ZORKI_AUTH_KEY, url: @url, callback_id: scrape.id, force: "true" }
+      params: params
     )
 
     raise ExternalServerError, "Error: #{response.code} returned from external Zorki server" unless response.code == 200
