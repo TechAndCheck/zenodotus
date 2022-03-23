@@ -8,15 +8,13 @@
     </tr>
     </thead>
     <tbody id="jobs-table-body">
-      <%# unless @jobs_queue.empty? %>
-        <% @jobs_queue.each do |job| %>
-          <tr class="border text-gray-600 text-center">
-            <td><%= job[:queue_position] %></td>
-            <td><%=  job[:enqueued_at] %></td>
-            <td><%=  job[:url] %></td>
-          </tr>
-        <% end %>
-      <%# end %>
+      <% @jobs_queue.each do |job| %>
+        <tr class="border text-gray-600 text-center">
+          <td><%= job[:queue_position] %></td>
+          <td><%= job[:enqueued_at] %></td>
+          <td><%= job[:url] %></td>
+        </tr>
+      <% end %>
     </tbody>
   </table>
 </div>

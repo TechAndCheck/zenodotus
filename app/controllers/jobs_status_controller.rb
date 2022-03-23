@@ -7,11 +7,12 @@ class JobsStatusController < ApplicationController
   def index
     @jobs_queue = []
     return if Sidekiq::Queue.new.size.zero?
-
     @jobs_queue = Sidekiq::Queue.new.to_a.reverse.each_with_index.map do |job, ind|
       {
         queue_position: ind + 1,
-        url: job.item["args"][0]["arguments"].last,
+        url: job.item["args"][0]["arguments"][2],
+        user: GlobalID::Locator.locate(job.item["args"][0]["arguments"][3]),
+        class: job.item["args"][0]["arguments"][1],
         enqueued_at: Time.at(job.item["enqueued_at"])
       }
     end
