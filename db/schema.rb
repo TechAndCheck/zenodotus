@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_03_150343) do
+ActiveRecord::Schema[7.0].define(version: 2022_03_03_150343) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -24,8 +24,8 @@ ActiveRecord::Schema.define(version: 2022_03_03_150343) do
     t.uuid "user_id"
     t.date "last_used"
     t.jsonb "usage_logs"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["hashed_api_key"], name: "index_api_keys_on_hashed_api_key"
     t.index ["user_id"], name: "index_api_keys_on_user_id"
   end
@@ -33,15 +33,15 @@ ActiveRecord::Schema.define(version: 2022_03_03_150343) do
   create_table "archive_entities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "archivable_entity_id", null: false
     t.string "archivable_entity_type", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "archive_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "archivable_item_id", null: false
     t.string "archivable_item_type", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.uuid "submitter_id"
     t.uuid "scrape_id"
     t.index ["submitter_id"], name: "index_archive_items_on_submitter_id"
@@ -51,8 +51,8 @@ ActiveRecord::Schema.define(version: 2022_03_03_150343) do
     t.uuid "facebook_post_id"
     t.jsonb "image_data"
     t.string "dhash"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["facebook_post_id"], name: "index_facebook_images_on_facebook_post_id"
   end
 
@@ -65,8 +65,8 @@ ActiveRecord::Schema.define(version: 2022_03_03_150343) do
     t.integer "num_comments"
     t.integer "num_shares"
     t.integer "num_views"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "url", null: false
     t.index ["author_id"], name: "index_facebook_posts_on_author_id"
   end
@@ -81,23 +81,23 @@ ActiveRecord::Schema.define(version: 2022_03_03_150343) do
     t.string "url"
     t.jsonb "profile_image_data"
     t.string "profile_image_url"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "facebook_videos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "facebook_post_id"
     t.jsonb "video_data"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["facebook_post_id"], name: "index_facebook_videos_on_facebook_post_id"
   end
 
   create_table "image_searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "dhash"
     t.jsonb "image_data"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.uuid "user_id"
     t.index ["user_id"], name: "index_image_searches_on_user_id"
   end
@@ -105,8 +105,8 @@ ActiveRecord::Schema.define(version: 2022_03_03_150343) do
   create_table "instagram_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "instagram_post_id"
     t.jsonb "image_data"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "dhash"
     t.index ["instagram_post_id"], name: "index_instagram_images_on_instagram_post_id"
   end
@@ -117,8 +117,8 @@ ActiveRecord::Schema.define(version: 2022_03_03_150343) do
     t.datetime "posted_at", null: false
     t.integer "number_of_likes", null: false
     t.uuid "author_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_instagram_posts_on_author_id"
   end
 
@@ -133,21 +133,21 @@ ActiveRecord::Schema.define(version: 2022_03_03_150343) do
     t.string "url"
     t.string "profile_image_url", null: false
     t.jsonb "profile_image_data"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "instagram_videos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "instagram_post_id"
     t.jsonb "video_data"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["instagram_post_id"], name: "index_instagram_videos_on_instagram_post_id"
   end
 
   create_table "media_reviews", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "original_media_link", null: false
     t.text "media_authenticity_category", null: false
     t.text "original_media_context_description", null: false
@@ -158,8 +158,8 @@ ActiveRecord::Schema.define(version: 2022_03_03_150343) do
   create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.uuid "admin_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["admin_id"], name: "index_organizations_on_admin_id"
   end
 
@@ -167,8 +167,8 @@ ActiveRecord::Schema.define(version: 2022_03_03_150343) do
     t.text "content"
     t.string "searchable_type"
     t.uuid "searchable_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.virtual "content_tsvector", type: :tsvector, as: "to_tsvector('english'::regconfig, content)", stored: true
     t.index ["content_tsvector"], name: "index_pg_search_documents_on_content_tsvector", using: :gin
     t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
@@ -178,13 +178,13 @@ ActiveRecord::Schema.define(version: 2022_03_03_150343) do
     t.boolean "fulfilled", default: false, null: false
     t.string "url", null: false
     t.enum "scrape_type", null: false, enum_type: "scrape_type"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "text_searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "query"
     t.uuid "user_id"
     t.index ["user_id"], name: "index_text_searches_on_user_id"
@@ -202,8 +202,8 @@ ActiveRecord::Schema.define(version: 2022_03_03_150343) do
   create_table "twitter_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tweet_id"
     t.jsonb "image_data"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "dhash"
     t.index ["tweet_id"], name: "index_twitter_images_on_tweet_id"
   end
@@ -217,8 +217,8 @@ ActiveRecord::Schema.define(version: 2022_03_03_150343) do
     t.string "url", null: false
     t.text "profile_image_url", null: false
     t.string "location"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.jsonb "profile_image_data"
     t.integer "followers_count", null: false
     t.integer "following_count", null: false
@@ -227,8 +227,8 @@ ActiveRecord::Schema.define(version: 2022_03_03_150343) do
   create_table "twitter_videos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tweet_id"
     t.jsonb "video_data"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "video_type"
     t.index ["tweet_id"], name: "index_twitter_videos_on_tweet_id"
   end
@@ -251,8 +251,8 @@ ActiveRecord::Schema.define(version: 2022_03_03_150343) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "approved", default: false, null: false
     t.boolean "admin", default: false, null: false
     t.boolean "restricted", default: false, null: false
