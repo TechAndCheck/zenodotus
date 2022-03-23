@@ -19,7 +19,7 @@ class InstagramMediaSource < MediaSource
   # @params force [Boolean] whether to force Hypatia to not queue a request but to scrape immediately.
   #   Default: false
   # @returns [Boolean or Hash] if `force` is set to `true` returns the scraped hash, otherwise the status of the Hypatia job.
-  sig { override.params(url: String, force: T::Boolean).returns(T::Array[T.any(T::Boolean, Hash)]) }
+  sig { override.params(url: String, force: T::Boolean).returns(T.any(T::Boolean, T::Array[Hash])) }
   def self.extract(url, force = false)
     object = self.new(url)
     return object.retrieve_instagram_post! if force
