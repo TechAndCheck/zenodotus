@@ -80,9 +80,6 @@ group :test do
   gem "selenium-webdriver"
   # Easy installation and use of web drivers to run system tests with browsers
   gem "webdrivers"
-
-  # Code coverage so we can check if our tests actually cover everything
-  gem "simplecov", require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -164,3 +161,6 @@ gem "pry-byebug"
 
 # Add the ability to load `.env` files on launch
 gem "dotenv-rails"
+
+# Code coverage so we can check if our tests actually cover everything
+gem "simplecov", require: false

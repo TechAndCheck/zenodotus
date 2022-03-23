@@ -6,7 +6,7 @@ class JobsStatusController < ApplicationController
   sig { void }
   def index
     @jobs_queue = []
-    return if Sidekiq::Queue.new.size.zero
+    return if Sidekiq::Queue.new.size.zero?
 
     @jobs_queue = Sidekiq::Queue.new.to_a.reverse.each_with_index.map do |job, ind|
       {
