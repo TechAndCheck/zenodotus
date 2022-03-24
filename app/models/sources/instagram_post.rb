@@ -81,12 +81,12 @@ class Sources::InstagramPost < ApplicationRecord
   sig { params(zorki_posts: T::Array[Hash], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
   def self.create_from_zorki_hash(zorki_posts, user = nil)
     print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
-    print "Things: #{zorki_posts}\n"
+    puts "Things: #{zorki_posts.class} | #{zorki_posts.count}"
     print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
     zorki_posts.map do |zorki_post|
       print "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n"
       print "things 1\n"
-      print "stuff: #{zorki_post}\n"
+      puts "stuff: #{zorki_post}"
       print "things 2\n"
       print "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n"
       zorki_post = zorki_post["post"]
