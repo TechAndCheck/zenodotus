@@ -84,12 +84,12 @@ class Sources::InstagramPost < ApplicationRecord
     puts "Things: #{zorki_posts.class} | #{zorki_posts.count}"
     print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
     puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-    puts "Stuff: #{zorki_posts.first.inspect}"
+    puts zorki_posts.first.inspect
     puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
     zorki_posts.map do |zorki_post|
       print "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n"
       print "things 1\n"
-      puts "stuff: #{zorki_post.inspect}"
+      puts zorki_post.inspect
       print "things 2\n"
       print "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n"
       zorki_post = zorki_post["post"]
