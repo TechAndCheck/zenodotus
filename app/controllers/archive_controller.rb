@@ -96,7 +96,7 @@ class ArchiveController < ApplicationController
 
     # typed_params = TypedParams[ScrapeResultCallbackParams].new.extract!(JSON.parse(params))
 
-    parsed_params = Jsons.parse(request.raw_post)
+    parsed_params = JSON.parse(request.raw_post)
 
     # Validate id for auth purposes (auth key too?)
     begin
