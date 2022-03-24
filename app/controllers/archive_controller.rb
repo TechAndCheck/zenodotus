@@ -87,16 +87,14 @@ class ArchiveController < ApplicationController
   # When a scrape is over the scraper will call this
   sig { void }
   def scrape_result_callback
+    parsed_params = JSON.parse(request.raw_post)
+
+    render json: { error: "Missing scrape id" }, status: 404 and return unless parsed_params.has_key?(:scrape_id)
+
     print "**************\n"
     print "request raw post: #{request.raw_post}"
-    print "params: #{params}\n"
+    print "params: #{parsed_params}\n"
     print "**************\n"
-
-    render json: { error: "Missing scrape id" }, status: 404 and return unless params.has_key?(:scrape_id)
-
-    # typed_params = TypedParams[ScrapeResultCallbackParams].new.extract!(JSON.parse(params))
-
-    parsed_params = JSON.parse(request.raw_post)
 
     # Validate id for auth purposes (auth key too?)
     begin
