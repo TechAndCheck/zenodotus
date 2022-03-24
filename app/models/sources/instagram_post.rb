@@ -81,8 +81,12 @@ class Sources::InstagramPost < ApplicationRecord
   sig { params(zorki_posts: T::Array[Hash], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
   def self.create_from_zorki_hash(zorki_posts, user = nil)
     zorki_posts.map do |zorki_post|
+      print "*****************************\n"
+      print "stuff: #{zorki_post.keys}\n"
+      print "*****************************\n"
       zorki_post = zorki_post["post"]
-      instagram_user = Sources::InstagramUser.create_from_zorki_hash([zorki_post["user"]]).first.instagram_user
+      user_json = zorki_post["user"]
+      instagram_user = Sources::InstagramUser.create_from_zorki_hash([user_json]).first.instagram_user
 
       unless zorki_post["image_files"].nil?
         image_attributes = zorki_post["image_files"].map do |image_file_data|
