@@ -82,12 +82,11 @@ class Sources::InstagramPost < ApplicationRecord
   def self.create_from_zorki_hash(zorki_posts, user = nil)
     print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
     puts "Things: #{zorki_posts.class} | #{zorki_posts.count}"
-    puts "Things 2: #{zorki_posts.inspect}"
     print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
     zorki_posts.map do |zorki_post|
       print "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n"
       print "things 1\n"
-      puts "stuff: #{zorki_post.keys.inspect}"
+      puts "stuff: #{zorki_post.inspect}"
       print "things 2\n"
       print "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n"
       zorki_post = zorki_post["post"]
