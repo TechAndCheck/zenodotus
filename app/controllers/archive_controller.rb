@@ -96,11 +96,11 @@ class ArchiveController < ApplicationController
     print "**************\n"
 
     # Validate id for auth purposes (auth key too?)
-    begin
-      scrape = Scrape.find(parsed_params["scrape_id"])
-    rescue ActiveRecord::RecordNotFound
-      render json: { error: "Invalid scrape id" }, status: 404 and return
-    end
+    # begin
+    scrape = Scrape.find(parsed_params["scrape_id"])
+    # rescue ActiveRecord::RecordNotFound
+    #  render json: { error: "Invalid scrape id" }, status: 404 and return
+    # end
 
     scrape.fulfill(parsed_params["scrape_result"].first)
   end
