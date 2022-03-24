@@ -80,14 +80,14 @@ class Sources::InstagramPost < ApplicationRecord
   #   saved to the graph database
   sig { params(zorki_posts: T::Array[Hash], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
   def self.create_from_zorki_hash(zorki_posts, user = nil)
-    print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-    print "Things: #{zorki_posts}"
-    print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+    print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
+    print "Things: #{zorki_posts}\n"
+    print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
     zorki_posts.map do |zorki_post|
       print "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n"
-      print "things 1"
+      print "things 1\n"
       print "stuff: #{zorki_post}\n"
-      print "things 2"
+      print "things 2\n"
       print "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n"
       zorki_post = zorki_post["post"]
       user_json = zorki_post["user"]
