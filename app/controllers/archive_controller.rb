@@ -88,6 +88,7 @@ class ArchiveController < ApplicationController
   sig { void }
   def scrape_result_callback
     print "**************\n"
+    print "request raw post: #{request.raw_post}"
     print "params: #{params}\n"
     print "**************\n"
 
