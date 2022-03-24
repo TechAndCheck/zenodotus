@@ -48,7 +48,7 @@ class InstagramMediaSource < MediaSource
   def retrieve_instagram_post
     scrape = Scrape.create!({ url: @url, scrape_type: :instagram })
 
-    params = { auth_key: Figaro.env.ZORKI_AUTH_KEY, url: @url, callback_id: scrape.id, force: "true" }
+    params = { auth_key: Figaro.env.ZORKI_AUTH_KEY, url: @url, callback_id: scrape.id }
     params[:callback_url] = Figaro.env.URL unless Figaro.env.URL.blank?
 
     response = Typhoeus.get(
