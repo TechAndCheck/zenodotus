@@ -102,6 +102,6 @@ class ArchiveController < ApplicationController
     #  render json: { error: "Invalid scrape id" }, status: 404 and return
     # end
 
-    scrape.fulfill(parsed_params["scrape_result"].first)
+    scrape.fulfill(parsed_params["scrape_result"])
   end
 end
