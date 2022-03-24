@@ -92,8 +92,7 @@ class ArchiveController < ApplicationController
     render json: { error: "Missing scrape id" }, status: 404 and return unless parsed_params.has_key?(:scrape_id)
 
     print "**************\n"
-    print "request raw post: #{request.raw_post}"
-    print "params: #{parsed_params}\n"
+    print "params: #{parsed_params.keys}\n"
     print "**************\n"
 
     # Validate id for auth purposes (auth key too?)
