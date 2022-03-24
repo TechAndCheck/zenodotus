@@ -89,6 +89,10 @@ class ArchiveController < ApplicationController
   def scrape_result_callback
     render json: { error: "Missing scrape id" }, status: 404 and return unless params.has_key?(:scrape_id)
 
+    print "**************\n"
+    print "params: #{params}\n"
+    print "**************\n"
+
     typed_params = TypedParams[ScrapeResultCallbackParams].new.extract!(params)
 
     # Validate id for auth purposes (auth key too?)
