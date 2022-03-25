@@ -88,20 +88,17 @@ class ArchiveController < ApplicationController
   sig { void }
   def scrape_result_callback
     parsed_params = JSON.parse(request.raw_post)
-
-    print "**************\n"
-    print "params: #{parsed_params.keys}\n"
-    print "**************\n"
-
     render json: { error: "Missing scrape id" }, status: 404 and return unless parsed_params.has_key?("scrape_id")
 
     # Validate id for auth purposes (auth key too?)
-    # begin
-    scrape = Scrape.find(parsed_params["scrape_id"])
-    # rescue ActiveRecord::RecordNotFound
-    #  render json: { error: "Invalid scrape id" }, status: 404 and return
-    # end
+    begin
+      scrape = Scrape.find(parsed_params["scrape_id"])
+    rescue ActiveRecord::RecordNotFound
+      render json: { error: "Invalid scrape id" }, status: 404 and return
+    end
 
     scrape.fulfill(parsed_params["scrape_result"])
+
+    render plain: "OK", status: 200
   end
 end
