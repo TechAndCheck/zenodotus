@@ -378,8 +378,10 @@ GEM
     streamio-ffmpeg (3.0.2)
       multi_json (~> 1.8)
     strscan (3.0.1)
-    tailwindcss-rails (0.3.3)
-      rails (>= 6.0.0)
+    tailwindcss-rails (2.0.8-arm64-darwin)
+      railties (>= 6.0.0)
+    tailwindcss-rails (2.0.8-x86_64-linux)
+      railties (>= 6.0.0)
     thor (1.2.1)
     timeout (0.2.0)
     tmuxinator (3.0.2)
@@ -475,7 +477,7 @@ DEPENDENCIES
   sprockets-rails
   stimulus-rails
   streamio-ffmpeg
-  tailwindcss-rails (~> 0.3.3)
+  tailwindcss-rails (~> 2.0.8)
   tmuxinator
   typhoeus
   validate_url

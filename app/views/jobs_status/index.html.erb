@@ -1,4 +1,5 @@
-<div id="jobs-div">
+<div class="text-3xl font-bold">Active Jobs</div>
+<div id="jobs-div" class="mt-5">
   <table id="jobs-table" class="table-auto w-full">
     <thead id="jobs-table-head">
     <tr>
@@ -13,6 +14,39 @@
           <td><%= job[:queue_position] %></td>
           <td><%= job[:enqueued_at] %></td>
           <td><%= job[:url] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="text-3xl font-bold mt-10">Active Scrapes</div>
+<div id="scrapes-div" class="mt-5">
+  <table id="scrapes-table" class="table-auto w-full">
+    <thead id="scrapes-table-head">
+    <tr>
+      <th class="border text-center">Id</th>
+      <th class="border text-center">Scrape Type</th>
+      <th class="border text-center">Enqueued at</th>
+      <th class="border text-center">Url to scrape</th>
+      <th class="border text-center"></th>
+    </tr>
+    </thead>
+    <tbody id="jobs-table-body">
+      <% @scrapes.each do |scrape| %>
+        <tr class="border text-gray-600 text-center">
+          <td><%= scrape.id %></td>
+          <td><%= scrape.scrape_type %></td>
+          <td><%= scrape.created_at %></td>
+          <td><%= link_to scrape.url, scrape.url %></td>
+          <td><%= link_to "Delete", job_status_delete_path(scrape.id), data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } %></td>
+          <td><%= link_to "Resubmit", job_status_resubmit_path(scrape.id), data: {
+                    turbo_method: :post,
+                    turbo_confirm: "Are you sure?"
+                  } %></td>
         </tr>
       <% end %>
     </tbody>
