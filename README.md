@@ -6,33 +6,35 @@ Additional documentation can be found in the `/docs` folder.
 
 ## Setup
 
-### Prerequisites
+### Requirements
 
-There are a few prerequisites that you need on your machine to run this system. All of this was designed for macOS, though any Linux distribution should be pretty similar. As for Windows, I have no idea, though @oneroyalace may be able to help with that. (I imagine the answer is WSL.)
+There's a few prereqs that you need on your machine to run this system. All of this was designed for MacOS, though any Linux distribution should be pretty similar. As for Windows, I have no idea, though @oneroyalace may be able to help with that (I imagine the answer is WSL).
 
 Things we need to install include (steps below for all this):
 
-- Homebrew (for macOS, or other package manager for other systems)
-- Ruby (see [/.ruby-verison](.ruby-version) for the current version)
-- Chrome (latest version)
-- PostgreSQL (13 or higher)
-- Redis
-- Yarn (v1)
-- ChromeDriver
-- ffmpeg
-- vips
+- Homebrew (for MacOS)
+- Ruby (3.0.2 as of writing, but check in [/.ruby-verison](.ruby-version) for the most up to date version)
+- Chrome, whatever version is newest
+- Postgresql 13
+- Yarn (1.22.10 as of writing)
+- Chromedriver
 
 #### Homebrew
 
-A package manager for macOS similar to Apt or Yum in the Linux world. You'll want this if you don't have it because it makes installing the other prereqs SUPER easy. Install it from [here](https://brew.sh).
-
-**Note:** You may have to install the Xcode Command Line Tools for macOS: `xcode-select --install`.
+A package manager for MacOS similar to Apt or Yum in the Linux world. You'll want this if you don't have it because it makes installing the other prereqs SUPER easy. Install it from [here](https://brew.sh).
 
 #### Ruby
 
+The version of Ruby that comes installed on your system, or can be installed through a package manager (Yum, Apt, Homebrew etc) are almost certainly out of date. It also means you can't use multiple versions on the same device. So instead, we use a specific Ruby version manager. There's a few of these out there.
+>>>>>>> bc97688 (Use consistent whitespace in README headers)
+
 The version of Ruby installed by your operating system, or available through standard package managers, is probably out of date and doesn't support multiple versions of Ruby on a single machine. To remedy both problems, we recommend using a Ruby version manager. Once installed, make sure to use the version of Ruby indicated in [/.ruby-version](.ruby-version).
 
-##### ✅ [rbenv](https://github.com/rbenv/rbenv)
+##### [Rbenv](https://github.com/rbenv/rbenv)
+
+*This is the one I (@cguess) use.*
+
+It's lightweight, well maintained, and works pretty flawlessly.
 
 **This is our recommended Ruby version manager.** It's lightweight, well maintained, and works pretty flawlessly.
 
@@ -107,18 +109,22 @@ Used for scraping.
 - **macOS:** `brew install --cask chromedriver`
 - **Ubuntu:** `sudo apt-get install chromium-driver`
 
-#### ffmpeg
+#### FFMPEG
 
-ffmpeg is a video processing library. It's used on that Mars helicopter and at YouTube, so it's fine. We need to install it to process previews for videos.
+FFMPEG is a video processing library. It's used on that Mars helicopter and at YouTube, so it's fine.
+We need to install it to process previews for videos.
 
 - **macOS:** `brew install ffmpeg`
 - **Ubuntu:** `sudo apt-get install ffmpeg`
 
-#### vips
+#### Vips
 
-A faster image manipulation library than ImageMagick.
+A faster image manipulation library than ImageMagick. `brew install vips`. Note: you may have to install the xcode tools if you're on a mac `xcode-select --install`.
 
-- **macOS:** `brew install vips`
+## Setup Steps
+
+*Note: this is a first pass, there may be odd errors since I wasn't on a pristine box when I wrote it. Please message @cguess with any error messages, it's probably missing dependencies.*
+>>>>>>> bc97688 (Use consistent whitespace in README headers)
 
 ### Installation
 
