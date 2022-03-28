@@ -34,6 +34,11 @@ class User < ApplicationRecord
     Organization.find(self.organization_id).admin == self
   end
 
+  sig { returns(T::Boolean) }
+  def super_admin?
+    self.super_admin
+  end
+
   private
 
     sig { void }

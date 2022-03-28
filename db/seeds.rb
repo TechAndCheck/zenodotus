@@ -16,6 +16,7 @@ User.create!([
   password: "password123",
   approved: true,
   admin: true,
+  super_admin: true,
   confirmed_at: Time.now,
   organization_id: organization.id
 },

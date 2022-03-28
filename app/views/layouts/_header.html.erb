@@ -14,7 +14,14 @@
         <%= link_to "Text Search", text_search_path, "data-turbo-frame": "_top" %>
       </div>
       <% if user_signed_in? %>
-        <%= link_to "Account", account_path %>
+        <% if current_user.super_admin? %>
+        <div class="flex-shrink mr-6">
+          <%= link_to "Jobs Status", jobs_status_path %>
+        </div>
+        <% end %>
+        <div class="flex-shrink mr-6">
+          <%= link_to "Account", account_path %>
+        </div>
       <% end %>
     </div>
   </div>
