@@ -6,37 +6,37 @@ Additional documentation can be found in the `/docs` folder.
 
 ## Setup
 
-### Requirements
+### Prerequisites
 
-There's a few prereqs that you need on your machine to run this system. All of this was designed for macOS, though any Linux distribution should be pretty similar. As for Windows, I have no idea, though @oneroyalace may be able to help with that (I imagine the answer is WSL).
+There are a few prerequisites that you need on your machine to run this system. All of this was designed for macOS, though any Linux distribution should be pretty similar. As for Windows, I have no idea, though @oneroyalace may be able to help with that. (I imagine the answer is WSL.)
 
 Things we need to install include (steps below for all this):
 
-- Homebrew (for macOS)
-- Ruby (3.0.2 as of writing, but check in [/.ruby-verison](.ruby-version) for the most up to date version)
-- Chrome, whatever version is newest
-- Postgresql 13
-- Yarn (1.22.10 as of writing)
-- Chromedriver
+- Homebrew (for macOS, or other package manager for other systems)
+- Ruby (see [/.ruby-verison](.ruby-version) for the current version)
+- Chrome (latest version)
+- PostgreSQL (13 or higher)
+- Yarn (v1)
+- ChromeDriver
+- ffmpeg
+- vips
 
 #### Homebrew
 
 A package manager for macOS similar to Apt or Yum in the Linux world. You'll want this if you don't have it because it makes installing the other prereqs SUPER easy. Install it from [here](https://brew.sh).
 
-#### Ruby
+**Note:** You may have to install the Xcode Command Line Tools for macOS: `xcode-select --install`.
 
-The version of Ruby that comes installed on your system, or can be installed through a package manager (Yum, Apt, Homebrew etc) are almost certainly out of date. It also means you can't use multiple versions on the same device. So instead, we use a specific Ruby version manager. There's a few of these out there.
->>>>>>> bc97688 (Use consistent whitespace in README headers)
+#### Ruby
 
 The version of Ruby installed by your operating system, or available through standard package managers, is probably out of date and doesn't support multiple versions of Ruby on a single machine. To remedy both problems, we recommend using a Ruby version manager. Once installed, make sure to use the version of Ruby indicated in [/.ruby-version](.ruby-version).
 
-##### [Rbenv](https://github.com/rbenv/rbenv)
-
-*This is the one I (@cguess) use.*
-
-It's lightweight, well maintained, and works pretty flawlessly.
+##### ✅ [rbenv](https://github.com/rbenv/rbenv)
 
 **This is our recommended Ruby version manager.** It's lightweight, well maintained, and works pretty flawlessly.
+
+
+It's lightweight, well maintained, and works pretty flawlessly.
 
 **Note:** One of the Gems used in this project, `dhash-vips`, uses Ruby source files to speed up image similarity processing. To ensure that rbenv stores the Ruby source files locally, use the `--keep` flag when installing a new Ruby version. E.g. `rbenv install 3.0.2 --keep`. (Note that you would actually use the command `rbenv install --keep` while in the project root, and rbenv would pick up the correct version number from `./ruby-version` automatically.)
 
@@ -111,21 +111,21 @@ Used for scraping.
 
 #### FFMPEG
 
-FFMPEG is a video processing library. It's used on that Mars helicopter and at YouTube, so it's fine.
-We need to install it to process previews for videos.
+ffmpeg is a video processing library. It's used on that Mars helicopter and at YouTube, so it's fine. We need to install it to process previews for videos.
 
 - **macOS:** `brew install ffmpeg`
 - **Ubuntu:** `sudo apt-get install ffmpeg`
 
 #### Vips
 
-A faster image manipulation library than ImageMagick. `brew install vips`. Note: you may have to install the xcode tools if you're on a mac `xcode-select --install`.
+A faster image manipulation library than ImageMagick.
+
+- **macOS:** `brew install vips`
 
 ## Setup Steps
+
 ### Installation
 
-=======
->>>>>>> 44f3f84 (Update installation steps in the README)
 1. Install all the prerequisites, including the version of Ruby indicated in [/.ruby-version](.ruby-version), ensuring Ruby source files are stored locally (`--keep`)
 1. Clone this repo: `git clone https://github.com/TechAndCheck/zenodotus`
 1. Navigate into the project folder `cd zenodotus` (or whatever)
