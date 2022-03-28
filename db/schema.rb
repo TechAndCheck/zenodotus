@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_03_03_150343) do
+ActiveRecord::Schema[7.0].define(version: 2022_03_28_155140) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -257,6 +257,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_03_150343) do
     t.boolean "admin", default: false, null: false
     t.boolean "restricted", default: false, null: false
     t.uuid "organization_id", null: false
+    t.boolean "super_admin", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["organization_id"], name: "index_users_on_organization_id"
