@@ -33,6 +33,8 @@ Rails.application.routes.draw do
   post "/settings/deny", to: "settings#denyUserRequest", as: "deny_request"
 
   get "/jobs", to: "jobs_status#index", as: "jobs_status"
+  delete "/jobs/:id", to: "jobs_status#delete_job", as: "job_status_delete"
+  post "jobs/resubmit/:id", to: "jobs_status#resubmit_scrape", as: "job_status_resubmit"
 
   resources :twitter_users, only: [:show]
   resources :instagram_users, only: [:show]
