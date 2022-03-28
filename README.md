@@ -8,11 +8,11 @@ Additional documentation can be found in the `/docs` folder.
 
 ### Requirements
 
-There's a few prereqs that you need on your machine to run this system. All of this was designed for MacOS, though any Linux distribution should be pretty similar. As for Windows, I have no idea, though @oneroyalace may be able to help with that (I imagine the answer is WSL).
+There's a few prereqs that you need on your machine to run this system. All of this was designed for macOS, though any Linux distribution should be pretty similar. As for Windows, I have no idea, though @oneroyalace may be able to help with that (I imagine the answer is WSL).
 
 Things we need to install include (steps below for all this):
 
-- Homebrew (for MacOS)
+- Homebrew (for macOS)
 - Ruby (3.0.2 as of writing, but check in [/.ruby-verison](.ruby-version) for the most up to date version)
 - Chrome, whatever version is newest
 - Postgresql 13
@@ -21,7 +21,7 @@ Things we need to install include (steps below for all this):
 
 #### Homebrew
 
-A package manager for MacOS similar to Apt or Yum in the Linux world. You'll want this if you don't have it because it makes installing the other prereqs SUPER easy. Install it from [here](https://brew.sh).
+A package manager for macOS similar to Apt or Yum in the Linux world. You'll want this if you don't have it because it makes installing the other prereqs SUPER easy. Install it from [here](https://brew.sh).
 
 #### Ruby
 
