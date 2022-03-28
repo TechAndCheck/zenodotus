@@ -110,24 +110,19 @@ A faster image manipulation library than ImageMagick. `brew install vips`. Note:
 
 ## Setup Steps
 
-*Note: this is a first pass, there may be odd errors since I wasn't on a pristine box when I wrote it. Please message @cguess with any error messages, it's probably missing dependencies.*
-
-1. Install all the prereqs including the latest Ruby version, ensuring Ruby source files are stored locally.
-1. Clone this repo `git clone https://github.com/TechAndCheck/zenodotus`
-1. Clone the [birdsong](https://github.com/cguess/birdsong) and [zorki](https://github.com/cguess/zorki) repos elsewhere.
+1. Install all the prerequisites, including the version of Ruby indicated in [/.ruby-version](.ruby-version), ensuring Ruby source files are stored locally (`--keep`)
+1. Clone this repo: `git clone https://github.com/TechAndCheck/zenodotus`
 1. Navigate into the project folder `cd zenodotus` (or whatever)
-1. If you'd like to use local versions of `birdsong` and `zorki`, update their respective paths in the `Gemfile`.
-1. Install all the gems `bundle install`. This may take a few minutes
+1. Optional: If you intend to develop the [birdsong](https://github.com/cguess/birdsong) and [zorki](https://github.com/cguess/zorki) Gems, clone them to a separate location and update the Zenodotus [./Gemfile](Gemfile) to point to the local instances
+1. Install all the Gems: `bundle install` (this may take a few minutes)
 1. Make sure Postgres is running
 1. Set up the database: `rails db:create && rails db:setup`
-1. Set up your environment variables.
-  1. If you're on local development `touch application.yml` and ask someone else for their's
-  1. If you're setting up production make sure the environment variables are set properly
-1. Open two terminal windows up
-1. In one, run `./bin/webpack-dev-server`
-1. In another, run `rails s`
+1. Set up your environment variables:
+   1. For local development, `touch config/application.yml` and ask another developer for the config values
+   1. For production, make sure the environment variables are set properly
+1. In your shell, run `./bin/dev`
 
-You should everything booting up now. Try to hit up [http://localhost:3000](http://localhost:3000) to make sure it's up. If that doesn't work, contact @cguess.
+✨ The app should now be running and available at [http://localhost:3000](http://localhost:3000). If not, contact @cguess or another developer.
 
 ### Tmux
 
