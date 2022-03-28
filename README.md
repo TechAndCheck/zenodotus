@@ -122,12 +122,10 @@ We need to install it to process previews for videos.
 A faster image manipulation library than ImageMagick. `brew install vips`. Note: you may have to install the xcode tools if you're on a mac `xcode-select --install`.
 
 ## Setup Steps
-
-*Note: this is a first pass, there may be odd errors since I wasn't on a pristine box when I wrote it. Please message @cguess with any error messages, it's probably missing dependencies.*
->>>>>>> bc97688 (Use consistent whitespace in README headers)
-
 ### Installation
 
+=======
+>>>>>>> 44f3f84 (Update installation steps in the README)
 1. Install all the prerequisites, including the version of Ruby indicated in [/.ruby-version](.ruby-version), ensuring Ruby source files are stored locally (`--keep`)
 1. Clone this repo: `git clone https://github.com/TechAndCheck/zenodotus`
 1. Navigate into the project folder `cd zenodotus` (or whatever)
