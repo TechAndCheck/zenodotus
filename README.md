@@ -16,6 +16,7 @@ Things we need to install include (steps below for all this):
 - Ruby (see [/.ruby-verison](.ruby-version) for the current version)
 - Chrome (latest version)
 - PostgreSQL (13 or higher)
+- Redis
 - Yarn (v1)
 - ChromeDriver
 - ffmpeg
@@ -136,6 +137,7 @@ A faster image manipulation library than ImageMagick.
 1. Set up your environment variables:
    1. For local development, `touch config/application.yml` and ask another developer for the config values
    1. For production, make sure the environment variables are set properly
+1. Make sure Redis is running (e.g., `redis-server`)
 1. In your shell, run `./bin/dev`
 
 ✨ The app should now be running and available at [http://localhost:3000](http://localhost:3000). If not, contact @cguess or another developer.
