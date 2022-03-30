@@ -8,7 +8,7 @@ class TwitterUsersController < ApplicationController
   end
 
   # Exports all media items created by the currently viewed Twitter user to a JSON file
-  sig { vid }
+  sig { void }
   def export_tweeter_data
     tweet_archive_items = ArchiveItem.includes(archivable_item: [:author])
                                      .where(archivable_item_type: "Sources::Tweet")
