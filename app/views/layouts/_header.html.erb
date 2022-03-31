@@ -16,7 +16,7 @@
       <% if user_signed_in? %>
         <% if current_user.super_admin? %>
         <div class="flex-shrink mr-6">
-          <%= link_to "Jobs Status", jobs_status_path %>
+          <%= link_to "Jobs Status", jobs_status_index_path %>
         </div>
         <% end %>
         <div class="flex-shrink mr-6">
