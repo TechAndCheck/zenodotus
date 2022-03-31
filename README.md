@@ -78,7 +78,7 @@ If you'd like to use Postgres without a password, you'll need to update your `pg
 
 #### Redis
 
-[Redis](https://redis.io/) backs Sidekiq and Action Cable, and a Redis server will need to be running on your machine while using the app.
+[Redis](https://redis.io/) backs Sidekiq and Action Cable, and a Redis server will need to be running on your machine while using the scraping portions of the app.
 
 - **macOS:**: `brew install redis`
 
@@ -132,10 +132,16 @@ A faster image manipulation library than ImageMagick.
 1. Set up your environment variables:
    1. For local development, `touch config/application.yml` and ask another developer for the config values
    1. For production, make sure the environment variables are set properly
-1. Make sure Redis is running (e.g., `redis-server`)
 1. In your shell, run `./bin/dev`
 
 ✨ The app should now be running and available at [http://localhost:3000](http://localhost:3000). If not, contact @cguess or another developer.
+
+#### Starting the scraper
+
+If you plan to do anything that will trigger the scraper, such as **archiving a new URL** or checking the status of jobs, you will also need to fire up Redis and Sidekiq:
+
+1. Make sure Redis is running (e.g., `redis-server` from anywhere on your system)
+1. Start Sidekiq from the project directory: `sidekiq`
 
 ### Optional: tmux
 
