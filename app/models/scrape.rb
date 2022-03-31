@@ -1,6 +1,6 @@
 class Scrape < ApplicationRecord
   enum scrape_type: {
-      twitter: "twitter", instagram: "instagram", facebook: "facebook"
+    twitter: "twitter", instagram: "instagram", facebook: "facebook", youtube: "youtube"
     }, _prefix: true
 
   has_one :archive_item, dependent: :destroy

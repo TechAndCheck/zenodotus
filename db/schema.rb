@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_03_03_150343) do
+ActiveRecord::Schema[7.0].define(version: 2022_03_31_162925) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
-  create_enum "scrape_type", ["instagram", "facebook", "twitter"]
+  create_enum "scrape_type", ["instagram", "facebook", "twitter", "youtube"]
 
   create_table "api_keys", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "hashed_api_key"
@@ -264,6 +264,45 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_03_150343) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  create_table "youtube_channels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title", null: false
+    t.string "youtube_id", null: false
+    t.integer "num_views", null: false
+    t.integer "num_subscribers", null: false
+    t.integer "num_videos", null: false
+    t.boolean "made_for_kids", null: false
+    t.datetime "sign_up_date", null: false
+    t.jsonb "channel_image_data", null: false
+    t.string "channel_image_url"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "youtube_posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title", null: false
+    t.string "youtube_id", null: false
+    t.integer "num_views", null: false
+    t.integer "num_likes", null: false
+    t.datetime "posted_at", null: false
+    t.integer "duration", null: false
+    t.boolean "live", null: false
+    t.jsonb "preview_image", null: false
+    t.integer "num_comments"
+    t.string "language"
+    t.string "channel_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "youtube_videos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "youtube_post_id"
+    t.jsonb "video_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["youtube_post_id"], name: "index_youtube_videos_on_youtube_post_id"
+  end
+
   add_foreign_key "api_keys", "users"
   add_foreign_key "facebook_images", "facebook_posts"
   add_foreign_key "facebook_videos", "facebook_posts"
@@ -275,4 +314,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_03_150343) do
   add_foreign_key "text_searches", "users"
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"
+  add_foreign_key "youtube_videos", "youtube_posts"
 end
