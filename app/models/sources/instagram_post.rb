@@ -82,13 +82,6 @@ class Sources::InstagramPost < ApplicationRecord
   def self.create_from_zorki_hash(zorki_posts, user = nil)
     zorki_posts.map do |zorki_post|
       zorki_post = JSON.parse(zorki_post).first
-
-      # Hi Monday Chris! This is a note for you
-      # the line on 84 is necessary when in production from Hypatia, it breaks in testing
-      # Why is using `force` on hypatia causing a different response? Good question, and i leave it to
-      # you to figure that shit out. GOod luck.
-
-
       zorki_post = zorki_post["post"]
       user_json = zorki_post["user"]
       instagram_user = Sources::InstagramUser.create_from_zorki_hash([user_json]).first.instagram_user
