@@ -6,7 +6,7 @@ class JobsTrackerControllerTest < ActionDispatch::IntegrationTest
   test "can view jobs" do
     sign_in users(:user1)
     InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed", false)
-    get jobs_status_url
+    get jobs_status_index_path
     assert_response :success
   end
 

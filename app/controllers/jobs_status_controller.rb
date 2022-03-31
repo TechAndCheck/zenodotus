@@ -38,7 +38,7 @@ class JobsStatusController < ApplicationController
 
     flash[:alert] = "Successfully resubmitted scrape"
 
-    redirect_back fallback_location: :job_status_index_path
+    redirect_back fallback_location: :jobs_status_index
   end
 
   sig { void }
@@ -48,6 +48,6 @@ class JobsStatusController < ApplicationController
 
     flash[:alert] = "Successfully deleted scrape"
 
-    redirect_back fallback_location: :job_status_index_path
+    redirect_back fallback_location: :jobs_status_index
   end
 end
