@@ -11,6 +11,17 @@ class TwitterMediaSource < MediaSource
     ["www.twitter.com", "twitter.com"]
   end
 
+  # This is a flag if the scraper is run by Hypatia or locally, mostly so the ScraperJob can know
+  # Default is false if not implemented
+  #
+  # @!scope class
+  # @return [Boolean] true if the scraper is run locally.
+  #   Raises an error if it's invalid.
+  sig { returns(T::Boolean) }
+  def self.runs_scraper_locally?
+    true
+  end
+
   # Capture a screenshot of the given url
   #
   # @!scope class
@@ -46,8 +57,7 @@ class TwitterMediaSource < MediaSource
   sig { returns(T::Array[Birdsong::Tweet]) }
   def retrieve_tweet
     id = TwitterMediaSource.extract_tweet_id_from_url(@url)
-    response = Birdsong::Tweet.lookup(id)
-    Sources::Tweet.create_from_birdsong_hash(response)
+    Birdsong::Tweet.lookup(id)
   end
 
 private
