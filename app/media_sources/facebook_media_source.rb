@@ -57,7 +57,7 @@ class FacebookMediaSource < MediaSource
   # @!visibility private
   # @params url [String] a url to grab data for
   # @return [Forki::Post]
-  sig { returns(T::Array[Hash]) }
+  sig { returns(T::Boolean) }
   def retrieve_facebook_post
     scrape = Scrape.create!({ url: @url, scrape_type: :facebook })
 
@@ -82,7 +82,7 @@ class FacebookMediaSource < MediaSource
   # Scrape the page by sending it to Hypatia and forcing the server to process the job immediately. Should only be used for tests
   #
   # @return [Hash]
-  sig { returns(Array) }
+  sig { returns(T::Array[Hash]) }
   def retrieve_facebook_post!
     scrape = Scrape.create!({ url: @url, scrape_type: :instagram })
 
