@@ -19,4 +19,9 @@ class FacebookMediaSourceTest < ActiveSupport::TestCase
     facebook_post_hash = FacebookMediaSource.extract("https://www.facebook.com/381726605193429/photos/a.764764956889590/3625268454172545/", true)
     assert_not facebook_post_hash.empty?
   end
+
+  def test_extracting_returns_true_without_force
+    result = FacebookMediaSource.extract("https://www.facebook.com/381726605193429/photos/a.764764956889590/3625268454172545/")
+    assert result
+  end
 end
