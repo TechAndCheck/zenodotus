@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_03_31_162925) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_01_154716) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -267,7 +267,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_31_162925) do
   create_table "youtube_channels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
     t.string "youtube_id", null: false
-    t.integer "num_views", null: false
+    t.bigint "num_views", null: false
     t.integer "num_subscribers", null: false
     t.integer "num_videos", null: false
     t.boolean "made_for_kids", null: false
@@ -282,10 +282,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_31_162925) do
   create_table "youtube_posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
     t.string "youtube_id", null: false
-    t.integer "num_views", null: false
+    t.bigint "num_views", null: false
     t.integer "num_likes", null: false
     t.datetime "posted_at", null: false
-    t.integer "duration", null: false
+    t.bigint "duration", null: false
     t.boolean "live", null: false
     t.jsonb "preview_image", null: false
     t.integer "num_comments"
