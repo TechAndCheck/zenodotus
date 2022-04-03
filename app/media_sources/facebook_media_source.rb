@@ -60,16 +60,16 @@ class FacebookMediaSource < MediaSource
   def retrieve_facebook_post
     scrape = Scrape.create!({ url: @url, scrape_type: :facebook })
 
-    params = { auth_key: Figaro.env.ZORKI_AUTH_KEY, url: @url, callback_id: scrape.id }
+    params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: @url, callback_id: scrape.id }
     params[:callback_url] = Figaro.env.URL unless Figaro.env.URL.blank?
 
     response = Typhoeus.get(
-      Figaro.env.ZORKI_SERVER_URL,
+      Figaro.env.HYPATIA_SERVER_URL,
       followlocation: true,
       params: params
     )
 
-    raise ExternalServerError, "Error: #{response.code} returned from external Zorki server" unless response.code == 200
+    raise ExternalServerError, "Error: #{response.code} returned from external Hypatia server" unless response.code == 200
     response_body = JSON.parse(response.body)
     # _ = JSON.parse(response.body)
     # TODO:  Parse response body properly and check for errors
@@ -85,11 +85,11 @@ class FacebookMediaSource < MediaSource
   def retrieve_facebook_post!
     scrape = Scrape.create!({ url: @url, scrape_type: :instagram })
 
-    params = { auth_key: Figaro.env.ZORKI_AUTH_KEY, url: @url, callback_id: scrape.id }
+    params = { auth_key: Figaro.env.ZORKI_AUTH_KEY, url: @url, callback_id: scrape.id, force: "true" }
     params[:callback_url] = Figaro.env.URL unless Figaro.env.URL.blank?
 
     response = Typhoeus.get(
-      Figaro.env.ZORKI_SERVER_URL,
+      Figaro.env.HYPATIA_SERVER_URL,
       followlocation: true,
       params: params
     )

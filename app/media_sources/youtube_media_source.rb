@@ -7,7 +7,7 @@ class YoutubeMediaSource < MediaSource
   # @return [String] or [Array] of [String] of valid host names
   sig { override.returns(T::Array[String]) }
   def self.valid_host_name
-    ["www.youtube.com"]
+    ["www.youtube.com", "youtube.com"]
   end
 
   # Extracts the video at the input URL by forwarding a scraping request to Hypatia
