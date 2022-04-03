@@ -4,6 +4,7 @@
 class Sources::YoutubePost < ApplicationRecord
   include ArchivableItem
   include PgSearch::Model
+  include ImageUploader::Attachment(:preview_image) # adds an `image` virtual attribute
 
   multisearchable against: :title
 
@@ -117,6 +118,7 @@ class Sources::YoutubePost < ApplicationRecord
         live:              youtube_archiver_video["live"],
         author:            youtube_channel,
         preview_image:     File.open(tempfile.path, binmode: true),
+        made_for_kids:     youtube_archiver_video["made_for_kids"],
         videos_attributes: videos_attributes
       }
 

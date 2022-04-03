@@ -61,6 +61,7 @@ private
   def self.youtube_channel_hash_from_youtube_archiver_channel(youtube_archiver_channel)
     tempfile = Tempfile.new(binmode: true)
     tempfile.write(Base64.decode64(youtube_archiver_channel["channel_image_file"]))
+
     {
       youtube_id: youtube_archiver_channel["id"],
       title: youtube_archiver_channel["title"],
