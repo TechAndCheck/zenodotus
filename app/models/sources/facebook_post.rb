@@ -76,7 +76,6 @@ class Sources::FacebookPost < ApplicationRecord
   sig { params(forki_posts: T::Array[Hash], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
   def self.create_from_forki_hash(forki_posts, user = nil)
     forki_posts.map do |forki_post|
-      forki_post = JSON.parse(forki_post).first
       forki_post = forki_post["post"]
       facebook_user = Sources::FacebookUser.create_from_forki_hash([forki_post["user"]]).first.facebook_user
 

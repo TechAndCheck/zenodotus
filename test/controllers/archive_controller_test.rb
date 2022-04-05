@@ -38,7 +38,7 @@ class ArchiveControllerTest < ActionDispatch::IntegrationTest
     # make a forced scrape call to Hypatia, then create it from there
     forced_scrape_result = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed", true)
     scrape = Scrape.create!({ url: "https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed", scrape_type: :instagram })
-    callback_response_json = { scrape_id: scrape.id, scrape_result: forced_scrape_result }
+    callback_response_json = { scrape_id: scrape.id, scrape_result: forced_scrape_result.first }
     post scrape_result_callback_url, as: :json, params: callback_response_json
     assert_response :success
 

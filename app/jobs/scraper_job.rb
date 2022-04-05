@@ -24,8 +24,11 @@ class ScraperJob < ApplicationJob
 
   def perform(media_source_class, media_model, url, user)
     puts "Beginning to scrape #{url} @ #{Time.now}"
-    media_source_class.extract(url)
-    # media_model.create_from_hash(media_item, user)
+    media_item = media_source_class.extract(url)
+
+    # If a scraper runs locally we can't create the actual model from the callback, so we do it now
+    media_model.create_from_hash(media_item, user) if media_source_class.runs_scraper_locally?
+
     puts "Done scraping #{url} @ #{Time.now}"
   end
 
