@@ -31,7 +31,13 @@ class InstagramPostTest < ActiveSupport::TestCase
   end
 
   test "can create from Instagram url using ActiveJob" do
-    assert Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
+    assert_enqueued_jobs 0
+    assert Sources::InstagramPost.create_from_url("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
+    assert_enqueued_jobs 1
+
+    assert_nothing_raised do
+      perform_enqueued_jobs
+    end
   end
 
   test "can create two Instagram posts from same author" do
