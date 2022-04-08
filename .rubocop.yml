@@ -1,6 +1,7 @@
 require:
   - rubocop-rails
   - rubocop-performance
+  - ./lib/custom_cops/youtube_name.rb
 
 inherit_gem:
   rubocop-rails_config:
@@ -65,6 +66,9 @@ Rails/HasAndBelongsToMany:
   Enabled: true
 
 Style/NumericPredicate:
+  Enabled: true
+
+CustomCops/YoutubeName:
   Enabled: true
 
 # This sets us to use the standard Rails format instead of Rubocop's
