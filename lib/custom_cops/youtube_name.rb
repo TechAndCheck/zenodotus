@@ -1,10 +1,3 @@
-# YoutubeChannelsController
-# YoutubeMediaSource
-# Sources::YoutubeChannel
-# Sources::YoutubePost
-# YoutubeMediaSourceTest
-# YoutubeChannelTest
-
 module CustomCops
   class YoutubeName < RuboCop::Cop::Cop
     MSG = "`YouTube` must be stylized as `Youtube`".freeze
