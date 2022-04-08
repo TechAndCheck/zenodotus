@@ -36,6 +36,9 @@ The version of Ruby installed by your operating system, or available through sta
 
 **This is our recommended Ruby version manager.** It's lightweight, well maintained, and works pretty flawlessly.
 
+
+It's lightweight, well maintained, and works pretty flawlessly.
+
 **Note:** One of the Gems used in this project, `dhash-vips`, uses Ruby source files to speed up image similarity processing. To ensure that rbenv stores the Ruby source files locally, use the `--keep` flag when installing a new Ruby version. E.g. `rbenv install 3.0.2 --keep`. (Note that you would actually use the command `rbenv install --keep` while in the project root, and rbenv would pick up the correct version number from `./ruby-version` automatically.)
 
 ##### [RVM](https://rvm.io)
@@ -107,18 +110,20 @@ Used for scraping.
 - **macOS:** `brew install --cask chromedriver`
 - **Ubuntu:** `sudo apt-get install chromium-driver`
 
-#### ffmpeg
+#### FFMPEG
 
 ffmpeg is a video processing library. It's used on that Mars helicopter and at YouTube, so it's fine. We need to install it to process previews for videos.
 
 - **macOS:** `brew install ffmpeg`
 - **Ubuntu:** `sudo apt-get install ffmpeg`
 
-#### vips
+#### Vips
 
 A faster image manipulation library than ImageMagick.
 
 - **macOS:** `brew install vips`
+
+## Setup Steps
 
 ### Installation
 
