@@ -107,7 +107,7 @@ gem "typhoeus"
 gem "hotwire-rails"
 
 # TailwindCSS
-gem "tailwindcss-rails", "~> 0.3.3"
+gem "tailwindcss-rails", "~> 2.0.8"
 
 # A headless chrome browser for interacting with website
 gem "ferrum", "~> 0.11"

@@ -39,6 +39,17 @@ class MediaSource
     raise MediaSource::HostError.new(url, self)
   end
 
+  # This is a flag if the scraper is run by Hypatia or locally, mostly so the ScraperJob can know
+  # Default is false if not implemented
+  #
+  # @!scope class
+  # @return [Boolean] true if the scraper is run locally.
+  #   Raises an error if it's invalid.
+  sig { returns(T::Boolean) }
+  def self.runs_scraper_locally?
+    false
+  end
+
   # A error to indicate the host of a given url does not pass validation
   class HostError < StandardError
     extend T::Sig

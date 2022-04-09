@@ -487,7 +487,7 @@ DEPENDENCIES
   sprockets-rails
   stimulus-rails
   streamio-ffmpeg
-  tailwindcss-rails (~> 0.3.3)
+  tailwindcss-rails (~> 2.0.8)
   tmuxinator
   typhoeus
   validate_url
