@@ -45,7 +45,7 @@ class Sources::InstagramPost < ApplicationRecord
   # returns ArchiveItem with type InstagramPost that has been saved to the database
   sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
   def self.create_from_url!(url, user = nil)
-    zorki_response = InstagramMediaSource.extract(url, true)
+    zorki_response = InstagramMediaSource.extract(url, true)["scrape_result"]
     raise "Error sending job to Zorki" unless zorki_response.respond_to?(:first) && zorki_response.first.has_key?("id")
     result = Sources::InstagramPost.create_from_zorki_hash(zorki_response, user).first
     result

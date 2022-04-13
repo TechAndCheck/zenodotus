@@ -8,6 +8,7 @@ class Scrape < ApplicationRecord
   def fulfill(response)
     archive_item = case self.scrape_type
                    when "instagram"
+                     # debugger
                      Sources::InstagramPost.create_from_zorki_hash([response])
                    when "facebook"
                      Sources::FacebookPost.create_from_forki_hash([response])
