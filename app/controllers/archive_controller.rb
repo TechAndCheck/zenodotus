@@ -87,6 +87,7 @@ class ArchiveController < ApplicationController
   # When a scrape is over the scraper will call this
   sig { void }
   def scrape_result_callback
+    # debugger
     begin
       parsed_params = JSON.parse(request.raw_post)
     rescue JSON::ParserError
