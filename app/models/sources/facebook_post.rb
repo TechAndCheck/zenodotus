@@ -53,7 +53,7 @@ class Sources::FacebookPost < ApplicationRecord
   # returns ArchiveItem
   sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
   def self.create_from_url!(url, user = nil)
-    forki_response = FacebookMediaSource.extract(url, true)
+    forki_response = FacebookMediaSource.extract(url, true)["scrape_result"]
     raise "Error sending job to Forki" unless forki_response.respond_to?(:first) && forki_response.first.has_key?("id")
     Sources::FacebookPost.create_from_forki_hash(forki_response, user).first
   end

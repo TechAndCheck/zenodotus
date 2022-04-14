@@ -22,12 +22,7 @@ class InstagramMediaSource < MediaSource
   sig { override.params(url: String, force: T::Boolean).returns(T.any(T::Boolean, T::Hash[String, String])) }
   def self.extract(url, force = false)
     object = self.new(url)
-    if force
-
-      result = object.retrieve_instagram_post!
-      return result
-      # return object.retrieve_instagram_post! if force
-    end
+    return object.retrieve_instagram_post! if force
 
     object.retrieve_instagram_post
   end
