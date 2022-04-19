@@ -6,11 +6,12 @@ class Scrape < ApplicationRecord
   has_one :archive_item, dependent: :destroy
 
   def fulfill(response)
+    response = JSON.parse(response)
     archive_item = case self.scrape_type
                    when "instagram"
-                     Sources::InstagramPost.create_from_zorki_hash([response])
+                     Sources::InstagramPost.create_from_zorki_hash(response)
                    when "facebook"
-                     Sources::FacebookPost.create_from_forki_hash([response])
+                     Sources::FacebookPost.create_from_forki_hash(response)
     end
 
     self.update!({ fulfilled: true, archive_item: archive_item.first })

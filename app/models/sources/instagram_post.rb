@@ -45,10 +45,9 @@ class Sources::InstagramPost < ApplicationRecord
   # returns ArchiveItem with type InstagramPost that has been saved to the database
   sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
   def self.create_from_url!(url, user = nil)
-    zorki_response = InstagramMediaSource.extract(url, true)
+    zorki_response = InstagramMediaSource.extract(url, true)["scrape_result"]
     raise "Error sending job to Zorki" unless zorki_response.respond_to?(:first) && zorki_response.first.has_key?("id")
-    result = Sources::InstagramPost.create_from_zorki_hash(zorki_response, user).first
-    result
+    Sources::InstagramPost.create_from_zorki_hash(zorki_response, user).first
   end
 
   # Spawns an ActiveJob tasked with creating an +ArchiveItem+ from a +url+ as a string
@@ -81,14 +80,6 @@ class Sources::InstagramPost < ApplicationRecord
   sig { params(zorki_posts: T::Array[Hash], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
   def self.create_from_zorki_hash(zorki_posts, user = nil)
     zorki_posts.map do |zorki_post|
-      zorki_post = JSON.parse(zorki_post).first
-
-      # Hi Monday Chris! This is a note for you
-      # the line on 84 is necessary when in production from Hypatia, it breaks in testing
-      # Why is using `force` on hypatia causing a different response? Good question, and i leave it to
-      # you to figure that shit out. GOod luck.
-
-
       zorki_post = zorki_post["post"]
       user_json = zorki_post["user"]
       instagram_user = Sources::InstagramUser.create_from_zorki_hash([user_json]).first.instagram_user

@@ -19,10 +19,11 @@ class InstagramMediaSource < MediaSource
   # @params force [Boolean] whether to force Hypatia to not queue a request but to scrape immediately.
   #   Default: false
   # @returns [Boolean or Hash] if `force` is set to `true` returns the scraped hash, otherwise the status of the Hypatia job.
-  sig { override.params(url: String, force: T::Boolean).returns(T.any(T::Boolean, T::Array[Hash])) }
+  sig { override.params(url: String, force: T::Boolean).returns(T.any(T::Boolean, T::Hash[String, String])) }
   def self.extract(url, force = false)
     object = self.new(url)
     return object.retrieve_instagram_post! if force
+
     object.retrieve_instagram_post
   end
 
@@ -68,7 +69,7 @@ class InstagramMediaSource < MediaSource
   # Forces a Hypatia instance to run immediately. This should only be used for testing purposes.
   #
   # @return [Hash]
-  sig { returns(Array) }
+  sig { returns(Hash) }
   def retrieve_instagram_post!
     scrape = Scrape.create!({ url: @url, scrape_type: :instagram })
 
@@ -84,7 +85,9 @@ class InstagramMediaSource < MediaSource
     raise ExternalServerError, "Error: #{response.code} returned from external Zorki server" unless response.code == 200
 
     # Hypatia returns arrays always so we grab the first
-    JSON.parse(response.body)
+    returned_data = JSON.parse(response.body)
+    returned_data["scrape_result"] = JSON.parse(returned_data["scrape_result"])
+    returned_data
   end
 
 private
