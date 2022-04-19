@@ -180,6 +180,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_31_162925) do
     t.enum "scrape_type", null: false, enum_type: "scrape_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "error"
   end
 
   create_table "text_searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -257,6 +258,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_31_162925) do
     t.boolean "admin", default: false, null: false
     t.boolean "restricted", default: false, null: false
     t.uuid "organization_id", null: false
+    t.boolean "super_admin", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["organization_id"], name: "index_users_on_organization_id"

@@ -1,10 +1,16 @@
 development:
   :concurrency: 5
+  :queues:
+    - [zenodotus_development_urgent, 2]
+    - zenodotus_development_default
+test:
+  :queues:
+    - [zenodotus_test_urgent, 2]
+    - zenodotus_test_default
 production:
   :concurrency: 6
-:queues:
-  - [urgent, 2]
-  - default
-
+  :queues:
+    - [zenodotus_production_urgent, 2]
+    - zenodotus_production_default
 :verbose: true
 :timeout: 8

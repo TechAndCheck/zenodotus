@@ -54,8 +54,11 @@ class Sources::FacebookPost < ApplicationRecord
   sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
   def self.create_from_url!(url, user = nil)
     forki_response = FacebookMediaSource.extract(url, true)
-    raise "Error sending job to Forki" unless forki_response.respond_to?(:first) && forki_response.first.has_key?("id")
-    Sources::FacebookPost.create_from_forki_hash(forki_response, user).first
+    raise "Error sending job to Forki" unless forki_response.has_key?("scrape_result") &&
+        forki_response["scrape_result"].respond_to?(:first) &&
+        forki_response["scrape_result"].first.has_key?("id")
+
+    Sources::FacebookPost.create_from_forki_hash(forki_response["scrape_result"], user).first
   end
 
   # A generically-named alias for create_from_forki_hash used for model-agnostic method calls
@@ -76,7 +79,6 @@ class Sources::FacebookPost < ApplicationRecord
   sig { params(forki_posts: T::Array[Hash], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
   def self.create_from_forki_hash(forki_posts, user = nil)
     forki_posts.map do |forki_post|
-      forki_post = JSON.parse(forki_post).first
       forki_post = forki_post["post"]
       facebook_user = Sources::FacebookUser.create_from_forki_hash([forki_post["user"]]).first.facebook_user
 

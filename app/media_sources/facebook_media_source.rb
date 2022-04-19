@@ -18,10 +18,11 @@ class FacebookMediaSource < MediaSource
   # @params force [Boolean] force Hypatia to not queue a request but to scrape immediately.
   #   Default: false
   # @returns [String or nil] the path of the screenshot if the screenshot was saved
-  sig { override.params(url: String, force: T::Boolean).returns(T::Array[String]) }
+  sig { override.params(url: String, force: T::Boolean).returns(T.any(T::Boolean,  T::Hash[String, String])) }
   def self.extract(url, force = false)
     object = self.new(url)
     return object.retrieve_facebook_post! if force
+
     object.retrieve_facebook_post
   end
 
@@ -56,7 +57,7 @@ class FacebookMediaSource < MediaSource
   # @!visibility private
   # @params url [String] a url to grab data for
   # @return [Forki::Post]
-  sig { returns(T::Array[Hash]) }
+  sig { returns(T::Boolean) }
   def retrieve_facebook_post
     scrape = Scrape.create!({ url: @url, scrape_type: :facebook })
 
@@ -81,11 +82,11 @@ class FacebookMediaSource < MediaSource
   # Scrape the page by sending it to Hypatia and forcing the server to process the job immediately. Should only be used for tests
   #
   # @return [Hash]
-  sig { returns(Array) }
+  sig { returns(Hash) }
   def retrieve_facebook_post!
     scrape = Scrape.create!({ url: @url, scrape_type: :instagram })
 
-    params = { auth_key: Figaro.env.ZORKI_AUTH_KEY, url: @url, callback_id: scrape.id, force: "true" }
+    params = { auth_key: Figaro.env.ZORKI_AUTH_KEY, url: @url, callback_id: scrape.id, force: true }
     params[:callback_url] = Figaro.env.URL unless Figaro.env.URL.blank?
 
     response = Typhoeus.get(
@@ -95,8 +96,9 @@ class FacebookMediaSource < MediaSource
     )
 
     raise ExternalServerError, "Error: #{response.code} returned from external Forki server" unless response.code == 200
-
-    JSON.parse(response.body)
+    returned_data = JSON.parse(response.body)
+    returned_data["scrape_result"] = JSON.parse(returned_data["scrape_result"])
+    returned_data
   end
 end
 
