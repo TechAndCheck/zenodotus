@@ -138,6 +138,8 @@ gem "birdsong", "0.1.0", git: "https://github.com/cguess/birdsong"
 gem "forki", git: "https://github.com/oneroyalace/forki"
 gem "youtubearchiver", path: "~/hub/YoutubeArchiver/"
 
+gem "terrapin"
+
 # A progress bar for our Rake tasks
 gem "ruby-progressbar"
 
