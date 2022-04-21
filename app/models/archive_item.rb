@@ -7,6 +7,7 @@ class ArchiveItem < ApplicationRecord
   delegate :videos, to: :archivable_item
 
   has_one :media_review, dependent: :destroy, foreign_key: :archive_item_id
+  has_many :image_hashes, dependent: :destroy
   belongs_to :submitter, optional: true, class_name: "User"
   belongs_to :scrape, optional: true
 
