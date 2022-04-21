@@ -1,4 +1,4 @@
-<% if item.images.empty? == false %>
+<% if item.try(:images).try(:empty?) == false %>
 <img src="<%= item.images.first.image_url %>" />
 <% elsif item.videos.empty? == false %>
   <div>
@@ -11,7 +11,7 @@
         <source src="<%= item.videos.first.video_url %>" type="video/mp4">
         Your browser does not support the video tag.
       </video>
-      <% if item.videos.first.video_type == "animated_gif" %>
+      <% if item.videos.first.try(:video_type) == "animated_gif" %>
         <figcaption class="absolute text-white w-1/12 top-0 text-base bg-yellow-300">
           GIF
         </figcaption>

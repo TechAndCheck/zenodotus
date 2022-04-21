@@ -1,7 +1,7 @@
 # typed: strict
 
 class ArchiveItem < ApplicationRecord
-  delegated_type :archivable_item, types: %w[Sources::Tweet Sources::InstagramPost Sources::FacebookPost ]
+  delegated_type :archivable_item, types: %w[Sources::Tweet Sources::InstagramPost Sources::FacebookPost Sources::YoutubePost]
   delegate :service_id, to: :archivable_item
   delegate :images, to: :archivable_item
   delegate :videos, to: :archivable_item
@@ -97,5 +97,14 @@ class ArchiveItem < ApplicationRecord
   sig { returns(T.nilable(Sources::FacebookPost)) }
   def facebook_post
     self.sources_facebook_post
+  end
+
+  # A helper function to make it easier to access the item, instead of `.sources_youtube_post`
+  # this allows just the use of `.youtube_post`
+  #
+  # @returns +Sources::YoutubePost+
+  sig { returns(T.nilable(Sources::YoutubePost)) }
+  def youtube_post
+    self.sources_youtube_post
   end
 end

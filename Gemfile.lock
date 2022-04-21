@@ -1,4 +1,21 @@
 GIT
+  remote: https://github.com/TechAndCheck/YoutubeArchiver
+  revision: 3b770fc612f79824898173daf76efd86711ac9ea
+  specs:
+    youtubearchiver (0.1.0)
+
+GIT
+  remote: https://github.com/TechAndCheck/forki
+  revision: fa73b94e2c6e7cfc33ada207ac175978a05b0ad1
+  specs:
+    forki (0.1.0)
+      apparition
+      capybara
+      oj
+      selenium-webdriver
+      typhoeus
+
+GIT
   remote: https://github.com/cguess/birdsong
   revision: 24d87688d1750686ae22fd4f848cce39c0fe098b
   specs:
@@ -8,21 +25,10 @@ GIT
 
 GIT
   remote: https://github.com/cguess/eikon
-  revision: ab9af0394f81bb082c8839b8687fe90edf2be287
+  revision: dd3f886e26a1d0763e75a05fefbb33096d5ce178
   specs:
     eikon (0.1.0)
       ruby-vips (~> 2.1)
-
-GIT
-  remote: https://github.com/oneroyalace/forki
-  revision: 5e4f3f4462b8962ad373222a8b27e5a21f2aa346
-  specs:
-    forki (0.1.0)
-      apparition
-      capybara
-      oj
-      selenium-webdriver
-      typhoeus
 
 GEM
   remote: https://rubygems.org/
@@ -117,6 +123,7 @@ GEM
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
     childprocess (4.1.0)
+    climate_control (0.2.0)
     cliver (0.3.2)
     coderay (1.1.3)
     commander (4.6.0)
@@ -139,7 +146,7 @@ GEM
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
       railties (>= 3.2)
-    down (5.3.0)
+    down (5.3.1)
       addressable (~> 2.8)
     ecma-re-validator (0.4.0)
       regexp_parser (~> 2.2)
@@ -168,7 +175,6 @@ GEM
     importmap-rails (1.0.3)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
-    io-wait (0.2.1)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -176,7 +182,7 @@ GEM
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
-    json_schemer (0.2.19)
+    json_schemer (0.2.20)
       ecma-re-validator (~> 0.3)
       hana (~> 1.3)
       regexp_parser (~> 2.0)
@@ -184,7 +190,7 @@ GEM
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    loofah (2.15.0)
+    loofah (2.16.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -194,7 +200,7 @@ GEM
     method_source (1.0.0)
     mini_mime (1.1.2)
     minitest (5.15.0)
-    msgpack (1.4.5)
+    msgpack (1.5.1)
     multi_json (1.15.0)
     net-imap (0.2.3)
       digest
@@ -204,17 +210,16 @@ GEM
       digest
       net-protocol
       timeout
-    net-protocol (0.1.2)
-      io-wait
+    net-protocol (0.1.3)
       timeout
     net-smtp (0.3.1)
       digest
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.3-arm64-darwin)
+    nokogiri (1.13.4-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.13.3-x86_64-linux)
+    nokogiri (1.13.4-x86_64-linux)
       racc (~> 1.4)
     oauth (0.5.8)
     oj (3.13.11)
@@ -222,15 +227,15 @@ GEM
     os (1.1.4)
     pagy (5.10.1)
       activesupport
-    parallel (1.22.0)
-    parlour (6.0.1)
+    parallel (1.22.1)
+    parlour (7.0.0)
       commander (~> 4.5)
       parser
       rainbow (~> 3.0)
       sorbet-runtime (>= 0.5)
-    parser (3.1.1.0)
+    parser (3.1.2.0)
       ast (~> 2.4.1)
-    pg (1.3.4)
+    pg (1.3.5)
     pg_search (2.3.6)
       activerecord (>= 5.2)
       activesupport (>= 5.2)
@@ -241,8 +246,8 @@ GEM
     pry-byebug (3.9.0)
       byebug (~> 11.0)
       pry (~> 0.13.0)
-    public_suffix (4.0.6)
-    puma (5.6.2)
+    public_suffix (4.0.7)
+    puma (5.6.4)
       nio4r (~> 2.0)
     racc (1.6.0)
     rack (2.2.3)
@@ -283,23 +288,23 @@ GEM
       ffi (~> 1.0)
     rbtree (0.4.5)
     redis (4.6.0)
-    regexp_parser (2.2.1)
+    regexp_parser (2.3.0)
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
     rexml (3.2.5)
-    rubocop (1.26.1)
+    rubocop (1.28.1)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml
-      rubocop-ast (>= 1.16.0, < 2.0)
+      rubocop-ast (>= 1.17.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.16.0)
+    rubocop-ast (1.17.0)
       parser (>= 3.1.1.0)
-    rubocop-minitest (0.18.0)
+    rubocop-minitest (0.19.1)
       rubocop (>= 0.90, < 2.0)
     rubocop-packaging (0.5.1)
       rubocop (>= 0.89, < 2.0)
@@ -310,7 +315,7 @@ GEM
       activesupport (>= 4.2.0)
       rack (>= 1.1)
       rubocop (>= 1.7.0, < 2.0)
-    rubocop-rails_config (1.9.1)
+    rubocop-rails_config (1.9.2)
       railties (>= 5.0)
       rubocop (>= 1.25.1)
       rubocop-ast (>= 1.0.1)
@@ -347,8 +352,8 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
-    sorbet (0.5.9778)
-      sorbet-static (= 0.5.9778)
+    sorbet (0.5.9914)
+      sorbet-static (= 0.5.9914)
     sorbet-coerce (0.5.0)
       polyfill (~> 1.8)
       safe_type (~> 1.1, >= 1.1.1)
@@ -359,9 +364,9 @@ GEM
       parser (>= 2.7)
       sorbet-coerce (>= 0.2.6)
       sorbet-runtime (>= 0.5)
-    sorbet-runtime (0.5.9778)
-    sorbet-static (0.5.9778-universal-darwin-21)
-    sorbet-static (0.5.9778-x86_64-linux)
+    sorbet-runtime (0.5.9914)
+    sorbet-static (0.5.9914-universal-darwin-21)
+    sorbet-static (0.5.9914-x86_64-linux)
     sorted_set (1.0.3)
       rbtree
       set (~> 1.0)
@@ -382,6 +387,8 @@ GEM
       railties (>= 6.0.0)
     tailwindcss-rails (2.0.8-x86_64-linux)
       railties (>= 6.0.0)
+    terrapin (0.6.0)
+      climate_control (>= 0.0.3, < 1.0)
     thor (1.2.1)
     timeout (0.2.0)
     tmuxinator (3.0.2)
@@ -397,7 +404,7 @@ GEM
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.1.0)
-    uniform_notifier (1.15.0)
+    uniform_notifier (1.16.0)
     uri_template (0.7.0)
     validate_url (1.0.13)
       activemodel (>= 3.0.0)
@@ -478,12 +485,14 @@ DEPENDENCIES
   stimulus-rails
   streamio-ffmpeg
   tailwindcss-rails (~> 2.0.8)
+  terrapin
   tmuxinator
   typhoeus
   validate_url
   web-console (>= 4.1.0)
   webdrivers
   yard
+  youtubearchiver!
 
 RUBY VERSION
    ruby 3.1.1p18
