@@ -28,7 +28,7 @@ class TextSearchController < ApplicationController
     @post_search_hits = []
     @user_search_hits = []
 
-    post_models = [Sources::Tweet, Sources::InstagramPost, Sources::FacebookPost]
+    post_models = [Sources::Tweet, Sources::InstagramPost, Sources::FacebookPost, Sources::YoutubePost]
 
     # Split up search results by type
     results.each do |record|

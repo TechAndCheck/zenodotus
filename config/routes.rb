@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   resources :twitter_users, only: [:show]
   resources :instagram_users, only: [:show]
   resources :facebook_users, only: [:show]
+  resources :youtube_channels, only: [:show]
   resources :organizations, only: [:index]
 
   put "/organizations/:organization_id/update_admin/:user_id", to: "organizations#update_admin", as: "organization_update_admin"

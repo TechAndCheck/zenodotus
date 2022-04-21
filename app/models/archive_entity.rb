@@ -1,7 +1,7 @@
 # typed: strict
 
 class ArchiveEntity < ApplicationRecord
-  delegated_type :archivable_entity, types: %w[Sources::TwitterUser Sources::InstagramUser Sources::FacebookUser]
+  delegated_type :archivable_entity, types: %w[Sources::TwitterUser Sources::InstagramUser Sources::FacebookUser Sources::YoutubeChannel]
   delegate :service_id, to: :archivable_entity
 
   # Note: You may want to use `alias` or `alias_method` here instead of the following functions
@@ -33,5 +33,14 @@ class ArchiveEntity < ApplicationRecord
   sig { returns(T.nilable(Sources::FacebookUser)) }
   def facebook_user
     self.sources_facebook_user
+  end
+
+  # A helper function to make it easier to access the user, instead of `.sources_youtube_channel`
+  # this allows just the use of `.youtube_channel`
+  #
+  # @returns +Sources::YoutubeChannel+
+  sig { returns(T.nilable(Sources::YoutubeChannel)) }
+  def youtube_channel
+    self.sources_youtube_channel
   end
 end
