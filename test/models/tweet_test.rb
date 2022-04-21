@@ -4,8 +4,8 @@ require "test_helper"
 class TweetTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
   def setup
-    @birdsong_tweet = TwitterMediaSource.extract("https://twitter.com/AmtrakNECAlerts/status/1397922363551870990")
-    @birdsong_tweet2 = TwitterMediaSource.extract("https://twitter.com/AmtrakNECAlerts/status/1400055826170191874")
+    @birdsong_tweet = TwitterMediaSource.extract("https://twitter.com/NYCSanitation/status/1517229098795515906?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw")
+    @birdsong_tweet2 = TwitterMediaSource.extract("https://twitter.com/NYCSanitation/status/1517093299298963456?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw")
   end
 
   def teardown
@@ -60,6 +60,11 @@ class TweetTest < ActiveSupport::TestCase
     assert_not Sources::Tweet.can_handle_url?("https://twitter.com/AmtrakNECAlerts/status")
   end
 
+  test "assert archive image from tweet" do
+    archive_item = Sources::Tweet.create_from_birdsong_hash(@birdsong_tweet).first
+    assert_not_empty archive_item.image_hashes
+  end
+
   test "can archive video from tweet" do
     birdsong_tweet_video = TwitterMediaSource.extract("https://twitter.com/JoeBiden/status/1258817692448051200")
     archive_item = Sources::Tweet.create_from_birdsong_hash(birdsong_tweet_video).first
@@ -71,7 +76,7 @@ class TweetTest < ActiveSupport::TestCase
   test "dhash properly generated from image" do
     birdsong_image_tweet = TwitterMediaSource.extract("https://twitter.com/Bucks/status/1412471909296578563")
     archive_item = Sources::Tweet.create_from_birdsong_hash(birdsong_image_tweet).first
-    assert_not_nil archive_item.tweet.images.first.dhash
+    assert_not_nil archive_item.image_hashes.first.dhash
   end
 
   test "archiving a video creates a preview screenshot" do

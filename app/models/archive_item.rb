@@ -1,6 +1,8 @@
 # typed: strict
 
 class ArchiveItem < ApplicationRecord
+  include Dhashable
+
   delegated_type :archivable_item, types: %w[Sources::Tweet Sources::InstagramPost Sources::FacebookPost Sources::YoutubePost]
   delegate :service_id, to: :archivable_item
   delegate :images, to: :archivable_item

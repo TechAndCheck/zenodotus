@@ -63,6 +63,11 @@ class InstagramPostTest < ActiveSupport::TestCase
     assert result
   end
 
+  test "assert archive image from Instagram post" do
+    archive_item = Sources::InstagramPost.create_from_zorki_hash(@@zorki_post).first
+    assert_not_empty archive_item.image_hashes
+  end
+
   test "can archive video from Instagram post" do
     archive_item = Sources::InstagramPost.create_from_zorki_hash(@@zorki_instagram_post_video)
     assert_not_nil archive_item
@@ -73,7 +78,7 @@ class InstagramPostTest < ActiveSupport::TestCase
 
   test "dhash properly generated from image" do
     archive_item = Sources::InstagramPost.create_from_zorki_hash(@@zorki_post).first
-    assert_not_nil archive_item.instagram_post.images.first.dhash
+    assert_not_nil archive_item.image_hashes.first.dhash
   end
 
   test "archiving a video creates a preview screenshot" do
