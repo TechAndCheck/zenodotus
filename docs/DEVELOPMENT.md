@@ -2,6 +2,15 @@
 
 ## Environment Setup
 
+### Environment variables
+To run Zenodotus, you'll need to set the following environment variables. Ask a dev on the team to provide you access to them. 
+- `TWITTER_BEARER_TOKEN`
+- `HYPATIA_SERVER_URL`
+- `HYPATIA_AUTH_KEY`
+- `secret_key_base` (Devise secret)
+- `KEY_ENCRYPTION_SALT`
+- `URL`
+
 ### Linters
 
 We use two linters to insure that all code looks and acts the same. These enforeced styles may be different
