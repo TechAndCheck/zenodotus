@@ -21,7 +21,6 @@ class ImageSearch < ApplicationRecord
       image_hash = archive_item.image_hashes.first
 
       dhash_score = Eikon::Comparator.compare(self.dhash, image_hash.dhash)
-      # dhash = DHashVips::IDHash.distance3 self.dhash.to_i, image.dhash.to_i
       { image: image, score: dhash_score }
     end
 

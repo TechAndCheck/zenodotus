@@ -14,8 +14,8 @@ module Dhashable
   # @return a symbol telling which type of attachment this is
   sig { returns(Symbol) }
   def attachment_type
-    return :video if self.archivable_item.respond_to?("video")
-    return :image if self.archivable_item.respond_to?("images")
+    return :video if self.archivable_item.respond_to?("videos") && !self.videos.empty?
+    return :image if self.archivable_item.respond_to?("images") && !self.images.empty?
 
     raise "Unable to determine type of attachment. You shouldn't be seeing this."
   end
@@ -23,9 +23,14 @@ module Dhashable
   def generate_dhashes_for_attached_media
     return unless self.respond_to?(:archivable_item)
 
-    self.archivable_item.images.each do |image|
-      image.image.open
-      tempfile_path = image.image.tempfile.path
+    media_items = attachment_type == :image ? self.archivable_item.images : self.archivable_item.videos
+    media_items.each do |media_item|
+      media_item = self.attachment_type == :image ? media_item.image : media_item.video
+
+      # TODO: refactor this so it's all the same, since it *mostly* is
+      media_item.open
+      tempfile_path = media_item.tempfile.path
+
       dhashes = nil
 
       case self.attachment_type
@@ -42,10 +47,10 @@ module Dhashable
         })
       end
 
-      image.image.close
+      media_item.close
     end
     ####
-    ## NOTE This is where i left it, going to have to write some tests here
+    # Add video and test for such
     # => Also drop the dhash property of this
     ####
   end
@@ -56,6 +61,5 @@ module Dhashable
     self.image.open
     tempfile_path = self.image.tempfile.path
     self.dhash = Eikon.dhash_for_image(tempfile_path)
-    # self.image.close
   end
 end

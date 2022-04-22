@@ -79,6 +79,15 @@ class TweetTest < ActiveSupport::TestCase
     assert_not_nil archive_item.image_hashes.first.dhash
   end
 
+  test "dhashes properly generated from video" do
+    birdsong_image_tweet = TwitterMediaSource.extract("https://twitter.com/JoeBiden/status/1258817692448051200")
+    archive_item = Sources::Tweet.create_from_birdsong_hash(birdsong_image_tweet).first
+    assert_not archive_item.image_hashes.empty?
+    archive_item.image_hashes.each do |hash|
+      assert_not_nil hash.dhash
+    end
+  end
+
   test "archiving a video creates a preview screenshot" do
     birdsong_tweet_video = TwitterMediaSource.extract("https://twitter.com/JoeBiden/status/1258817692448051200")
     archive_item = Sources::Tweet.create_from_birdsong_hash(birdsong_tweet_video).first
