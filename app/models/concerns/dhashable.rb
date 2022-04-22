@@ -50,10 +50,6 @@ module Dhashable
 
       media_item.close
     end
-    ####
-    # Add video and test for such
-    # => Also drop the dhash property of this
-    ####
   end
 
   def generate_single_dhash
