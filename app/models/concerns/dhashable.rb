@@ -22,6 +22,7 @@ module Dhashable
 
   def generate_dhashes_for_attached_media
     return unless self.respond_to?(:archivable_item)
+    return if self.videos.empty? && self.images.empty? # if the post is just text, for some reason
 
     media_items = attachment_type == :image ? self.archivable_item.images : self.archivable_item.videos
     media_items.each do |media_item|
