@@ -162,7 +162,7 @@ If you want to use this (I recommend it) do the following:
 
 We use mostly a standard Rails stack, with a few new things that are generally recommended by the Rails core team.
 
-- Our CSS is written using  [TailwindCSS](https://tailwindcss.com)
+- Our CSS is written using [TailwindCSS](https://tailwindcss.com)
 - We use [StimulusJS](https://stimulus.hotwired.dev) for our JavaScript
 - We use [Turbo](https://turbo.hotwired.dev) for all the page load stuff
 - We use [Sorbet](https://sorbet.org) to add type-checking to our Ruby and prevent a bunch of runtime bugs early

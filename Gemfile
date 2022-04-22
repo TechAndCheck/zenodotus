@@ -149,8 +149,11 @@ gem "json_schemer"
 # Devise is used for authentication and user management
 gem "devise", "~> 4.8.0"
 
-# New way to bundle CSS and JS for Rails 7
-gem "cssbundling-rails"
+# For bundling JS-packed CSS; disable if living the Rails 7 Webpack-free life
+# See the gem's repo/README for more information
+# gem "cssbundling-rails"
+
+# Current (Rails >=7) way of bundling JS
 gem "importmap-rails"
 
 # Use Stimulus for Rails 7
