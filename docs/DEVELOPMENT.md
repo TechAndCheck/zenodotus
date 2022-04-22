@@ -4,12 +4,7 @@
 
 ### Environment variables
 To run Zenodotus, you'll need to set the following environment variables. Ask a dev on the team to provide you access to them. 
-- `INSTAGRAM_USER_NAME`
-- `INSTAGRAM_PASSWORD`
-- `FACEBOOK_EMAIL`
-- `FACEBOOK_PASSWORD`
 - `TWITTER_BEARER_TOKEN`
-- `YOUTUBE_API_KEY`
 - `HYPATIA_SERVER_URL`
 - `HYPATIA_AUTH_KEY`
 - `secret_key_base` (Devise secret)
