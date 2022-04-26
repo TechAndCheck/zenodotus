@@ -141,21 +141,17 @@ gem "json_schemer"
 # Devise is used for authentication and user management
 gem "devise", "~> 4.8.0"
 
-# For bundling JS-packed CSS; disable if living the Rails 7 Webpack-free life
-# See the gem's repo/README for more information
-# gem "cssbundling-rails"
+# Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
+gem "jsbundling-rails"
 
-# Current (Rails >=7) way of bundling JS
-gem "importmap-rails"
+# Bundle and process CSS [https://github.com/rails/cssbundling-rails]
+gem "cssbundling-rails"
 
 # Use Stimulus for Rails 7
 gem "stimulus-rails"
 
 # Hotwire, to make better website without JS
 gem "turbo-rails"
-
-# TailwindCSS
-gem "tailwindcss-rails", "~> 2.0.8"
 
 gem "sprockets-rails", require: "sprockets/railtie"
 

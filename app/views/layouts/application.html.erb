@@ -17,8 +17,8 @@
     <!-- FontAwesome -->
     <script src="https://kit.fontawesome.com/96ec0b6a71.js" crossorigin="anonymous"></script>
     <!-- /FontAwesome -->
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
 
   </head>
 
