@@ -104,7 +104,7 @@ gem "figaro"
 gem "typhoeus"
 
 # Hotwire, to make better website without JS
-gem "hotwire-rails"
+gem "turbo-rails"
 
 # TailwindCSS
 gem "tailwindcss-rails", "~> 2.0.8"
