@@ -101,12 +101,6 @@ gem "figaro"
 # Typhoneus handles URL request to outside websites extremely efficiently
 gem "typhoeus"
 
-# Hotwire, to make better website without JS
-gem "turbo-rails"
-
-# TailwindCSS
-gem "tailwindcss-rails", "~> 2.0.8"
-
 # A headless chrome browser for interacting with website
 gem "ferrum", "~> 0.11"
 
@@ -156,6 +150,12 @@ gem "importmap-rails"
 
 # Use Stimulus for Rails 7
 gem "stimulus-rails"
+
+# Hotwire, to make better website without JS
+gem "turbo-rails"
+
+# TailwindCSS
+gem "tailwindcss-rails", "~> 2.0.8"
 
 gem "sprockets-rails", require: "sprockets/railtie"
 
