@@ -115,8 +115,8 @@ gem "shrine", "~> 3.0"
 # there's been plenty of commits
 # gem "dhash-vips", git: "https://github.com/nakilon/dhash-vips/", tag: "v0.1.1.2"
 
-# gem "eikon", path: "~/Repositories/eikón/eikon"
-gem "eikon", git: "https://github.com/cguess/eikon"
+gem "eikon"
+
 # Stremio-ffmpeg use the ffmpeg library to process our video files
 gem "streamio-ffmpeg"
 
