@@ -14,8 +14,6 @@ gem "puma", "~> 5.0"
 # Use SCSS for stylesheets
 # gem "sass-rails", ">= 6"
 
-# # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-# gem "turbolinks", "~> 5"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem "jbuilder", "~> 2.7"
 # Use Redis adapter to run Action Cable in production
@@ -103,12 +101,6 @@ gem "figaro"
 # Typhoneus handles URL request to outside websites extremely efficiently
 gem "typhoeus"
 
-# Hotwire, to make better website without JS
-gem "hotwire-rails"
-
-# TailwindCSS
-gem "tailwindcss-rails", "~> 2.0.8"
-
 # A headless chrome browser for interacting with website
 gem "ferrum", "~> 0.11"
 
@@ -149,15 +141,17 @@ gem "json_schemer"
 # Devise is used for authentication and user management
 gem "devise", "~> 4.8.0"
 
-# For bundling JS-packed CSS; disable if living the Rails 7 Webpack-free life
-# See the gem's repo/README for more information
-# gem "cssbundling-rails"
+# Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
+gem "jsbundling-rails"
 
-# Current (Rails >=7) way of bundling JS
-gem "importmap-rails"
+# Bundle and process CSS [https://github.com/rails/cssbundling-rails]
+gem "cssbundling-rails"
 
 # Use Stimulus for Rails 7
 gem "stimulus-rails"
+
+# Hotwire, to make better website without JS
+gem "turbo-rails"
 
 gem "sprockets-rails", require: "sprockets/railtie"
 
