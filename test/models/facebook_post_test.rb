@@ -51,9 +51,14 @@ class FacebookPostTest < ActiveSupport::TestCase
     assert_equal archive_item.author.name, archive_item2.author.name
   end
 
-  test "assert_url_can_be_checked" do
+  test "assert url can be checked" do
     assert Sources::FacebookPost.can_handle_url?("https://www.facebook.com/MarkZuckerberg/videos/123456789/")
     assert_not Sources::FacebookPost.can_handle_url?("https://www.instagram.com/p/notafakeid/")
+  end
+
+  test "assert archive image from facebook post" do
+    archive_item = Sources::FacebookPost.create_from_forki_hash(@@forki_post).first
+    assert_not_empty archive_item.image_hashes
   end
 
   test "can archive video from Facebook post" do
@@ -65,7 +70,7 @@ class FacebookPostTest < ActiveSupport::TestCase
 
   test "dhash properly generated from image" do
     archive_item = Sources::FacebookPost.create_from_forki_hash(@@forki_post).first
-    assert_not_nil archive_item.facebook_post.images.first.dhash
+    assert_not_nil archive_item.image_hashes.first.dhash
   end
 
   test "archiving a video creates a preview screenshot" do

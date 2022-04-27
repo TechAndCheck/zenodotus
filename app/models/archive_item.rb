@@ -1,12 +1,15 @@
 # typed: strict
 
 class ArchiveItem < ApplicationRecord
+  include Dhashable
+
   delegated_type :archivable_item, types: %w[Sources::Tweet Sources::InstagramPost Sources::FacebookPost Sources::YoutubePost]
   delegate :service_id, to: :archivable_item
   delegate :images, to: :archivable_item
   delegate :videos, to: :archivable_item
 
   has_one :media_review, dependent: :destroy, foreign_key: :archive_item_id
+  has_many :image_hashes, dependent: :destroy
   belongs_to :submitter, optional: true, class_name: "User"
   belongs_to :scrape, optional: true
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_03_31_162925) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_22_194316) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -50,14 +50,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_31_162925) do
   create_table "facebook_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "facebook_post_id"
     t.jsonb "image_data"
-    t.string "dhash"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["facebook_post_id"], name: "index_facebook_images_on_facebook_post_id"
   end
 
   create_table "facebook_posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "posted_at", precision: nil
+    t.datetime "posted_at"
     t.text "text"
     t.text "facebook_id"
     t.uuid "author_id", null: false
@@ -93,6 +92,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_31_162925) do
     t.index ["facebook_post_id"], name: "index_facebook_videos_on_facebook_post_id"
   end
 
+  create_table "image_hashes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "dhash"
+    t.uuid "archive_item_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "image_searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "dhash"
     t.jsonb "image_data"
@@ -107,14 +113,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_31_162925) do
     t.jsonb "image_data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "dhash"
     t.index ["instagram_post_id"], name: "index_instagram_images_on_instagram_post_id"
   end
 
   create_table "instagram_posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "text", null: false
     t.string "instagram_id", null: false
-    t.datetime "posted_at", precision: nil, null: false
+    t.datetime "posted_at", null: false
     t.integer "number_of_likes", null: false
     t.uuid "author_id", null: false
     t.datetime "created_at", null: false
@@ -196,7 +201,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_31_162925) do
     t.string "twitter_id", null: false
     t.string "language", null: false
     t.uuid "author_id", null: false
-    t.datetime "posted_at", precision: nil, null: false
+    t.datetime "posted_at", null: false
     t.index ["author_id"], name: "index_tweets_on_author_id"
   end
 
@@ -205,14 +210,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_31_162925) do
     t.jsonb "image_data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "dhash"
     t.index ["tweet_id"], name: "index_twitter_images_on_tweet_id"
   end
 
   create_table "twitter_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "handle", null: false
     t.string "display_name", null: false
-    t.datetime "sign_up_date", precision: nil, null: false
+    t.datetime "sign_up_date", null: false
     t.string "twitter_id", null: false
     t.text "description", null: false
     t.string "url", null: false
@@ -238,20 +242,20 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_31_162925) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at", precision: nil
-    t.datetime "remember_created_at", precision: nil
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at", precision: nil
-    t.datetime "last_sign_in_at", precision: nil
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.string "confirmation_token"
-    t.datetime "confirmed_at", precision: nil
-    t.datetime "confirmation_sent_at", precision: nil
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
-    t.datetime "locked_at", precision: nil
+    t.datetime "locked_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "approved", default: false, null: false
