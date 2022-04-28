@@ -23,6 +23,12 @@ GIT
       oauth (~> 0.5.6)
       typhoeus (~> 1.4.0)
 
+PATH
+  remote: ../../zelkova
+  specs:
+    zelkova (0.1.0)
+      eikon
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -480,6 +486,7 @@ DEPENDENCIES
   webdrivers
   yard
   youtubearchiver!
+  zelkova!
 
 RUBY VERSION
    ruby 3.1.1p18
