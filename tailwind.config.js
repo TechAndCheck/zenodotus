@@ -1,3 +1,8 @@
+const pluginTailwindForms = require('@tailwindcss/forms')
+const pluginTailwindAspectRatio = require('@tailwindcss/aspect-ratio')
+const pluginTailwindTypography = require('@tailwindcss/typography')
+const pluginFlowbite = require('flowbite/plugin')
+
 module.exports = {
   content: [
     './app/views/**/*.html.erb',
@@ -10,9 +15,9 @@ module.exports = {
     },
   },
   plugins: [
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/aspect-ratio'),
-    require('@tailwindcss/typography'),
-    require('flowbite/plugin'),
+    pluginTailwindForms,
+    pluginTailwindAspectRatio,
+    pluginTailwindTypography,
+    pluginFlowbite,
   ],
 }
