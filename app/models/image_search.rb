@@ -15,17 +15,12 @@ class ImageSearch < ApplicationRecord
   # { image: ArchiveItem, score: Float }
   sig { returns(T::Array[T::Hash[ArchiveItem, Float]]) }
   def run
-    images = ArchiveItem.all.filter_map do |archive_item|
-      # Right now we're only doing images, and only one at the moment. We'll expand that later though
-      next if archive_item.images.empty?
-      image_hash = archive_item.image_hashes.first
-
-      dhash_score = Eikon::Comparator.compare(self.dhash, image_hash.dhash)
-      { image: image, score: dhash_score }
+    image_hashes = Zelkova.graph.search(self.dhash)
+    images = image_hashes.map do |image_hash|
+      hash = ImageHash.find(image_hash[:node].metadata[:id])
+      { image: hash.archive_item, score: image_hash[:distance] }
     end
 
-    images.sort do |image1, image2|
-      image1[:score] <=> image2[:score]
-    end
+    images
   end
 end

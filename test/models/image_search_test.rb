@@ -5,6 +5,12 @@ class ImageSearchTest < ActiveSupport::TestCase
   def setup
     file = File.open("test/fixtures/files/instagram_image_test.jpg", binmode: true)
     @image_search = ImageSearch.create!(image: file, user: users(:user1))
+
+    Zelkova.graph.reset
+  end
+
+  def teardown
+    Zelkova.graph.reset
   end
 
   test "can create image search" do
@@ -35,6 +41,7 @@ class ImageSearchTest < ActiveSupport::TestCase
       end
     end
     assert in_order, "Images should be returned in order of similarity (lower is better)"
+
     assert results.first[:score] <= 1 # Identical images have score 0, but downloading images may introduce artifacts, so we add some tolerance
   end
 end
