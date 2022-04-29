@@ -7,7 +7,7 @@
       </div>
       <% unless current_user.nil? || current_user.restricted %>
         <div class="flex-shrink mr-6">
-          <%= link_to "Image Search", image_search_path, "data-turbo-frame": "_top" %>
+          <%= link_to "Media Search", image_search_path, "data-turbo-frame": "_top" %>
         </div>
       <% end %>
       <div class="flex-shrink mr-6">

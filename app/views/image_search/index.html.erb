@@ -1,6 +1,6 @@
 <div class="bg-white py-4 font-display border border-gray-100 rounded">
   <div class="px-8 flex justify-between">
-    <div class="font-display text-xl">Image Search</div>
+    <div class="font-display text-xl">Media Search</div>
   </div>
   <div class="mt-4 mx-1">
   <%= form_for @search, url: image_search_submit_path, class: "w-full max-w-sm", html: { data: { controller: "image-search", action: "submit->image-search#onPostSend turbo:submit-end->image-search#onPostSuccess" } } do |form| %>
