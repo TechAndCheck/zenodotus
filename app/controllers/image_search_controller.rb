@@ -32,7 +32,8 @@ class ImageSearchController < ApplicationController
   def search
     typed_params = TypedParams[SubmitUrlParams].new.extract!(params[:image_search])
     # Create a search object
-    search = ImageSearch.create!({ image: typed_params.image, user: current_user })
+
+    search = ImageSearch.create_with_media_item(typed_params.image, current_user)
     results = search.run
 
     # Add the search id so that we can adjust the URL and make the page reloadable

@@ -1,5 +1,10 @@
 <% results.each do |result| %>
-  <% partial_name = "search_result_list_item_#{result[:image].parent_post.class.to_s.gsub("Sources::","").underscore}" %>
-  <%= render partial: partial_name, locals: { result: result } %>
+  <% if result.has_key?(:image) %>
+    <% partial_name = "search_result_list_item_#{result[:image].archivable_item.class.to_s.gsub("Sources::","").underscore}" %>
+    <%= render partial: partial_name, locals: { result: result } %>
+  <% elsif result.has_key?(:video) %>
+    <% partial_name = "search_result_list_item_#{result[:video].archivable_item.class.to_s.gsub("Sources::","").underscore}" %>
+    <%= render partial: partial_name, locals: { result: result } %>
+  <% end %>
 <% end %>
 <div data-controller="image-search" id="search-id" data-search-id="<%= search.id %>" data-image-search-search-id="<%= search.id %>" ></div>
