@@ -20,10 +20,4 @@ module.exports = {
     pluginTailwindTypography,
     pluginFlowbite,
   ],
-  // By default, Tailwind shakes the CSS file down to only those classes that are actually in use.
-  // This makes development a *huge* pain, since if you use any class for the first time, you must
-  // clobber and recompile the base Tailwind stylesheet (since this doesn't happen as eagerly as
-  // changes to your own application styles). This pattern ensures all classes are included when
-  // running in development.
-  safelist: (process.env.NODE_ENV === 'development' ? [{ pattern: /./ }] : []),
 }
