@@ -1,40 +1,60 @@
-<div class="flex p-4 px-8 border-b bg-green-100 justify-center">
-  <div class="flex flex-row w-3/5">
-    <div class="flex-none w-32"><%= link_to "Zenodotus", root_path  %></div>
-    <div class="mr-8 flex-grow flex flex-row justify-center">
-      <div class="flex-shrink mr-6">
-        <a href="#">All Collected Media</a>
-      </div>
-      <% unless current_user.nil? || current_user.restricted %>
-        <div class="flex-shrink mr-6">
-          <%= link_to "Media Search", image_search_path, "data-turbo-frame": "_top" %>
+<nav class="bg-white shadow-sm px-2 sm:px-4 py-2.5 rounded dark:bg-gray-800">
+  <div class="container flex flex-wrap justify-between items-center mx-auto gap-x-8">
+    <%= link_to root_path, class: 'flex items-center p-2 gap-x-2 text-xl font-semibold whitespace-nowrap dark:text-white no-underline mr-auto hover:text-blue-700' do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" /></svg>
+      <span>Zenodotus</span>
+    <% end %>
+    <div class="flex items-center md:order-2">
+      <% if user_signed_in? %>
+        <button type="button" class="flex text-sm rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="zeno--user-menu-button" aria-expanded="false" type="button" data-dropdown-toggle="zeno--user-menu">
+          <span class="sr-only">Open user menu</span>
+          <svg class="w-10 h-10 rounded-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd" /></svg>
+        </button>
+        <div class="hidden z-50 my-4 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600" id="zeno--user-menu">
+          <div class="py-3 px-4">
+            <span class="block text-sm font-medium text-gray-500 truncate dark:text-gray-400"><%= current_user.email %></span>
+          </div>
+          <ul class="py-1" aria-labelledby="dropdown">
+            <li>
+              <%= link_to "Settings", account_path, class: "block no-underline py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" %>
+            </li>
+            <li>
+              <%= link_to current_user.organization.name, organizations_path, class: "block no-underline py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" %>
+            </li>
+          </ul>
+          <ul class="py-1">
+            <li>
+              <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "block w-full text-left no-underline py-2 px-4 text-sm text-red-800 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" %>
+            </li>
+          </ul>
         </div>
       <% end %>
-      <div class="flex-shrink mr-6">
-        <%= link_to "Text Search", text_search_path, "data-turbo-frame": "_top" %>
-      </div>
-      <% if user_signed_in? %>
-        <% if current_user.super_admin? %>
-        <div class="flex-shrink mr-6">
-          <%= link_to "Jobs Status", jobs_status_index_path %>
-        </div>
+      <button data-collapse-toggle="zeno--mobile-menu" type="button" class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+        <svg class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+      </button>
+    </div>
+    <div class="hidden justify-between items-center w-full md:flex md:w-auto md:order-1" id="zeno--mobile-menu">
+      <ul class="flex flex-col mt-4 md:flex-row md:gap-x-8 md:mt-0 md:text-sm md:font-medium">
+        <% if user_signed_in? %>
+          <% unless current_user.restricted %>
+            <li><%= link_to "Text Search", text_search_path, "data-turbo-frame": "_top", class: "no-underline block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" %></li>
+            <li><%= link_to "Media Search", image_search_path, "data-turbo-frame": "_top", class: "no-underline block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" %></li>
+          <% end %>
+          <% if current_user.super_admin? %>
+            <li>
+              <%= link_to jobs_status_index_path, class: "flex items-center gap-1 no-underline block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" /></svg>
+                Jobs Status
+              <% end %>
+            </li>
+          <% end %>
+        <% else %>
+          <li><%= link_to "Login", new_user_session_path, class: "no-underline block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" %></li>
+          <li><%= link_to "Request account", new_user_registration_path, class: "no-underline block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" %></li>
         <% end %>
-        <div class="flex-shrink mr-6">
-          <%= link_to "Account", account_path %>
-        </div>
-      <% end %>
+      </ul>
     </div>
   </div>
-  <div class="flex flex-row">
-    <div class="flex-shrink mr-6">
-      <% if user_signed_in? %>
-        <%= link_to current_user.organization.name, organizations_path %>
-        <%= button_to "Logout", destroy_user_session_path, method: :delete %>
-      <% else %>
-        <%= link_to "Login", new_user_session_path %>
-        <%= link_to "Register", new_user_registration_path, class: "border rounded px-3 py-2 ml-3 bg-white" %>
-      <% end %>
-    </div>
-  </div>
-</div>
-
+</nav>

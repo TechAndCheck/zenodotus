@@ -172,3 +172,7 @@ We use mostly a standard Rails stack, with a few new things that are generally r
 ## Development
 
 See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for additional development setup instructions.
+
+## License
+
+See [LICENSE](./LICENSE) for the terms governing this software.
