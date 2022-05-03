@@ -356,7 +356,7 @@ GEM
       parser (>= 2.7)
       sorbet-coerce (>= 0.2.6)
       sorbet-runtime (>= 0.5)
-    sorbet-runtime (0.5.9914)
+    sorbet-runtime (0.5.9962)
     sorbet-static (0.5.9914-universal-darwin-21)
     sorbet-static (0.5.9914-x86_64-linux)
     sorted_set (1.0.3)
@@ -418,7 +418,7 @@ GEM
     yard (0.9.27)
       webrick (~> 1.7.0)
     zeitwerk (2.5.4)
-    zelkova (0.1.0)
+    zelkova (0.1.1)
       eikon
 
 PLATFORMS
