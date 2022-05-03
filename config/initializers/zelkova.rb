@@ -9,6 +9,6 @@ Rails.configuration.after_initialize do
   ImageHash.all.each do |image_hash|
     graph.add_node(image_hash.dhash, { id: image_hash.id })
   end
-rescue ActiveRecord::NoDatabaseError
+rescue ActiveRecord::NoDatabaseError, ActiveRecord::StatementInvalid
   # Do nothing, this means the database isn't created yet
 end

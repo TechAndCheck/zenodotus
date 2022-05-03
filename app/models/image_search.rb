@@ -39,7 +39,7 @@ class ImageSearch < ApplicationRecord
   # this to the database in a function eventually.
   #
   # @return An ordered array of the search results with the format
-  # { image: ArchiveItem, score: Float } Note that the lower the score the better the match
+  # { image: ArchiveItem, distance: Float } Note that the lower the distance the better the match
   # as this meaning the hamming distance between the images is less.
   sig { returns(T::Array[T::Hash[ArchiveItem, Float]]) }
   def run
@@ -52,7 +52,7 @@ class ImageSearch < ApplicationRecord
 
       images = image_hashes.map do |image_hash|
         hash = ImageHash.find(image_hash[:node].metadata[:id])
-        { image: hash.archive_item, score: image_hash[:distance] }
+        { image: hash.archive_item, distance: image_hash[:distance] }
       end
 
       images
@@ -64,10 +64,10 @@ class ImageSearch < ApplicationRecord
 
       videos = video_hashes.map do |video_hash|
         hash = ImageHash.find(video_hash[:node].metadata[:id])
-        { video: hash.archive_item, score: video_hash[:distance] }
+        { video: hash.archive_item, distance: video_hash[:distance] }
       end
 
-      videos.sort_by! { |video| video[:score] }
+      videos.sort_by! { |video| video[:distance] }
       videos
     end
   end
