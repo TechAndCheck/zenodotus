@@ -3,7 +3,7 @@ require "shrine"
 
 require "shrine/storage/s3"
 
-if Rails.env == "production" || Figaro.env.USE_S3_DEV_TEST
+if Rails.env == "production" || Figaro.env.USE_S3_DEV_TEST == "true"
   s3_one_day_expiration = Shrine::Storage::S3.new(
     bucket: "zenodotus-testing", # required
     region: "us-east-1", # required
