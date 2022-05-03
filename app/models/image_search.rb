@@ -39,7 +39,8 @@ class ImageSearch < ApplicationRecord
   # this to the database in a function eventually.
   #
   # @return An ordered array of the search results with the format
-  # { image: ArchiveItem, score: Float }
+  # { image: ArchiveItem, score: Float } Note that the lower the score the better the match
+  # as this meaning the hamming distance between the images is less.
   sig { returns(T::Array[T::Hash[ArchiveItem, Float]]) }
   def run
     # For images, we do our thing
