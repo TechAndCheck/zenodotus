@@ -166,4 +166,4 @@ gem "dotenv-rails"
 gem "simplecov", require: false
 
 # This enables reverse image and video searching
-gem "zelkova", path: "~/Repositories/zelkova"
+gem "zelkova"
