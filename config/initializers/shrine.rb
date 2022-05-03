@@ -3,19 +3,21 @@ require "shrine"
 
 require "shrine/storage/s3"
 
-s3_one_day_expiration = Shrine::Storage::S3.new(
-  bucket: "zenodotus-testing", # required
-  region: "us-east-1", # required
-  access_key_id: "AKIAY5PG5ZI2NKWJGKQW",
-  secret_access_key: "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",
-)
+if Rails.env == "production" || Figaro.env.USE_S3_DEV_TEST
+  s3_one_day_expiration = Shrine::Storage::S3.new(
+    bucket: "zenodotus-testing", # required
+    region: "us-east-1", # required
+    access_key_id: Figaro.env.AWS_ACCESS_KEY,
+    secret_access_key: Figaro.env.AWS_ACCESS_SECRET,
+  )
 
-s3_permanent = Shrine::Storage::S3.new(
-  bucket: "zenodotus-production", # required
-  region: "us-east-1", # required
-  access_key_id: "AKIAY5PG5ZI2NKWJGKQW",
-  secret_access_key: "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",
-)
+  s3_permanent = Shrine::Storage::S3.new(
+    bucket: "zenodotus-production", # required
+    region: "us-east-1", # required
+    access_key_id: Figaro.env.AWS_ACCESS_KEY,
+    secret_access_key: Figaro.env.AWS_ACCESS_SECRET,
+  )
+end
 
 # Development we want to be local, test ephemeral, production ???? (file for now)
 case Rails.env
