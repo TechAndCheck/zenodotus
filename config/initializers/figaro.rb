@@ -10,3 +10,8 @@ Figaro.require_keys("HYPATIA_AUTH_KEY")
 
 # The URL of the currently running server for Hypatia callbacks
 Figaro.require_keys("URL")
+
+if Figaro.env.USE_S3_DEV_TEST == "true"
+  Figaro.require_keys("AWS_ACCESS_KEY")
+  Figaro.require_keys("AWS_ACCESS_SECRET")
+end
