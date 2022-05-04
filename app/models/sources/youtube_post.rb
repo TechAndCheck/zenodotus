@@ -63,7 +63,7 @@ class Sources::YoutubePost < ApplicationRecord
   # @returns [Array[ArchiveItem]] an array of ArchiveItems with type YoutubePost that have been
   #    saved to the graph database
   sig { params(youtube_archiver_videos: T::Array[Hash], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
-  def self.create_from_hash(youtube_archiver_videos, user)
+  def self.create_from_hash(youtube_archiver_videos, user = nil)
     create_from_youtube_archiver_hash(youtube_archiver_videos, user)
   end
 
