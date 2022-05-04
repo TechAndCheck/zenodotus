@@ -52,10 +52,8 @@ class YoutubeMediaSource < MediaSource
 
   # Scrape the page by sending it to Hypatia
   #
-  # @!visibility private
-  # @params url [String] a url to grab data for
-  # @return [YoutubeArchiver::Video]
-  sig { returns(T::Array[Hash]) }
+  # @return [Boolean]
+  sig { returns(T::Boolean) }
   def retrieve_youtube_post
     scrape = Scrape.create!({ url: @url, scrape_type: :youtube })
 
