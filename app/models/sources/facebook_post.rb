@@ -66,7 +66,7 @@ class Sources::FacebookPost < ApplicationRecord
   # @returns [Array[ArchiveItem]] an array of ArchiveItems with type FacebbokPost that have been
   #    saved to the graph database
   sig { params(forki_posts: T::Array[Hash], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
-  def self.create_from_hash(forki_posts, user)
+  def self.create_from_hash(forki_posts, user = nil)
     create_from_forki_hash(forki_posts, user)
   end
 
