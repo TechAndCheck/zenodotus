@@ -47,15 +47,15 @@ class YoutubePostTest < ActiveSupport::TestCase
 
 
   test "can archive youtube post from url using ActiveJob" do
-    Sources::YoutubePost.create_from_url!("https://www.youtube.com/watch?v=Df7UtQTFUMQ")
-    Sources::YoutubePost.create_from_url!("https://www.youtube.com/watch?v=kFFvomxcLWo")
+    assert_enqueued_jobs 0
+    assert_performed_jobs 0
+
+    Sources::YoutubePost.create_from_url("https://www.youtube.com/watch?v=Df7UtQTFUMQ")
+    Sources::YoutubePost.create_from_url("https://www.youtube.com/watch?v=kFFvomxcLWo")
+    assert_enqueued_jobs 2
+
     perform_enqueued_jobs
-
-    youtube_post_1 = Sources::YoutubePost.where(youtube_id: "Df7UtQTFUMQ").first
-    youtube_post_2 = Sources::YoutubePost.where(youtube_id: "kFFvomxcLWo").first
-
-    assert_not_nil youtube_post_1
-    assert_not_nil youtube_post_2
+    assert_performed_jobs 2
   end
 
   test "assert url can be checked" do
