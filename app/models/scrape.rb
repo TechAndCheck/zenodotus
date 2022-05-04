@@ -7,12 +7,8 @@ class Scrape < ApplicationRecord
 
   def fulfill(response)
     response = JSON.parse(response)
-    archive_item = case self.scrape_type
-                   when "instagram"
-                     Sources::InstagramPost.create_from_zorki_hash(response)
-                   when "facebook"
-                     Sources::FacebookPost.create_from_forki_hash(response)
-    end
+
+    archive_item = ArchiveItem.model_for_url(self.url).create_from_hash(response)
 
     self.update!({ fulfilled: true, archive_item: archive_item.first })
   end
