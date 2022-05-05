@@ -65,7 +65,7 @@ class ImageSearch < ApplicationRecord
       videos = video_hashes.map do |video_hash|
         hash = ImageHash.find(video_hash[:node].metadata[:id])
         { video: hash.archive_item, distance: video_hash[:distance] }
-      end
+      end.uniq
 
       videos.sort_by! { |video| video[:distance] }
       videos
