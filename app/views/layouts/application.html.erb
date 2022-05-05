@@ -14,11 +14,13 @@
 
   </head>
 
-  <body class="bg-green-50">
+  <body class="bg-gray-100 text-gray-800">
     <%= render "layouts/header" %>
-    <div class="flex flex-col lg:mx-auto mt-4 ml-5 mr-5 max-w-screen-xl">
-      <%= render "layouts/flashes" %>
-      <%= yield %>
+    <div class="bg-white flex relative shadow z-1">
+      <div class="grow flex flex-col mx-auto my-4 max-w-screen-xl">
+        <%= render "layouts/flashes" %>
+        <%= yield %>
+      </div>
     </div>
     <%= render "layouts/footer" %>
   </body>
