@@ -63,6 +63,8 @@ module Dhashable
     media_item.open
     tempfile_path = media_item.tempfile.path
 
+    # Note on reasoning: `dhash_for_image` return a single object, while `dhash_for_video` returns an array
+    # Since the association is an array, we need to put the single image into an array bewfore saving.
     if self.video.nil?
       self.dhashes = [Eikon.dhash_for_image(tempfile_path)]
     else
