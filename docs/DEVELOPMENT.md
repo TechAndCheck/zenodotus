@@ -64,7 +64,7 @@ editor know.
 
 ##### Githooks
 
-We have a `pre-commit` githook that will enforce RuboCop style compliance. To install it, copy `githooks/pre-commit' into `.git/hooks/` and `chmod +x` the copied file. 
+We have a `pre-commit` githook that will enforce RuboCop style compliance. To install it, copy `githooks/pre-commit` into `.git/hooks/` and `chmod +x` the copied file. 
 
 ###### Sublime Text 4
 
