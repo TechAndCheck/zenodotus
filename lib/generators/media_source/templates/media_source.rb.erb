@@ -1,61 +1,108 @@
 # typed: true
-class <%= @file_name.classify %>MediaSource < MediaSource
+class <%= @source_name.classify %>MediaSource < MediaSource
   attr_reader(:url)
 
-  # Limit all urls to the host(s) below, use the private method {#self.check_host} in your initializer
-  # to check for a valid host or not.
+  # Returns a list of valid hosts. Use the private method {#self.check_host} in your initializer
+  # to check whether a host is valid
   #
-  # @note If your scraper doesn't enforce a host name (for a basic web scraper for instance),
-  #   just have this return `nil` or any empty array . We can discuss if this should be an
-  #   enforced abstract method if this becomes an issue.
-  # @return [Array] of [String] of valid host names or [nil]
-  sig { override.returns(T.nilable(T::Array[String])) }
+  # @note If a scraper doesn't enforce a host name, this method shoudl return an empty array
+  # @return [Array] of [String] of valid host names
+  sig { override.returns(T::Array[String]) }
   def self.valid_host_name; end
 
-  # Capture a screenshot of the given url
+  # Begins the scraping process for the given media source. 
+  # If this MediaSource implementatiation uses Hypatia, it will fire a request and receive an async callback response
   #
   # @!scope class
-  # @params url [String] the url of the page to be collected for archiving
-  # @params save_screenshot [Boolean] whether to save the screenshot image (mostly for testing).
+  # @params url [String] the url of the page to be collected for post archiving
+  # @params force [Boolean] When set to true, forces Hypatia to immediately process a scrape request
   #   Default: false
-  # @returns Sting or nil] the path of the screenshot if the screenshot was saved
-  sig { override.params(url: String, save_screenshot: T::Boolean).returns(T.nilable(String)) }
-  def self.extract(url, save_screenshot = false)
+  # @returns [Boolean or Hash] if `force` is set to `true` returns the scraped hash. Otherwise returns the status of the Hypatia job.
+  sig { override.params(url: String, force: T::Boolean).returns(T.any(T::Boolean, T::Hash[String, String])) }
+  def self.extract(url, force = false)
     object = self.new(url)
-    object.capture_screenshot(save_screenshot)
+    return object.retrieve_<%= @source_name_lower %>_post! if force
+
+    object.retrieve_<%= @source_name_lower %>_post
   end
 
-  # Initialize the object and capture the screenshot automatically.
+  # Initializes the <%= @source_name %> MediaSource object
   #
-  # @params url [String] the url of the page to be collected for archiving
-  # @returns [Sting or nil] the path of the screenshot if the screenshot was saved
+  # @params url [String] the url of the page to be scraped for post archiving
+  # @returns [nil]
   sig { params(url: String).void }
   def initialize(url)
-    # Verify that the url has the proper host for this source. (@valid_host is set at the top of
+    # Verify that the url has the proper host for this source. (valid hosts are set at the top of
     # this class)
-    <%= @file_name.classify %>MediaSource.check_url(url)
+    <%= @source_name.classify %>MediaSource.check_url(url)
+    <%= @source_name.classify %>MediaSource.validate_<%= @source_name_lower %>_post_url(url)
 
     @url = url
   end
 
-  # Perform the proper capture of the url passed in
+  # Sends a scrape request to Hypatia, which Hypatia responds to with a staus response.
+  # Hpyatia will POST the scraped media content to Zenodotus in a later callback
   #
-  # @params save_screenshot [Boolean] whether to save the screenshot image (mostly for testing).
-  #   Returns the path of the screenshot if true. Default: false
-  # @return [File] file object of the image
-  sig { params(save_screenshot: T::Boolean).returns(T.nilable(String)) }
-  def capture_screenshot(save_screenshot = false)
-    filename = "#{SecureRandom.uuid()}.png"
-    path = Rails.root.join("tmp", filename)
+  # @!visibility private
+  # @params url [String] a url to grab data for
+  # @return [Boolean]
+  sig { returns(T::Boolean) }
+  def retrieve_<%= @source_name_lower %>_post
+    scrape = Scrape.create!({ url: @url, scrape_type: :<%= @source_name_lower %> })
 
-    browser = Ferrum::Browser.new
-    browser.go_to(@url)
-    browser.screenshot(path: path)
-    browser.quit
+    params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: @url, callback_id: scrape.id }
+    params[:callback_url] = Figaro.env.URL unless Figaro.env.URL.blank?
 
-    return path.to_s if save_screenshot
+    response = Typhoeus.get(
+      Figaro.env.HYPATIA_SERVER_URL,
+      followlocation: true,
+      params: params
+    )
 
-    File.delete(path)
-    nil
+    raise ExternalServerError, "Error: #{response.code} returned from Hypatia server" unless response.code == 200
+    response_body = JSON.parse(response.body)
+    raise <%= @source_name %>MediaSource::ExternalServerError if response_body["success"] == false
+
+    true
   end
-end
+
+  # Sends a scrape request to Hypatia and forces the server to process it immediately
+  # This should only be used for testing purposes.
+  #
+  # @return [Hash]
+  sig { returns(Hash) }
+  def retrieve_<%= @source_name_lower %>_post!
+    scrape = Scrape.create!({ url: @url, scrape_type: :<%= @source_name_lower %> })
+
+    params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: @url, callback_id: scrape.id, force: "true" }
+    params[:callback_url] = Figaro.env.URL unless Figaro.env.URL.blank?
+
+    response = Typhoeus.get(
+      Figaro.env.HYPATIA_SERVER_URL,
+      followlocation: true,
+      params: params
+    )
+
+    raise ExternalServerError, "Error: #{response.code} returned from Hypatia server" unless response.code == 200
+
+    # Hypatia returns arrays. We always grab the array's first element
+    returned_data = JSON.parse(response.body)
+    returned_data["scrape_result"] = JSON.parse(returned_data["scrape_result"])
+    returned_data
+  end
+
+  private
+
+  # Validate that the url links to a <%= @source_name %> post
+  #
+  # @note this assumes a valid url or else it'll always (usually, maybe, whatever) fail
+  #
+  # @!scope class
+  # @!visibility private
+  # @params url [String] A(n) <%= @source_name %> post url to validate
+  # @return [Boolean] The validity of the input url
+  sig { params(url: String).returns(T::Boolean) }
+  def self.validate_<%= @source_name_lower %>_post_url(url); end
+
+class <%= @source_name.classify %>MediaSource::Invalid<%= @source_name.classify %>PostUrlError < StandardError; end
+class <%= @source_name.classify %>MediaSource::ExternalServerError < StandardError; end

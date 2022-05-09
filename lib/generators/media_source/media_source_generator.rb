@@ -20,7 +20,8 @@ private
     file_contents = nil
     File.open(template_path) { |f| file_contents = f.read }
 
-    @file_name = file_name
+    @source_name = file_name
+    @source_name_lower = file_name.downcase
     ERB.new(file_contents).result(binding)
   end
 end
