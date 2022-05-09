@@ -1,16 +1,46 @@
 # require "minitest/autorun"
 require "test_helper"
 
-class <%= @file_name.classify %>MediaSourceTest < ActiveSupport::TestCase
+class <%= @source_name.classify %>MediaSourceTest < ActiveSupport::TestCase
   def setup
   end
 
-  def test_initializing_returns_nil
-    assert_nil <%= @file_name.classify %>MediaSource.extract("https://www.example.com")
+  def test_non_<%= @source_name.downcase %>_url_raise_error
+    assert_raises(MediaSource::HostError) do
+      <%= @source_name.classify %>MediaSource.new("https://www.<%= @source_name.downcase %>.com")
+    end
   end
 
-  def test_extracting_creates_screenshot
-    screenshot_path = <%= @file_name.classify %>MediaSource.extract("https://www.example.com", true)
-    assert File.exist?(screenshot_path)
+  def test_invalid_<%= @source_name.downcase %>_post_url_raises_error
+    assert_raises(<%= @source_name.classify %>MediaSource::Invalid<%= @source_name.classify %>PostUrlError) do
+      <%= @source_name.classify %>MediaSource.new("https://www.<%= @source_name.downcase %>.com/REPLACE_ME_WITH_POST_ID")
+    end
+  end
+
+  def test_extract_<%= @source_name.downcase %>_post_id_from_url_works
+    assert_equal("REPLACE_ME_WITH_POST_ID", <%= @source_name.classify %>MediaSource.send(
+        :extract_<%= @source_name.downcase %>_id_from_url,
+        "https://www.<%= @source_name.downcase %>.com/REPLACE_ME_WITH_POST_ID"
+      ))
+  end
+
+  def test_initializing_returns_object
+    assert_not_nil <%= @source_name.classify %>MediaSource.new("https://www.<%= @source_name.downcase %>.com/REPLACE_ME_WITH_POST_ID")
+  end
+
+  def test_extracting_creates_<%= @source_name.downcase %>_post_object
+        <%= @source_name.downcase %>_post_hash = <%= @source_name.classify %>MediaSource.extract("https://www.<%= @source_name.downcase %>.com/REPLACE_ME_WITH_POST_ID", true)
+    assert_not <%= @source_name.downcase %>_post_hash.empty?
+  end
+
+  def test_extracting_without_force_gets_proper_response
+        <%= @source_name.downcase %>_post_response = <%= @source_name.classify %>MediaSource.extract("https://www.<%= @source_name.downcase %>.com/p/REPLACE_ME_WITH_POST_ID/", false)
+    assert <%= @source_name.downcase %>_post_response
+  end
+
+  def test_bad_url_raises_exception
+    assert_raises <%= @source_name.classify %>MediaSource::Invalid<%= @source_name.classify %>PostUrlError do
+        <%= @source_name.classify %>MediaSource.send(:extract_<%= @source_name.downcase %>_id_from_url, "https://<%= @source_name.downcase %>.com/")
+    end
   end
 end

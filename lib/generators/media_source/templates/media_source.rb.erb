@@ -21,9 +21,9 @@ class <%= @source_name.classify %>MediaSource < MediaSource
   sig { override.params(url: String, force: T::Boolean).returns(T.any(T::Boolean, T::Hash[String, String])) }
   def self.extract(url, force = false)
     object = self.new(url)
-    return object.retrieve_<%= @source_name_lower %>_post! if force
+    return object.retrieve_<%= @source_name.downcase %>_post! if force
 
-    object.retrieve_<%= @source_name_lower %>_post
+    object.retrieve_<%= @source_name.downcase %>_post
   end
 
   # Initializes the <%= @source_name %> MediaSource object
@@ -35,7 +35,7 @@ class <%= @source_name.classify %>MediaSource < MediaSource
     # Verify that the url has the proper host for this source. (valid hosts are set at the top of
     # this class)
     <%= @source_name.classify %>MediaSource.check_url(url)
-    <%= @source_name.classify %>MediaSource.validate_<%= @source_name_lower %>_post_url(url)
+    <%= @source_name.classify %>MediaSource.validate_<%= @source_name.downcase %>_post_url(url)
 
     @url = url
   end
@@ -47,8 +47,8 @@ class <%= @source_name.classify %>MediaSource < MediaSource
   # @params url [String] a url to grab data for
   # @return [Boolean]
   sig { returns(T::Boolean) }
-  def retrieve_<%= @source_name_lower %>_post
-    scrape = Scrape.create!({ url: @url, scrape_type: :<%= @source_name_lower %> })
+  def retrieve_<%= @source_name.downcase %>_post
+    scrape = Scrape.create!({ url: @url, scrape_type: :<%= @source_name.downcase %> })
 
     params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: @url, callback_id: scrape.id }
     params[:callback_url] = Figaro.env.URL unless Figaro.env.URL.blank?
@@ -61,7 +61,7 @@ class <%= @source_name.classify %>MediaSource < MediaSource
 
     raise ExternalServerError, "Error: #{response.code} returned from Hypatia server" unless response.code == 200
     response_body = JSON.parse(response.body)
-    raise <%= @source_name %>MediaSource::ExternalServerError if response_body["success"] == false
+    raise <%= @source_name.classify %>MediaSource::ExternalServerError if response_body["success"] == false
 
     true
   end
@@ -71,8 +71,8 @@ class <%= @source_name.classify %>MediaSource < MediaSource
   #
   # @return [Hash]
   sig { returns(Hash) }
-  def retrieve_<%= @source_name_lower %>_post!
-    scrape = Scrape.create!({ url: @url, scrape_type: :<%= @source_name_lower %> })
+  def retrieve_<%= @source_name.downcase %>_post!
+    scrape = Scrape.create!({ url: @url, scrape_type: :<%= @source_name.downcase %> })
 
     params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: @url, callback_id: scrape.id, force: "true" }
     params[:callback_url] = Figaro.env.URL unless Figaro.env.URL.blank?
@@ -93,7 +93,7 @@ class <%= @source_name.classify %>MediaSource < MediaSource
 
   private
 
-  # Validate that the url links to a <%= @source_name %> post
+  # Validate that the url links to a <%= @source_name.classify %> post
   #
   # @note this assumes a valid url or else it'll always (usually, maybe, whatever) fail
   #
@@ -102,7 +102,7 @@ class <%= @source_name.classify %>MediaSource < MediaSource
   # @params url [String] A(n) <%= @source_name %> post url to validate
   # @return [Boolean] The validity of the input url
   sig { params(url: String).returns(T::Boolean) }
-  def self.validate_<%= @source_name_lower %>_post_url(url); end
+  def self.validate_<%= @source_name.downcase %>_post_url(url); end
 
 class <%= @source_name.classify %>MediaSource::Invalid<%= @source_name.classify %>PostUrlError < StandardError; end
 class <%= @source_name.classify %>MediaSource::ExternalServerError < StandardError; end
