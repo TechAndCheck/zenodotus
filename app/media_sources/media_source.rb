@@ -9,19 +9,20 @@ class MediaSource
   # to check for a valid host or not.
   #
   # @note If your scraper doesn't enforce a host name (for a basic web scraper for instance),
-  #   just have this return `nil` or any empty array . We can discuss if this should be an
-  #   enforced abstract method if this becomes an issue.
-  # @return [Array] of [String] of valid host names or [nil]
-  sig { abstract.returns(T.nilable(T::Array[String])) }
+  #   just have this return an empty array.
+  # @return [Array] of [String] of valid host names
+  sig { abstract.returns(T::Array[String]) }
   def self.valid_host_name; end
 
-  # An abstract method that acts as the entry point to a MediaSource subclass.
+  # An abstract method that facilitates the scraping/retrieval of content
   #
   # @note This should be overwritten by any implementing class.
   #
   # @!scope class
   # @param url [String] the url of the page/object to be collected for archiving
-  # @return [nil]
+  # @params force [Boolean] When set to true, forces Hypatia to immediately process a scrape request.
+  #    The `force` parameter is only implemented for MediaSources that interact with Hypatia
+  # @return
   sig { abstract.params(url: String).returns(T.untyped) }
   def self.extract(url); end
 

@@ -27,7 +27,7 @@ class YoutubeMediaSource < MediaSource
   # Initialize the YoutubeMediaSource object
   #
   # @params url [String] the url of the page to be collected for archiving
-  # @returns [Sting or nil] the path of the screenshot if the screenshot was saved
+  # @returns [nil]
   sig { params(url: String).void }
   def initialize(url)
     # Verify that the url has the proper host for this source. (@valid_host is set at the top of
