@@ -88,8 +88,7 @@ class YoutubeMediaSource < MediaSource
 
   private
 
-
-    # Validate that the links to a YouTube video
+    # Validate that a url links to a YouTube video
     #
     # @note this assumes a valid url or else it'll always (usually, maybe, whatever) fail
     #

@@ -98,16 +98,12 @@ class InstagramMediaSource < MediaSource
 
 private
 
-  # Validate that the url is a direct link to a post, poorly
-  #
-  # @note this assumes a valid url or else it'll always (usually, maybe, whatever) fail
+  # Validate that a url links to an Instagram Post
   #
   # @!scope class
   # @!visibility private
   # @params url [String] A(n) Instagram post url to validate
   # @return [Boolean] The validity of the string
-  # @params url [String] a url to check if it's a valid Instagram post url
-  # @return [Boolean] if the string validates or not
   sig { params(url: String).returns(T::Boolean) }
   def self.validate_instagram_post_url(url)
     return true if /instagram.com\/((p)|(reel))\/[\w]+/.match?(url)

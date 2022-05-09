@@ -91,9 +91,7 @@ class FacebookMediaSource < MediaSource
 
   private
 
-    # Validate that the url is a direct link to a post, poorly
-    #
-    # @note this assumes a valid url or else it'll always (usually, maybe, whatever) fail
+    # Validate that a url links to a Facebook post
     #
     # @!scope class
     # @!visibility private
@@ -106,6 +104,5 @@ class FacebookMediaSource < MediaSource
     end
 end
 
-# A class to indicate that a post url passed in is invalid
 class FacebookMediaSource::InvalidFacebookPostUrlError < StandardError; end
 class FacebookMediaSource::ExternalServerError < StandardError; end
