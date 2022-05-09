@@ -3,7 +3,7 @@
 class InstagramMediaSource < MediaSource
   attr_reader(:url)
 
-  # Limit all urls to the host below
+  # Returns a list of valid hosts
   #
   # @return [String] or [Array] of [String] of valid host names
   sig { override.returns(T::Array[String]) }
@@ -11,14 +11,13 @@ class InstagramMediaSource < MediaSource
     ["www.instagram.com", "instagram.com"]
   end
 
-  # Set off a scrape on Instagram using a Hypatia instance. This will then be finished up when the
-  # callback is instantiated.
+  # Begins the scraping process by sending a scrape request to Hypatia
   #
   # @!scope class
-  # @params url [String] the url of the page to be collected for archiving
-  # @params force [Boolean] whether to force Hypatia to not queue a request but to scrape immediately.
+  # @params url [String] the url of the page to be collected for post archiving
+  # @params force [Boolean] When set to true, forces Hypatia to immediately process a scrape request
   #   Default: false
-  # @returns [Boolean or Hash] if `force` is set to `true` returns the scraped hash, otherwise the status of the Hypatia job.
+  # @returns [Boolean or Hash] if `force` is set to `true` returns the scraped hash. Otherwise returns the status of the Hypatia job.
   sig { override.params(url: String, force: T::Boolean).returns(T.any(T::Boolean, T::Hash[String, String])) }
   def self.extract(url, force = false)
     object = self.new(url)
@@ -27,6 +26,10 @@ class InstagramMediaSource < MediaSource
     object.retrieve_instagram_post
   end
 
+  # Initializes the InstagramMediaSource object
+  #
+  # @params url [String] the url of the page to be scraped for archiving
+  # @returns [nil]
   # Initialize the object and capture the screenshot automatically.
   #
   # @params url [String] the url of the page to be collected for archiving
@@ -41,9 +44,11 @@ class InstagramMediaSource < MediaSource
     @url = url
   end
 
-  # Set off a scrape on Instagram using a Hypatia instance. This will then be finished up when the
-  # callback is instantiated.
+  # Sends a scrape request to Hypatia, which Hypatia responds to with a staus response.
+  # Hpyatia will POST the scraped media content to Zenodotus in a later callback
   #
+  # @!visibility private
+  # @params url [String] a url to grab data for
   # @return [Boolean]
   sig { returns(T::Boolean) }
   def retrieve_instagram_post
@@ -66,7 +71,8 @@ class InstagramMediaSource < MediaSource
     true
   end
 
-  # Forces a Hypatia instance to run immediately. This should only be used for testing purposes.
+  # Sends a scrape request to Hypatia and forces the server to process it immediately
+  # This should only be used for testing purposes.
   #
   # @return [Hash]
   sig { returns(Hash) }
@@ -84,7 +90,7 @@ class InstagramMediaSource < MediaSource
 
     raise ExternalServerError, "Error: #{response.code} returned from Hypatia server" unless response.code == 200
 
-    # Hypatia returns arrays always so we grab the first
+    # Hypatia returns arrays. We always grab the array's first element
     returned_data = JSON.parse(response.body)
     returned_data["scrape_result"] = JSON.parse(returned_data["scrape_result"])
     returned_data
@@ -98,6 +104,8 @@ private
   #
   # @!scope class
   # @!visibility private
+  # @params url [String] A(n) Instagram post url to validate
+  # @return [Boolean] The validity of the string
   # @params url [String] a url to check if it's a valid Instagram post url
   # @return [Boolean] if the string validates or not
   sig { params(url: String).returns(T::Boolean) }
