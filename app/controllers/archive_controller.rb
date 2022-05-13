@@ -57,7 +57,7 @@ class ArchiveController < ApplicationController
 
     respond_to do |format|
       # need to check for restricted users here, too
-      flash.now[:alert] = "Successfully archived your link!"
+      flash.now[:success] = "Successfully archived your link!"
       format.turbo_stream { render turbo_stream: [
         turbo_stream.replace("flash", partial: "layouts/flashes", locals: { flash: flash }),
         turbo_stream.replace("modal", partial: "archive/add", locals: { render_empty: true }),
