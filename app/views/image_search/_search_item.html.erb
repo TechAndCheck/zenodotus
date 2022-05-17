@@ -1,6 +1,24 @@
 <div class="flex flex-col md:flex-row md:h-48 p-6 mb-5 border-b-2">
   <div class="flex-none h-96 mb-5 md:mb-0 md:h-auto md:w-32 overflow-hidden rounded">
-    <a href="#"><img src="<%= search.image.url %>" /></a>
+
+    <% if search.try(:image).try(:nil?) == false %>
+    <img src="<%= search.image.url %>" />
+    <% elsif search.video.nil? == false %>
+    <div>
+      <figure class="relative m-0 text-center">
+
+        <video
+          width="320"
+          height="240"
+          poster="<%= search.video_derivatives[:preview].url %>"
+          controls >
+          <source src="<%= search.video.url %>" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </figure>
+    </div>
+    <% end %>
+
   </div>
   <div class="text-xl font-bold self-end ml-8">
     <%= results.count %> Search Results Found

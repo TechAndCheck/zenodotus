@@ -2,9 +2,36 @@
 
 class ImageSearch < ApplicationRecord
   include ImageUploader::Attachment(:image) # adds an `image` virtual attribute
+  include VideoUploader::Attachment(:video)
+
   include Dhashable
 
   belongs_to :user, optional: false, class_name: "User"
+
+  after_commit on: [:create] do
+    # We only want to create the derivatives once (since you know, it's a media archive we don't
+    # want them to change)
+    self.video_derivatives! unless self.video.nil?
+  end
+
+  sig { params(media_item: ActionDispatch::Http::UploadedFile, current_user: User).returns(ImageSearch) }
+  def self.create_with_media_item(media_item, current_user)
+    mime = IO.popen(
+      ["file", "--brief", "--mime-type", media_item.path],
+      in: :close, err: :close
+    ) { |io| io.read.chomp }
+
+    search =  case mime.split("/").first
+              when "video"
+                ImageSearch.create!({ video: media_item, user: current_user })
+              when "image"
+                ImageSearch.create!({ image: media_item, user: current_user })
+              else
+                raise "Invalid media uploaded."
+    end
+
+    search
+  end
 
   # Runs the search against all images in the database given the +image+ attached
   #
@@ -12,20 +39,36 @@ class ImageSearch < ApplicationRecord
   # this to the database in a function eventually.
   #
   # @return An ordered array of the search results with the format
-  # { image: ArchiveItem, score: Float }
+  # { image: ArchiveItem, distance: Float } Note that the lower the distance the better the match
+  # as this meaning the hamming distance between the images is less.
   sig { returns(T::Array[T::Hash[ArchiveItem, Float]]) }
   def run
-    images = ArchiveItem.all.filter_map do |archive_item|
-      # Right now we're only doing images, and only one at the moment. We'll expand that later though
-      next if archive_item.images.empty?
-      image_hash = archive_item.image_hashes.first
+    # For images, we do our thing
+    if self.image.nil? == false
+      image_hashes = Zelkova.graph.search(self.dhashes.first)
 
-      dhash_score = Eikon::Comparator.compare(self.dhash, image_hash.dhash)
-      { image: image, score: dhash_score }
-    end
+      # For videos we have to loop
 
-    images.sort do |image1, image2|
-      image1[:score] <=> image2[:score]
+
+      images = image_hashes.map do |image_hash|
+        hash = ImageHash.find(image_hash[:node].metadata[:id])
+        { image: hash.archive_item, distance: image_hash[:distance] }
+      end
+
+      images
+    else
+      video_hashes = []
+      self.dhashes.each do |dhash|
+        video_hashes = video_hashes | Zelkova.graph.search(dhash["dhash"])
+      end
+
+      videos = video_hashes.map do |video_hash|
+        hash = ImageHash.find(video_hash[:node].metadata[:id])
+        { video: hash.archive_item, distance: video_hash[:distance] }
+      end.uniq
+
+      videos.sort_by! { |video| video[:distance] }
+      videos
     end
   end
 end

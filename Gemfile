@@ -167,3 +167,7 @@ gem "simplecov", require: false
 
 # Used to store our files in S3
 gem "aws-sdk-s3"
+
+# This enables reverse image and video searching
+gem "zelkova"
+

@@ -6,6 +6,7 @@ module Dhashable
 
   included do
     before_save :generate_single_dhash
+    before_save :generate_dhashes_for_uploaded_media
     after_save :generate_dhashes_for_attached_media
   end
 
@@ -38,7 +39,7 @@ module Dhashable
       when :image
         dhashes = [Eikon.dhash_for_image(tempfile_path)]
       when :video
-        dhashes = Eikon.dhash_for_video(tempfile_path)
+        dhashes = Eikon.dhash_for_video(tempfile_path).map { |dhash| dhash[:dhash] }
       end
 
       dhashes.map do |dhash|
@@ -49,6 +50,25 @@ module Dhashable
       end
 
       media_item.close
+    end
+  end
+
+  def generate_dhashes_for_uploaded_media
+    return unless self.respond_to?(:dhashes)
+    return if self.video.nil? && self.image.nil?
+
+    media_item = self.image
+    media_item = self.video if media_item.nil?
+
+    media_item.open
+    tempfile_path = media_item.tempfile.path
+
+    # Note on reasoning: `dhash_for_image` return a single object, while `dhash_for_video` returns an array
+    # Since the association is an array, we need to put the single image into an array bewfore saving.
+    if self.video.nil?
+      self.dhashes = [Eikon.dhash_for_image(tempfile_path)]
+    else
+      self.dhashes = Eikon.dhash_for_video(tempfile_path)
     end
   end
 

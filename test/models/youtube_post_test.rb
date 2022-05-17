@@ -45,17 +45,16 @@ class YoutubePostTest < ActiveSupport::TestCase
     assert_not_nil youtube_post
   end
 
-
   test "can archive youtube post from url using ActiveJob" do
-    Sources::YoutubePost.create_from_url!("https://www.youtube.com/watch?v=Df7UtQTFUMQ")
-    Sources::YoutubePost.create_from_url!("https://www.youtube.com/watch?v=kFFvomxcLWo")
+    assert_enqueued_jobs 0
+    assert_performed_jobs 0
+
+    Sources::YoutubePost.create_from_url("https://www.youtube.com/watch?v=Df7UtQTFUMQ")
+    Sources::YoutubePost.create_from_url("https://www.youtube.com/watch?v=kFFvomxcLWo")
+    assert_enqueued_jobs 2
+
     perform_enqueued_jobs
-
-    youtube_post_1 = Sources::YoutubePost.where(youtube_id: "Df7UtQTFUMQ").first
-    youtube_post_2 = Sources::YoutubePost.where(youtube_id: "kFFvomxcLWo").first
-
-    assert_not_nil youtube_post_1
-    assert_not_nil youtube_post_2
+    assert_performed_jobs 2
   end
 
   test "assert url can be checked" do
@@ -66,5 +65,12 @@ class YoutubePostTest < ActiveSupport::TestCase
   test "archiving a video creates a preview screenshot" do
     archive_item = Sources::YoutubePost.create_from_youtube_archiver_hash(@@youtube_archiver_post).first
     assert_not_nil archive_item.youtube_post.videos.first.video_derivatives[:preview]
+  end
+
+  test "dhash properly generated from video" do
+    post = YoutubeMediaSource.extract("https://www.youtube.com/watch?v=nx857dcV6mc", true)["scrape_result"]
+
+    archive_item = Sources::YoutubePost.create_from_youtube_archiver_hash(post).first
+    assert_not_nil archive_item.image_hashes.first.dhash
   end
 end
