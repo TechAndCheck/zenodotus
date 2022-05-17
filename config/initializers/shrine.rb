@@ -15,7 +15,7 @@ when "test"
 
   Shrine.storages = {
     cache: Shrine::Storage::Memory.new, # temporary
-    store: Shrine::Storage::Memory.new       # permanent
+    store: Shrine::Storage::Memory.new  # permanent
   }
 when "production"
   require "shrine/storage/file_system"

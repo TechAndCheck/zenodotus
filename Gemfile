@@ -164,3 +164,6 @@ gem "dotenv-rails"
 
 # Code coverage so we can check if our tests actually cover everything
 gem "simplecov", require: false
+
+# This enables reverse image and video searching
+gem "zelkova"

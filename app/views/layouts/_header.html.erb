@@ -1,7 +1,7 @@
 <nav class="bg-white shadow-sm px-2 sm:px-4 py-2.5 rounded dark:bg-gray-800">
   <div class="container flex flex-wrap justify-between items-center mx-auto gap-x-8">
     <%= link_to root_path, class: 'flex items-center p-2 gap-x-2 text-xl font-semibold whitespace-nowrap dark:text-white no-underline mr-auto hover:text-blue-700' do %>
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" /></svg> 
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" /></svg>
       <span>Zenodotus</span>
     <% end %>
     <div class="flex items-center md:order-2">
@@ -40,7 +40,7 @@
         <% if user_signed_in? %>
           <% unless current_user.restricted %>
             <li><%= link_to "Text Search", text_search_path, "data-turbo-frame": "_top", class: "no-underline block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" %></li>
-            <li><%= link_to "Image Search", image_search_path, "data-turbo-frame": "_top", class: "no-underline block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" %></li>
+            <li><%= link_to "Media Search", image_search_path, "data-turbo-frame": "_top", class: "no-underline block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" %></li>
           <% end %>
           <% if current_user.super_admin? %>
             <li>
