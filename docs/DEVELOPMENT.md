@@ -11,6 +11,12 @@ To run Zenodotus, you'll need to set the following environment variables. Ask a 
 - `KEY_ENCRYPTION_SALT`
 - `URL`
 
+Optional
+- `USE_S3_DEV_TEST` If set to `"true"` (the string) the software will use S3 as a storage backend
+  exactly the same as in production (except the bucket is set to clear itself every 24 hours).
+  If set you will be required to also set `AWS_ACCESS_KEY` and `AWS_ACCESS_SECRET`
+
+
 ### Linters
 
 We use two linters to insure that all code looks and acts the same. These enforeced styles may be different
