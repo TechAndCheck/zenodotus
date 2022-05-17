@@ -84,7 +84,4 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: zenodotus_production
-  username: zenodotus
-  password: <%= ENV['ZENODOTUS_DATABASE_PASSWORD'] %>
+  url: <%= ENV["DATABASE_URL"] %>
