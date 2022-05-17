@@ -170,4 +170,3 @@ gem "aws-sdk-s3"
 
 # This enables reverse image and video searching
 gem "zelkova"
-
