@@ -102,7 +102,7 @@ private
   # @return [Boolean] if the string validates or not
   sig { params(url: String).returns(T::Boolean) }
   def self.validate_instagram_post_url(url)
-    return true if /instagram.com\/((p)|(reel))\/[\w]+/.match?(url)
+    return true if /instagram.com\/((p)|(reel)|(tv))\/[\w]+/.match?(url)
     raise InvalidInstagramPostUrlError, "Instagram url #{url} does not have the standard url format"
   end
 
