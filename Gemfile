@@ -25,7 +25,7 @@ gem "pagy", "~> 5.6"
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 # use sidekiq for job queueing
-gem "sidekiq", "~> 6.3.1"
+gem "sidekiq", "~> 6.4.1"
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 # Use jquery-rails to force confirmation dialogs
