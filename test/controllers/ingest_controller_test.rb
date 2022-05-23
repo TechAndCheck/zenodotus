@@ -103,7 +103,8 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
     assert_equal "Successfully archived media object", json["response"]
     assert_not_empty json["media_object_id"]
 
-    post = ArchiveItem.find(json["media_object_id"])
+    # We'll make sure the media review is correctly saved here since archive is async
+    post = MediaReview.find(json["media_object_id"])
     assert_not_nil post
   end
 
