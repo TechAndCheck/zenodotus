@@ -10,6 +10,10 @@ class Scrape < ApplicationRecord
 
     archive_item = ArchiveItem.model_for_url(self.url).create_from_hash(response)
 
+    # Update the previously created MediaReview item with the now archived stuff
+    media_review_item = MediaReview.find_by(original_media_link: self.url, archive_item_id: nil)
+    media_review_item.update({ archive_item_id: archive_item.first.id }) unless media_review_item.nil?
+
     self.update!({ fulfilled: true, archive_item: archive_item.first })
   end
 end

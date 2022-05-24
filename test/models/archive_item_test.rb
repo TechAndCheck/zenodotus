@@ -8,10 +8,7 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
     archive_json = JSON.parse(ArchiveItem.prune_archive_items)
 
     assert_equal archive_json.length, 1
-    assert_equal archive_json[0]["media_review"]["original_media_link"], "https://twitter.com/MariahCarey/status/1438419033267871746"
-    # assert_equal archive_json[0]["media_review"]["media_authenticity_category"], "DecontextualizedContent"
-    assert_equal archive_json[0]["archivable_item"]["author"]["handle"], "MariahCarey"
-    assert_not_includes archive_json[0]["media_review"], "id"
+    assert_equal 20, JSON.parse(response.body)["response_code"]
   end
 
   test "destroying a user resets the submitter_id of ArchiveItems it created" do

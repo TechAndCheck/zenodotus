@@ -26,18 +26,15 @@ class ArchiveItem < ApplicationRecord
     url = appearance["contentUrl"]
 
     object_model = model_for_url(url)
-    object = object_model.create_from_url(url)
+    object_model.create_from_url(url) # Start scraping
 
-    # This results in two database saves per creation, which isn't great.
-    # However, we'll refactor another time after it works
-
-    MediaReview.create(
+    # For the moment we create an "orphan" MediaReview, since the archive_item will be created
+    # later. This will be updated with the associated Scrape gets fulfilled
+    MediaReview.create!(
       original_media_link: url,
       media_authenticity_category: media_review["mediaAuthenticityCategory"],
       original_media_context_description: media_review["originalMediaContextDescription"],
-      archive_item_id: object.id
     )
-    object
   end
 
   # Returns an array of ArchiveItems modified for JSON export
