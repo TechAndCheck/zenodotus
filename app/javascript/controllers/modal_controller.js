@@ -20,7 +20,5 @@ export default class extends Controller {
     }
   }
 
-  onPostSuccess() {
-    console.log('success!')
-  }
+  onPostSuccess() {}
 }
