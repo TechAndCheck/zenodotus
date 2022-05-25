@@ -39,7 +39,7 @@ class ArchiveController < ApplicationController
       object_model.create_from_url(url, current_user)
     rescue StandardError => e
       respond_to do |format|
-        error = "#{e.class} : #{e.message}"
+        error = "#{e.class}: #{e.message}"
         format.turbo_stream { render turbo_stream: [
           turbo_stream.replace("modal", partial: "archive/add", locals: { error: error }),
           turbo_stream.replace(
