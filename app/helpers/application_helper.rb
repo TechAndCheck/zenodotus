@@ -13,6 +13,6 @@ module ApplicationHelper
       title_tag_content += title_hierarchy.join(" #{opts[:delimeter]} ")
     end
 
-    return (title_tag_content.present? ? "#{title_tag_content} #{opts[:delimeter]} " : "") + "Zenodotus"
+    (title_tag_content.present? ? "#{title_tag_content} #{opts[:delimeter]} " : "") + "Zenodotus"
   end
 end
