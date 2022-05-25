@@ -15,4 +15,18 @@ module ApplicationHelper
 
     (title_tag_content.present? ? "#{title_tag_content} #{opts[:delimeter]} " : "") + "Zenodotus"
   end
+
+  def color_for_flash_type(flash_type)
+    flash_type = flash_type.to_sym
+
+    flash_color_map = {
+      alert: "yellow",
+      notice: "blue",
+      info: "blue",
+      success: "green",
+      error: "red",
+    }
+
+    flash_color_map.has_key?(flash_type) ? flash_color_map[flash_type] : "blue"
+  end
 end
