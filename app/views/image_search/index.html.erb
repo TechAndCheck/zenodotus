@@ -6,7 +6,7 @@
   <%= form_for @search, url: image_search_submit_path, class: "w-full max-w-sm", html: { data: { controller: "image-search", action: "submit->image-search#onPostSend turbo:submit-end->image-search#onPostSuccess" } } do |form| %>
     <div class="md:flex md:items-center mb-6">
       <div class="md:w-1/4">
-        <%= form.label :image_to_search_for, "URL To Archive:", class: "block text-gray-500 md:text-right mb-1 md:mb-0 pr-4" %>
+        <%= form.label :image_to_search_for, "Media to search by:", class: "block text-gray-500 md:text-right mb-1 md:mb-0 pr-4" %>
       </div>
       <div class="md:w-2/4">
         <%= form.hidden_field :image, value: @search.cached_image_data %>
