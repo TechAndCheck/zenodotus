@@ -133,4 +133,23 @@ class Sources::YoutubePost < ApplicationRecord
   def service_id
     youtube_id
   end
+
+  # Normalized representation of this archivable item for use in the view template.
+  #
+  # @returns Hash of normalized attributes.
+  sig { returns(Hash) }
+  def normalized_attrs_for_views
+    {
+      publishing_platform_shortname:    "youtube",
+      publishing_platform_display_name: "YouTube",
+      author_profile_image_url:         self.author.channel_image_url,
+      author_display_name:              self.author.title,
+      author_username:                  nil,
+      author_community_count:           self.author.num_subscribers,
+      author_community_noun:            "subscriber",
+      archive_item_media:               self,
+      archive_item_caption:             self.title,
+      published_at:                     self.posted_at,
+    }
+  end
 end
