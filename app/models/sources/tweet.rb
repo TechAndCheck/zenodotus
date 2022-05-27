@@ -122,7 +122,7 @@ class Sources::Tweet < ApplicationRecord
       author_username:                  self.author.handle,
       author_community_count:           self.author.followers_count,
       author_community_noun:            "follower",
-      archive_item_media:               self,
+      archive_item_self:                self,
       archive_item_caption:             self.text,
       published_at:                     self.posted_at,
     }

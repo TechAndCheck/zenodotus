@@ -27,4 +27,11 @@ module ArchivableItem
   def normalized_attrs_for_views
     raise "Please implement a `normalized_attrs_for_views` method"
   end
+
+  # Syntactic sugar for safely determining whether this item actually has any images or videos.
+  #
+  # @return Boolean
+  def has_displayable_media?
+    self.try(:images).try(:empty?) == false || self.try(:videos).try(:empty?) == false
+  end
 end

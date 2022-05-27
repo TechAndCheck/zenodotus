@@ -1,0 +1,5 @@
+:root {
+    --mv-line-height: 1.6;
+    --transition-timing: 200ms;
+    --transition-function: ease;
+}

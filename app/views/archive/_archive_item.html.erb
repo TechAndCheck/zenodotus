@@ -1,0 +1,41 @@
+<div class="archive-item" data-publishing-platform="<%= publishing_platform_shortname %>">
+    <div class="archive-item__author">
+        <img
+            class="archive-item__author-photo"
+            src="<%= author_profile_image_url %>"
+            alt="Profile photo for <%= author_display_name %>"
+        />
+        <div class="archive-item__author-name">
+            <span class="archive-item__author-display-name"><%= author_display_name %></span>
+            <% unless author_username.nil? %>
+                <span class="archive-item__author-username">@<%= author_username %></span>
+            <% end %>
+        </div>
+        <div class="archive-item__author-community">
+            <%= humanized_community_count(author_community_count, author_community_noun) %>
+        </div>
+    </div>
+
+    <div class="archive-item__body">
+        <% if archive_item_self.has_displayable_media? %>
+            <div class="archive-item__body-media">
+                <%= render partial: "item_media_preview", locals: { item: archive_item_self } %>
+            </div>
+        <% end %>
+        <div class="archive-item__body-caption">
+            <%= simple_format(archive_item_caption) %>
+        </div>
+    </div>
+
+    <div class="archive-item__metadata">
+        <div class="archive-item__publish-details archive-item__metadatum">
+            <div class="archive-item__publish-details__platform-icon"></div>
+            <div class="archive-item__metadatum__label">Published on <%= publishing_platform_display_name %></div>
+            <div class="archive-item__metadatum__value"><%= published_at %></div>
+        </div>
+        <div class="archive-item__scrape-details archive-item__metadatum">
+            <div class="archive-item__metadatum__label">Archived</div>
+            <div class="archive-item__metadatum__value"><%= archived_at %></div>
+        </div>
+    </div>
+</div>

@@ -147,7 +147,7 @@ class Sources::YoutubePost < ApplicationRecord
       author_username:                  nil,
       author_community_count:           self.author.num_subscribers,
       author_community_noun:            "subscriber",
-      archive_item_media:               self,
+      archive_item_self:                self,
       archive_item_caption:             self.title,
       published_at:                     self.posted_at,
     }

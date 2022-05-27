@@ -1,0 +1,122 @@
+.archive-item {
+    margin: var(--external-spacing) 0;
+
+    --profile-photo-size: 4rem;
+    --author-area-gap-x: 1rem;
+    --body-offset: 0;
+    --external-spacing: 4rem;
+    --internal-spacing: 1.5rem;
+    --caption-spacing: 0.75rem;
+    --text-color-subdued: #999;
+
+}
+
+.archive-item:first-child {
+    margin-top: 0;
+}
+.archive-item:last-child {
+    margin-bottom: 0;
+}
+
+@media screen and (min-width: 601px) {
+    .archive-item {
+        --body-offset: calc(var(--profile-photo-size) + var(--author-area-gap-x));
+    }
+}
+
+.archive-item__author {
+    margin-bottom: var(--internal-spacing);
+
+    display: grid;
+    width: fit-content;
+    column-gap: var(--author-area-gap-x);
+    row-gap: 0;
+    grid-template-columns: max-content auto;
+    grid-template-rows: max-content max-content;
+    grid-template-areas:
+        "photo name"
+        "photo community";
+}
+
+.archive-item__author-photo {
+    grid-area: photo;
+    justify-self: center;
+    align-self: center;
+
+    @apply rounded-full;
+    width: var(--profile-photo-size);
+    height: var(--profile-photo-size);;
+}
+
+.archive-item__author-name {
+    grid-area: name;
+    justify-self: start;
+    align-self: end;
+
+    font-size: 1.4rem;
+    line-height: 1.2;
+}
+
+.archive-item__author-display-name {
+    font-weight: 600;
+}
+
+.archive-item__author-username {
+    color: var(--text-color-subdued);
+    font-weight: 200;
+}
+
+.archive-item__author-community {
+    grid-area: community;
+    justify-self: start;
+    align-self: start;
+    font-size: 0.9rem;
+    color: var(--text-color-subdued);
+}
+
+.archive-item__body {
+    margin-left: var(--body-offset);
+
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--caption-spacing);
+}
+
+.archive-item[data-publishing-platform="facebook"] .archive-item__body,
+.archive-item[data-publishing-platform="youtube"] .archive-item__body {
+
+    flex-direction: column-reverse;
+}
+
+.archive-item__body-caption {
+    font-size: 1rem;
+}
+
+.archive-item[data-publishing-platform="facebook"] .archive-item__body-caption,
+.archive-item[data-publishing-platform="youtube"] .archive-item__body-caption {
+}
+
+.archive-item__body-media {
+}
+
+.archive-item__metadata {
+    margin-left: var(--body-offset);
+    margin-top: var(--internal-spacing);
+    display: flex;
+    column-gap: var(--internal-spacing);
+    color: var(--text-color-subdued);
+    font-size: 0.9rem;
+
+}
+
+.archive-item__metadatum {
+
+}
+
+.archive-item__metadatum__label {
+    font-weight: 600;
+}
+
+.archive-item__metadatum__value {
+
+}

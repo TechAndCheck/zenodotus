@@ -1,22 +1,21 @@
 <% if item.try(:images).try(:empty?) == false %>
-<img src="<%= item.images.first.image_url %>" />
-<% elsif item.videos.empty? == false %>
-  <div>
-    <figure class="relative m-0 text-center">
-      <video
-        width="320"
-        height="240"
-        poster="<%= item.videos.first.video_derivatives[:preview].url %>"
-        controls >
-        <source src="<%= item.videos.first.video_url %>" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      <% if item.videos.first.try(:video_type) == "animated_gif" %>
-        <figcaption class="absolute text-white w-1/12 top-0 text-base bg-yellow-300">
-          GIF
-        </figcaption>
-      <% end %>
-    </figure>
- </div>
+    <img src="<%= item.images.first.image_url %>" />
+<% elsif item.try(:videos).try(:empty?) == false %>
+    <div>
+        <figure class="relative m-0 text-center">
+        <video
+            width="320"
+            height="240"
+            poster="<%= item.videos.first.video_derivatives[:preview].url %>"
+            controls >
+            <source src="<%= item.videos.first.video_url %>" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <% if item.videos.first.try(:video_type) == "animated_gif" %>
+            <figcaption class="absolute text-white w-1/12 top-0 text-base bg-yellow-300">
+            GIF
+            </figcaption>
+        <% end %>
+        </figure>
+    </div>
 <% end %>
-
