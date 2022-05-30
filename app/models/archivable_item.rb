@@ -34,4 +34,17 @@ module ArchivableItem
   def has_displayable_media?
     self.try(:images).try(:empty?) == false || self.try(:videos).try(:empty?) == false
   end
+
+  # Combines images and videos into a single array.
+  #
+  # This is because an archivable item may be a mixed-image/video collection and we need to be able
+  # to represent it.
+  #
+  # NB: Currently this sorts by creation date. This is a coarse proxy for the actual display order,
+  #     and a future improvement should scrape and use true display order.
+  #
+  # @return Array of MediaModels.
+  def combined_media
+    ((self.try(:images) || []) + (self.try(:videos) || [])).sort_by(&:created_at)
+  end
 end

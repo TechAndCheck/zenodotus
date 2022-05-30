@@ -8,6 +8,7 @@
     --internal-spacing: 1.5rem;
     --caption-spacing: 0.75rem;
     --text-color-subdued: #999;
+    --image-border-radius: 0.4rem;
 
 }
 
@@ -97,6 +98,50 @@
 }
 
 .archive-item__body-media {
+}
+
+.archive-item__body-media__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--image-border-radius);
+}
+
+.archive-item__body-media__video {
+    display: block;
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+.archive-item__body-media__video-caption {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: black;
+    color: white;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.25em 0.5em;
+}
+
+.archive-item__body-media__thumbnails {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 0.15rem;
+}
+
+.archive-item__body-media__thumbnail {
+    aspect-ratio: 1;
+    border-radius: var(--image-border-radius);
+    overflow: hidden;
+    background-position: top center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-clip: padding-box;
+    background-color: black;
 }
 
 .archive-item__metadata {

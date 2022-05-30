@@ -19,7 +19,11 @@
     <div class="archive-item__body">
         <% if archive_item_self.has_displayable_media? %>
             <div class="archive-item__body-media">
-                <%= render partial: "item_media_preview", locals: { item: archive_item_self } %>
+                <% if archive_item_self.combined_media.length == 1 %>
+                    <%= render partial: "archive/archive_item_media_inline_full", locals: { media: archive_item_self.combined_media.first } %>
+                <% else %>
+                    <%= render partial: "archive/archive_item_media_inline_thumbnails", locals: { combined_media: archive_item_self.combined_media } %>
+                <% end %>
             </div>
         <% end %>
         <div class="archive-item__body-caption">
