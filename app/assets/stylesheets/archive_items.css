@@ -100,23 +100,52 @@
 }
 
 .archive-item__metadata {
+    --font-size: 0.9rem;
+    --line-height: 1.2;
+
     margin-left: var(--body-offset);
     margin-top: var(--internal-spacing);
     display: flex;
     column-gap: var(--internal-spacing);
     color: var(--text-color-subdued);
-    font-size: 0.9rem;
-
+    font-size: var(--font-size);
+    line-height: var(--line-height);
 }
 
 .archive-item__metadatum {
+    display: grid;
+    width: fit-content;
+    column-gap: calc(var(--font-size) * var(--line-height) / 2);
+    row-gap: 0;
+    grid-template-columns: max-content auto;
+    grid-template-rows: max-content max-content;
+    grid-template-areas:
+        "icon label"
+        "icon value";
+}
 
+.archive-item__metadatum__icon {
+    grid-area: icon;
+    justify-self: center;
+    align-self: center;
+    height: calc(var(--font-size) * var(--line-height) * 2);
+    width: calc(var(--font-size) * var(--line-height) * 2);
+}
+.archive-item__metadatum__icon svg {
+    width: 100%;
+    height: 100%;
 }
 
 .archive-item__metadatum__label {
     font-weight: 600;
+
+    grid-area: label;
+    justify-self: start;
+    align-self: end;
 }
 
 .archive-item__metadatum__value {
-
+    grid-area: value;
+    justify-self: start;
+    align-self: start;
 }

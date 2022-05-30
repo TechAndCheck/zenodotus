@@ -29,7 +29,9 @@
 
     <div class="archive-item__metadata">
         <div class="archive-item__publish-details archive-item__metadatum">
-            <div class="archive-item__publish-details__platform-icon"></div>
+            <div class="archive-item__metadatum__icon">
+                <svg><use xlink:href="#svg-<%= publishing_platform_shortname %>"></use></svg>
+            </div>
             <div class="archive-item__metadatum__label">Published on <%= publishing_platform_display_name %></div>
             <div class="archive-item__metadatum__value"><%= published_at %></div>
         </div>
