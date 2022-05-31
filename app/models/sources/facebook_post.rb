@@ -82,29 +82,38 @@ class Sources::FacebookPost < ApplicationRecord
       forki_post = forki_post["post"]
       facebook_user = Sources::FacebookUser.create_from_forki_hash([forki_post["user"]]).first.facebook_user
 
-      unless forki_post["image_file"].nil?
-        # image_attributes = forki_post["image_files"].map do |image_file_data|
-        tempfile = Tempfile.new(binmode: true)
-        tempfile.write(Base64.decode64(forki_post["image_file"]))
+      image_attributes = []
+      video_attributes = []
 
-        image_attributes = [ { image: File.open(tempfile.path, binmode: true) } ]
-
-        tempfile.close!
-        # end
+      # We want to default to using the AWS key if it's available, and fallback to Base64 if it's not
+      if forki_post["aws_image_keys"].present?
+        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(forki_post["aws_image_keys"])
+        image_attributes = [ { image: File.open(downloaded_path, binmode: true) } ]
+      elsif forki_post["aws_video_key"].present?
+        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(forki_post["aws_video_key"])
+        video_attributes = [ { video: File.open(downloaded_path, binmode: true) } ]
       else
-        image_attributes = []
-      end
+        # Backwards compatibility for if Hypatia sends over files in Base64
+        unless forki_post["image_file"].blank?
+          # image_attributes = forki_post["image_files"].map do |image_file_data|
+          tempfile = Tempfile.new(binmode: true)
+          tempfile.write(Base64.decode64(forki_post["image_file"]))
 
-      unless forki_post["video_file"].nil?
-        tempfile = Tempfile.new(binmode: true)
-        tempfile.write(Base64.decode64(forki_post["video_file"]))
+          image_attributes = [ { image: File.open(tempfile.path, binmode: true) } ]
 
-        video_attributes = [{ video: File.open(tempfile.path, binmode: true) }]
+          tempfile.close!
+          # end
+        end
 
-        tempfile.close!
-        video_attributes
-      else
-        video_attributes = []
+        # Backwards compatibility for if Hypatia sends over files in Base64
+        unless forki_post["video_file"].blank?
+          tempfile = Tempfile.new(binmode: true)
+          tempfile.write(Base64.decode64(forki_post["video_file"]))
+
+          video_attributes = [{ video: File.open(tempfile.path, binmode: true) }]
+
+          tempfile.close!
+        end
       end
 
       hash = {
