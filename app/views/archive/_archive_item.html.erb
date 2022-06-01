@@ -1,4 +1,8 @@
-<div class="archive-item" data-publishing-platform="<%= publishing_platform_shortname %>">
+<div
+    class="archive-item"
+    data-publishing-platform="<%= publishing_platform_shortname %>"
+    data-controller="archive"
+>
     <div class="archive-item__author">
         <img
             class="archive-item__author-photo"
@@ -37,11 +41,23 @@
                 <svg><use xlink:href="#svg-<%= publishing_platform_shortname %>"></use></svg>
             </div>
             <div class="archive-item__metadatum__label">Published on <%= publishing_platform_display_name %></div>
-            <div class="archive-item__metadatum__value"><%= published_at %></div>
+            <time
+                class="archive-item__metadatum__value"
+                datetime="<%= published_at.iso8601 %>"
+                data-archive-target="timestamp"
+            >
+                <%= published_at %>
+            </time>
         </div>
         <div class="archive-item__scrape-details archive-item__metadatum">
             <div class="archive-item__metadatum__label">Archived</div>
-            <div class="archive-item__metadatum__value"><%= archived_at %></div>
+            <time
+                class="archive-item__metadatum__value"
+                datetime="<%= archived_at.iso8601 %>"
+                data-archive-target="timestamp"
+            >
+                <%= archived_at %>
+            </time>
         </div>
     </div>
 </div>
