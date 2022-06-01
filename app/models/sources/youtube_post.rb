@@ -142,6 +142,7 @@ class Sources::YoutubePost < ApplicationRecord
     {
       publishing_platform_shortname:    "youtube",
       publishing_platform_display_name: "YouTube",
+      author_canonical_path:            url_helpers.youtube_channel_path(self.author),
       author_profile_image_url:         self.author.channel_image_url,
       author_display_name:              self.author.title,
       author_username:                  nil,

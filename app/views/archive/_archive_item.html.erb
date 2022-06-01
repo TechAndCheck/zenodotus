@@ -3,23 +3,25 @@
     data-publishing-platform="<%= publishing_platform_shortname %>"
     data-controller="archive"
 >
-    <div class="archive-item__author">
+    <%= link_to author_canonical_path,
+        class: "archive-item__author",
+        title: "MediaVault profile page for #{author_display_name}",
+        data: { "turbo-frame": "_top" } do %>
         <img
             class="archive-item__author-photo"
             src="<%= author_profile_image_url %>"
             alt="Profile photo for <%= author_display_name %>"
         />
-        <div class="archive-item__author-name">
+        <span class="archive-item__author-name">
             <span class="archive-item__author-display-name"><%= author_display_name %></span>
             <% unless author_username.nil? %>
                 <span class="archive-item__author-username">@<%= author_username %></span>
             <% end %>
-        </div>
-        <div class="archive-item__author-community">
+        </span>
+        <span class="archive-item__author-community">
             <%= humanized_community_count(author_community_count, author_community_noun) %>
-        </div>
-    </div>
-
+        </span>
+    <% end %>
     <div class="archive-item__body">
         <% if archive_item_self.has_displayable_media? %>
             <div class="archive-item__body-media">

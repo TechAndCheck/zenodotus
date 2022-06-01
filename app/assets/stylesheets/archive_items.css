@@ -42,6 +42,10 @@
         "photo community";
 }
 
+a.archive-item__author {
+    text-decoration: none;
+}
+
 .archive-item__author-photo {
     grid-area: photo;
     justify-self: center;

@@ -140,6 +140,7 @@ class Sources::InstagramPost < ApplicationRecord
     {
       publishing_platform_shortname:    "instagram",
       publishing_platform_display_name: "Instagram",
+      author_canonical_path:            url_helpers.instagram_user_path(self.author),
       author_profile_image_url:         self.author.profile_image_url,
       author_display_name:              self.author.display_name,
       author_username:                  self.author.handle,

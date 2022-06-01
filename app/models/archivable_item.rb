@@ -2,6 +2,8 @@
 module ArchivableItem
   extend ActiveSupport::Concern
 
+  delegate :url_helpers, to: "Rails.application.routes"
+
   included do
     has_one :archive_item, as: :archivable_item, touch: true, dependent: :destroy
   end
@@ -13,6 +15,7 @@ module ArchivableItem
   # {
   #   publishing_platform_shortname:    "",
   #   publishing_platform_display_name: "",
+  #   author_canonical_path:            "",
   #   author_profile_image_url:         "",
   #   author_display_name:              "",
   #   author_username:                  "",
