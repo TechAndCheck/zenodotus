@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Zenodotus</title>
+    <title><%= make_title_tag_content(@title_tag) %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -14,12 +14,16 @@
 
   </head>
 
-  <body class="bg-green-50">
-    <%= render "layouts/header" %>
-    <div class="flex flex-col lg:mx-auto mt-4 ml-5 mr-5 max-w-screen-xl">
-      <%= render "layouts/flashes" %>
-      <%= yield %>
+  <body class="bg-gray-50 text-gray-800">
+    <div class="flex flex-col min-h-screen">
+      <%= render "layouts/header" %>
+      <div class="grow flex relative shadow z-1">
+        <div class="container mx-auto max-w-screen-xl">
+          <%= render "layouts/flashes/turbo_flashes" %>
+          <%= yield %>
+        </div>
+      </div>
+      <%= render "layouts/footer" %>
     </div>
-    <%= render "layouts/footer" %>
   </body>
 </html>

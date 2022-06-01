@@ -9,10 +9,10 @@ class ArchiveController < ApplicationController
   def index
     respond_to do | format |
       if current_user.nil? || current_user.restricted
-        @archive_items = ArchiveItem.includes(:media_review, archivable_item: [:author])
+        @archive_items = ArchiveItem.includes(:media_review, archivable_item: [:author]).order("created_at DESC")
         format.html { render "limited_index" }
       else
-        @archive_items = ArchiveItem.includes(:media_review, { archivable_item: [:author, :images, :videos] })
+        @archive_items = ArchiveItem.includes(:media_review, { archivable_item: [:author, :images, :videos] }).order("created_at DESC")
         format.html {  render "index" }
       end
     end
@@ -39,7 +39,7 @@ class ArchiveController < ApplicationController
       object_model.create_from_url(url, current_user)
     rescue StandardError => e
       respond_to do |format|
-        error = "#{e.class} : #{e.message}"
+        error = "#{e.class}: #{e.message}"
         format.turbo_stream { render turbo_stream: [
           turbo_stream.replace("modal", partial: "archive/add", locals: { error: error }),
           turbo_stream.replace(
@@ -57,9 +57,9 @@ class ArchiveController < ApplicationController
 
     respond_to do |format|
       # need to check for restricted users here, too
-      flash.now[:alert] = "Successfully archived your link!"
+      flash.now[:success] = "Successfully archived your link!"
       format.turbo_stream { render turbo_stream: [
-        turbo_stream.replace("flash", partial: "layouts/flashes", locals: { flash: flash }),
+        turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
         turbo_stream.replace("modal", partial: "archive/add", locals: { render_empty: true }),
         turbo_stream.replace(
           "tweets_list",

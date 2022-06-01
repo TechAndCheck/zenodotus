@@ -1,0 +1,3 @@
+<% flash.each do |flash_type, message| %>
+    <%= render partial: "layouts/flashes/flash", locals: { flash_type: flash_type, message: message } %>
+<% end %>
