@@ -13,8 +13,3 @@
         @apply no-underline;
     }
 }
-
-* {
-    box-sizing: border-box;
-    transition: all var(--transition-timing) var(--transition-function);
-}

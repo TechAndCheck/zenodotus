@@ -9,7 +9,10 @@
     --caption-spacing: 0.75rem;
     --text-color-subdued: #999;
     --image-border-radius: 0.4rem;
+}
 
+.archive-item * {
+    transition: all var(--transition-timing) var(--transition-function);
 }
 
 .archive-item:first-child {
