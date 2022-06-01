@@ -99,6 +99,15 @@ a.archive-item__author {
     font-size: 1rem;
 }
 
+.archive-item[data-publishing-platform="twitter"] .archive-item__body-caption {
+    font-size: 1.3rem;
+}
+
+.archive-item[data-publishing-platform="youtube"] .archive-item__body-caption {
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
 .archive-item__body-media__image {
     display: block;
     width: 100%;
