@@ -29,4 +29,19 @@ module ApplicationHelper
 
     flash_color_map.has_key?(flash_type) ? flash_color_map[flash_type] : "blue"
   end
+
+  # Given a bit of text input, this helper scans it for URLs and, if found, returns them as actual
+  # links.
+  #
+  # Credit for this helper goes to https://gist.github.com/O-I/4dd3a936a09474df97a0
+  #
+  # @param text String The text you want to scan
+  # @returns String The text, with URLs replaced by link tags
+  def linkify_urls_in_text(text)
+    urls = URI.extract(text, %w(http https)).uniq
+    urls.each do |url|
+      text.gsub!(url, link_to(url, url, target: "_blank", rel: "noopener noreferrer"))
+    end
+    text.html_safe
+  end
 end

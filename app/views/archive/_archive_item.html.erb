@@ -40,7 +40,7 @@
                 class="archive-item__body-caption-content"
                 data-archive-target="captionContent"
             >
-                <%= simple_format(archive_item_caption) %>
+                <%= linkify_urls_in_text(simple_format(archive_item_caption)) %>
             </div>
             <% if caption_is_collapsable %>
                 <button
