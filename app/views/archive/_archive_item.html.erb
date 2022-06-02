@@ -1,7 +1,10 @@
+<% caption_is_collapsable = archive_item_caption.length > 320 %>
+
 <div
     class="archive-item"
     data-publishing-platform="<%= publishing_platform_shortname %>"
     data-controller="archive"
+    data-archive-caption-collapse-mode-value="<%= caption_is_collapsable ? 'collapsed' : 'static' %>"
 >
     <%= link_to author_canonical_path,
         class: "archive-item__author",
@@ -33,7 +36,21 @@
             </div>
         <% end %>
         <div class="archive-item__body-caption">
-            <%= simple_format(archive_item_caption) %>
+            <div
+                class="archive-item__body-caption-content"
+                data-archive-target="captionContent"
+            >
+                <%= simple_format(archive_item_caption) %>
+            </div>
+            <% if caption_is_collapsable %>
+                <button
+                    class="archive-item__body-caption-toggler"
+                    data-archive-target="captionToggler"
+                    data-action="archive#toggleCaption"
+                    data-collapse-label="Collapse caption ↑"
+                    data-expand-label="Expand caption ↓"
+                >Expand caption ↓</button>
+            <% end %>
         </div>
     </div>
 

@@ -108,6 +108,29 @@ a.archive-item__author {
     font-weight: 500;
 }
 
+.archive-item[data-archive-caption-collapse-mode-value="collapsed"] .archive-item__body-caption-content {
+    --collapsed-lines-of-text: 3;
+    overflow: hidden;
+
+    /* For browsers that support line clamping: */
+    display: -webkit-box;
+    -webkit-line-clamp: var(--collapsed-lines-of-text);
+    -webkit-box-orient: vertical;
+
+    /* For browsers that don't support line clamping: */
+    max-height: calc(1em * var(--line-height) * var(--collapsed-lines-of-text));
+}
+
+.archive-item__body-caption-toggler {
+    font-weight: 500;
+    font-size: 0.9em;
+    text-decoration: underline;
+}
+
+.archive-item__body-caption-toggler:hover {
+    text-decoration: none;
+}
+
 .archive-item__body-media__image {
     display: block;
     width: 100%;
