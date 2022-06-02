@@ -13,3 +13,7 @@
         @apply no-underline;
     }
 }
+
+body {
+    line-height: var(--line-height);
+}
