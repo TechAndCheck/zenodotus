@@ -5,8 +5,8 @@
     --author-area-gap-x: 1rem;
     --body-offset: 0;
     --external-spacing: 4rem;
-    --internal-spacing: 1.5rem;
-    --caption-spacing: 0.75rem;
+    --internal-spacing: 0.75rem;
+    --metadata-spacing: 0.75rem;
     --text-color-subdued: #999;
     --image-border-radius: 0.4rem;
 }
@@ -87,7 +87,7 @@ a.archive-item__author {
 
     display: flex;
     flex-direction: column;
-    row-gap: var(--caption-spacing);
+    row-gap: var(--internal-spacing);
 }
 
 .archive-item[data-publishing-platform="facebook"] .archive-item__body,
@@ -180,7 +180,7 @@ a.archive-item__author {
     --line-height: 1.2;
 
     margin-left: var(--body-offset);
-    margin-top: var(--internal-spacing);
+    margin-top: 1.5rem;
     display: flex;
     column-gap: var(--internal-spacing);
     color: var(--text-color-subdued);
