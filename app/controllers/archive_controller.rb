@@ -47,7 +47,7 @@ class ArchiveController < ApplicationController
             partial: "archive/tweets_list",
             locals: { archive_items: ArchiveItem.includes({
               archivable_item: [:author, :images, :videos]
-            }) }
+            }).order("created_at DESC") }
           )
         ] }
         format.html { redirect_to :root }
@@ -64,7 +64,7 @@ class ArchiveController < ApplicationController
         turbo_stream.replace(
           "tweets_list",
           partial: "archive/tweets_list",
-          locals: { archive_items: ArchiveItem.includes({ archivable_item: [:author] }) }
+          locals: { archive_items: ArchiveItem.includes({ archivable_item: [:author] }).order("created_at DESC") }
         )
       ] }
       format.html { redirect_to :root }
