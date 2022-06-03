@@ -46,6 +46,11 @@ a.archive-item__author {
     text-decoration: none;
 }
 
+a.archive-item__author:hover .archive-item__author-display-name,
+a.archive-item__author:hover .archive-item__author-username {
+    text-decoration: underline;
+}
+
 .archive-item__author-photo {
     grid-area: photo;
     justify-self: center;
