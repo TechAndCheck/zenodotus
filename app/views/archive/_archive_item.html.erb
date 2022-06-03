@@ -8,8 +8,7 @@
 >
     <%= link_to author_canonical_path,
         class: "archive-item__author",
-        title: "MediaVault profile page for #{author_display_name}",
-        data: { "turbo-frame": "_top" } do %>
+        title: "MediaVault profile page for #{author_display_name}" do %>
         <img
             class="archive-item__author-photo"
             src="<%= author_profile_image_url %>"
