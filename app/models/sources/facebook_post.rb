@@ -132,4 +132,24 @@ class Sources::FacebookPost < ApplicationRecord
   def service_id
     facebook_id
   end
+
+  # Normalized representation of this archivable item for use in the view template.
+  #
+  # @returns Hash of normalized attributes.
+  sig { returns(Hash) }
+  def normalized_attrs_for_views
+    {
+      publishing_platform_shortname:    "facebook",
+      publishing_platform_display_name: "Facebook",
+      author_canonical_path:            url_helpers.facebook_user_path(self.author),
+      author_profile_image_url:         self.author.profile_image_url,
+      author_display_name:              self.author.name,
+      author_username:                  self.author.profile,
+      author_community_count:           self.author.followers_count,
+      author_community_noun:            "follower",
+      archive_item_self:                self,
+      archive_item_caption:             self.text,
+      published_at:                     self.posted_at,
+    }
+  end
 end

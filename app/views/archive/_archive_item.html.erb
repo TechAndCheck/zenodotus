@@ -1,0 +1,81 @@
+<% caption_is_collapsable = archive_item_caption.length > 320 %>
+
+<div
+    class="archive-item"
+    data-publishing-platform="<%= publishing_platform_shortname %>"
+    data-controller="archive"
+    data-archive-caption-collapse-mode-value="<%= caption_is_collapsable ? 'collapsed' : 'static' %>"
+>
+    <%= link_to author_canonical_path,
+        class: "archive-item__author",
+        title: "MediaVault profile page for #{author_display_name}" do %>
+        <img
+            class="archive-item__author-photo"
+            src="<%= author_profile_image_url %>"
+            alt="Profile photo for <%= author_display_name %>"
+        />
+        <span class="archive-item__author-name">
+            <span class="archive-item__author-display-name"><%= author_display_name %></span>
+            <% unless author_username.nil? %>
+                <span class="archive-item__author-username">@<%= author_username %></span>
+            <% end %>
+        </span>
+        <span class="archive-item__author-community">
+            <%= humanized_community_count(author_community_count, author_community_noun) %>
+        </span>
+    <% end %>
+    <div class="archive-item__body">
+        <% if archive_item_self.has_displayable_media? %>
+            <div class="archive-item__body-media">
+                <% if archive_item_self.combined_media.length == 1 %>
+                    <%= render partial: "archive/archive_item_media_inline_full", locals: { media: archive_item_self.combined_media.first } %>
+                <% else %>
+                    <%= render partial: "archive/archive_item_media_inline_thumbnails", locals: { combined_media: archive_item_self.combined_media } %>
+                <% end %>
+            </div>
+        <% end %>
+        <div class="archive-item__body-caption">
+            <div
+                class="archive-item__body-caption-content"
+                data-archive-target="captionContent"
+            >
+                <%= linkify_urls_in_text(simple_format(archive_item_caption)) %>
+            </div>
+            <% if caption_is_collapsable %>
+                <button
+                    class="archive-item__body-caption-toggler"
+                    data-archive-target="captionToggler"
+                    data-action="archive#toggleCaption"
+                    data-collapse-label="Collapse caption ↑"
+                    data-expand-label="Expand caption ↓"
+                >Expand caption ↓</button>
+            <% end %>
+        </div>
+    </div>
+
+    <div class="archive-item__metadata">
+        <div class="archive-item__publish-details archive-item__metadatum">
+            <div class="archive-item__metadatum__icon">
+                <svg><use xlink:href="#svg-<%= publishing_platform_shortname %>"></use></svg>
+            </div>
+            <div class="archive-item__metadatum__label">Published on <%= publishing_platform_display_name %></div>
+            <time
+                class="archive-item__metadatum__value"
+                datetime="<%= published_at.iso8601 %>"
+                data-archive-target="timestamp"
+            >
+                <%= published_at %>
+            </time>
+        </div>
+        <div class="archive-item__scrape-details archive-item__metadatum">
+            <div class="archive-item__metadatum__label">Archived</div>
+            <time
+                class="archive-item__metadatum__value"
+                datetime="<%= archived_at.iso8601 %>"
+                data-archive-target="timestamp"
+            >
+                <%= archived_at %>
+            </time>
+        </div>
+    </div>
+</div>

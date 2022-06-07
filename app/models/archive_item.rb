@@ -107,4 +107,16 @@ class ArchiveItem < ApplicationRecord
   def youtube_post
     self.sources_youtube_post
   end
+
+  # Proxy for the normalized representation of this related archivable item for use in the view
+  # template, decorated with additional attributes.
+  #
+  # @returns Hash of normalized attributes.
+  sig { returns(Hash) }
+  def normalized_attrs_for_views
+    {
+      **self.archivable_item.normalized_attrs_for_views,
+      archived_at: self.created_at
+    }
+  end
 end

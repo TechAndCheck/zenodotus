@@ -13,7 +13,7 @@ class ArchiveController < ApplicationController
         format.html { render "limited_index" }
       else
         @archive_items = ArchiveItem.includes(:media_review, { archivable_item: [:author, :images, :videos] }).order("created_at DESC")
-        format.html {  render "index" }
+        format.html { render "index" }
       end
     end
   end
@@ -42,12 +42,12 @@ class ArchiveController < ApplicationController
         error = "#{e.class}: #{e.message}"
         format.turbo_stream { render turbo_stream: [
           turbo_stream.replace("modal", partial: "archive/add", locals: { error: error }),
-          turbo_stream.replace(
-            "tweets_list",
-            partial: "archive/tweets_list",
+          turbo_stream.update(
+            "recent_archived_items",
+            partial: "archive/archive_items",
             locals: { archive_items: ArchiveItem.includes({
               archivable_item: [:author, :images, :videos]
-            }) }
+            }).order("created_at DESC") }
           )
         ] }
         format.html { redirect_to :root }
@@ -61,10 +61,10 @@ class ArchiveController < ApplicationController
       format.turbo_stream { render turbo_stream: [
         turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
         turbo_stream.replace("modal", partial: "archive/add", locals: { render_empty: true }),
-        turbo_stream.replace(
-          "tweets_list",
-          partial: "archive/tweets_list",
-          locals: { archive_items: ArchiveItem.includes({ archivable_item: [:author] }) }
+        turbo_stream.update(
+          "recent_archived_items",
+          partial: "archive/archive_items",
+          locals: { archive_items: ArchiveItem.includes({ archivable_item: [:author] }).order("created_at DESC") }
         )
       ] }
       format.html { redirect_to :root }
