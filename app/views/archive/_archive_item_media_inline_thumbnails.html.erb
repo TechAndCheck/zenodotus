@@ -1,0 +1,23 @@
+<div class="archive-item__body-media__thumbnails" data-thumbnail-count="<%= combined_media.count %>">
+<% combined_media.each do |media| %>
+    <%
+        if media.try(:image_url)
+            thumbnail_image_url = media.image_url
+            full_size_href = media.image_url
+        elsif media.try(:video_url)
+            thumbnail_image_url = media.video_derivatives[:preview].url
+            full_size_href = media.video_url
+        else
+            next
+        end
+    %>
+    <a
+        class="archive-item__body-media__thumbnail"
+        style="background-image:url('<%= thumbnail_image_url %>')"
+        title="Click to view full-size version of media"
+        href="<%= full_size_href %>"
+        target="_blank"
+        rel="noopener noreferrer"
+    ></a>
+<% end %>
+</div>

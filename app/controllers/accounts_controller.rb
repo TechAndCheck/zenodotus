@@ -33,7 +33,7 @@ class AccountsController < ApplicationController
         flash.now[:alert] = "Password updated."
       end
       format.turbo_stream { render turbo_stream: [
-        turbo_stream.replace("flash", partial: "layouts/flashes", locals: { flash: flash }),
+        turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
       ] }
     end
   end
@@ -46,7 +46,7 @@ class AccountsController < ApplicationController
     respond_to do |format|
       flash.now[:alert] = "Email updated."
       format.turbo_stream { render turbo_stream: [
-        turbo_stream.replace("flash", partial: "layouts/flashes", locals: { flash: flash }),
+        turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
       ] }
     end
   end

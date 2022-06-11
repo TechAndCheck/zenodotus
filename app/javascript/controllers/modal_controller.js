@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
   close() {
@@ -20,7 +20,5 @@ export default class extends Controller {
     }
   }
 
-  onPostSuccess() {
-    console.log('success!')
-  }
+  onPostSuccess() {}
 }

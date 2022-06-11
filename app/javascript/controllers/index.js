@@ -7,6 +7,9 @@ import { application } from "./application"
 import AccountController from "./account_controller.js"
 application.register("account", AccountController)
 
+import ArchiveController from "./archive_controller.js"
+application.register("archive", ArchiveController)
+
 import FlashBoxController from "./flash_box_controller.js"
 application.register("flash-box", FlashBoxController)
 
