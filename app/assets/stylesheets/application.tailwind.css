@@ -6,14 +6,14 @@
 @tailwind utilities;
 
 @layer base {
-    a {
-        @apply underline;
-    }
-    a:hover {
-        @apply no-underline;
-    }
+	a {
+		@apply underline;
+	}
+	a:hover {
+		@apply no-underline;
+	}
 }
 
 body {
-    line-height: var(--line-height);
+	line-height: var(--line-height);
 }
