@@ -51,9 +51,9 @@ a.archive-item__author:hover .archive-item__author-username {
 }
 
 .archive-item__author-photo {
-    align-self: center;
 	grid-area: photo;
 	justify-self: center;
+	align-self: flex-start;
 
 	@apply rounded-full;
 	width: var(--profile-photo-size);
