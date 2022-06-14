@@ -8,6 +8,10 @@
 	--image-border-radius: 0.4rem;
 
 	margin: var(--external-spacing) 0;
+	background: white;
+	padding: calc(var(--internal-spacing) * 2);
+	border: 1px solid lightgray;
+	box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
 }
 
 .archive-item * {
@@ -18,12 +22,6 @@
 	margin-top: 0;
 }
 .archive-item:last-child {
-}
-
-@media screen and (min-width: 601px) {
-    .archive-item {
-        --body-offset: calc(var(--profile-photo-size) + var(--author-area-gap-x));
-    }
 	margin-bottom: 0;
 }
 
@@ -74,15 +72,15 @@ a.archive-item__author:hover .archive-item__author-username {
 }
 
 .archive-item__author-username {
-    color: var(--text-color-subdued);
 	font-weight: 200;
 }
 
 .archive-item__author-community {
-    color: var(--text-color-subdued);
 	grid-area: community;
 	justify-self: start;
 	align-self: start;
+
+	font-weight: 300;
 	font-size: 0.9rem;
 }
 
@@ -193,6 +191,12 @@ a.archive-item__author:hover .archive-item__author-username {
 	line-height: var(--line-height);
 }
 
+@media screen and (max-width: 500px) {
+	.archive-item__metadata {
+		flex-direction: column;
+	}
+}
+
 .archive-item__metadatum {
 	display: grid;
 	width: fit-content;
@@ -230,4 +234,5 @@ a.archive-item__author:hover .archive-item__author-username {
 	justify-self: start;
 	align-self: start;
 
+	font-weight: 300;
 }
