@@ -2,4 +2,20 @@
 	--line-height: 1.5;
 	--transition-timing: 200ms;
 	--transition-function: ease;
+
+	/*
+	Breakpoints
+
+	These will be useful once we add SCSS to the pipeline, as then we can use them in @media size
+	declarations. This doesn't currently work: `@media screen and (min-width: var(--foo))`
+	*/
+	--screen-sm-ceiling: 640px;
+	--screen-md-floor: 641px;
+	--screen-md-ceiling: 768px;
+	--screen-lg-floor: 769px;
+	--screen-lg-ceiling: 1024px;
+	--screen-xl-floor: 1025px;
+	--screen-xl-ceiling: 1280px;
+	--screen-2xl-floor: 1281px;
+	--screen-2xl-ceiling: 1536px;
 }
