@@ -1,0 +1,28 @@
+/*
+Buttons
+
+Library for common button and button-like styling. Can be used with either `<button>` or `<a>`
+elements, but the examples will just use `<button>`.
+
+TODO: This is obviously very minimal at the moment. Will add more styles, variations, etc.
+
+```html
+<button class="btn">
+	…
+</button>
+```
+*/
+
+.btn {
+	padding: 0.5em 0.75em;
+	border-radius: 0.35em;
+	font-weight: 600;
+	text-decoration: none;
+	transition: all var(--transition-timing) var(--transition-function);
+
+	background-color: #ddd;
+}
+
+.btn:hover {
+	background-color: #ccc;
+}
