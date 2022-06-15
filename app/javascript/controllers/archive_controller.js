@@ -1,8 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-
-dayjs.extend(utc)
+import { humanizeTimeElement } from '../utilities'
 
 export default class extends Controller {
   static targets = [
@@ -14,9 +11,7 @@ export default class extends Controller {
   static values = { captionCollapseMode: String }
 
   timestampTargetConnected(element) {
-    const utcTime = element.getAttribute('datetime')
-    const localTime = dayjs.utc(utcTime).local().format('D MMM YYYY [at] h:mm A')
-    element.innerText = localTime
+    humanizeTimeElement(element)
   }
 
   toggleCaption() {
