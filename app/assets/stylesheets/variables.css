@@ -1,8 +1,4 @@
 :root {
-	--line-height: 1.5;
-	--transition-timing: 200ms;
-	--transition-function: ease;
-
 	/*
 	Breakpoints
 
@@ -18,6 +14,17 @@
 	--screen-xl-ceiling: 1280px;
 	--screen-2xl-floor: 1281px;
 	--screen-2xl-ceiling: 1536px;
+
+	/*
+	Transitions
+	*/
+	--transition-timing: 200ms;
+	--transition-function: ease;
+
+	/*
+	Typography
+	*/
+	--line-height: 1.5;
 
 	/*
 	Font Weights
