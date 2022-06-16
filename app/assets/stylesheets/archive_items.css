@@ -131,7 +131,7 @@ may never be widely adopted. If you're reading this in a future when it's been a
 	row-gap: var(--archive-item--internal-spacing);
 
 	margin-left: var(--archive-item--body-indentation);
-	transition: margin-left var(--transition-timing) var(--transition-function);
+	transition-property: margin-left;
 }
 
 .archive-item[data-publishing-platform="facebook"] .archive-item__body,
@@ -240,7 +240,7 @@ may never be widely adopted. If you're reading this in a future when it's been a
 	font-size: var(--archive-item--metadata-font-size);
 	line-height: var(--archive-item--metadata-line-height);
 
-	transition: margin-left var(--transition-timing) var(--transition-function);
+	transition-property: margin-left;
 }
 
 @media screen and (max-width: 500px) {

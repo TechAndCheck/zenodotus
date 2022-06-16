@@ -18,7 +18,7 @@ TODO: This is obviously very minimal at the moment. Will add more styles, variat
 	border-radius: 0.35em;
 	font-weight: var(--font-weight-semibold);
 	text-decoration: none;
-	transition: all var(--transition-timing) var(--transition-function);
+	transition: background-color;
 
 	background-color: #ddd;
 }
