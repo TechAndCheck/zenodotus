@@ -16,7 +16,7 @@ TODO: This is obviously very minimal at the moment. Will add more styles, variat
 .btn {
 	padding: 0.5em 0.75em;
 	border-radius: 0.35em;
-	font-weight: 600;
+	font-weight: var(--font-weight-semibold);
 	text-decoration: none;
 	transition: all var(--transition-timing) var(--transition-function);
 

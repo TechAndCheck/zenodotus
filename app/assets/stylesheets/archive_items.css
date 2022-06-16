@@ -68,11 +68,11 @@ a.archive-item__author:hover .archive-item__author-username {
 }
 
 .archive-item__author-display-name {
-	font-weight: 600;
+	font-weight: var(--font-weight-semibold);
 }
 
 .archive-item__author-username {
-	font-weight: 200;
+	font-weight: var(--font-weight-light);
 }
 
 .archive-item__author-community {
@@ -80,7 +80,7 @@ a.archive-item__author:hover .archive-item__author-username {
 	justify-self: start;
 	align-self: start;
 
-	font-weight: 300;
+	font-weight: var(--font-weight-light);
 	font-size: 0.9rem;
 }
 
@@ -107,7 +107,7 @@ a.archive-item__author:hover .archive-item__author-username {
 
 .archive-item[data-publishing-platform="youtube"] .archive-item__body-caption {
 	font-size: 1.3rem;
-	font-weight: 500;
+	font-weight: var(--font-weight-medium);
 }
 
 .archive-item[data-archive-caption-collapse-mode-value="collapsed"] .archive-item__body-caption-content {
@@ -124,7 +124,7 @@ a.archive-item__author:hover .archive-item__author-username {
 }
 
 .archive-item__body-caption-toggler {
-	font-weight: 500;
+	font-weight: var(--font-weight-semibold);
 	font-size: 0.9em;
 	text-decoration: underline;
 }
@@ -155,7 +155,7 @@ a.archive-item__author:hover .archive-item__author-username {
 	color: white;
 	border-radius: 5px;
 	font-size: 0.8rem;
-	font-weight: 600;
+	font-weight: var(--font-weight-semibold);
 	padding: 0.25em 0.5em;
 }
 
@@ -226,7 +226,7 @@ a.archive-item__author:hover .archive-item__author-username {
 	justify-self: start;
 	align-self: end;
 
-	font-weight: 600;
+	font-weight: var(--font-weight-medium);
 }
 
 .archive-item__metadatum__value {
@@ -234,5 +234,5 @@ a.archive-item__author:hover .archive-item__author-username {
 	justify-self: start;
 	align-self: start;
 
-	font-weight: 300;
+	font-weight: var(--font-weight-light);
 }
