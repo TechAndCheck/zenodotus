@@ -2,6 +2,7 @@
 @import "./buttons.css";
 @import "./icons.css";
 @import "./archive_items.css";
+@import "./authors.css";
 
 @tailwind base;
 @tailwind components;
