@@ -3,7 +3,10 @@ class InstagramUsersController < ApplicationController
   sig { void }
   def show
     @instagram_user = Sources::InstagramUser.find(params[:id])
-    @archive_items = Sources::InstagramPost.where(author_id: @instagram_user.id).includes([:images, :videos])
+    instagram_post_archive_items = ArchiveItem.includes(archivable_item: [:author, :images, :videos])
+                                              .where(archivable_item_type: "Sources::InstagramPost")
+    instagram_posts_by_user = instagram_post_archive_items.select { |t| t.instagram_post.author == @instagram_user }
+    @archive_items = instagram_posts_by_user
   end
 
   # Exports all media items created by the currently viewed Instagram user to a JSON file
