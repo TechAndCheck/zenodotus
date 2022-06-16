@@ -1,55 +1,67 @@
-<section class="text-gray-600 body-font">
-  <div class="container px-5 py-24 mx-auto">
-    <div class="flex flex-wrap w-full mb-20">
-      <div class="lg:w-1/2 w-full mb-6 lg:mb-0">
-        <img src="<%= @twitter_user.profile_image_url %>" class="w-40 h-40 mb-5 rounded-full inline-flex items-center justify-center bg-gray-200 text-gray-400"/>
-        <div class="h-1 w-20 bg-pink-200 rounded"></div>
-        <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 mt-3 text-gray-900">@<%= @twitter_user.handle %></h1>
-      </div>
-      <div class="lg:w-1/2 w-full leading-relaxed text-gray-500 bg-white border-gray-200 border p-6 rounded-lg">
-        <h3 class="tracking-widest pb-3 text-green-400 text-xs font-medium title-font">Account Details</h3>
-        <ul>
-          <li><span class="text-gray-400">Display Name:</span> <span class="text-lg"><%= @twitter_user.display_name %></span></li>
-          <li><span class="text-gray-400">Followers:</span> <span class="text-lg"><%= @twitter_user.followers_count %></span></li>
-          <li><span class="text-gray-400">Following:</span> <span class="text-lg"><%= @twitter_user.following_count %></span></li>
-          <li><span class="text-gray-400">Sign Up Date:</span> <span class="text-lg"><%= @twitter_user.sign_up_date %></span></li>
-          <li><span class="text-gray-400">Location:</span> <span class="text-lg"><%= @twitter_user.location %></span></li>
-          <br />
-          <li><span class="text-gray-400">Description:</span> <span class="text-lg"><%= @twitter_user.description %></span></li>
-        </ul>
-      </div>
+<div class="author" data-controller="author">
+  <img
+    class="author__image"
+    src="<%= @twitter_user.profile_image_url %>"
+    width="300" height="300"
+    alt="Profile photo of <%= @twitter_user.display_name %>"
+  >
+  <div class="author__profile">
+    <div class="author__name">
+      <span class="author__display-name"><%= @twitter_user.display_name %></span>
+      <span class="author__username">@<%= @twitter_user.handle %></span>
     </div>
-    <div class="flex">
-      <h1 class="text-xl text-green-400 font-medium title-font mb-4">Archived Media Items</h1>
-      <a class="px-2" href="#">
-        <%= link_to twitter_user_download_path do %>
-          <span class="text-xl font-medium title-font mb-4">↓</span>
-        <% end %>
-      </a>
+    <div class="author__metadata">
+      <%= abbreviate_number(@twitter_user.followers_count) %>
+      <%= "follower".pluralize(@twitter_user.followers_count) %>
+      •
+      <%= abbreviate_number(@twitter_user.following_count) %>
+      following
+      •
+      <%= @twitter_user.location %>
     </div>
-    <div class="h-1 w-50 bg-pink-200 rounded"></div>
-    <div class="flex flex-wrap-m-4">
-      <% @archive_items.each do |tweet| %>
-      <div class="xl:w-1/2 md:w-1 p-4">
-        <div class="bg-white border-gray-200 border p-6 rounded-lg">
-          <h3 class="tracking-widest pb-3 text-green-400 text-xs font-medium title-font">Twitter</h3>
-          <% if tweet.images.empty? == false %>
-          <img src="<%= tweet.images.first.image_url %>" class="w-40 h-40 mb-5 inline-flex items-center justify-center bg-gray-200 text-gray-400"/>
-          <% elsif tweet.videos.empty? == false %>
-          <video
-            width="320"
-            height="240"
-            poster="<%= tweet.videos.first.video_derivatives[:preview].url %>"
-            controls>
-            <source src="<%= tweet.videos.first.video_url %>" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <% end %>
-          <p class="leading-relaxed pb-3 text-base"><%= tweet.text %></p>
-          <h3 class="text-lg text-gray-900 font-medium title-font mb-4"><%= tweet.posted_at %></h3>
-        </div>
-      </div>
+    <div class="author__description">
+      <%= @twitter_user.description %>
+    </div>
+    <div class="author__metadata">
+      <span class="icon-prefixed">
+        <svg class="icon icon--xl"><use xlink:href="#svg-calendar-outline"></use></svg>
+        <span>
+          Joined Twitter on
+          <time
+            datetime="<%= @twitter_user.sign_up_date.iso8601 %>"
+            data-author-target="timestamp"
+          >
+            <%= @twitter_user.sign_up_date %>
+          </time>
+        </span>
+    </div>
+  </div>
+</div>
+
+<div class="author-archive">
+  <div class="author-archive__header">
+    <h2 class="author-archive__title">
+      <span class="author-archive__title__archive-size"><%= @archive_items.length %></span>
+      <%= "item".pluralize(@archive_items.length) %>
+      archived
+    </h2>
+    <div class="author-archive__actions">
+      <%= link_to twitter_user_download_path, {
+        title: "Download user archive in JSON format",
+        class: "btn icon-prefixed",
+        download: true
+      } do %>
+        <svg class="icon icon--lg"><use xlink:href="#svg-download-outline"></use></svg>
+        JSON
       <% end %>
     </div>
   </div>
-</section>
+  <div class="archive-items archive-items--masonry archive-items--boxed-items">
+    <% @archive_items.each do |archive_item| %>
+      <%= render partial: "archive/archive_item", locals: {
+        **archive_item.normalized_attrs_for_views,
+        include_author: false
+      } %>
+    <% end %>
+  </div>
+</div>
