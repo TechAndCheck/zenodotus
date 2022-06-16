@@ -71,7 +71,6 @@ just to examine the template files unless/until we capture it better here.
 	.archive-items--masonry {
 		flex-direction: row;
 		flex-wrap: wrap;
-		justify-content: center;
 	}
 
 	.archive-items--masonry .archive-item {
