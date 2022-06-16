@@ -1,45 +1,67 @@
-<section class="text-gray-600 body-font">
-  <div class="container px-5 py-24 mx-auto">
-    <div class="flex flex-wrap w-full mb-20">
-      <div class="lg:w-1/2 w-full mb-6 lg:mb-0">
-        <img src="<%= @youtube_channel.channel_image_url %>" class="w-40 h-40 mb-5 rounded-full inline-flex items-center justify-center bg-gray-200 text-gray-400"/>
-        <div class="h-1 w-20 bg-pink-200 rounded"></div>
-        <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 mt-3 text-gray-900">@<%= @youtube_channel.title %></h1>
-      </div>
-      <div class="lg:w-1/2 w-full leading-relaxed text-gray-500 bg-white border-gray-200 border p-6 rounded-lg">
-        <h3 class="tracking-widest pb-3 text-green-400 text-xs font-medium title-font">Account Details</h3>
-        <ul>
-          <li><span class="text-gray-400">Title:</span> <span class="text-lg"><%= @youtube_channel.title %></span></li>
-          <li><span class="text-gray-400"># of Subscribers:</span> <span class="text-lg"><%= @youtube_channel.num_subscribers %></span></li>
-          <li><span class="text-gray-400"># of Videos:</span> <span class="text-lg"><%= @youtube_channel.num_videos %></span></li>
-          <li><span class="text-gray-400"># of Views:</span> <span class="text-lg"><%= @youtube_channel.num_views %></span></li>
-          <br />
-          <li><span class="text-gray-400">Description:</span> <span class="text-lg"><%= @youtube_channel.description %></span></li>
-        </ul>
-      </div>
+<div class="author" data-controller="author">
+  <img
+    class="author__image"
+    src="<%= @youtube_channel.channel_image_url %>"
+    width="300" height="300"
+    alt="Profile photo of <%= @youtube_channel.title %>"
+  >
+  <div class="author__profile">
+    <div class="author__name">
+      <span class="author__display-name"><%= @youtube_channel.title %></span>
     </div>
-    <div class="flex">
-      <h1 class="text-xl text-green-400 font-medium title-font mb-4">Archived Media Items</h1>
+    <div class="author__metadata">
+      <%= abbreviate_number(@youtube_channel.num_subscribers) %>
+      <%= "subscriber".pluralize(@youtube_channel.num_subscribers) %>
+      •
+      <%= abbreviate_number(@youtube_channel.num_views) %>
+      <%= "view".pluralize(@youtube_channel.num_views) %>
+      •
+      <%= abbreviate_number(@youtube_channel.num_videos) %>
+      <%= "video".pluralize(@youtube_channel.num_videos) %>
     </div>
-    <div class="flex flex-wrap-m-4">
-      <% @archive_items.each do |youtube_post| %>
-      <div class="xl:w-1/2 md:w-1 p-4">
-        <div class="bg-white border-gray-200 border p-6 rounded-lg">
-          <h3 class="tracking-widest pb-3 text-green-400 text-xs font-medium title-font">Youtube Posts</h3>
-          <video
-            width="320"
-            height="240"
-            poster="<%= youtube_post.videos.first.video_derivatives[:preview].url %>"
-            controls>
-            <source src="<%= youtube_post.videos.first.video_url %>" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <p class="leading-relaxed pb-3 text-base"><%#= youtube_post.text %></p>
-          <h3 class="text-lg text-gray-900 font-medium title-font mb-4"><%= youtube_post.posted_at %></h3>
-        </div>
-      </div>
+    <div class="author__description">
+      <%= @youtube_channel.description %>
+    </div>
+    <div class="author__metadata">
+      <span class="icon-prefixed">
+        <svg class="icon icon--xl"><use xlink:href="#svg-calendar-outline"></use></svg>
+        <span>
+          Channel created on
+          <time
+            datetime="<%= @youtube_channel.sign_up_date.iso8601 %>"
+            data-author-target="timestamp"
+          >
+            <%= @youtube_channel.sign_up_date %>
+          </time>
+        </span>
+    </div>
+  </div>
+</div>
+
+<div class="author-archive">
+  <div class="author-archive__header">
+    <h2 class="author-archive__title">
+      <span class="author-archive__title__archive-size"><%= @archive_items.length %></span>
+      <%= "item".pluralize(@archive_items.length) %>
+      archived
+    </h2>
+    <div class="author-archive__actions">
+      <%= link_to youtube_channel_download_path, {
+        title: "Download channel archive in JSON format",
+        class: "btn icon-prefixed",
+        download: true
+      } do %>
+        <svg class="icon icon--lg"><use xlink:href="#svg-download-outline"></use></svg>
+        JSON
       <% end %>
     </div>
   </div>
-</section>
-
+  <div class="archive-items archive-items--masonry archive-items--boxed-items">
+    <% @archive_items.each do |archive_item| %>
+      <%= render partial: "archive/archive_item", locals: {
+        **archive_item.normalized_attrs_for_views,
+        include_author: false
+      } %>
+    <% end %>
+  </div>
+</div>
