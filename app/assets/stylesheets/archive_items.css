@@ -154,9 +154,14 @@ may never be widely adopted. If you're reading this in a future when it's been a
 
 .archive-item[data-archive-caption-collapse-mode-value="collapsed"] .archive-item__body-caption-content {
 	--collapsed-lines-of-text: 3;
+
 	overflow: hidden;
 
-	/* For browsers that don't support line clamping: */
+	/*
+	Initially, I intended for this only to apply when line-clamping wasn't supported. However,
+	it seems that line-clamp acts unexpectedly when there are multiple children of the clamped
+	element. So, for now max-height is unversal and all clamping really gets us is the ellipsis.
+	*/
 	max-height: calc(1em * var(--line-height) * var(--collapsed-lines-of-text));
 }
 
@@ -165,7 +170,6 @@ may never be widely adopted. If you're reading this in a future when it's been a
 		display: -webkit-box;
 		-webkit-line-clamp: var(--collapsed-lines-of-text);
 		-webkit-box-orient: vertical;
-		max-height: initial;
 	}
 }
 
