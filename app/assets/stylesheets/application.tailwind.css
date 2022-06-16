@@ -3,6 +3,7 @@
 @import "./icons.css";
 @import "./archive_items.css";
 @import "./authors.css";
+@import "./author_archives.css";
 
 @tailwind base;
 @tailwind components;
