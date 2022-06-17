@@ -1,4 +1,4 @@
-<% caption_is_collapsable = archive_item_caption.length > 320 %>
+<% caption_is_collapsable = archive_item_caption.nil? ? false : archive_item_caption.length > 320 %>
 
 <div
     class="archive-item"

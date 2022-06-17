@@ -90,15 +90,16 @@ class Sources::YoutubePost < ApplicationRecord
     youtube_archiver_videos.map do |youtube_archiver_video|
       youtube_archiver_video = youtube_archiver_video["post"]
       youtube_channel = Sources::YoutubeChannel.create_from_youtube_archiver_hash([youtube_archiver_video["channel"]]).first.youtube_channel
-
-      unless youtube_archiver_video["video_file"].nil?
+      if youtube_archiver_video["aws_video_key"].present?
+        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(youtube_archiver_video["aws_video_key"])
+        videos_attributes = [ { video: File.open(downloaded_path, binmode: true) } ]
+      elsif youtube_archiver_video["video_file"].nil? == false
         tempfile = Tempfile.new(binmode: true)
         tempfile.write(Base64.decode64(youtube_archiver_video["video_file"]))
 
         videos_attributes = [{ video: File.open(tempfile.path, binmode: true) }]
 
         tempfile.close!
-        videos_attributes
       else
         videos_attributes = []
       end
@@ -152,5 +153,13 @@ class Sources::YoutubePost < ApplicationRecord
       archive_item_caption:             self.title,
       published_at:                     self.posted_at,
     }
+  end
+
+  # This is a filler for the `images` property that normally wouldn't exist
+  #
+  # @return Array that's empty
+  sig { returns(Array) }
+  def images
+    []
   end
 end

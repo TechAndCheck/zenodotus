@@ -26,7 +26,10 @@ class ArchiveItem < ApplicationRecord
     url = appearance["contentUrl"]
 
     object_model = model_for_url(url)
-    object_model.create_from_url(url) # Start scraping
+
+    # Stuff is going to come in that was misinputted, or that we don't have a scraper for.
+    # If so, skip the scrape, create the MediaReview and mark as `orphaned`.
+    object_model.create_from_url(url) unless object_model.nil? # Start scraping
 
     # For the moment we create an "orphan" MediaReview, since the archive_item will be created
     # later. This will be updated with the associated Scrape gets fulfilled
