@@ -1,14 +1,24 @@
 .author {
 	--author--external-spacing: 5rem;
 	--author--internal-spacing: 1rem;
-	--author--profile-image-gap: 2rem;
-	--author--profile-image-size: 10rem;
-	--author--name-font-size: 2rem;
+	--author--profile-image-gap: 1rem;
+	--author--profile-image-size: 5rem;
+	--author--name-font-size: 1.4rem;
 
 	margin: var(--author--external-spacing) 0;
 	display: flex;
 	align-items: center;
 	gap: var(--author--profile-image-gap);
+
+	transition-property: gap;
+}
+
+@media screen and (min-width: 769px) {
+	.author {
+		--author--profile-image-gap: 2rem;
+		--author--profile-image-size: 10rem;
+		--author--name-font-size: 2rem;
+	}
 }
 
 a.author {
@@ -27,11 +37,14 @@ a.author:hover .author__username {
 	aspect-ratio: 1 / 1;
 	width: var(--author--profile-image-size);
 	height: 100%;
+
+	transition-property: width;
 }
 
 .author__name {
 	font-size: var(--author--name-font-size);
 	line-height: 1.2;
+	transition-property: font-size;
 }
 
 .author__display-name {

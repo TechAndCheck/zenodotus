@@ -21,3 +21,9 @@
 body {
 	line-height: var(--line-height);
 }
+
+body * {
+	transition-property: none;
+	transition-duration: var(--transition-duration);
+	transition-timing-function: var(--transition-timing-function);
+}

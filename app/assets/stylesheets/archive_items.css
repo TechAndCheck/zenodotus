@@ -71,7 +71,6 @@ just to examine the template files unless/until we capture it better here.
 	.archive-items--masonry {
 		flex-direction: row;
 		flex-wrap: wrap;
-		justify-content: center;
 	}
 
 	.archive-items--masonry .archive-item {
@@ -131,7 +130,7 @@ may never be widely adopted. If you're reading this in a future when it's been a
 	row-gap: var(--archive-item--internal-spacing);
 
 	margin-left: var(--archive-item--body-indentation);
-	transition: margin-left var(--transition-timing) var(--transition-function);
+	transition-property: margin-left;
 }
 
 .archive-item[data-publishing-platform="facebook"] .archive-item__body,
@@ -154,9 +153,14 @@ may never be widely adopted. If you're reading this in a future when it's been a
 
 .archive-item[data-archive-caption-collapse-mode-value="collapsed"] .archive-item__body-caption-content {
 	--collapsed-lines-of-text: 3;
+
 	overflow: hidden;
 
-	/* For browsers that don't support line clamping: */
+	/*
+	Initially, I intended for this only to apply when line-clamping wasn't supported. However,
+	it seems that line-clamp acts unexpectedly when there are multiple children of the clamped
+	element. So, for now max-height is unversal and all clamping really gets us is the ellipsis.
+	*/
 	max-height: calc(1em * var(--line-height) * var(--collapsed-lines-of-text));
 }
 
@@ -165,7 +169,6 @@ may never be widely adopted. If you're reading this in a future when it's been a
 		display: -webkit-box;
 		-webkit-line-clamp: var(--collapsed-lines-of-text);
 		-webkit-box-orient: vertical;
-		max-height: initial;
 	}
 }
 
@@ -236,7 +239,7 @@ may never be widely adopted. If you're reading this in a future when it's been a
 	font-size: var(--archive-item--metadata-font-size);
 	line-height: var(--archive-item--metadata-line-height);
 
-	transition: margin-left var(--transition-timing) var(--transition-function);
+	transition-property: margin-left;
 }
 
 @media screen and (max-width: 500px) {

@@ -48,6 +48,9 @@ module ApplicationHelper
 
   # Abbreviates long numbers like 32,348 → 32.3K or 6,325,082 → 6.3M.
   #
+  # The use of `try` on the `delete` method is to protect against values that get passed through
+  # `number_to_human` intact but don't respond to `delete`, such as nil or booleans.
+  #
   # @param number Number The number you want to abbreviated.
   # @returns String The number, abbreviated with its suffix.
   def abbreviate_number(number)
@@ -56,7 +59,7 @@ module ApplicationHelper
       million: "M",
       billion: "B",
       trillion: "T" # Look, I'm optimistic about the size of botnets
-    }).delete(" ")
+    }).try(:delete, " ") || "N/A"
   end
 
   # Generates a list of desired class names (strings) for use in HTML markup.

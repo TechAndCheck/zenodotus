@@ -45,6 +45,8 @@ Rails.application.routes.draw do
   put "/organizations/:organization_id/update_admin/:user_id", to: "organizations#update_admin", as: "organization_update_admin"
   delete "/organizations/:organization_id/update_admin/:user_id", to: "organizations#delete_user", as: "organization_delete_user"
 
+  get "/facebook_users/:id/download", to: "facebook_users#export_facebook_user_data", as: "facebook_user_download"
   get "/instagram_users/:id/download", to: "instagram_users#export_instagram_user_data", as: "instagram_user_download"
   get "/twitter_users/:id/download", to: "twitter_users#export_tweeter_data", as: "twitter_user_download"
+  get "/youtube_channels/:id/download", to: "youtube_channels#export_youtube_channel_data", as: "youtube_channel_download"
 end

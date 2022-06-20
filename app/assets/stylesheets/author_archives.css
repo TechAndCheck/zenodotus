@@ -35,7 +35,6 @@ Doesn't include the author's profile info, which is assumed to be separate / a s
 
 	margin: var(--author-archive--header-external-spacing) 0;
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
 	gap: var(--author-archive--header-internal-spacing);
 }
@@ -47,4 +46,8 @@ Doesn't include the author's profile info, which is assumed to be separate / a s
 
 .author-archive__title__archive-size {
 	font-weight: var(--font-weight-bold);
+}
+
+.author-archive__actions {
+	font-size: 0.8rem;
 }
