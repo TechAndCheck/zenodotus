@@ -10,6 +10,9 @@ application.register("account", AccountController)
 import ArchiveController from "./archive_controller.js"
 application.register("archive", ArchiveController)
 
+import AuthorController from "./author_controller.js"
+application.register("author", AuthorController)
+
 import FlashBoxController from "./flash_box_controller.js"
 application.register("flash-box", FlashBoxController)
 
