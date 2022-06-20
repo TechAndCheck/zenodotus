@@ -1,28 +1,41 @@
-<% caption_is_collapsable = archive_item_caption.nil? ? false : archive_item_caption.length > 320 %>
+<% caption_is_collapsable = archive_item_caption.length > 320 %>
+<% include_author = true unless defined?(include_author) && include_author == false %>
+<%
+  archive_item_class_list = generate_class_list_string({
+    "archive-item": true,
+    "archive-item--boxed": defined?(boxed) && boxed == true,
+  })
+%>
 
 <div
-    class="archive-item"
+    class="<%= archive_item_class_list %>"
     data-publishing-platform="<%= publishing_platform_shortname %>"
     data-controller="archive"
     data-archive-caption-collapse-mode-value="<%= caption_is_collapsable ? 'collapsed' : 'static' %>"
 >
-    <%= link_to author_canonical_path,
-        class: "archive-item__author",
-        title: "MediaVault profile page for #{author_display_name}" do %>
-        <img
-            class="archive-item__author-photo"
-            src="<%= author_profile_image_url %>"
-            alt="Profile photo for <%= author_display_name %>"
-        />
-        <span class="archive-item__author-name">
-            <span class="archive-item__author-display-name"><%= author_display_name %></span>
-            <% unless author_username.nil? %>
-                <span class="archive-item__author-username">@<%= author_username %></span>
-            <% end %>
-        </span>
-        <span class="archive-item__author-community">
-            <%= humanized_community_count(author_community_count, author_community_noun) %>
-        </span>
+  <div class="archive-item__inner">
+    <% if include_author %>
+      <%= link_to author_canonical_path,
+          class: "author",
+          title: "MediaVault profile page for #{author_display_name}" do %>
+          <img
+              class="author__image"
+              src="<%= author_profile_image_url %>"
+              alt="Profile photo for <%= author_display_name %>"
+          />
+          <div class="author__profile">
+            <div class="author__name">
+                <span class="author__display-name"><%= author_display_name %></span>
+                <% unless author_username.nil? %>
+                    <span class="author__username">@<%= author_username %></span>
+                <% end %>
+            </div>
+            <div class="author__metadata">
+                <%= abbreviate_number(author_community_count) %>
+                <%= author_community_noun.pluralize(author_community_count) %>
+            </div>
+          </div>
+      <% end %>
     <% end %>
     <div class="archive-item__body">
         <% if archive_item_self.has_displayable_media? %>
@@ -52,22 +65,21 @@
             <% end %>
         </div>
     </div>
-
     <div class="archive-item__metadata">
-        <div class="archive-item__publish-details archive-item__metadatum">
-            <div class="archive-item__metadatum__icon">
-                <svg><use xlink:href="#svg-<%= publishing_platform_shortname %>"></use></svg>
-            </div>
-            <div class="archive-item__metadatum__label">Published on <%= publishing_platform_display_name %></div>
-            <time
-                class="archive-item__metadatum__value"
-                datetime="<%= published_at.iso8601 %>"
-                data-archive-target="timestamp"
-            >
-                <%= published_at %>
-            </time>
+        <div class="icon-prefixed">
+          <svg class="icon"><use xlink:href="#svg-<%= publishing_platform_shortname %>"></use></svg>
+          <div class="archive-item__metadatum">
+              <div class="archive-item__metadatum__label">Published on <%= publishing_platform_display_name %></div>
+              <time
+                  class="archive-item__metadatum__value"
+                  datetime="<%= published_at.iso8601 %>"
+                  data-archive-target="timestamp"
+              >
+                  <%= published_at %>
+              </time>
+          </div>
         </div>
-        <div class="archive-item__scrape-details archive-item__metadatum">
+        <div class="archive-item__metadatum">
             <div class="archive-item__metadatum__label">Archived</div>
             <time
                 class="archive-item__metadatum__value"
@@ -78,4 +90,5 @@
             </time>
         </div>
     </div>
+  </div>
 </div>

@@ -1,4 +1,5 @@
 # typed: strict
+
 module ApplicationHelper
   include Pagy::Frontend
 
@@ -43,5 +44,48 @@ module ApplicationHelper
       text.gsub!(url, link_to(url, url, target: "_blank", rel: "noopener noreferrer"))
     end
     text.html_safe
+  end
+
+  # Abbreviates long numbers like 32,348 → 32.3K or 6,325,082 → 6.3M.
+  #
+  # @param number Number The number you want to abbreviated.
+  # @returns String The number, abbreviated with its suffix.
+  def abbreviate_number(number)
+    number_to_human(number, units: {
+      thousand: "K",
+      million: "M",
+      billion: "B",
+      trillion: "T" # Look, I'm optimistic about the size of botnets
+    }).delete(" ")
+  end
+
+  # Generates a list of desired class names (strings) for use in HTML markup.
+  #
+  # To use, pass a definition hash where the potential class names are the keys and booleans (or
+  # operations that resolve to booleans) are the values, e.g.:
+  #
+  # ```ruby
+  # generate_class_list({
+  #   "form-element": true,
+  #   "required": is_required?,
+  #   "disabled": edit_mode == false,
+  # })
+  # ```
+  #
+  # Assuming `is_required?` is false and `edit_mode` is false, that would generate an array of:
+  # `["form-element", "disabled"]`
+  #
+  # @param class_definition Hash Definition for which classes should be included.
+  # @returns Array The class names whose values resolved to True.
+  def generate_class_list(class_definition)
+    class_definition.map { |class_name, include_in_list| class_name if include_in_list }
+  end
+
+  # Syntacyic sugar for generating an HTML-usable representation of the class list.
+  #
+  # @param class_definition Hash Definition for which classes should be included.
+  # @returns String The class names whose values resolved to True, joined for HTML use.
+  def generate_class_list_string(class_definition)
+    generate_class_list(class_definition).join(" ")
   end
 end

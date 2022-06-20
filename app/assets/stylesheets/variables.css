@@ -1,5 +1,47 @@
 :root {
-    --line-height: 1.5;
-    --transition-timing: 200ms;
-    --transition-function: ease;
+	/*
+	Breakpoints
+
+	These will be useful once we add SCSS to the pipeline, as then we can use them in @media size
+	declarations. This doesn't currently work: `@media screen and (min-width: var(--foo))`
+	*/
+	--screen-sm-ceiling: 640px;
+	--screen-md-floor: 641px;
+	--screen-md-ceiling: 768px;
+	--screen-lg-floor: 769px;
+	--screen-lg-ceiling: 1024px;
+	--screen-xl-floor: 1025px;
+	--screen-xl-ceiling: 1280px;
+	--screen-2xl-floor: 1281px;
+	--screen-2xl-ceiling: 1536px;
+
+	/*
+	Transitions
+	*/
+	--transition-timing: 200ms;
+	--transition-function: ease;
+
+	/*
+	Typography
+	*/
+	--line-height: 1.5;
+
+	/*
+	Font Weights
+
+	Weight values based on OpenType weight classes:
+	https://docs.microsoft.com/en-us/typography/opentype/spec/os2#usweightclass
+
+	Note that we only use a subset of these values.
+	*/
+	--font-weight-thin: 100;       /* AVOID (accessibility) */
+	--font-weight-extralight: 200; /* AVOID (accessibility) */
+	--font-weight-light: 300;
+	--font-weight-normal: 400;
+	--font-weight-medium: 500;
+	--font-weight-semibold: 600;
+	--font-weight-bold: 700;
+	--font-weight-extrabold: 800;  /* AVOID for custom fonts (file size) */
+	--font-weight-black: 900;      /* AVOID for custom fonts (file size) */
+	--font-weight-extrablack: 950; /* AVOID for custom fonts (file size) */
 }

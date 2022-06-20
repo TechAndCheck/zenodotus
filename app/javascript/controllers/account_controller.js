@@ -9,8 +9,7 @@ export default class extends Controller {
     if (url.includes('text_search')) {
       document.getElementById('accountSettings').hidden = true
       document.getElementById('textSearchHistory').removeAttribute('hidden')
-    }
-    else if (url.includes('image_search')) {
+    } else if (url.includes('image_search')) {
       document.getElementById('accountSettings').hidden = true
       document.getElementById('imageSearchHistory').removeAttribute('hidden')
     }
@@ -33,11 +32,13 @@ export default class extends Controller {
    * Resets form input elements. Waits a short period to ensure that inputs are not wiped before being sent to the backend
    */
   resetForm({ params }) {
-    setTimeout(() => [...document.getElementsByClassName(params.form)].forEach(inputElement => inputElement.value = ''), 100)
+    setTimeout(() => [...document.getElementsByClassName(params.form)].forEach((inputElement) => {
+      inputElement.value = ''
+    }), 100)
   }
 
   deleteAccount(event) {
-    const confirmed = confirm('Are you sure?')
+    const confirmed = window.confirm('Are you sure?')
 
     if (!confirmed) {
       event.preventDefault()
