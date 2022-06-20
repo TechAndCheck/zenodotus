@@ -7,7 +7,6 @@ function clearJobsTable(jobsTableBody) {
   while (jobsTableBody.firstChild) {
     jobsTableBody.removeChild(jobsTableBody.firstChild)
   }
-  console.log('Old jobs cleåred')
 }
 
 /*
@@ -26,7 +25,6 @@ function updateJobsTable(jobsTableBody, data, jobAttributes) {
     })
     jobsTableBody.appendChild(row)
   })
-
 }
 
 /*
@@ -40,16 +38,13 @@ function refreshJobsTable(data) {
 }
 
 consumer.subscriptions.create('JobsChannel', {
-  connected() {
-    console.log('Connected to jobs channel')
-  },
+  connected() {},
 
   disconnected() {
     // Called when the subscription has been terminated by the server
   },
 
   received(data) {
-    console.log(data)
     refreshJobsTable(data)
   },
 })

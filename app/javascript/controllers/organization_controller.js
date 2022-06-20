@@ -1,15 +1,15 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
   static values = {
     eventId: String,
-    userId: String
+    userId: String,
   }
 
   deleteUser(event) {
-    let confirmed = confirm("Are you sure?")
+    const confirmed = window.confirm('Are you sure?')
 
-    if(!confirmed) {
+    if (!confirmed) {
       event.preventDefault()
     }
   }
@@ -33,7 +33,5 @@ export default class extends Controller {
     }
   }
 
-  onPostSuccess() {
-    console.log('success!')
-  }
+  onPostSuccess() {}
 }

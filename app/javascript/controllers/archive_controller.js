@@ -30,6 +30,8 @@ export default class extends Controller {
         this.captionTogglerTarget.innerText = this.captionTogglerTarget.dataset.expandLabel
         break
       default:
+        // This doesn't break anything for users, but we developers would want to know.
+        // eslint-disable-next-line no-console
         console.error('archive#toggleCaption called unexpectedly.')
     }
   }
