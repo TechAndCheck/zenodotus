@@ -84,30 +84,39 @@ class Sources::InstagramPost < ApplicationRecord
       user_json = zorki_post["user"]
       instagram_user = Sources::InstagramUser.create_from_zorki_hash([user_json]).first.instagram_user
 
-      unless zorki_post["image_files"].nil?
-        image_attributes = zorki_post["image_files"].map do |image_file_data|
-          tempfile = Tempfile.new(binmode: true)
-          tempfile.write(Base64.decode64(image_file_data))
+      image_attributes = []
+      video_attributes = []
 
-          image_attribute = { image: File.open(tempfile.path, binmode: true) }
+      if zorki_post["aws_image_keys"].present?
+        image_attributes = zorki_post["aws_image_keys"].map do |key|
+          downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(key)
+          { image: File.open(downloaded_path, binmode: true) }
+        end
+      elsif zorki_post["aws_video_key"].present?
+        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(zorki_post["aws_video_key"])
+        video_attributes = [ { video: File.open(downloaded_path, binmode: true) } ]
+      else
+        # Backwards compatibility for if Hypatia sends over files in Base64
+        unless zorki_post["image_files"].nil?
+          image_attributes = zorki_post["image_files"].map do |image_file_data|
+            tempfile = Tempfile.new(binmode: true)
+            tempfile.write(Base64.decode64(image_file_data))
+
+            image_attribute = { image: File.open(tempfile.path, binmode: true) }
+
+            tempfile.close!
+            image_attribute
+          end
+        end
+
+        unless zorki_post["video_file"].nil?
+          tempfile = Tempfile.new(binmode: true)
+          tempfile.write(Base64.decode64(zorki_post["video_file"]))
+
+          video_attributes = [{ video: File.open(tempfile.path, binmode: true) }]
 
           tempfile.close!
-          image_attribute
         end
-      else
-        image_attributes = []
-      end
-
-      unless zorki_post["video_file"].nil?
-        tempfile = Tempfile.new(binmode: true)
-        tempfile.write(Base64.decode64(zorki_post["video_file"]))
-
-        video_attributes = [{ video: File.open(tempfile.path, binmode: true) }]
-
-        tempfile.close!
-        video_attributes
-      else
-        video_attributes = []
       end
 
       hash = {

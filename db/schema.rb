@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_18_231839) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_16_162441) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -158,6 +158,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_18_231839) do
     t.text "media_authenticity_category", null: false
     t.text "original_media_context_description", null: false
     t.uuid "archive_item_id"
+    t.boolean "taken_down"
     t.index ["archive_item_id"], name: "index_media_reviews_on_archive_item_id"
   end
 

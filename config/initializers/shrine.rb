@@ -10,8 +10,8 @@ def make_s3_bucket(bucket_name)
   Shrine::Storage::S3.new(
     bucket: bucket_name, # required
     region: "us-east-1", # required
-    access_key_id: Figaro.env.AWS_ACCESS_KEY,
-    secret_access_key: Figaro.env.AWS_ACCESS_SECRET,
+    access_key_id: Figaro.env.AWS_ACCESS_KEY_ID,
+    secret_access_key: Figaro.env.AWS_SECRET_ACCESS_KEY,
   )
 end
 
