@@ -1,4 +1,4 @@
-<% caption_is_collapsable = archive_item_caption.length > 320 %>
+<% caption_is_collapsable = archive_item_caption.present? && archive_item_caption.length > 320 %>
 <% include_author = true unless defined?(include_author) && include_author == false %>
 <%
   archive_item_class_list = generate_class_list_string({
