@@ -9,10 +9,10 @@ class ArchiveController < ApplicationController
   def index
     respond_to do | format |
       if current_user.nil? || current_user.restricted
-        @archive_items = ArchiveItem.includes(:media_review, archivable_item: [:author]).order("created_at DESC")
+        @archive_items = ArchiveItem.includes(:media_review, archivable_item: [:author]).limit(50).order("created_at DESC")
         format.html { render "limited_index" }
       else
-        @archive_items = ArchiveItem.includes(:media_review, { archivable_item: [:author, :images, :videos] }).order("created_at DESC")
+        @archive_items = ArchiveItem.includes(:media_review, { archivable_item: [:author, :images, :videos] }).limit(50).order("created_at DESC")
         format.html { render "index" }
       end
     end
