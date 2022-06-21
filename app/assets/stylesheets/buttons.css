@@ -15,14 +15,38 @@ TODO: This is obviously very minimal at the moment. Will add more styles, variat
 
 .btn {
 	padding: 0.5em 0.75em;
-	border-radius: 0.35em;
 	font-weight: var(--font-weight-semibold);
 	text-decoration: none;
-	transition: background-color;
+	text-align: center;
+	cursor: pointer;
 
-	background-color: #ddd;
+	border: 1px solid lightgray;
+	box-shadow: var(--shadow--2);
+	color: inherit;
+
+	transition-property: background-color, box-shadow, color;
 }
 
 .btn:hover {
-	background-color: #ccc;
+	box-shadow: var(--shadow--1--dark);
+}
+
+/* Compound selector is currently necessary to override some Tailwind styling. */
+.btn.btn--submit {
+	border: none;
+	color: var(--color--mood--success--contrast);
+	background-color: var(--color--mood--success);
+}
+.btn.btn--submit:hover,
+.btn.btn--submit:focus {
+	background-color: var(--color--mood--success--hover);
+}
+
+.btn.btn--link {
+	text-decoration: underline;
+}
+
+.btn.btn--link:hover,
+.btn.btn--link:focus {
+	text-decoration: none;
 }
