@@ -1,0 +1,43 @@
+/*
+Forms
+
+Library for consistent form layout.
+
+```html
+<form class="form form--vertical">
+	…
+</form>
+```
+*/
+
+.form {
+	--form--spacing: 1rem;
+
+	margin-top: var(--form--spacing);
+	margin-bottom: var(--form--spacing);
+}
+
+@media screen and (min-width: 641px) {
+	.form {
+		--form--spacing: 2rem;
+	}
+}
+
+.form:first-child {
+	margin-top: 0;
+}
+
+.form:last-child {
+	margin-bottom: 0;
+}
+
+.form--vertical {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 0.5rem;
+}
+
+.form__extra-links {
+	font-size: 0.9rem;
+}
