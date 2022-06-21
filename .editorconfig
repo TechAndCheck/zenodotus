@@ -12,3 +12,6 @@ trim_trailing_whitespace = false
 [*.css]
 indent_style = tab
 indent_size = 4
+
+[*.html.erb]
+indent_style = tab
