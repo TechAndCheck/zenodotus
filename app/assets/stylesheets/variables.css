@@ -46,4 +46,15 @@
 	--font-weight-extrabold: 800;  /* AVOID for custom fonts (file size) */
 	--font-weight-black: 900;      /* AVOID for custom fonts (file size) */
 	--font-weight-extrablack: 950; /* AVOID for custom fonts (file size) */
+
+	/*
+	Shadows
+	*/
+	--shadow--1: 1px 1px 0 rgba(0, 0, 0, 0.1);
+	--shadow--1--dark: 1px 1px 0 rgba(0, 0, 0, 0.2);
+	--shadow--2: 2px 2px 0 rgba(0, 0, 0, 0.1);
+	--shadow--2--dark: 2px 2px 0 rgba(0, 0, 0, 0.2);
+	--shadow--3: 3px 3px 0 rgba(0, 0, 0, 0.1);
+	--shadow--3--dark: 3px 3px 0 rgba(0, 0, 0, 0.2);
+
 }
