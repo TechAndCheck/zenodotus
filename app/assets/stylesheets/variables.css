@@ -57,4 +57,60 @@
 	--shadow--3: 3px 3px 0 rgba(0, 0, 0, 0.1);
 	--shadow--3--dark: 3px 3px 0 rgba(0, 0, 0, 0.2);
 
+	/*
+	Colors
+	*/
+	--color--orange-1: #291c0c;
+	--color--orange-2: #543a1a;
+	--color--orange-3: #7d5727;
+	--color--orange-4: #a97334;
+	--color--orange-5: #d09243;
+	--color--orange-6: #ffb35c;
+	--color--orange-7: #fdbc69;
+	--color--orange-8: #fcc986;
+	--color--orange-9: #ffd5a4;
+	--color--orange-10: #ffe3c3;
+	--color--orange-11: #fef2e0;
+	--color--tan-1: #292524;
+	--color--tan-2: #524c46;
+	--color--tan-3: #524c46;
+	--color--tan-4: #a1968b;
+	--color--tan-5: #cabdac;
+	--color--tan-6: #f2e3d0;
+	--color--tan-7: #f5e8d8;
+	--color--tan-8: #f4eddf;
+	--color--tan-9: #f9f2e9;
+	--color--tan-10: #f9f5f0;
+	--color--tan-11: #fdfaf8;
+	--color--blue-1: #172425;
+	--color--blue-2: #2e4548;
+	--color--blue-3: #46686f;
+	--color--blue-4: #5e8c95;
+	--color--blue-5: #75acb9;
+	--color--blue-6: #8cd1df;
+	--color--blue-7: #a1d8e3;
+	--color--blue-8: #b3dfe9;
+	--color--blue-9: #c7e7ef;
+	--color--blue-10: #d9eff4;
+	--color--blue-11: #ecf7fa;
+	--color--green-1: #1a2814;
+	--color--green-2: #344e2a;
+	--color--green-3: #4d7741;
+	--color--green-4: #689d54;
+	--color--green-5: #81c36c;
+	--color--green-6: #9ceb7f;
+	--color--green-7: #aded94;
+	--color--green-8: #bcf1aa;
+	--color--green-9: #cdf4bf;
+	--color--green-10: #dff8d4;
+	--color--green-11: #eefbe9;
+
+	--color--brand--tan: var(--color--tan-6);
+	--color--brand--blue: var(--color--blue-6);
+	--color--brand--green: var(--color--green-6);
+	--color--brand--orange: var(--color--orange-6);
+
+	--color--mood--success: var(--color--green-4);
+	--color--mood--success--contrast: white;
+	--color--mood--success--hover: var(--color--green-3);
 }
