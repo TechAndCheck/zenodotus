@@ -5,6 +5,8 @@
 	These will be useful once we add SCSS to the pipeline, as then we can use them in @media size
 	declarations. This doesn't currently work: `@media screen and (min-width: var(--foo))`
 	*/
+	--screen-xs-ceiling: 420px;
+	--screen-sm-floor: 421px;
 	--screen-sm-ceiling: 640px;
 	--screen-md-floor: 641px;
 	--screen-md-ceiling: 768px;
