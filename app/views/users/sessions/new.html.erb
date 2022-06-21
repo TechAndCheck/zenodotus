@@ -1,79 +1,30 @@
-<div class="h-auto flex items-center justify-center mt-14">
-  <div class="z-10">
-    <div id="login-card" class="px-5 text-center bg-gray-400 rounded-lg shadow-md w-full flex flex-col justify-center items-center space-y-4 pb-10">
-      <div
-        class="relative w-20 bg-pink-200 mx-auto rounded-full p-3 shadow-md"
-        style="top: -2.5rem;"
-      >
-        <%= image_tag "icon.svg" %>
-      </div>
-      <div class="text-3xl font-bold text-pink-200">
-        Zenodotus
-      </div>
-      <%= form_for(
-            resource,
-            as: resource_name,
-            url: session_path(resource_name),
-            html: {
-              class: "
-            h-40
-            w-full
-            flex
-            flex-col
-            justify-center
-            items-center space-y-4
-          ",
-              'data-turbo': "false"
-            }
-          ) do |f|
-      %>
-        <%= f.email_field(
-              :email,
-              autofocus: true,
-              autocomplete: "email",
-              placeholder: "Email Address",
-              class: "
-                rounded-lg
-                focus:outline-none
-                focus:ring-4
-                focus:ring-green-300
-                focus:ring-opacity-50
-                py-1.5
-                px-2
-                text-gray-800
-                placeholder-gray-400
-                shadow-md"
-            ) %>
-        <%= f.password_field(
-              :password,
-              autocomplete: "current-password",
-              placeholder: "Password",
-              class: "
-                rounded-lg
-                focus:outline-none
-                focus:ring-4
-                focus:ring-green-300
-                focus:ring-opacity-50
-                py-1.5
-                px-2
-                text-gray-800
-                placeholder-gray-400
-                shadow-md"
-            ) %>
-        <%= f.submit(
-              "Log in",
-              class: "
-            rounded-lg
-            py-1.5
-            px-2
-            bg-green-500
-            hover:bg-green-400
-            text-gray-50
-            shadow-md"
-            ) %>
-      <% end %>
-      <%= render "devise/shared/links" %>
-    </div>
-  </div>
+<div class="box box--sm box--miniform">
+	<p>
+		To access Zenodotus, please log in below.
+		Don’t have an account? You’ll be able to request one soon.
+	</p>
+	<%= form_for(
+				resource,
+				as: resource_name,
+				url: session_path(resource_name),
+				html: {
+					class: "form form--vertical",
+					data: { turbo: false }
+				}) do |f| %>
+		<%= f.email_field(
+					:email,
+					autofocus: true,
+					autocomplete: "email",
+					placeholder: "Email address",
+					class: "input input--email") %>
+		<%= f.password_field(
+					:password,
+					autocomplete:
+					"current-password",
+					placeholder: "Password",
+					class: "input input--password") %>
+		<%= f.submit(
+					"Log in",
+					class: "btn btn--submit") %>
+	<% end %>
 </div>
-
