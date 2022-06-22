@@ -1,0 +1,67 @@
+/*
+Boxes
+
+Library for consistent floating boxes with a drop shadow.
+
+```html
+<div class="box">
+	…
+</div>
+```
+
+This styling is also used in other places, such as the `boxed` variants of archive items. A future
+improvement would be to use SCSS mixins so this styling could be applied directly.
+*/
+
+.box {
+	--box--internal-spacing: 1rem;
+
+	padding: var(--box--internal-spacing);
+	background-color: white;
+	border: 1px solid lightgray;
+	box-shadow: var(--shadow--3);
+
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.box--sm {
+	max-width: var(--screen-sm-floor);
+}
+
+.box--md {
+	max-width: var(--screen-md-floor);
+}
+
+.box--lg {
+	max-width: var(--screen-lg-floor);
+}
+
+.box--xl {
+	max-width: var(--screen-xl-floor);
+}
+
+.box--2xl {
+	max-width: var(--screen-2xl-floor);
+}
+
+/*
+Miniform Boxes are customized for little, well, mini-forms, like for log in or sign up.
+*/
+
+.box--miniform {
+	--box-miniform--spacing: 1rem;
+
+	margin-top: var(--box-miniform--spacing);
+	margin-bottom: var(--box-miniform--spacing);
+	padding: var(--box-miniform--spacing);
+	text-align: center;
+
+	transition-property: margin, padding;
+}
+
+@media screen and (min-width: 641px) {
+	.box--miniform {
+		--box-miniform--spacing: 2rem;
+	}
+}
