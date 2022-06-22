@@ -29,6 +29,9 @@ class FacebookPostTest < ActiveSupport::TestCase
     assert_equal Time.at(@@forki_post.first["post"]["created_at"]).utc.strftime("%FT%T%:z"), archive_item.facebook_post.posted_at.strftime("%FT%T%:z")
 
     assert_not_nil archive_item.facebook_post.author
+    assert archive_item.facebook_post.number_of_likes.positive?
+    assert archive_item.facebook_post.number_of_love_reactions.positive?
+
     assert_not_nil archive_item.facebook_post.images
   end
 

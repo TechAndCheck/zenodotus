@@ -53,9 +53,9 @@
         <div class="p-1 rounded-full bg-gradient-to-r from-purple-500 to-red-600 inline-block">
             <img src="/uploads/<%= result.author.profile_image_data["id"] %>" class="w-20 h-20 rounded-full inline-flex items-center justify-center bg-gray-200 text-gray-400"/>
         </div>
-        <%= result.author.handle %>
+        <%= result.author.name %>
       <%end%>
-      <a href="#"><p class="text-base"><%= result.author.display_name %></p></a>
+      <a href="#"><p class="text-base"><%= result.author.name %></p></a>
     </div>
   </div>
 </div>
