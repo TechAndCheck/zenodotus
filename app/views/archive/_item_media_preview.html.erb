@@ -4,8 +4,6 @@
     <div>
         <figure class="relative m-0 text-center">
         <video
-            width="320"
-            height="240"
             poster="<%= item.videos.first.video_derivatives[:preview].url %>"
             controls >
             <source src="<%= item.videos.first.video_url %>" type="video/mp4">
