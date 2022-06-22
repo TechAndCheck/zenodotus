@@ -32,6 +32,27 @@ class FacebookUserTest < ActiveSupport::TestCase
     assert_not_nil archive_entity.facebook_user.profile_image
   end
 
+  test "Can update facebook user" do
+    archive_entity = Sources::FacebookUser.create_from_forki_hash([@@forki_user]).first
+
+    # Set a property to something random
+    archive_entity.facebook_user.update!({ followers_count: 2 })
+    assert_equal archive_entity.facebook_user.followers_count, 2
+    # Now try and save it again, and make sure the followers count is correct
+    archive_entity2 = Sources::FacebookUser.create_from_forki_hash([@@forki_user]).first.facebook_user
+    assert_equal archive_entity.service_id, archive_entity2.service_id
+    assert_equal @@forki_user["number_of_followers"], archive_entity2.followers_count
+  end
+
+  test "can add a second fact check to a user" do
+    post = Sources::FacebookPost.create_from_url!("https://www.facebook.com/Meta/photos/460964425465155")
+    assert_equal 1, post.facebook_post.author.facebook_posts.count
+
+    Sources::FacebookPost.create_from_url!("https://www.facebook.com/Meta/videos/516906563485969")
+    post.reload
+    assert_equal 2, post.facebook_post.author.facebook_posts.count
+  end
+
   test "can update facebook user" do
     archive_entity = Sources::FacebookUser.create_from_forki_hash([@@forki_user]).first
 
