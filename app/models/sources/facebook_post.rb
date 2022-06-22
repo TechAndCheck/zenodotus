@@ -142,6 +142,35 @@ class Sources::FacebookPost < ApplicationRecord
     facebook_id
   end
 
+  sig { returns(Integer) }
+  def number_of_likes
+    reactions["num_likes"]
+  end
+
+  sig { returns(Integer) }
+  def number_of_haha_reactions
+    reactions["num_hahas"]
+  end
+
+  sig { returns(Integer) }
+  def number_of_angry_reactions
+    reactions["num_angrys"]
+  end
+
+  sig { returns(Integer) }
+  def number_of_love_reactions
+    reactions["num_loves"]
+  end
+
+  sig { returns(Integer) }
+  def number_of_care_reactions
+    reactions["num_cares"]
+  end
+
+  sig { returns(Integer) }
+  def number_of_sad_reactions
+    reactions["num_sads"]
+  end
   # Normalized representation of this archivable item for use in the view template.
   #
   # @returns Hash of normalized attributes.
