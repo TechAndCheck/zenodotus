@@ -1,9 +1,10 @@
 # typed: false
 Rails.application.routes.draw do
-  devise_for :users,
-             controllers: {
-               sessions: "users/sessions"
-             }
+  devise_scope :user do
+    get "users/sign_in", to: "users/sessions#new", as: "new_user_session"
+    post "users/sign_in", to: "users/sessions#create", as: "user_session"
+    delete "users/sign_out", to: "users/sessions#destroy", as: "destroy_user_session"
+  end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   # root "login#index"
