@@ -19,7 +19,7 @@ class Sources::FacebookUser < ApplicationRecord
   def self.create_from_forki_hash(forki_users)
     forki_users.map do |forki_user|
       # First check if the user already exists, if so, return that
-      facebook_user = Sources::FacebookUser.find_by(id: forki_user["id"])
+      facebook_user = Sources::FacebookUser.find_by(facebook_id: forki_user["id"])
       forki_user_hash = self.facebook_user_hash_from_forki_user(forki_user)
 
       # If there's no user, then create it
