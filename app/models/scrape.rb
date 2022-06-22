@@ -4,7 +4,7 @@ class Scrape < ApplicationRecord
 
     attr_reader :url
 
-    sig { params(url: String) }
+    sig { params(url: String).void }
     def initialize(url)
       @url = url
       super("Media review with url: #{url} for scrape fulfillment not found.")
@@ -17,6 +17,7 @@ class Scrape < ApplicationRecord
 
   has_one :archive_item, dependent: :destroy
 
+  sig { params(response: String).void }
   def fulfill(response)
     response = JSON.parse(response)
 
