@@ -9,6 +9,7 @@ namespace :users do
       other_users = Sources::FacebookUser.where(facebook_id: user.facebook_id)
       # run through those and add all the posts to this user
       other_users.each do |other_user|
+        next if other_user == user  # Don't compare self to self
         other_user.facebook_posts.each do |post|
           post.update!({ author_id: user.id })
         end
