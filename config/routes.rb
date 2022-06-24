@@ -2,9 +2,23 @@
 
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+
+  # These routes come along automatically from Devise, but we don't want them to (for now).
+  # Thus, we redirect them to the root. Must be declared before the `devise_for` block below.
+  get "users/cancel", to: redirect("/")
+  get "users/sign_up", to: redirect("/")
+  get "users/edit", to: redirect("/")
+
+  # This generates only the session and registration-related Devise URLs. We actually only want the
+  # session URLs for the userspace, but the registration-related routes are necessary for tests to
+  # run properly. (The ones that we override above also come from this. If we can somehow exclude
+  # them in this configuration block, that would be amazing.)
   devise_for :users,
+             skip: :all,
+             only: [:sessions, :registrations],
              controllers: {
-               sessions: "users/sessions"
+               sessions: "users/sessions",
+               registrations: "devise/registrations"
              }
 
   root "archive#index"
