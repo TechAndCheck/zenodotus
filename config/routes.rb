@@ -1,19 +1,17 @@
 # typed: false
+
 Rails.application.routes.draw do
+  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   devise_for :users,
              controllers: {
                sessions: "users/sessions"
              }
 
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  # root "login#index"
   root "archive#index"
 
   get "/archive/add", to: "archive#add"
   post "/archive/add", to: "archive#submit_url"
-
   get "/archive/download", to: "archive#export_archive_data", as: "archive_download"
-
   post "/archive/scrape_result_callback", to: "archive#scrape_result_callback", as: "scrape_result_callback"
 
   post "/ingest/submit_media_review", to: "ingest#submit_media_review", as: "ingest_api_raw"
@@ -34,7 +32,7 @@ Rails.application.routes.draw do
 
   get "/jobs", to: "jobs_status#index", as: "jobs_status_index"
   delete "/jobs/:id", to: "jobs_status#delete_job", as: "job_status_delete"
-  post "jobs/resubmit/:id", to: "jobs_status#resubmit_scrape", as: "job_status_resubmit"
+  post "/jobs/resubmit/:id", to: "jobs_status#resubmit_scrape", as: "job_status_resubmit"
 
   resources :twitter_users, only: [:show]
   resources :instagram_users, only: [:show]
