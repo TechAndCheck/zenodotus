@@ -1,19 +1,31 @@
 # typed: false
+
 Rails.application.routes.draw do
+  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+
+  # These routes come along automatically from Devise, but we don't want them to (for now).
+  # Thus, we redirect them to the root. Must be declared before the `devise_for` block below.
+  get "users/cancel", to: redirect("/")
+  get "users/sign_up", to: redirect("/")
+  get "users/edit", to: redirect("/")
+
+  # This generates only the session and registration-related Devise URLs. We actually only want the
+  # session URLs for the userspace, but the registration-related routes are necessary for tests to
+  # run properly. (The ones that we override above also come from this. If we can somehow exclude
+  # them in this configuration block, that would be amazing.)
   devise_for :users,
+             skip: :all,
+             only: [:sessions, :registrations],
              controllers: {
-               sessions: "users/sessions"
+               sessions: "users/sessions",
+               registrations: "devise/registrations"
              }
 
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  # root "login#index"
   root "archive#index"
 
   get "/archive/add", to: "archive#add"
   post "/archive/add", to: "archive#submit_url"
-
   get "/archive/download", to: "archive#export_archive_data", as: "archive_download"
-
   post "/archive/scrape_result_callback", to: "archive#scrape_result_callback", as: "scrape_result_callback"
 
   post "/ingest/submit_media_review", to: "ingest#submit_media_review", as: "ingest_api_raw"
@@ -34,7 +46,7 @@ Rails.application.routes.draw do
 
   get "/jobs", to: "jobs_status#index", as: "jobs_status_index"
   delete "/jobs/:id", to: "jobs_status#delete_job", as: "job_status_delete"
-  post "jobs/resubmit/:id", to: "jobs_status#resubmit_scrape", as: "job_status_resubmit"
+  post "/jobs/resubmit/:id", to: "jobs_status#resubmit_scrape", as: "job_status_resubmit"
 
   resources :twitter_users, only: [:show]
   resources :instagram_users, only: [:show]
