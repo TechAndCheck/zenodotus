@@ -18,7 +18,7 @@ Rails.application.routes.draw do
              only: [:sessions, :registrations],
              controllers: {
                sessions: "users/sessions",
-               registrations: "devise/registrations"
+               registrations: "users/registrations"
              }
 
   root "archive#index"
