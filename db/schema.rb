@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_16_162441) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_25_202113) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -190,6 +190,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_16_162441) do
     t.boolean "error"
   end
 
+  create_table "screenshots", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "archive_item_id"
+    t.jsonb "image_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["archive_item_id"], name: "index_screenshots_on_archive_item_id"
+  end
+
   create_table "text_searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -319,6 +327,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_16_162441) do
   add_foreign_key "instagram_videos", "instagram_posts"
   add_foreign_key "media_reviews", "archive_items"
   add_foreign_key "organizations", "users", column: "admin_id"
+  add_foreign_key "screenshots", "archive_items"
   add_foreign_key "text_searches", "users"
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"
