@@ -84,8 +84,18 @@ class Sources::FacebookPost < ApplicationRecord
 
       image_attributes = []
       video_attributes = []
+      screenshot_attributes = []
 
       # We want to default to using the AWS key if it's available, and fallback to Base64 if it's not
+      if forki_post["aws_screenshot_key"].present?
+        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(forki_post["aws_screenshot_key"])
+        screenshot_attributes = [ { image: File.open(downloaded_path, binmode: true) } ]
+      else
+        tempfile = Tempfile.new(binmode: true)
+        tempfile.write(Base64.decode64(forki_post["screenshot_file"]))
+        screenshot_attributes = { image: File.open(tempfile.path, binmode: true) }
+      end
+
       if forki_post["aws_image_keys"].present?
         downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(forki_post["aws_image_keys"])
         image_attributes = [ { image: File.open(downloaded_path, binmode: true) } ]
@@ -130,7 +140,8 @@ class Sources::FacebookPost < ApplicationRecord
         videos_attributes: video_attributes
       }
 
-      ArchiveItem.create!(archivable_item: Sources::FacebookPost.create!(hash), submitter: user)
+      ArchiveItem.create!(archivable_item: Sources::FacebookPost.create!(hash), submitter: user,
+                          screenshot_attributes: screenshot_attributes)
     end
   end
 

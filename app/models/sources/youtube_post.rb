@@ -90,18 +90,28 @@ class Sources::YoutubePost < ApplicationRecord
     youtube_archiver_videos.map do |youtube_archiver_video|
       youtube_archiver_video = youtube_archiver_video["post"]
       youtube_channel = Sources::YoutubeChannel.create_from_youtube_archiver_hash([youtube_archiver_video["channel"]]).first.youtube_channel
+      videos_attributes = []
+      screenshot_attributes = []
+
+      # Download screenshot from s3 or load it from base64 attachment
+      if youtube_archiver_video["aws_screenshot_key"].present?
+        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(youtube_archiver_video["aws_screenshot_key"])
+        screenshot_attributes = [ { image: File.open(downloaded_path, binmode: true) } ]
+      else
+        tempfile = Tempfile.new(binmode: true)
+        tempfile.write(Base64.decode64(youtube_archiver_video["screenshot_file"]))
+        screenshot_attributes = { image: File.open(tempfile.path, binmode: true) }
+      end
+
+      # Download video from s3 or load it from base64 attachment
       if youtube_archiver_video["aws_video_key"].present?
         downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(youtube_archiver_video["aws_video_key"])
         videos_attributes = [ { video: File.open(downloaded_path, binmode: true) } ]
       elsif youtube_archiver_video["video_file"].nil? == false
         tempfile = Tempfile.new(binmode: true)
         tempfile.write(Base64.decode64(youtube_archiver_video["video_file"]))
-
         videos_attributes = [{ video: File.open(tempfile.path, binmode: true) }]
-
         tempfile.close!
-      else
-        videos_attributes = []
       end
 
       tempfile = Tempfile.new(binmode: true)
@@ -123,7 +133,8 @@ class Sources::YoutubePost < ApplicationRecord
         videos_attributes: videos_attributes
       }
 
-      ArchiveItem.create!(archivable_item: Sources::YoutubePost.create!(hash), submitter: user)
+      ArchiveItem.create!(archivable_item: Sources::YoutubePost.create!(hash), submitter: user,
+                          screenshot_attributes: screenshot_attributes)
     end
   end
 

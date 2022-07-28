@@ -6,7 +6,6 @@ class Sources::Tweet < ApplicationRecord
 
   multisearchable against: :text
 
-
   has_many :images, foreign_key: :tweet_id, class_name: "MediaModels::Images::TwitterImage", dependent: :destroy
   accepts_nested_attributes_for :images, allow_destroy: true
 
@@ -80,12 +79,21 @@ class Sources::Tweet < ApplicationRecord
     birdsong_tweets.map do |birdsong_tweet|
       twitter_user = Sources::TwitterUser.create_from_birdsong_hash([birdsong_tweet.author]).first.twitter_user
 
+      screenshot_attributes = []
+
       image_attributes = birdsong_tweet.image_file_names.map do |image_file_name|
         { image: File.open(image_file_name, binmode: true) }
       end
 
       video_attributes = birdsong_tweet.video_file_names.map do |video_file_name|
         { video: File.open(video_file_name.first, binmode: true), video_type: birdsong_tweet.video_file_type }
+      end
+
+      if birdsong_tweet["aws_screenshot_key"].present?
+        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(birdsong_tweet["aws_screenshot_key"])
+        screenshot_attributes = [ { image: File.open(downloaded_path, binmode: true) } ]
+      else
+        screenshot_attributes = { image: File.open(birdsong_tweet["screenshot_file"], binmode: true) }
       end
 
       tweet_hash = {
@@ -97,7 +105,8 @@ class Sources::Tweet < ApplicationRecord
         images_attributes:     image_attributes,
         videos_attributes:     video_attributes
       }
-      ArchiveItem.create!(archivable_item: Sources::Tweet.create!(tweet_hash), submitter: user)
+      ArchiveItem.create!(archivable_item: Sources::Tweet.create!(tweet_hash), submitter: user,
+                          screenshot_attributes: screenshot_attributes)
     end
   end
 
