@@ -102,16 +102,16 @@ class Sources::YoutubePost < ApplicationRecord
       elsif youtube_archiver_video["video_file"].nil? == false
         video_tempfile = Tempfile.new(binmode: true)
         video_tempfile.write(Base64.decode64(youtube_archiver_video["video_file"]))
-        video_tempfile.close!
         preview_image_tempfile = Tempfile.new(binmode: true)
         preview_image_tempfile.write(Base64.decode64(youtube_archiver_video["video_preview_image_file"]))
-        preview_image_tempfile.close!
-
         video_preview_image = File.open(preview_image_tempfile.path, binmode: true)
 
         videos_attributes = [{
           video: File.open(video_tempfile.path, binmode: true),
         }]
+
+        preview_image_tempfile.close!
+        video_tempfile.close!
       else
         videos_attributes = []
       end
