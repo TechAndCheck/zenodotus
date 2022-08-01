@@ -89,23 +89,32 @@ class Sources::YoutubePost < ApplicationRecord
   def self.create_from_youtube_archiver_hash(youtube_archiver_videos, user = nil)
     youtube_archiver_videos.map do |youtube_archiver_video|
       youtube_archiver_video = youtube_archiver_video["post"]
+      video_preview_image = nil
       youtube_channel = Sources::YoutubeChannel.create_from_youtube_archiver_hash([youtube_archiver_video["channel"]]).first.youtube_channel
       if youtube_archiver_video["aws_video_key"].present?
         downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(youtube_archiver_video["aws_video_key"])
-        videos_attributes = [ { video: File.open(downloaded_path, binmode: true) } ]
+        preview_downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(youtube_archiver_video["aws_video_preview_key"])
+        video_preview_image = File.open(preview_downloaded_path, binmode: true)
+
+        videos_attributes = [{
+          video: File.open(downloaded_path, binmode: true)
+        }]
       elsif youtube_archiver_video["video_file"].nil? == false
-        tempfile = Tempfile.new(binmode: true)
-        tempfile.write(Base64.decode64(youtube_archiver_video["video_file"]))
+        video_tempfile = Tempfile.new(binmode: true)
+        video_tempfile.write(Base64.decode64(youtube_archiver_video["video_file"]))
+        preview_image_tempfile = Tempfile.new(binmode: true)
+        preview_image_tempfile.write(Base64.decode64(youtube_archiver_video["video_preview_image_file"]))
+        video_preview_image = File.open(preview_image_tempfile.path, binmode: true)
 
-        videos_attributes = [{ video: File.open(tempfile.path, binmode: true) }]
+        videos_attributes = [{
+          video: File.open(video_tempfile.path, binmode: true),
+        }]
 
-        tempfile.close!
+        preview_image_tempfile.close!
+        video_tempfile.close!
       else
         videos_attributes = []
       end
-
-      tempfile = Tempfile.new(binmode: true)
-      tempfile.write(Base64.decode64(youtube_archiver_video["video_preview_image_file"]))
 
       hash = {
         youtube_id:        youtube_archiver_video["id"],
@@ -118,7 +127,7 @@ class Sources::YoutubePost < ApplicationRecord
         duration:          find_length_of_youtube_video(youtube_archiver_video["duration"]),
         live:              youtube_archiver_video["live"],
         author:            youtube_channel,
-        preview_image:     File.open(tempfile.path, binmode: true),
+        preview_image:     video_preview_image,
         made_for_kids:     youtube_archiver_video["made_for_kids"],
         videos_attributes: videos_attributes
       }
