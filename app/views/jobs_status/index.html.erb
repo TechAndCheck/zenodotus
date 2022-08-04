@@ -1,76 +1,27 @@
-<div class="text-3xl font-bold mt-5">Active Jobs</div>
-<span class="font-bold">Queued Jobs #:</span>
-<span class="font-semibold"><%= @jobs_queue.count %></span>
-<div id="jobs-div" class="mt-5">
-  <%= turbo_frame_tag "jobs" do %>
-    <table id="jobs-table" class="table-auto w-full">
-      <thead id="jobs-table-head">
-      <tr>
-        <th class="border text-center">Queue position</th>
-        <th class="border text-center">Enqueued at</th>
-        <th class="border text-center">Url to scrape</th>
-      </tr>
-      </thead>
-      <tbody id="jobs-table-body">
-        <% @jobs_queue.each do |job| %>
-          <tr class="border text-gray-600 text-center">
-            <td><%= job[:queue_position] + @jobs_offset %></td>
-            <td><%= job[:enqueued_at] %></td>
-            <td><%= job[:url] %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-    <div class="mt-5 mb-10">
-    <% unless @previous_jobs_page.nil? %>
-      <a href="/jobs?active_jobs_page=<%= @previous_jobs_page %>" rel="previous">Previous Page</a>
-    <% else %>
-      <span class="text-slate-400">Previous Page</span>
-    <% end %>
-    &nbsp;&nbsp;&nbsp;
-    <% unless @next_jobs_page.nil? %>
-      <a href="/jobs?active_jobs_page=<%= @next_jobs_page %>" rel="next">Next Page</a>
-    <% else %>
-      <span class="text-slate-400">Next Page</span>
-    <% end %>
-  <% end %>
-</div>
-
-</div>
-
-<div class="text-3xl font-bold mt-10">Active Scrapes</div>
-<div>
-  <span class="font-bold">Jobs Submitted #:</span>
-  <span class="font-semibold"><%= @total_scrapes_count %></span>
-</div>
-<div id="scrapes-div" class="mt-5">
-  <%= turbo_frame_tag "scrapes" do %>
-  <table id="scrapes-table" class="table-auto w-full">
-    <thead id="scrapes-table-head">
-    <tr>
-      <th class="border text-center">Id</th>
-      <th class="border text-center">Scrape Type</th>
-      <th class="border text-center">Enqueued at</th>
-      <th class="border text-center">Url to scrape</th>
-      <th class="border text-center" colspan="2">Actions</th>
-    </tr>
-    </thead>
-    <tbody id="jobs-table-body">
-      <%= render partial: "scrapes", locals: { scrapes: @scrapes } %>
-    </tbody>
-  </table>
-  <div class="mt-5 mb-10">
-    <% unless @previous_scrapes_page.nil? %>
-      <a href="/jobs?active_scrapes_page=<%= @previous_scrapes_page %>" rel="previous">Previous Page</a>
-    <% else %>
-      <span class="text-slate-400">Previous Page</span>
-    <% end %>
-    &nbsp;&nbsp;&nbsp;
-    <% unless @next_scrapes_page.nil? %>
-      <a href="/jobs?active_scrapes_page=<%= @next_scrapes_page %>" rel="next">Next Page</a>
-    <% else %>
-      <span class="text-slate-400">Next Page</span>
-    <% end %>
+<div data-controller="jobs-status" data-loaded-scrapes-count="<%= @total_scrapes_count %>" data-loaded-jobs-count="<%= @total_jobs_count %>">
+  <div class="text-3xl font-bold mt-5">Active Jobs</div>
+  <div class="flex flex-row justify-between">
+    <div class="w-fit">
+      <span class="font-bold">Queued Jobs#:</span>
+      <span class="font-semibold"><%= @total_jobs_count %></span>
+    </div>
+    <button id="new-jobs" data-jobs-status-target="jobsPill" data-action="jobs-status#reloadJobs" class="w-fit rounded-full bg-cyan-500 text-white py-2 px-6" hidden ></button>
+    <div>&nbsp;</div>
   </div>
-  <% end %>
+  <div id="jobs-div" class="mt-5">
+    <%= turbo_frame_tag "active_jobs", src: jobs_status_active_jobs_path(active_jobs_page: @active_jobs_page), loading: "lazy" %>
+  </div>
+
+  <div class="text-3xl font-bold mt-10">Active Scrapes</div>
+  <div class="flex flex-row justify-between">
+    <div class="w-fit">
+      <span class="font-bold">Jobs Submitted #:</span>
+      <span class="font-semibold"><%= @total_scrapes_count %></span>
+    </div>
+    <button id="new-scrapes" data-jobs-status-target="scrapesPill" data-action="jobs-status#reloadScrapes" class="w-fit rounded-full bg-cyan-500 text-white py-2 px-6" hidden ></button>
+    <div>&nbsp;</div>
+  </div>
+  <div id="scrapes-div" class="mt-5">
+    <%= turbo_frame_tag "scrapes", src: jobs_status_scrapes_path(active_scrapes_page: @active_scrapes_page), loading: "lazy"%>
+  </div>
 </div>

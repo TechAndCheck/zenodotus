@@ -3,6 +3,8 @@
 class JobsStatusController < ApplicationController
   require "sidekiq/api"
 
+  RESULTS_PER_PAGE = 2
+
   # A class representing the allowed params into the `search` endpoint
   class JobsParams < T::Struct
     const :active_scrapes_page, T.nilable(String)
@@ -13,27 +15,99 @@ class JobsStatusController < ApplicationController
   sig { void }
   def index
     typed_params = TypedParams[JobsParams].new.extract!(params)
-    results_per_page = 2
 
-    @active_scrapes_page = typed_params.active_scrapes_page.blank? ? 1 : typed_params.active_scrapes_page.to_i
-    @active_jobs_page = typed_params.active_jobs_page.blank? ? 1 : typed_params.active_jobs_page.to_i
+    scrapes_for_page_number(typed_params.active_scrapes_page) # set the variables for scrapes
+    jobs_for_page_number(typed_params.active_jobs_page) # set the variables for jobs
+  end
 
-    @scrapes = Scrape.where(fulfilled: false, error: nil).limit(results_per_page).offset((@active_scrapes_page - 1) * results_per_page)
+  sig { void }
+  def scrapes
+    typed_params = TypedParams[JobsParams].new.extract!(params)
+
+    scrapes_for_page_number(typed_params.active_scrapes_page) # set the variables for scrapes
+    render layout: false
+  end
+
+  sig { void }
+  def active_jobs
+    typed_params = TypedParams[JobsParams].new.extract!(params)
+
+    jobs_for_page_number(typed_params.active_jobs_page) # set the variables for scrapes
+    render layout: false
+  end
+
+  # A class representing the allowed params into the `submit_url` endpoint
+  class ResubmitScrapeParams < T::Struct
+    const :id, String
+    const :page, T.nilable(String)
+  end
+
+  # Resubmits a scrape to Hypatia
+  sig { void }
+  def resubmit_scrape
+    typed_params = TypedParams[ResubmitScrapeParams].new.extract!(params)
+
+    scrape = Scrape.find(typed_params.id)
+    scrape.update!({ error: true })
+
+    object_model = ArchiveItem.model_for_url(scrape.url)
+    object_model.create_from_url(scrape.url, current_user)
+    flash[:alert] = "Successfully resubmitted scrape"
+
+    page = typed_params.page.nil? ? 1 : typed_params.page
+    scrapes_for_page_number(page) # Fill the variables for turbo
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace(:scrapes, partial: "jobs_status/scrapes") }
+      format.html         { redirect_back fallback_location: :jobs_status_index }
+    end
+  end
+
+  sig { void }
+  def delete_scrape
+    typed_params = TypedParams[ResubmitScrapeParams].new.extract!(params)
+    @scrape = Scrape.find(typed_params.id)
+    return if @scrape.nil?
+
+    @scrape.destroy!
+
+    flash[:alert] = "Successfully deleted scrape"
+
+    page = typed_params.page.nil? ? 1 : typed_params.page
+    scrapes_for_page_number(page) # Fill the variables for turbo
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace(:scrapes, partial: "jobs_status/scrapes") }
+      format.html         { redirect_back fallback_location: :jobs_status_index }
+    end
+  end
+
+private
+
+  def scrapes_for_page_number(page_number)
+    @active_scrapes_page = page_number.blank? ? 1 : page_number.to_i
+
+    @scrapes = Scrape.where(fulfilled: false, error: nil).order(created_at: "DESC").limit(RESULTS_PER_PAGE).offset((@active_scrapes_page - 1) * RESULTS_PER_PAGE)
     @total_scrapes_count = Scrape.where(fulfilled: false, error: nil).count
-    @jobs_queue = []
 
-    scrapes_next_page_count = Scrape.where(fulfilled: false, error: nil).limit(results_per_page).offset(@active_scrapes_page * results_per_page).count
+    scrapes_next_page_count = Scrape.where(fulfilled: false, error: nil).limit(RESULTS_PER_PAGE).offset(@active_scrapes_page * RESULTS_PER_PAGE).count
     @previous_scrapes_page = @active_scrapes_page == 1 ? nil : @active_scrapes_page - 1
     @next_scrapes_page = scrapes_next_page_count.zero? ? nil : @active_scrapes_page + 1
+  end
 
-    # return if Sidekiq::Queue.new.size.zero?
+  def jobs_for_page_number(page_number)
+    @active_jobs_page = page_number.blank? ? 1 : page_number.to_i
+
+    @jobs_queue = []
+
     jobs = Sidekiq::Queue.new.to_a.reverse
+
     @total_jobs_count = jobs.count
 
-    number_of_jobs_pages = (jobs.count / results_per_page.to_f).ceil
+    number_of_jobs_pages = (jobs.count / RESULTS_PER_PAGE.to_f).ceil
 
-    @jobs_offset = (@active_jobs_page - 1) * results_per_page
-    jobs = jobs[@jobs_offset...(@jobs_offset + results_per_page)]
+    @jobs_offset = (@active_jobs_page - 1) * RESULTS_PER_PAGE
+    jobs = jobs[@jobs_offset...(@jobs_offset + RESULTS_PER_PAGE)]
     @previous_jobs_page = @active_jobs_page == 1 ? nil : @active_jobs_page - 1
     @next_jobs_page = @active_jobs_page == number_of_jobs_pages ? nil : @active_jobs_page + 1
 
@@ -46,61 +120,5 @@ class JobsStatusController < ApplicationController
         enqueued_at: Time.at(job.item["enqueued_at"])
       }
     end
-  end
-
-  # A class representing the allowed params into the `search` endpoint
-  # class NextPageParams < T::Struct
-  #   const :page, T.nilable(String)
-  # end
-
-  # sig { void }
-  # def next_page_scrapes
-  #   results_per_page = 2
-  #   typed_params = TypedParams[NextPageParams].new.extract!(params)
-
-  #   scrapes = Scrape.where(fulfilled: false, error: nil).limit(results_per_page).offset(typed_params.page * results_per_page)
-
-  #   respond_to do |format|
-  #     format.turbo_stream {
-  #       render turbo_stream: [
-  #         turbo_stream.replace(
-  #           "search_results",
-  #           partial: "job_status/scrapes",
-  #           locals: { scrapes: scrapes }
-  #         )
-  #       ]
-  #     }
-  #     format.html { redirect_to :root }
-  #   end
-  # end
-
-  # A class representing the allowed params into the `submit_url` endpoint
-  class ResubmitJobParams < T::Struct
-    const :id, String
-  end
-
-  # Resubmits a scrape to Hypatia
-  sig { void }
-  def resubmit_scrape
-    typed_params = TypedParams[ResubmitJobParams].new.extract!(params)
-
-    scrape = Scrape.find(typed_params.id)
-    scrape.update!({ error: true })
-
-    object_model = ArchiveItem.model_for_url(scrape.url)
-    object_model.create_from_url(scrape.url, current_user)
-    flash[:alert] = "Successfully resubmitted scrape"
-
-    redirect_back fallback_location: :jobs_status_index
-  end
-
-  sig { void }
-  def delete_job
-    typed_params = TypedParams[ResubmitJobParams].new.extract!(params)
-    Scrape.find(typed_params.id)&.destroy!
-
-    flash[:alert] = "Successfully deleted scrape"
-
-    redirect_back fallback_location: :jobs_status_index
   end
 end
