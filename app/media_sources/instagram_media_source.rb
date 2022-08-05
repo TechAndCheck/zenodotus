@@ -82,7 +82,10 @@ class InstagramMediaSource < MediaSource
       params: params
     )
 
-    raise ExternalServerError, "Error: #{response.code} returned from Hypatia server" unless response.code == 200
+    unless response.code == 200
+      scrape.update!({ error: true })
+      raise ExternalServerError, "Error: #{response.code} returned from Hypatia server"
+    end
 
     # Hypatia returns arrays always so we grab the first
     returned_data = JSON.parse(response.body)

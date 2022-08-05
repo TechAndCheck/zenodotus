@@ -1,4 +1,5 @@
 # typed: true
+
 class YoutubeMediaSource < MediaSource
   attr_reader(:url)
 
@@ -89,7 +90,11 @@ class YoutubeMediaSource < MediaSource
       params: params
     )
 
-    raise ExternalServerError, "Error: #{response.code} returned from external Hypatia server" unless response.code == 200
+    unless response.code == 200
+      scrape.update!({ error: true })
+      raise ExternalServerError, "Error: #{response.code} returned from Hypatia server"
+    end
+
     returned_data = JSON.parse(response.body)
     returned_data["scrape_result"] = JSON.parse(returned_data["scrape_result"])
     returned_data
