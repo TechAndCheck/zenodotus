@@ -3,7 +3,7 @@
   <div class="flex flex-row justify-between">
     <div class="w-fit">
       <span class="font-bold">Queued Jobs#:</span>
-      <span class="font-semibold"><%= @total_jobs_count %></span>
+      <span class="font-semibold" data-jobs-status-target="jobsCount"><%= @total_jobs_count %></span>
     </div>
     <button id="new-jobs" data-jobs-status-target="jobsPill" data-action="jobs-status#reloadJobs" class="w-fit rounded-full bg-cyan-500 text-white py-2 px-6" hidden ></button>
     <div>&nbsp;</div>
@@ -16,7 +16,7 @@
   <div class="flex flex-row justify-between">
     <div class="w-fit">
       <span class="font-bold">Jobs Submitted #:</span>
-      <span class="font-semibold"><%= @total_scrapes_count %></span>
+      <span class="font-semibold" data-jobs-status-target="scrapesCount"><%= @total_scrapes_count %></span>
     </div>
     <button id="new-scrapes" data-jobs-status-target="scrapesPill" data-action="jobs-status#reloadScrapes" class="w-fit rounded-full bg-cyan-500 text-white py-2 px-6" hidden ></button>
     <div>&nbsp;</div>

@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus'
 import consumer from '../channels/consumer';
 
 export default class extends Controller {
-  static targets = ['scrapesPill', 'jobsPill']
+  static targets = ['scrapesPill', 'scrapesCount', 'jobsPill', 'jobsCount']
 
   initialize() {
     this.loadedScrapesCount = Number(this.element.dataset.loadedScrapesCount)
@@ -54,9 +54,16 @@ export default class extends Controller {
     // Called when there's incoming data on the websocket for this channel
     console.log("Received Jobs......." + data)
     const unloadedJobsCount = data["jobs_count"] - this.loadedJobsCount
+
+    this.jobsCountTarget.innerText = data["jobs_count"]
+
+    if(unloadedJobsCount <= 0){
+      this.jobsPillTarget.hidden = true
+      return
+    }
+
     this.jobsPillTarget.hidden = false
     this.jobsPillTarget.innerText = unloadedJobsCount + " new jobs submitted..."
-
   }
 
   _scrapesCableConnected() {
@@ -72,10 +79,13 @@ export default class extends Controller {
     // Called when there's incoming data on the websocket for this channel
     const unloadedScrapesCount = data["scrapes_count"] - this.loadedScrapesCount
 
+    this.scrapesCountTarget.innerText = data["scrapes_count"]
+
     if(unloadedScrapesCount <= 0){
       this.scrapesPillTarget.hidden = true
       return
     }
+
 
     this.scrapesPillTarget.hidden = false
     this.scrapesPillTarget.innerText = unloadedScrapesCount + " new scrapes submitted..."
