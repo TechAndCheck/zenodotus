@@ -1,4 +1,5 @@
 # typed: true
+
 class FacebookMediaSource < MediaSource
   include Forki
   attr_reader(:url)
@@ -72,7 +73,7 @@ class FacebookMediaSource < MediaSource
 
     raise ExternalServerError, "Error: #{response.code} returned from Hypatia server" unless response.code == 200
     response_body = JSON.parse(response.body)
-    raise InstagramMediaSource::ExternalServerError if response_body["success"] == false
+    raise ExternalServerError if response_body["success"] == false
 
     true
   end
@@ -93,7 +94,11 @@ class FacebookMediaSource < MediaSource
       params: params
     )
 
-    raise ExternalServerError, "Error: #{response.code} returned from Hypatia server" unless response.code == 200
+    unless response.code == 200
+      scrape.update!({ error: true })
+      raise ExternalServerError, "Error: #{response.code} returned from Hypatia server"
+    end
+
     returned_data = JSON.parse(response.body)
     returned_data["scrape_result"] = JSON.parse(returned_data["scrape_result"])
     returned_data
