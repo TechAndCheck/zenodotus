@@ -42,4 +42,10 @@ class Scrape < ApplicationRecord
       self.update!({ fulfilled: true, archive_item: archive_item.first })
     end
   end
+
+  sig { void }
+  def error
+    self.update!({ error: true })
+    self.send_notification
+  end
 end

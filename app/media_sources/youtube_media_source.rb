@@ -67,7 +67,11 @@ class YoutubeMediaSource < MediaSource
       params: params
     )
 
-    raise ExternalServerError, "Error: #{response.code} returned from external Hypatia server" unless response.code == 200
+    unless response.code == 200
+      scrape.error
+      raise ExternalServerError, "Error: #{response.code} returned from Hypatia server"
+    end
+
     response_body = JSON.parse(response.body)
     raise YoutubeMediaSource::ExternalServerError if response_body["success"] == false
 
@@ -91,7 +95,7 @@ class YoutubeMediaSource < MediaSource
     )
 
     unless response.code == 200
-      scrape.update!({ error: true })
+      scrape.error
       raise ExternalServerError, "Error: #{response.code} returned from Hypatia server"
     end
 

@@ -61,6 +61,7 @@ export default class extends Controller {
 
   _scrapesCableConnected() {
     // Called when the subscription is ready for use on the server
+    console.log("Scrapes Connected...")
   }
 
   _scrapesCableDisconnected() {
@@ -70,6 +71,12 @@ export default class extends Controller {
   _scrapesCableReceived(data) {
     // Called when there's incoming data on the websocket for this channel
     const unloadedScrapesCount = data["scrapes_count"] - this.loadedScrapesCount
+
+    if(unloadedScrapesCount <= 0){
+      this.scrapesPillTarget.hidden = true
+      return
+    }
+
     this.scrapesPillTarget.hidden = false
     this.scrapesPillTarget.innerText = unloadedScrapesCount + " new scrapes submitted..."
   }

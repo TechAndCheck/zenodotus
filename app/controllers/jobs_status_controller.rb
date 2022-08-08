@@ -104,12 +104,12 @@ private
 
     @total_jobs_count = jobs.count
 
-    number_of_jobs_pages = (jobs.count / RESULTS_PER_PAGE.to_f).ceil
+    number_of_jobs_pages = (@total_jobs_count / RESULTS_PER_PAGE.to_f).ceil
 
     @jobs_offset = (@active_jobs_page - 1) * RESULTS_PER_PAGE
     jobs = jobs[@jobs_offset...(@jobs_offset + RESULTS_PER_PAGE)]
     @previous_jobs_page = @active_jobs_page == 1 ? nil : @active_jobs_page - 1
-    @next_jobs_page = @active_jobs_page == number_of_jobs_pages ? nil : @active_jobs_page + 1
+    @next_jobs_page = @active_jobs_page >= number_of_jobs_pages ? nil : @active_jobs_page + 1
 
     @jobs_queue = jobs.each_with_index.map do |job, ind|
       {
