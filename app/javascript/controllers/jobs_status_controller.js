@@ -86,7 +86,6 @@ export default class extends Controller {
       return
     }
 
-
     this.scrapesPillTarget.hidden = false
     this.scrapesPillTarget.innerText = unloadedScrapesCount + " new scrapes submitted..."
   }

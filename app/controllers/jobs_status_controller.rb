@@ -25,7 +25,7 @@ class JobsStatusController < ApplicationController
     typed_params = TypedParams[JobsParams].new.extract!(params)
 
     scrapes_for_page_number(typed_params.active_scrapes_page) # set the variables for scrapes
-    render layout: false
+    render partial: "jobs_status/scrapes", layout: false
   end
 
   sig { void }
@@ -33,7 +33,7 @@ class JobsStatusController < ApplicationController
     typed_params = TypedParams[JobsParams].new.extract!(params)
 
     jobs_for_page_number(typed_params.active_jobs_page) # set the variables for scrapes
-    render layout: false
+    render partial: "jobs_status/active_jobs", layout: false
   end
 
   # A class representing the allowed params into the `submit_url` endpoint
@@ -58,8 +58,11 @@ class JobsStatusController < ApplicationController
     scrapes_for_page_number(page) # Fill the variables for turbo
 
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.replace(:scrapes, partial: "jobs_status/scrapes") }
-      format.html         { redirect_back fallback_location: :jobs_status_index }
+      format.turbo_stream { render turbo_stream: [
+        turbo_stream.replace(:scrapes, partial: "jobs_status/scrapes"),
+        turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash })
+      ]}
+      format.html { redirect_back fallback_location: :jobs_status_index }
     end
   end
 
@@ -77,8 +80,11 @@ class JobsStatusController < ApplicationController
     scrapes_for_page_number(page) # Fill the variables for turbo
 
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.replace(:scrapes, partial: "jobs_status/scrapes") }
-      format.html         { redirect_back fallback_location: :jobs_status_index }
+      format.turbo_stream { render turbo_stream: [
+        turbo_stream.replace(:scrapes, partial: "jobs_status/scrapes"),
+        turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash })
+      ]}
+      format.html { redirect_back fallback_location: :jobs_status_index }
     end
   end
 
