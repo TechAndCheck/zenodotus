@@ -57,6 +57,8 @@ class JobsStatusController < ApplicationController
     page = typed_params.page.nil? ? 1 : typed_params.page
     scrapes_for_page_number(page) # Fill the variables for turbo
 
+    ActionCable.server.broadcast("scrapes_channel", { scrapes_count: Scrape.where(fulfilled: false, error: nil).count })
+
     respond_to do |format|
       format.turbo_stream { render turbo_stream: [
         turbo_stream.replace(:scrapes, partial: "jobs_status/scrapes"),
@@ -78,6 +80,8 @@ class JobsStatusController < ApplicationController
 
     page = typed_params.page.nil? ? 1 : typed_params.page
     scrapes_for_page_number(page) # Fill the variables for turbo
+
+    ActionCable.server.broadcast("scrapes_channel", { scrapes_count: Scrape.where(fulfilled: false, error: nil).count })
 
     respond_to do |format|
       format.turbo_stream { render turbo_stream: [
