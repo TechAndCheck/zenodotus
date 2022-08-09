@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_16_162441) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_08_225818) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -28,6 +28,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_16_162441) do
     t.datetime "updated_at", null: false
     t.index ["hashed_api_key"], name: "index_api_keys_on_hashed_api_key"
     t.index ["user_id"], name: "index_api_keys_on_user_id"
+  end
+
+  create_table "applicants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "email", null: false
+    t.string "affiliation"
+    t.string "primary_role"
+    t.text "use_case"
+    t.datetime "accepted_terms_at"
+    t.datetime "accepted_terms_version"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "archive_entities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
