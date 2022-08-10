@@ -18,15 +18,6 @@ export default class extends Controller {
     this.scrapesPillTarget.hidden = true
   }
 
-  reloadJobs() {
-    const jobs = document.getElementById('jobs')
-    const src = jobs.src
-    jobs.src = null
-    jobs.src = src
-    this.jobsPillTarget.innerText = ''
-    this.jobsPillTarget.hidden = true
-  }
-
   connect() {
     this.jobs_channel = consumer.subscriptions.create('JobsChannel', {
       connected: this._jobsCableConnected.bind(this),
@@ -56,14 +47,6 @@ export default class extends Controller {
     const unloadedJobsCount = data["jobs_count"] - this.loadedJobsCount
 
     this.jobsCountTarget.innerText = data["jobs_count"]
-
-    if(unloadedJobsCount <= 0){
-      this.jobsPillTarget.hidden = true
-      return
-    }
-
-    this.jobsPillTarget.hidden = false
-    this.jobsPillTarget.innerText = unloadedJobsCount + " new jobs submitted..."
   }
 
   _scrapesCableConnected() {
