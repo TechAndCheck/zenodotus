@@ -106,29 +106,6 @@ private
   end
 
   def jobs_for_page_number(page_number)
-    @active_jobs_page = page_number.blank? ? 1 : page_number.to_i
-
-    @jobs_queue = []
-
-    jobs = Sidekiq::Queue.new.to_a.reverse
-
-    @total_jobs_count = jobs.count
-
-    number_of_jobs_pages = (@total_jobs_count / RESULTS_PER_PAGE.to_f).ceil
-
-    @jobs_offset = (@active_jobs_page - 1) * RESULTS_PER_PAGE
-    jobs = jobs[@jobs_offset...(@jobs_offset + RESULTS_PER_PAGE)]
-    @previous_jobs_page = @active_jobs_page == 1 ? nil : @active_jobs_page - 1
-    @next_jobs_page = @active_jobs_page >= number_of_jobs_pages ? nil : @active_jobs_page + 1
-
-    @jobs_queue = jobs.each_with_index.map do |job, ind|
-      {
-        queue_position: ind + 1,
-        url: job.item["args"][0]["arguments"][2],
-        user: GlobalID::Locator.locate(job.item["args"][0]["arguments"][3]),
-        class: job.item["args"][0]["arguments"][1],
-        enqueued_at: Time.at(job.item["enqueued_at"])
-      }
-    end
+    @total_jobs_count = Sidekiq::Queue.new.count
   end
 end

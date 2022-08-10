@@ -5,11 +5,6 @@
       <span class="font-bold">Queued Jobs#:</span>
       <span class="font-semibold" data-jobs-status-target="jobsCount"><%= @total_jobs_count %></span>
     </div>
-    <button id="new-jobs" data-jobs-status-target="jobsPill" data-action="jobs-status#reloadJobs" class="w-fit rounded-full bg-cyan-500 text-white py-2 px-6" hidden ></button>
-    <div>&nbsp;</div>
-  </div>
-  <div id="jobs-div" class="mt-5">
-    <%= turbo_frame_tag "active_jobs", src: jobs_status_active_jobs_path(active_jobs_page: @active_jobs_page), loading: "lazy" %>
   </div>
 
   <div class="text-3xl font-bold mt-10">Active Scrapes</div>

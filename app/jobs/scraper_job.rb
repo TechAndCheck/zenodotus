@@ -5,21 +5,12 @@ class ScraperJob < ApplicationJob
 
   # When a job is placed on the queue, broadcast to update the jobs status page
   after_enqueue do |job|
-    unless Sidekiq::Queue.new.size.zero?
-      queue = get_sidekiq_queue
-      ActionCable.server.broadcast("jobs_channel", { jobs: queue })
-    end
+    ActionCable.server.broadcast("jobs_channel", { jobs_count: Sidekiq::Queue.new.size })
   end
 
   # When a job is completed, broadcast to update the jobs status page
   after_perform do |job|
-    if Sidekiq::Queue.new.size.zero?
-      # Empties jobs status table
-      ActionCable.server.broadcast("jobs_channel", { jobs: [] })
-    else
-      queue = get_sidekiq_queue
-      ActionCable.server.broadcast("jobs_channel", { jobs: queue })
-    end
+    ActionCable.server.broadcast("jobs_channel", { jobs_count: Sidekiq::Queue.new.size })
   end
 
   def perform(media_source_class, media_model, url, user)
