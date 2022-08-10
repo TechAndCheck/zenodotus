@@ -3,7 +3,7 @@
 class JobsStatusController < ApplicationController
   require "sidekiq/api"
 
-  RESULTS_PER_PAGE = 2
+  RESULTS_PER_PAGE = 10
 
   # A class representing the allowed params into the `search` endpoint
   class JobsParams < T::Struct
