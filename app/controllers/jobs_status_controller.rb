@@ -102,7 +102,7 @@ private
     @next_scrapes_page = scrapes_next_page_count.zero? ? nil : @active_scrapes_page + 1
   end
 
-  def jobs_count(page_number)
+  def jobs_count
     @total_jobs_count = Sidekiq::Queue.new.count
   end
 end
