@@ -27,3 +27,6 @@ application.register("modal", ModalController)
 
 import OrganizationController from "./organization_controller.js"
 application.register("organization", OrganizationController)
+
+import JobStatusController from "./jobs_status_controller.js"
+application.register("jobs-status", JobStatusController)

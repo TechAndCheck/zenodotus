@@ -17,6 +17,13 @@ class Scrape < ApplicationRecord
 
   has_one :archive_item, dependent: :destroy
 
+  after_create :send_notification
+
+  sig { void }
+  def send_notification
+    ActionCable.server.broadcast("scrapes_channel", { scrapes_count: Scrape.where(fulfilled: false, error: nil).count })
+  end
+
   sig { params(response: String).void }
   def fulfill(response)
     response = JSON.parse(response)
@@ -34,5 +41,11 @@ class Scrape < ApplicationRecord
       media_review_item.update({ archive_item_id: archive_item.first.id, taken_down: false })
       self.update!({ fulfilled: true, archive_item: archive_item.first })
     end
+  end
+
+  sig { void }
+  def error
+    self.update!({ error: true })
+    self.send_notification
   end
 end
