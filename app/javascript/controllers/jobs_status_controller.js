@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus'
 import consumer from '../channels/consumer';
 
 export default class extends Controller {
-  static targets = ['scrapesPill', 'scrapesCount', 'jobsPill', 'jobsCount']
+  static targets = ['scrapesPill', 'scrapesCount', 'jobsCount']
 
   initialize() {
     this.loadedScrapesCount = Number(this.element.dataset.loadedScrapesCount)

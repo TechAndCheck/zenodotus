@@ -8,7 +8,6 @@ class JobsStatusController < ApplicationController
   # A class representing the allowed params into the `search` endpoint
   class JobsParams < T::Struct
     const :active_scrapes_page, T.nilable(String)
-    const :active_jobs_page, T.nilable(String)
   end
 
   # Index function. Makes available an instance variable containing jobs queue details
@@ -17,7 +16,7 @@ class JobsStatusController < ApplicationController
     typed_params = TypedParams[JobsParams].new.extract!(params)
 
     scrapes_for_page_number(typed_params.active_scrapes_page) # set the variables for scrapes
-    jobs_for_page_number(typed_params.active_jobs_page) # set the variables for jobs
+    jobs_count # set the variables for jobs
   end
 
   sig { void }
@@ -30,9 +29,7 @@ class JobsStatusController < ApplicationController
 
   sig { void }
   def active_jobs
-    typed_params = TypedParams[JobsParams].new.extract!(params)
-
-    jobs_for_page_number(typed_params.active_jobs_page) # set the variables for scrapes
+    jobs_count # set the variables for scrapes
     render partial: "jobs_status/active_jobs", layout: false
   end
 
@@ -105,7 +102,7 @@ private
     @next_scrapes_page = scrapes_next_page_count.zero? ? nil : @active_scrapes_page + 1
   end
 
-  def jobs_for_page_number(page_number)
+  def jobs_count(page_number)
     @total_jobs_count = Sidekiq::Queue.new.count
   end
 end
