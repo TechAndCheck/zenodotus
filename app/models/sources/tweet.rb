@@ -89,12 +89,13 @@ class Sources::Tweet < ApplicationRecord
         { video: File.open(video_file_name.first, binmode: true), video_type: birdsong_tweet.video_file_type }
       end
 
-      if birdsong_tweet["aws_screenshot_key"].present?
-        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(birdsong_tweet["aws_screenshot_key"])
-        screenshot_attributes = { image: File.open(downloaded_path, binmode: true) }
-      else
-        screenshot_attributes = { image: File.open(birdsong_tweet["screenshot_file"], binmode: true) }
-      end
+      # TODO: Uncomment this after Birdsong has been migrated to Hypatia
+      # if birdsong_tweet["aws_screenshot_key"].present?
+      #   downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(birdsong_tweet["aws_screenshot_key"])
+      #   screenshot_attributes = { image: File.open(downloaded_path, binmode: true) }
+      # else
+      #   screenshot_attributes = { image: File.open(birdsong_tweet["screenshot_file"], binmode: true) }
+      # end
 
       tweet_hash = {
         text:                  birdsong_tweet.text,
