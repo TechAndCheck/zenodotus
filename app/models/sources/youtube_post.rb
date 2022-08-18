@@ -4,7 +4,6 @@
 class Sources::YoutubePost < ApplicationRecord
   include ArchivableItem
   include PgSearch::Model
-  include ImageUploader::Attachment(:preview_image) # adds an `image` virtual attribute
 
   multisearchable against: :title
 
@@ -91,7 +90,7 @@ class Sources::YoutubePost < ApplicationRecord
       youtube_archiver_video = youtube_archiver_video["post"]
       youtube_channel = Sources::YoutubeChannel.create_from_youtube_archiver_hash([youtube_archiver_video["channel"]]).first.youtube_channel
       videos_attributes = []
-      screenshot_attributes = []
+      screenshot_attributes = {}
 
       # Download screenshot from s3 or load it from base64 attachment
       if youtube_archiver_video["aws_screenshot_key"].present?
@@ -114,9 +113,6 @@ class Sources::YoutubePost < ApplicationRecord
         tempfile.close!
       end
 
-      tempfile = Tempfile.new(binmode: true)
-      tempfile.write(Base64.decode64(youtube_archiver_video["video_preview_image_file"]))
-
       hash = {
         youtube_id:        youtube_archiver_video["id"],
         title:             youtube_archiver_video["title"],
@@ -128,7 +124,6 @@ class Sources::YoutubePost < ApplicationRecord
         duration:          find_length_of_youtube_video(youtube_archiver_video["duration"]),
         live:              youtube_archiver_video["live"],
         author:            youtube_channel,
-        preview_image:     File.open(tempfile.path, binmode: true),
         made_for_kids:     youtube_archiver_video["made_for_kids"],
         videos_attributes: videos_attributes
       }
