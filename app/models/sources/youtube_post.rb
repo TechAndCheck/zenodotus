@@ -95,7 +95,7 @@ class Sources::YoutubePost < ApplicationRecord
       # Download screenshot from s3 or load it from base64 attachment
       if youtube_archiver_video["aws_screenshot_key"].present?
         downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(youtube_archiver_video["aws_screenshot_key"])
-        screenshot_attributes = [ { image: File.open(downloaded_path, binmode: true) } ]
+        screenshot_attributes = { image: File.open(downloaded_path, binmode: true) }
       else
         tempfile = Tempfile.new(binmode: true)
         tempfile.write(Base64.decode64(youtube_archiver_video["screenshot_file"]))

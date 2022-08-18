@@ -79,7 +79,7 @@ class Sources::Tweet < ApplicationRecord
     birdsong_tweets.map do |birdsong_tweet|
       twitter_user = Sources::TwitterUser.create_from_birdsong_hash([birdsong_tweet.author]).first.twitter_user
 
-      screenshot_attributes = []
+      screenshot_attributes = {}
 
       image_attributes = birdsong_tweet.image_file_names.map do |image_file_name|
         { image: File.open(image_file_name, binmode: true) }
@@ -91,7 +91,7 @@ class Sources::Tweet < ApplicationRecord
 
       if birdsong_tweet["aws_screenshot_key"].present?
         downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(birdsong_tweet["aws_screenshot_key"])
-        screenshot_attributes = [ { image: File.open(downloaded_path, binmode: true) } ]
+        screenshot_attributes = { image: File.open(downloaded_path, binmode: true) }
       else
         screenshot_attributes = { image: File.open(birdsong_tweet["screenshot_file"], binmode: true) }
       end
