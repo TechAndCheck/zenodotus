@@ -22,6 +22,9 @@
 					<%= f.text_field(
 						:name,
 						required: true) %>
+					<%= errors_for_field(
+						@applicant,
+						:name) %>
 				</div>
 				<div class="field__wrapper--input">
 					<%= f.label(
@@ -30,6 +33,9 @@
 					<%= f.email_field(
 						:email,
 						required: true) %>
+					<%= errors_for_field(
+						@applicant,
+						:email) %>
 					<div class="field__description">You’ll need to confirm this email address before we process your application.</div>
 				</div>
 				<div class="field__wrapper--input">
@@ -63,6 +69,10 @@
 							required: true ) %>
 						<%= f.label :accepted_terms do %>
 							Accept the terms and conditions
+							<%= errors_for_field(
+								@applicant,
+								:accepted_terms,
+								full: false) %>
 						<% end %>
 					</div>
 				</div>

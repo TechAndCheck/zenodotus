@@ -123,3 +123,25 @@ Library for consistent form layout.
 .checkbox input {
 	margin-top: calc(((1rem * 1.5) - 1rem) / 2);
 }
+
+/* Errors */
+
+.field_with_errors label {
+	color: var(--color--mood--error);
+}
+
+.field__error-messages {
+	background-color: var(--color--mood--error);
+	color: white;
+	font-weight: var(--font-weight-medium);
+}
+
+.field__wrapper--input .field__error-messages {
+	border-radius: 0 0 5px 5px;
+	padding: 0.25rem 0.5rem;
+}
+
+.field__wrapper--checkboxes .field__error-messages {
+	display: inline-block;
+	padding: 0 0.25rem;
+}

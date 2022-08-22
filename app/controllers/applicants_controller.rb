@@ -25,7 +25,7 @@ class ApplicantsController < ApplicationController
     if @applicant.save
       redirect_to new_applicant_thanks_path
     else
-      flash.now[:error] = "We weren’t able to save your application. Please be sure to fill out all required fields."
+      flash.now[:error] = "We weren’t able to save your application. Please check the form below for errors."
       render :new, status: :unprocessable_entity
     end
 end
