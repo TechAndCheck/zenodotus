@@ -23,6 +23,11 @@ Rails.application.routes.draw do
 
   root "archive#index"
 
+  # TODO: Mount `/apply/new` at `/apply` so this redirect isn't necessary.
+  get "/apply", to: redirect("/apply/new"), as: :applicant
+  get "/apply/thanks", to: "applicants#thanks", as: :new_applicant_thanks
+  resources :applicants, path: "/apply", only: [:new, :create]
+
   get "/archive/add", to: "archive#add"
   post "/archive/add", to: "archive#submit_url"
   get "/archive/download", to: "archive#export_archive_data", as: "archive_download"
