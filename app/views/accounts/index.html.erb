@@ -3,9 +3,6 @@
     <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="accountSettings">Settings</a>
     <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="textSearchHistory">Text searches</a>
     <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="imageSearchHistory">Image searches</a>
-    <% if current_user.admin? %>
-      <a class="block">API key</a>
-    <%end %>
   </div>
   <div id="settings" class="flex-grow relative left-5">
     <div id="accountSettings" class="settingsBlock relative w-9/12">

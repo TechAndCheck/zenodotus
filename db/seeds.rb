@@ -8,50 +8,27 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-organization = Organization.create!(
-  name: "Test Organization"
-)
-
 User.create!([
-{ email: "admin@example.com",
+# super-admin account
+{
+  email: "admin@example.com",
   password: "password123",
-  approved: true,
-  admin: true,
   super_admin: true,
-  confirmed_at: Time.now,
-  organization_id: organization.id
+  confirmed_at: Time.now
 },
-# unapproved account
+# standard account
 {
   email: "user@example.com",
   password: "password123",
-  approved: false,
-  admin: false,
-  confirmed_at: Time.now,
-  organization_id: organization.id
+  confirmed_at: Time.now
 },
 # restricted account
 {
-  email: "user1@example.com",
+  email: "restricted@example.com",
   password: "password123",
-  approved: true,
-  admin: false,
   restricted: true,
-  confirmed_at: Time.now,
-  organization_id: organization.id
-},
-# approved account
-{
-  email: "user2@example.com",
-  password: "password123",
-  approved: true,
-  admin: true,
-  restricted: true,
-  confirmed_at: Time.now,
-  organization_id: organization.id
+  confirmed_at: Time.now
 }])
-
-organization.update({ admin_id: User.where(email: "user2@example.com").first.id })
 
 Sources::Tweet.create_from_url "https://twitter.com/kairyssdal/status/1415029747826905090"
 Sources::Tweet.create_from_url "https://twitter.com/leahstokes/status/1414669810739281920"
