@@ -46,8 +46,6 @@ Rails.application.routes.draw do
   post "/account/change_password", to: "accounts#change_password", as: "change_password"
   post "/account/change_email", to: "accounts#change_email", as: "change_email"
   delete "/account/users/", to: "accounts#destroy", as: "destroy_user"
-  post "/settings/approve", to: "settings#approveUserRequest", as: "approve_request"
-  post "/settings/deny", to: "settings#denyUserRequest", as: "deny_request"
 
   get "/jobs", to: "jobs_status#index", as: "jobs_status_index"
   get "/jobs/scrapes", to: "jobs_status#scrapes", as: "jobs_status_scrapes"
@@ -59,10 +57,6 @@ Rails.application.routes.draw do
   resources :instagram_users, only: [:show]
   resources :facebook_users, only: [:show]
   resources :youtube_channels, only: [:show]
-  resources :organizations, only: [:index]
-
-  put "/organizations/:organization_id/update_admin/:user_id", to: "organizations#update_admin", as: "organization_update_admin"
-  delete "/organizations/:organization_id/update_admin/:user_id", to: "organizations#delete_user", as: "organization_delete_user"
 
   get "/facebook_users/:id/download", to: "facebook_users#export_facebook_user_data", as: "facebook_user_download"
   get "/instagram_users/:id/download", to: "instagram_users#export_instagram_user_data", as: "instagram_user_download"

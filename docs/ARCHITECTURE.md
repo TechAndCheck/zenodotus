@@ -19,9 +19,9 @@ Further downstream, the model architecture is traditional. Posts belong to `auth
 
 Zenodotus allows its users to search its archive using image or text inputs. Search logic is contained in the `run` functions of the [Image Search](https://github.com/TechAndCheck/zenodotus/blob/master/app/models/image_search.rb) and [Text Search](https://github.com/TechAndCheck/zenodotus/blob/master/app/models/text_search.rb) models. Maintaining models for searches lets us move logic out of controllers and gives us the added benefit of being able to store search history by instantiating and saving search objects. 
 
-## User and organization models
+## User model
 
-Zenodotus' `User` model handles authentication for the app via [Devise](https://github.com/heartcombo/devise). Users belong to an `Organization` and may be designated as an organization's `admin`, allowing them to delete the profiles of other users in the organization.
+Zenodotus' `User` model handles authentication for the app via [Devise](https://github.com/heartcombo/devise). Internal users may be indicated as such with the `super_admin` boolean.
 
 ## MediaReview
 Coming soon
