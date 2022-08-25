@@ -4,14 +4,23 @@ require "test_helper"
 
 class TweetTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
-  def setup
-    @@birdsong_tweet = TwitterMediaSource.extract("https://twitter.com/NYCSanitation/status/1517229098795515906?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw", true)["scrape_result"] if @@birdsong_tweet.nil?
-    @@birdsong_tweet2 = TwitterMediaSource.extract("https://twitter.com/NYCSanitation/status/1517093299298963456?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw", true) if @@birdsong_tweet2.nil?
+
+  include Minitest::Hooks
+
+  def before_all
+    @@birdsong_tweet = TwitterMediaSource.extract("https://twitter.com/NYCSanitation/status/1517229098795515906?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw", true)["scrape_result"]
+    @@birdsong_tweet2 = TwitterMediaSource.extract("https://twitter.com/NYCSanitation/status/1517093299298963456?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw", true)
   end
 
-  def teardown
-    if File.exist?("tmp/birdsong") && File.directory?("tmp/birdsong")
-      FileUtils.rm_r "tmp/birdsong"
+  def around
+    AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
+      super
+    end
+  end
+
+  def after_all
+    if File.exist?("tmp") && File.directory?("tmp")
+      FileUtils.rm_r("tmp")
     end
   end
 
@@ -51,8 +60,7 @@ class TweetTest < ActiveSupport::TestCase
 
   test "can create two tweets from same author" do
     archive_item = Sources::Tweet.create_from_birdsong_hash(@@birdsong_tweet).first.tweet
-    archive_item2 = Sources::Tweet.create_from_birdsong_hash(@@birdsong_tweet2).first.tweet
-
+    archive_item2 = Sources::Tweet.create_from_birdsong_hash(@@birdsong_tweet_2).first.tweet
     assert_equal archive_item.author, archive_item2.author
   end
 
