@@ -1,5 +1,10 @@
 # typed: false
 require "simplecov"
+require "minitest/autorun"
+require_relative "hypatia_mock"
+
+include HypatiaMock 
+
 SimpleCov.start "rails" do
   enable_coverage :branch
 end
@@ -7,6 +12,8 @@ end
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
+
+BIG_DOG = 0
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
