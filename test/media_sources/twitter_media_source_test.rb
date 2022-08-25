@@ -1,6 +1,5 @@
 # typed: ignore
 
-# require "minitest/autorun"
 require "test_helper"
 
 class TwitterMediaSourceTest < ActiveSupport::TestCase
@@ -17,6 +16,15 @@ class TwitterMediaSourceTest < ActiveSupport::TestCase
     assert_raises(TwitterMediaSource::InvalidTweetUrlError) do
       TwitterMediaSource.new("https://twitter.com/20")
     end
+  end
+
+  def test_initializing_returns_object
+    assert_not_nil TwitterMediaSource.new("https://twitter.com/jack/status/20")
+  end
+
+  def test_extracting_creates_twitter_post_object
+    twitter_post_hash = TwitterMediaSource.extract("https://twitter.com/jack/status/20", true)
+    assert_not twitter_post_hash.empty?
   end
 
   def test_initializing_returns_blank

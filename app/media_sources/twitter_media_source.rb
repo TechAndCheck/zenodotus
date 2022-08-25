@@ -26,12 +26,13 @@ class TwitterMediaSource < MediaSource
   #
   # @!scope class
   # @params url [String] the url of the page to be collected for archiving
-  # @params save_screenshot [Boolean] whether to save the screenshot image (mostly for testing).
+  # @params force [Boolean] force Hypatia to not queue a request but to scrape immediately.
   #   Default: false
   # @returns [String or nil] the path of the screenshot if the screenshot was saved
-  sig { override.params(url: String, save_screenshot: T::Boolean).returns(T::Array[Birdsong::Tweet]) }
-  def self.extract(url, save_screenshot = false)
+  sig { override.params(url: String, force: T::Boolean).returns(T.any(T::Boolean, T::Hash[String, String])) }
+  def self.extract(url, force = false)
     object = self.new(url)
+    return object.retrieve_tweet! if force
     object.retrieve_tweet
   end
 
@@ -54,10 +55,54 @@ class TwitterMediaSource < MediaSource
   # @!visibility private
   # @params url [String] a url to grab data for
   # @return [Birdsong::Tweet]
-  sig { returns(T::Array[Birdsong::Tweet]) }
+  sig { returns(T::Boolean) }
   def retrieve_tweet
-    id = TwitterMediaSource.extract_tweet_id_from_url(@url)
-    Birdsong::Tweet.lookup(id)
+    scrape = Scrape.create!({ url: @url, scrape_type: :twitter })
+
+    params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: @url, callback_id: scrape.id }
+    params[:callback_url] = Figaro.env.URL unless Figaro.env.URL.blank?
+
+    response = Typhoeus.get(
+      Figaro.env.HYPATIA_SERVER_URL,
+      followlocation: true,
+      params: params
+    )
+
+    unless response.code == 200
+      scrape.error
+      raise TwitterMediaSource::ExternalServerError, "Error: #{response.code} returned from Hypatia server"
+    end
+
+    response_body = JSON.parse(response.body)
+    raise TwitterMediaSource::ExternalServerError if response_body["success"] == false
+
+    true
+  end
+
+  # Scrape the page by sending it to Hypatia and forcing the server to process the job immediately. Should only be used for tests
+  #
+  # @return [Hash]
+  sig { returns(Hash) }
+  def retrieve_tweet!
+    scrape = Scrape.create!({ url: @url, scrape_type: :twitter })
+
+    params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: @url, callback_id: scrape.id, force: "true" }
+    params[:callback_url] = Figaro.env.URL unless Figaro.env.URL.blank?
+
+    response = Typhoeus.get(
+      Figaro.env.HYPATIA_SERVER_URL,
+      followlocation: true,
+      params: params
+    )
+
+    unless response.code == 200
+      scrape.error
+      raise ExternalServerError, "Error: #{response.code} returned from Hypatia server"
+    end
+
+    returned_data = JSON.parse(response.body)
+    returned_data["scrape_result"] = JSON.parse(returned_data["scrape_result"])
+    returned_data
   end
 
 private
@@ -95,3 +140,4 @@ end
 
 # A class to indicate that a tweet url passed in is invalid
 class TwitterMediaSource::InvalidTweetUrlError < StandardError; end
+class TwitterMediaSource::ExternalServerError < StandardError; end
