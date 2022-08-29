@@ -37,12 +37,16 @@ class ArchiveControllerTest < ActionDispatch::IntegrationTest
     # First we need to construct a callback response. Since we can't really test the callback flow we
     # construct a mock callback. Since doing that by hard coding is actually annoying as hell we first
     # make a forced scrape call to Hypatia, then create it from there
-    file = File.open("lib/assets/sample_instagram_scrape.json")
-    scrape_result = JSON.parse(file.read)
-    file.close
+
+    instagram_mocks_file = File.open("test/mock_data/instagram_posts.json")
+    hypatia_mock_response = JSON.parse(instagram_mocks_file.read)["https://www.instagram.com/p/CBcqOkyDDH8/"]
+    instagram_mocks_file.close
+
+    hypatia_mock_response["scrape_result"] = JSON.dump(hypatia_mock_response["scrape_result"])
+    # file.close
 
     scrape = Scrape.create!({ url: "https://www.instagram.com/p/CBcqOkyDDH8/", scrape_type: :instagram })
-    callback_response_json = { scrape_id: scrape.id, scrape_result: scrape_result["scrape_result"] }
+    callback_response_json = { scrape_id: scrape.id, scrape_result: hypatia_mock_response["scrape_result"] }
     post scrape_result_callback_url, as: :json, params: callback_response_json
     assert_response :success
 

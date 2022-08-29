@@ -29,9 +29,9 @@ class ImageSearchTest < ActiveSupport::TestCase
 
   test "can run image search" do
     # First we need to create a few posts. The Shrine fixture way doesn't seem to actually work.
-    Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
+    Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CBcqOkyDDH8/")
     Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CQDeYPhMJLG/")
-    Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CBZkDi1nAty/?utm_source=ig_embed")
+    Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CBZkDi1nAty/")
     Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CZ3_P6FrtMO/")
     results = @image_search.run
 
@@ -55,9 +55,9 @@ class ImageSearchTest < ActiveSupport::TestCase
 
   test "can run video search" do
     # First we need to create a few posts. The Shrine fixture way doesn't seem to actually work.
-    Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CHdIkUVBz3C/?utm_source=ig_embed")
+    Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CHdIkUVBz3C/")
     Sources::YoutubePost.create_from_url!("https://www.youtube.com/watch?v=Df7UtQTFUMQ")
-    Sources::YoutubePost.create_from_url!("https://youtube.com/shorts/OgWNIBZfwDI?feature=share")
+    Sources::YoutubePost.create_from_url!("https://youtube.com/shorts/OgWNIBZfwDI")
 
     results = @video_search.run
 
