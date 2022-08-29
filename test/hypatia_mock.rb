@@ -95,7 +95,7 @@ module HypatiaMock
       media_url = request.options[:params][:url]
       ensure_media_url_is_mocked(mock_data, media_url)
 
-      should_force_request = request.options[:params][:force] == true
+      should_force_request = request.options[:params][:force] == "true"
       should_force_request ? generate_force_response(mock_data, media_url) : generate_nonforce_response
     end
   end

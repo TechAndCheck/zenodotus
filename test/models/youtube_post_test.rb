@@ -1,15 +1,16 @@
 # typed: ignore
+
 require "test_helper"
 
 class YoutubePostTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
-  @@youtube_archiver_post = nil
-  @@youtube_archiver_post2 = nil
+  @@youtube_post = nil
+  @@youtube_post_2 = nil
 
   def setup
-    @@youtube_archiver_post = YoutubeMediaSource.extract("https://www.youtube.com/watch?v=Df7UtQTFUMQ", true)["scrape_result"] if @@youtube_archiver_post.nil?
-    @@youtube_archiver_post2 = YoutubeMediaSource.extract("https://www.youtube.com/watch?v=kFFvomxcLWo", true) if @@youtube_archiver_post2.nil?
+    @@youtube_post = YoutubeMediaSource.extract("https://www.youtube.com/watch?v=Df7UtQTFUMQ", true)["scrape_result"] if @@youtube_post.nil?
+    @@youtube_post_2 = YoutubeMediaSource.extract("https://www.youtube.com/watch?v=kFFvomxcLWo", true)["scrape_result"] if @@youtube_post_2.nil?
   end
 
   def teardown
@@ -19,16 +20,16 @@ class YoutubePostTest < ActiveSupport::TestCase
   end
 
   test "can create youtube post" do
-    archive_item = Sources::YoutubePost.create_from_youtube_archiver_hash(@@youtube_archiver_post).first
+    archive_item = Sources::YoutubePost.create_from_youtube_archiver_hash(@@youtube_post).first
     assert_not_nil archive_item
     assert_kind_of ArchiveItem, archive_item
 
-    assert_equal @@youtube_archiver_post.first["post"]["title"], archive_item.youtube_post.title
-    assert_equal @@youtube_archiver_post.first["post"]["id"], archive_item.youtube_post.youtube_id
-    assert_equal @@youtube_archiver_post.first["post"]["id"], archive_item.service_id
-    assert_equal @@youtube_archiver_post.first["post"]["live"], archive_item.youtube_post.live
+    assert_equal @@youtube_post.first["post"]["title"], archive_item.youtube_post.title
+    assert_equal @@youtube_post.first["post"]["id"], archive_item.youtube_post.youtube_id
+    assert_equal @@youtube_post.first["post"]["id"], archive_item.service_id
+    assert_equal @@youtube_post.first["post"]["live"], archive_item.youtube_post.live
 
-    assert_not_nil archive_item.youtube_post.preview_image
+    assert_not_nil archive_item.youtube_post.videos.first.video_derivatives[:preview]
     assert_not_nil archive_item.youtube_post.author
     assert_not_nil archive_item.youtube_post.videos
   end
@@ -41,7 +42,7 @@ class YoutubePostTest < ActiveSupport::TestCase
   end
 
   test "can archive youtube short" do
-    youtube_post = Sources::YoutubePost.create_from_url!("https://youtube.com/shorts/OgWNIBZfwDI?feature=share")
+    youtube_post = Sources::YoutubePost.create_from_url!("https://youtube.com/shorts/OgWNIBZfwDI")
     assert_not_nil youtube_post
   end
 
@@ -63,14 +64,12 @@ class YoutubePostTest < ActiveSupport::TestCase
   end
 
   test "archiving a video creates a preview screenshot" do
-    archive_item = Sources::YoutubePost.create_from_youtube_archiver_hash(@@youtube_archiver_post).first
+    archive_item = Sources::YoutubePost.create_from_youtube_archiver_hash(@@youtube_post).first
     assert_not_nil archive_item.youtube_post.videos.first.video_derivatives[:preview]
   end
 
   test "dhash properly generated from video" do
-    post = YoutubeMediaSource.extract("https://www.youtube.com/watch?v=nx857dcV6mc", true)["scrape_result"]
-
-    archive_item = Sources::YoutubePost.create_from_youtube_archiver_hash(post).first
+    archive_item = Sources::YoutubePost.create_from_youtube_archiver_hash(@@youtube_post).first
     assert_not_nil archive_item.image_hashes.first.dhash
   end
 end

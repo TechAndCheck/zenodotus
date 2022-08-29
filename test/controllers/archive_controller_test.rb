@@ -1,4 +1,5 @@
 # typed: ignore
+
 require "test_helper"
 
 class ArchiveControllerTest < ActionDispatch::IntegrationTest
@@ -40,7 +41,7 @@ class ArchiveControllerTest < ActionDispatch::IntegrationTest
     scrape_result = JSON.parse(file.read)
     file.close
 
-    scrape = Scrape.create!({ url: "https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed", scrape_type: :instagram })
+    scrape = Scrape.create!({ url: "https://www.instagram.com/p/CBcqOkyDDH8/", scrape_type: :instagram })
     callback_response_json = { scrape_id: scrape.id, scrape_result: scrape_result["scrape_result"] }
     post scrape_result_callback_url, as: :json, params: callback_response_json
     assert_response :success

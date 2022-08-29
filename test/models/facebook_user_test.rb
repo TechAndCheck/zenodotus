@@ -44,15 +44,6 @@ class FacebookUserTest < ActiveSupport::TestCase
     assert_equal @@forki_user["number_of_followers"], archive_entity2.followers_count
   end
 
-  test "can add a second fact check to a user" do
-    post = Sources::FacebookPost.create_from_url!("https://www.facebook.com/Meta/photos/460964425465155")
-    assert_equal 1, post.facebook_post.author.facebook_posts.count
-
-    Sources::FacebookPost.create_from_url!("https://www.facebook.com/Meta/videos/516906563485969")
-    post.reload
-    assert_equal 2, post.facebook_post.author.facebook_posts.count
-  end
-
   test "can update facebook user" do
     archive_entity = Sources::FacebookUser.create_from_forki_hash([@@forki_user]).first
 

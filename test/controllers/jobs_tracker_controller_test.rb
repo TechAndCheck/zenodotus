@@ -5,14 +5,14 @@ class JobsTrackerControllerTest < ActionDispatch::IntegrationTest
 
   test "can view jobs" do
     sign_in users(:user1)
-    InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed", false)
+    InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", false)
     get jobs_status_index_path
     assert_response :success
   end
 
   test "can resubmit a scrape" do
     sign_in users(:user1)
-    scrape = Scrape.create({ fulfilled: false, url: "https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed", scrape_type: :instagram })
+    scrape = Scrape.create({ fulfilled: false, url: "https://www.instagram.com/p/CBcqOkyDDH8/", scrape_type: :instagram })
     assert_not_nil scrape
 
     assert_enqueued_jobs 0
@@ -26,7 +26,7 @@ class JobsTrackerControllerTest < ActionDispatch::IntegrationTest
 
   test "can delete a scrape" do
     sign_in users(:user1)
-    scrape = Scrape.create({ fulfilled: false, url: "https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed", scrape_type: :instagram })
+    scrape = Scrape.create({ fulfilled: false, url: "https://www.instagram.com/p/CBcqOkyDDH8/", scrape_type: :instagram })
     assert_not_nil scrape
 
     delete job_status_delete_path(id: scrape.id)

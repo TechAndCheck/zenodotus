@@ -13,7 +13,7 @@ class InstagramMediaSourceTest < ActiveSupport::TestCase
 
   def test_invalid_instagram_post_url_raises_error
     assert_raises(InstagramMediaSource::InvalidInstagramPostUrlError) do
-      InstagramMediaSource.new("https://www.instagram.com/CBcqOkyDDH8/?utm_source=ig_embed")
+      InstagramMediaSource.new("https://www.instagram.com/CBcqOkyDDH8/")
     end
   end
 
@@ -25,16 +25,16 @@ class InstagramMediaSourceTest < ActiveSupport::TestCase
   end
 
   def test_initializing_returns_object
-    assert_not_nil InstagramMediaSource.new("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed")
+    assert_not_nil InstagramMediaSource.new("https://www.instagram.com/p/CBcqOkyDDH8/")
   end
 
   def test_extracting_creates_instagram_post_object
-    instagram_post_hash = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed", true)
+    instagram_post_hash = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", true)
     assert_not instagram_post_hash.empty?
   end
 
   def test_extracting_without_force_gets_proper_response
-    instagram_post_response = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/?utm_source=ig_embed", false)
+    instagram_post_response = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", false)
     assert instagram_post_response
   end
 
