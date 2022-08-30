@@ -5,13 +5,16 @@ class ApplicantTest < ActiveSupport::TestCase
     @applicant = Applicant.new
   end
 
-  test "requires name, email, and acceptance" do
+  test "requires all required fields to be set" do
     assert_not @applicant.valid?
 
     @applicant.name = "John Doe"
     assert_not @applicant.valid?
 
     @applicant.email = "john@example.com"
+    assert_not @applicant.valid?
+
+    @applicant.use_case = "Journalism and fact-checking."
     assert_not @applicant.valid?
 
     @applicant.accepted_terms = true

@@ -68,10 +68,14 @@
 				<div class="field__wrapper--input">
 					<%= f.label(
 						:use_case,
-						"How do you plan to use the data?") %>
+						"How do you plan to use the data? *") %>
 					<%= f.text_area(
 						:use_case,
-						size: "50x3") %>
+						size: "50x3",
+						required: true) %>
+					<%= errors_for_field(
+						@applicant,
+						:use_case) %>
 				</div>
 				<div class="field__wrapper--checkboxes">
 					<div class="checkbox">
