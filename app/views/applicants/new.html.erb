@@ -56,6 +56,17 @@
 				</div>
 				<div class="field__wrapper--input">
 					<%= f.label(
+						:country,
+						"Where are you located?") %>
+					<%= f.country_select(
+						:country,
+						include_blank: true) %>
+					<%= errors_for_field(
+						@applicant,
+						:country) %>
+				</div>
+				<div class="field__wrapper--input">
+					<%= f.label(
 						:use_case,
 						"How do you plan to use the data?") %>
 					<%= f.text_area(
