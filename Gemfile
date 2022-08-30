@@ -48,6 +48,7 @@ group :development, :test do
   gem "rubocop-performance", require: false # Performance checks
   gem "rubocop-sorbet", require: false # Check Sorbet
   gem "rubocop-minitest", require: false # For checking tests
+  gem "minitest-hooks" # Used to apply stubs to each test
 end
 
 group :development do
