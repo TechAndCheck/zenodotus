@@ -4,6 +4,19 @@ require "test_helper"
 
 class ArchiveControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include Minitest::Hooks
+
+  def around
+    AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
+      super
+    end
+  end
+
+  def after_all
+    if File.exist?("tmp/scrapers") && File.directory?("tmp/scrapers")
+      FileUtils.rm_r "tmp/scrapers"
+    end
+  end
 
   test "index redirects without authentication" do
     get root_url

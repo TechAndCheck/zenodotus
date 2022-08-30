@@ -4,18 +4,22 @@ require "test_helper"
 
 class YoutubePostTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
+  include Minitest::Hooks
 
-  @@youtube_post = nil
-  @@youtube_post_2 = nil
-
-  def setup
-    @@youtube_post = YoutubeMediaSource.extract("https://www.youtube.com/watch?v=Df7UtQTFUMQ", true)["scrape_result"] if @@youtube_post.nil?
-    @@youtube_post_2 = YoutubeMediaSource.extract("https://www.youtube.com/watch?v=kFFvomxcLWo", true)["scrape_result"] if @@youtube_post_2.nil?
+  def before_all
+    @@youtube_post = YoutubeMediaSource.extract("https://www.youtube.com/watch?v=Df7UtQTFUMQ", true)["scrape_result"]
+    @@youtube_post_2 = YoutubeMediaSource.extract("https://www.youtube.com/watch?v=kFFvomxcLWo", true)["scrape_result"]
   end
 
-  def teardown
-    if File.exist?("tmp/youtube_archiver") && File.directory?("tmp/youtube_archiver")
-      FileUtils.rm_r "tmp/youtube_archiver"
+  def around
+    AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
+      super
+    end
+  end
+
+  def after_all
+    if File.exist?("tmp") && File.directory?("tmp")
+      FileUtils.rm_r("tmp")
     end
   end
 

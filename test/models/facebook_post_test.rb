@@ -2,20 +2,23 @@ require "test_helper"
 
 class FacebookPostTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
+  include Minitest::Hooks
 
-  @@forki_image_post = nil
-  @@forki_image_post_2 = nil
-  @@forki_video_post = nil
-
-  def setup
-    @@forki_image_post = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/a.108824087345859/336596487901950", true)["scrape_result"] if @@forki_image_post.nil?
-    @@forki_image_post_2 = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/460964425465155", true)["scrape_result"] if @@forki_image_post_2.nil?
-    @@forki_video_post = FacebookMediaSource.extract("https://www.facebook.com/Meta/videos/264436895517475", true)["scrape_result"] if @@forki_video_post.nil?
+  def before_all
+    @@forki_image_post = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/a.108824087345859/336596487901950", true)["scrape_result"]
+    @@forki_image_post_2 = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/460964425465155", true)["scrape_result"]
+    @@forki_video_post = FacebookMediaSource.extract("https://www.facebook.com/Meta/videos/264436895517475", true)["scrape_result"]
   end
 
-  def teardown
-    if File.exist?("tmp/forki") && File.directory?("tmp/forki")
-      FileUtils.rm_r "tmp/forki"
+  def around
+    AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
+      super
+    end
+  end
+
+  def after_all
+    if File.exist?("tmp") && File.directory?("tmp")
+      FileUtils.rm_r("tmp")
     end
   end
 

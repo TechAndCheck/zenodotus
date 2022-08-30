@@ -1,44 +1,54 @@
-# require "minitest/autorun"
 require "test_helper"
 
 class InstagramMediaSourceTest < ActiveSupport::TestCase
-  def setup
+  include Minitest::Hooks
+
+  def around
+    AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
+      super
+    end
   end
 
-  def test_non_instagram_url_raise_error
+  def after_all
+    if File.exist?("tmp") && File.directory?("tmp")
+      FileUtils.rm_r("tmp")
+    end
+  end
+
+  test "a non instagram_url raises an error" do
     assert_raises(MediaSource::HostError) do
       InstagramMediaSource.new("https://www.example.com")
     end
   end
 
-  def test_invalid_instagram_post_url_raises_error
+  test "an invalid instagram post url raises error" do
     assert_raises(InstagramMediaSource::InvalidInstagramPostUrlError) do
       InstagramMediaSource.new("https://www.instagram.com/CBcqOkyDDH8/")
     end
   end
 
-  def test_extract_instagram_post_id_from_url_works
+  test "extract_instagram_post_id_from_url_works" do
     assert_equal("CBcqOkyDDH", InstagramMediaSource.send(
         :extract_instagram_id_from_url,
         "https://www.instagram.com/p/CBcqOkyDDH"
       ))
   end
 
-  def test_initializing_returns_object
+  test "initializing returns an object" do
     assert_not_nil InstagramMediaSource.new("https://www.instagram.com/p/CBcqOkyDDH8/")
   end
 
-  def test_extracting_creates_instagram_post_object
+  test "extracting creates an instagram post object" do
     instagram_post_hash = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", true)
     assert_not instagram_post_hash.empty?
   end
 
-  def test_extracting_without_force_gets_proper_response
+  test "extracting without force returns true" do
     instagram_post_response = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", false)
     assert instagram_post_response
   end
 
-  def test_bad_url_raises_exception
+  test "a bad url raises an exception" do
     assert_raises InstagramMediaSource::InvalidInstagramPostUrlError do
       InstagramMediaSource.send(:extract_instagram_id_from_url, "https://instagram.com/")
     end

@@ -3,7 +3,14 @@
 require "test_helper"
 
 class ArchiveItemTest < ActionDispatch::IntegrationTest
+  include Minitest::Hooks
   include Devise::Test::IntegrationHelpers
+
+  def around
+    AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
+      super
+    end
+  end
 
   test "destroying a user resets the submitter_id of ArchiveItems it created" do
     sign_in users(:user3)

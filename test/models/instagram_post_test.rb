@@ -1,18 +1,23 @@
 require "test_helper"
 
 class InstagramPostTest < ActiveSupport::TestCase
+  include Minitest::Hooks
   include ActiveJob::TestHelper
-  @@zorki_image_post = nil
-  @@zorki_video_post = nil
 
-  def setup
-    @@zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", true)["scrape_result"] if @@zorki_image_post.nil?
-    @@zorki_video_post = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/", true)["scrape_result"] if @@zorki_video_post.nil?
+  def before_all
+    @@zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", true)["scrape_result"]
+    @@zorki_video_post = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/", true)["scrape_result"]
   end
 
-  def teardown
-    if File.exist?("tmp/zorki") && File.directory?("tmp/zorki")
-      FileUtils.rm_r "tmp/zorki"
+  def around
+    AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
+      super
+    end
+  end
+
+  def after_all
+    if File.exist?("tmp") && File.directory?("tmp")
+      FileUtils.rm_r("tmp")
     end
   end
 

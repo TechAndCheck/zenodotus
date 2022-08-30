@@ -2,6 +2,8 @@ require "test_helper"
 
 class ImageSearchTest < ActiveSupport::TestCase
   include Devise::Test::IntegrationHelpers
+  include Minitest::Hooks
+
   def setup
     image_file = File.open("test/fixtures/files/instagram_image_test.jpg", binmode: true)
     video_file = File.open("test/fixtures/files/youtube-test.webm", binmode: true)
@@ -9,6 +11,12 @@ class ImageSearchTest < ActiveSupport::TestCase
     @video_search = ImageSearch.create!(video: video_file, user: users(:user1))
 
     Zelkova.graph.reset
+  end
+
+  def around
+    AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
+      super
+    end
   end
 
   def teardown

@@ -1,17 +1,23 @@
 require "test_helper"
 
 class FacebookUserTest < ActiveSupport::TestCase
-  @@forki_user = nil
+  include Minitest::Hooks
 
-  def setup
+  def before_all
     @@forki_user = FacebookMediaSource.extract(
       "https://www.facebook.com/Meta/photos/a.108824087345859/336596487901950", true
-    )["scrape_result"].first["post"]["user"] if @@forki_user.nil?
+    )["scrape_result"].first["post"]["user"]
   end
 
-  def teardown
-    if File.exist?("tmp/forki") && File.directory?("tmp/forki")
-      FileUtils.rm_r "tmp/forki"
+  def around
+    AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
+      super
+    end
+  end
+
+  def after_all
+    if File.exist?("tmp") && File.directory?("tmp")
+      FileUtils.rm_r("tmp")
     end
   end
 
