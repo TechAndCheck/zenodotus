@@ -3,6 +3,7 @@
 jane:
   name: Jane Doe
   email: jane@example.com
+  country: US
   affiliation: Test Organization
   primary_role: Fact-Checker
   use_case: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -12,6 +13,7 @@ jane:
 expired_terms:
   name: Jane Doe
   email: jane@example.com
+  country: US
   affiliation: Test Organization
   primary_role: Fact-Checker
   use_case: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
