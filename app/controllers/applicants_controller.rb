@@ -8,6 +8,7 @@ class ApplicantsController < ApplicationController
   class CreateApplicantParams < T::Struct
     const :name, String
     const :email, String
+    const :country, T.nilable(String)
     const :affiliation, T.nilable(String)
     const :primary_role, T.nilable(String)
     const :use_case, T.nilable(String)
@@ -39,6 +40,7 @@ private
     params.require(:applicant).permit(
       :name,
       :email,
+      :country,
       :affiliation,
       :primary_role,
       :use_case,
