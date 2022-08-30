@@ -140,6 +140,10 @@ GEM
     concurrent-ruby (1.1.10)
     connection_pool (2.2.5)
     content_disposition (1.0.0)
+    countries (5.1.2)
+      sixarm_ruby_unaccent (~> 1.1)
+    country_select (8.0.0)
+      countries (~> 5.0)
     crass (1.0.6)
     cssbundling-rails (1.1.0)
       railties (>= 6.0.0)
@@ -364,6 +368,7 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
+    sixarm_ruby_unaccent (1.2.0)
     sorbet (0.5.9914)
       sorbet-static (= 0.5.9914)
     sorbet-coerce (0.5.0)
@@ -455,6 +460,7 @@ DEPENDENCIES
   bullet
   byebug
   capybara (>= 3.26)
+  country_select (~> 8.0)
   cssbundling-rails
   devise (~> 4.8.0)
   dotenv-rails
