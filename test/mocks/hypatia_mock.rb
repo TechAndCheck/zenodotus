@@ -24,7 +24,7 @@ module HypatiaMock
   # @return [Array<Hash>] an array of hashes, each containing data parsed from the mock data files
   def self.parse_mock_files(mock_data_filenames, mock_data_directory)
     mock_data_filenames.map do |fn|
-      file_path = "#{mock_data_directory}/#{fn}"
+      file_path = File.join(mock_data_directory, fn)
       file_text = File.open(file_path).read
 
       JSON.parse(file_text)
