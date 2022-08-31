@@ -61,10 +61,8 @@ class ApplicantTest < ActiveSupport::TestCase
   test "can edit applicant without triggering acceptance errors" do
     jane = applicants(:jane)
 
-    assert_nothing_raised do
-      jane.update!({
-        name: "Janes Doe"
-      })
-    end
+    assert jane.update({
+      name: "Janes Doe"
+    })
   end
 end
