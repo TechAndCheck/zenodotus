@@ -7,6 +7,7 @@ class Applicant < ApplicationRecord
 
   validates :name, presence: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :use_case, presence: true
   validates :accepted_terms, acceptance: { message: "Terms must be accepted." }
 
   after_initialize :map_terms_database_values_to_accessor
