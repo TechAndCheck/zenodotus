@@ -84,9 +84,6 @@ class Sources::FacebookUser < ApplicationRecord
         profile_image_url:   forki_user["profile_image_url"],
         profile_image:       File.open(profile_image_path, binmode: true)
       }
-
-      # It's good practice to unlink the tempfile, even though the next time the GC sees it,
-      # it'll be done automatically.
       hash_to_return
     end
 end

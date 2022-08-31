@@ -71,6 +71,7 @@ private
       tempfile = Tempfile.new(binmode: true)
       tempfile.write(Base64.decode64(zorki_user["profile_image"]))
       profile_image_path = tempfile.path
+      tempfile.close!
     end
 
     hash_to_return = {

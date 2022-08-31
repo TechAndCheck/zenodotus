@@ -70,6 +70,7 @@ private
       tempfile = Tempfile.new(binmode: true)
       tempfile.write(Base64.decode64(youtube_archiver_channel["channel_image_file"]))
       profile_image_path = tempfile.path
+      tempfile.close!
     end
 
     {
