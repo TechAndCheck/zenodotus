@@ -1,5 +1,6 @@
 module HypatiaMock
   require "typhoeus"
+  require "figaro"
 
   class URLNotMockedError < StandardError; end
 
@@ -78,7 +79,7 @@ module HypatiaMock
   def self.construct_typhoeus_hypatia_stub
     mock_data = ingest_mock_data
 
-    Typhoeus.stub(ENV["HYPATIA_SERVER_URL"]) do |request|
+    Typhoeus.stub(Figaro.env.HYPATIA_SERVER_URL) do |request|
       media_url = request.options[:params][:url]
       ensure_media_url_is_mocked(mock_data, media_url)
 
