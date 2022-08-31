@@ -2,8 +2,8 @@
 
 require "simplecov"
 require "minitest/autorun"
-require_relative "hypatia_mock"
-require_relative "aws_s3_mock"
+require_relative "mocks/hypatia_mock"
+require_relative "mocks/aws_s3_mock"
 
 include HypatiaMock
 include AwsS3Mock

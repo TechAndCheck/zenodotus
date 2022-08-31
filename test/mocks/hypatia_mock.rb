@@ -10,7 +10,7 @@ module HypatiaMock
   # @params None
   # @return a Hash mapping URLs to mock Hypatia response bodies
   def self.ingest_mock_data
-    mock_data_directory = File.join(File.dirname(__FILE__), "mock_data")
+    mock_data_directory = File.join(File.dirname(__FILE__), "data")
     mock_data_filenames = Dir.children(mock_data_directory)
     mock_data_hashes = parse_mock_files(mock_data_filenames, mock_data_directory)
 

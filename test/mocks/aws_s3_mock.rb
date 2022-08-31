@@ -9,7 +9,7 @@ module AwsS3Mock
     # @params object_key [String] The key of the s3 object being requested
     # @return nil
     def self.ensure_s3_key_mocked(mock_media_filenames, bucket_name, object_key)
-      unless mock_media_filenames.include? object_key
+      unless mock_media_filenames.include?(object_key)
         raise MediaNotMockedError, "s3://#{bucket_name}/#{object_key} was not caught by the S3 mock. Please add #{object_key} to the test/mock_media directory."
       end
     end
@@ -34,7 +34,7 @@ module AwsS3Mock
     # @params local_path [String] The real s3 downloader uses this param as a save path. It isn't used in this mock.
     # @return [String] The path to the media file matching the object_key param
     def self.download_from_s3(object_key, bucket_name, local_path)
-      mock_media_directory = File.join(File.dirname(__FILE__), "mock_media")
+      mock_media_directory = File.join(File.dirname(__FILE__), "media")
       mock_media_filenames = Dir.children(mock_media_directory)
 
       ensure_s3_key_mocked(mock_media_filenames, bucket_name, object_key)

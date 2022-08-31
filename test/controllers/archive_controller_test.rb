@@ -51,7 +51,7 @@ class ArchiveControllerTest < ActionDispatch::IntegrationTest
     # construct a mock callback. Since doing that by hard coding is actually annoying as hell we first
     # make a forced scrape call to Hypatia, then create it from there
 
-    instagram_mocks_file = File.open("test/mock_data/instagram_posts.json")
+    instagram_mocks_file = File.open("test/mocks/data/instagram_posts.json")
     hypatia_mock_response = JSON.parse(instagram_mocks_file.read)["https://www.instagram.com/p/CBcqOkyDDH8/"]
     instagram_mocks_file.close
 
