@@ -94,6 +94,7 @@ class Sources::FacebookPost < ApplicationRecord
         tempfile = Tempfile.new(binmode: true)
         tempfile.write(Base64.decode64(forki_post["screenshot_file"]))
         screenshot_attributes = { image: File.open(tempfile.path, binmode: true) }
+        tempfile.close!
       end
 
       if forki_post["aws_image_keys"].present?
@@ -105,23 +106,17 @@ class Sources::FacebookPost < ApplicationRecord
       else
         # Backwards compatibility for if Hypatia sends over files in Base64
         unless forki_post["image_file"].blank?
-          # image_attributes = forki_post["image_files"].map do |image_file_data|
           tempfile = Tempfile.new(binmode: true)
           tempfile.write(Base64.decode64(forki_post["image_file"]))
-
           image_attributes = [ { image: File.open(tempfile.path, binmode: true) } ]
-
           tempfile.close!
-          # end
         end
 
         # Backwards compatibility for if Hypatia sends over files in Base64
         unless forki_post["video_file"].blank?
           tempfile = Tempfile.new(binmode: true)
           tempfile.write(Base64.decode64(forki_post["video_file"]))
-
           video_attributes = [{ video: File.open(tempfile.path, binmode: true) }]
-
           tempfile.close!
         end
       end

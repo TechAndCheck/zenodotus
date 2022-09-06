@@ -95,6 +95,7 @@ class Sources::InstagramPost < ApplicationRecord
         tempfile = Tempfile.new(binmode: true)
         tempfile.write(Base64.decode64(zorki_post["screenshot_file"]))
         screenshot_attributes = { image: File.open(tempfile.path, binmode: true) }
+        tempfile.close!
       end
 
       if zorki_post["aws_image_keys"].present?
@@ -111,9 +112,7 @@ class Sources::InstagramPost < ApplicationRecord
           image_attributes = zorki_post["image_files"].map do |image_file_data|
             tempfile = Tempfile.new(binmode: true)
             tempfile.write(Base64.decode64(image_file_data))
-
             image_attribute = { image: File.open(tempfile.path, binmode: true) }
-
             tempfile.close!
             image_attribute
           end
@@ -122,9 +121,7 @@ class Sources::InstagramPost < ApplicationRecord
         unless zorki_post["video_file"].nil?
           tempfile = Tempfile.new(binmode: true)
           tempfile.write(Base64.decode64(zorki_post["video_file"]))
-
           video_attributes = [{ video: File.open(tempfile.path, binmode: true) }]
-
           tempfile.close!
         end
       end

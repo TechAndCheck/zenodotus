@@ -88,7 +88,6 @@ class Sources::YoutubePost < ApplicationRecord
   def self.create_from_youtube_archiver_hash(youtube_archiver_videos, user = nil)
     youtube_archiver_videos.map do |youtube_archiver_video|
       youtube_archiver_video = youtube_archiver_video["post"]
-      video_preview_image = nil
       youtube_channel = Sources::YoutubeChannel.create_from_youtube_archiver_hash([youtube_archiver_video["channel"]]).first.youtube_channel
       videos_attributes = []
       screenshot_attributes = {}
@@ -101,6 +100,7 @@ class Sources::YoutubePost < ApplicationRecord
         tempfile = Tempfile.new(binmode: true)
         tempfile.write(Base64.decode64(youtube_archiver_video["screenshot_file"]))
         screenshot_attributes = { image: File.open(tempfile.path, binmode: true) }
+        tempfile.close!
       end
 
       # Download video from s3 or load it from base64 attachment
