@@ -5,8 +5,8 @@ class ImageSearchTest < ActiveSupport::TestCase
   include Minitest::Hooks
 
   def setup
-    image_file = File.open("test/fixtures/files/instagram_image_test.jpg", binmode: true)
-    video_file = File.open("test/fixtures/files/youtube-test.webm", binmode: true)
+    image_file = File.open("test/mocks/media/instagram_media_12765281-136d-4bfa-b7ad-e89f107b5769.jpg", binmode: true)
+    video_file = File.open("test/mocks/media/youtube_media_23b12624-2ef2-4dcb-97d2-966aa9fcba80.mp4", binmode: true)
     @image_search = ImageSearch.create!(image: image_file, user: users(:user1))
     @video_search = ImageSearch.create!(video: video_file, user: users(:user1))
 
