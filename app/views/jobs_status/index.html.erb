@@ -1,54 +1,22 @@
-<div class="text-3xl font-bold">Active Jobs</div>
-<div id="jobs-div" class="mt-5">
-  <table id="jobs-table" class="table-auto w-full">
-    <thead id="jobs-table-head">
-    <tr>
-      <th class="border text-center">Queue position</th>
-      <th class="border text-center">Enqueued at</th>
-      <th class="border text-center">Url to scrape</th>
-    </tr>
-    </thead>
-    <tbody id="jobs-table-body">
-      <% @jobs_queue.each do |job| %>
-        <tr class="border text-gray-600 text-center">
-          <td><%= job[:queue_position] %></td>
-          <td><%= job[:enqueued_at] %></td>
-          <td><%= job[:url] %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+<div data-controller="jobs-status" data-loaded-scrapes-count="<%= @total_scrapes_count %>" data-loaded-jobs-count="<%= @total_jobs_count %>">
+  <div class="text-3xl font-bold mt-5">Active Queued Jobs in Sidekiq</div>
+  <div class="flex flex-row justify-between">
+    <div class="w-fit">
+      <span class="font-bold">Total Queued Jobs in Sidekiq:</span>
+      <span class="font-semibold" data-jobs-status-target="jobsCount"><%= @total_jobs_count %></span>
+    </div>
+  </div>
 
-<div class="text-3xl font-bold mt-10">Active Scrapes</div>
-<div id="scrapes-div" class="mt-5">
-  <table id="scrapes-table" class="table-auto w-full">
-    <thead id="scrapes-table-head">
-    <tr>
-      <th class="border text-center">Id</th>
-      <th class="border text-center">Scrape Type</th>
-      <th class="border text-center">Enqueued at</th>
-      <th class="border text-center">Url to scrape</th>
-      <th class="border text-center" colspan="2">Actions</th>
-    </tr>
-    </thead>
-    <tbody id="jobs-table-body">
-      <% @scrapes.each do |scrape| %>
-        <tr class="border text-gray-600 text-center">
-          <td><%= scrape.id %></td>
-          <td><%= scrape.scrape_type %></td>
-          <td><%= scrape.created_at %></td>
-          <td><%= link_to scrape.url, scrape.url %></td>
-          <td><%= link_to "Delete", job_status_delete_path(scrape.id), data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure you would like to stop this scrape?"
-                  } %></td>
-          <td><%= link_to "Resubmit", job_status_resubmit_path(scrape.id), data: {
-                    turbo_method: :post,
-                    turbo_confirm: "Are you sure you would like to resubmit this scrape?"
-                  } %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <div class="text-3xl font-bold mt-10">Jobs Submitted to Hypatia</div>
+  <div class="flex flex-row justify-between">
+    <div class="w-fit">
+      <span class="font-bold">Total Jobs Submitted to Hypatia:</span>
+      <span class="font-semibold" data-jobs-status-target="scrapesCount"><%= @total_scrapes_count %></span>
+    </div>
+    <button id="new-scrapes" data-jobs-status-target="scrapesPill" data-action="jobs-status#reloadScrapes" class="w-fit rounded-full bg-cyan-500 text-white py-2 px-6" hidden ></button>
+    <div>&nbsp;</div>
+  </div>
+  <div id="scrapes-div" class="mt-5">
+    <%= turbo_frame_tag "scrapes", src: jobs_status_scrapes_path(active_scrapes_page: @active_scrapes_page), loading: "lazy"%>
+  </div>
 </div>

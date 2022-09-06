@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_18_155939) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_30_181411) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -28,6 +28,19 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_18_155939) do
     t.datetime "updated_at", null: false
     t.index ["hashed_api_key"], name: "index_api_keys_on_hashed_api_key"
     t.index ["user_id"], name: "index_api_keys_on_user_id"
+  end
+
+  create_table "applicants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "email", null: false
+    t.string "affiliation"
+    t.string "primary_role"
+    t.text "use_case"
+    t.datetime "accepted_terms_at"
+    t.datetime "accepted_terms_version"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "country"
   end
 
   create_table "archive_entities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -162,14 +175,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_18_155939) do
     t.index ["archive_item_id"], name: "index_media_reviews_on_archive_item_id"
   end
 
-  create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.uuid "admin_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["admin_id"], name: "index_organizations_on_admin_id"
-  end
-
   create_table "pg_search_documents", force: :cascade do |t|
     t.text "content"
     t.string "searchable_type"
@@ -268,14 +273,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_18_155939) do
     t.datetime "locked_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "approved", default: false, null: false
-    t.boolean "admin", default: false, null: false
     t.boolean "restricted", default: false, null: false
-    t.uuid "organization_id", null: false
     t.boolean "super_admin", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["organization_id"], name: "index_users_on_organization_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
@@ -325,8 +326,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_18_155939) do
   add_foreign_key "instagram_images", "instagram_posts"
   add_foreign_key "instagram_videos", "instagram_posts"
   add_foreign_key "media_reviews", "archive_items"
-  add_foreign_key "organizations", "users", column: "admin_id"
-  add_foreign_key "screenshots", "archive_items"
   add_foreign_key "text_searches", "users"
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"

@@ -23,6 +23,11 @@ Rails.application.routes.draw do
 
   root "archive#index"
 
+  # TODO: Mount `/apply/new` at `/apply` so this redirect isn't necessary.
+  get "/apply", to: redirect("/apply/new"), as: :applicant
+  get "/apply/thanks", to: "applicants#thanks", as: :new_applicant_thanks
+  resources :applicants, path: "/apply", only: [:new, :create]
+
   get "/archive/add", to: "archive#add"
   post "/archive/add", to: "archive#submit_url"
   get "/archive/download", to: "archive#export_archive_data", as: "archive_download"
@@ -41,21 +46,17 @@ Rails.application.routes.draw do
   post "/account/change_password", to: "accounts#change_password", as: "change_password"
   post "/account/change_email", to: "accounts#change_email", as: "change_email"
   delete "/account/users/", to: "accounts#destroy", as: "destroy_user"
-  post "/settings/approve", to: "settings#approveUserRequest", as: "approve_request"
-  post "/settings/deny", to: "settings#denyUserRequest", as: "deny_request"
 
   get "/jobs", to: "jobs_status#index", as: "jobs_status_index"
-  delete "/jobs/:id", to: "jobs_status#delete_job", as: "job_status_delete"
+  get "/jobs/scrapes", to: "jobs_status#scrapes", as: "jobs_status_scrapes"
+  get "/jobs/active_jobs", to: "jobs_status#active_jobs", as: "jobs_status_active_jobs"
+  delete "/jobs/:id", to: "jobs_status#delete_scrape", as: "job_status_delete"
   post "/jobs/resubmit/:id", to: "jobs_status#resubmit_scrape", as: "job_status_resubmit"
 
   resources :twitter_users, only: [:show]
   resources :instagram_users, only: [:show]
   resources :facebook_users, only: [:show]
   resources :youtube_channels, only: [:show]
-  resources :organizations, only: [:index]
-
-  put "/organizations/:organization_id/update_admin/:user_id", to: "organizations#update_admin", as: "organization_update_admin"
-  delete "/organizations/:organization_id/update_admin/:user_id", to: "organizations#delete_user", as: "organization_delete_user"
 
   get "/facebook_users/:id/download", to: "facebook_users#export_facebook_user_data", as: "facebook_user_download"
   get "/instagram_users/:id/download", to: "instagram_users#export_instagram_user_data", as: "instagram_user_download"

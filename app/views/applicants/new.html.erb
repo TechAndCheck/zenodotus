@@ -1,0 +1,101 @@
+<% @title_tag = "Request access" %>
+
+<%= form_with(
+		model: @applicant,
+		url: applicants_path,
+		class: "form"
+	) do |f| %>
+	<fieldset class="fieldset">
+		<div class="fieldset__header">
+			<div class="fieldset__title">
+				Request access
+			</div>
+			<div class="fieldset__description">
+				<p>Access to the site requires approval by the Duke Reporters’ Lab team. Approval is usually determined within [X DURATION, e.g. “three days”]. The more detail you can provide about who you are and how you want to use the data, the better. If you have any questions, please get in touch.</p>
+			</div>
+		</div>
+		<div class="fieldset__fields">
+				<div class="field__wrapper--input">
+					<%= f.label(
+						:name,
+						"Your name *") %>
+					<%= f.text_field(
+						:name,
+						required: true) %>
+					<%= errors_for_field(
+						@applicant,
+						:name) %>
+				</div>
+				<div class="field__wrapper--input">
+					<%= f.label(
+						:email,
+						"Email address *") %>
+					<%= f.email_field(
+						:email,
+						required: true) %>
+					<%= errors_for_field(
+						@applicant,
+						:email) %>
+					<div class="field__description">You’ll need to confirm this email address before we process your application.</div>
+				</div>
+				<div class="field__wrapper--input">
+					<%= f.label(
+						:use_case,
+						"How do you plan to use the data? *") %>
+					<%= f.text_area(
+						:use_case,
+						size: "50x3",
+						required: true) %>
+					<%= errors_for_field(
+						@applicant,
+						:use_case) %>
+				</div>
+				<div class="field__wrapper--input">
+					<%= f.label :affiliation do %>
+						Organization affiliation <span style="font-weight:normal">(if any)</span>
+					<% end %>
+					<%= f.text_field :affiliation %>
+					<div class="field__description">If you will be using this data primarily on behalf of an organization — such as your employer or university — please let us know.</div>
+				</div>
+				<div class="field__wrapper--input">
+					<%= f.label(
+						:primary_role,
+						"What is your primary role?") %>
+					<%= f.text_field(
+						:primary_role,
+						placeholder:
+						"Fact-checker, researcher, etc.") %>
+				</div>
+				<div class="field__wrapper--input">
+					<%= f.label(
+						:country,
+						"Where are you located?") %>
+					<%= f.country_select(
+						:country,
+						include_blank: true) %>
+					<%= errors_for_field(
+						@applicant,
+						:country) %>
+				</div>
+				<div class="field__wrapper--checkboxes">
+					<div class="checkbox">
+						<%= f.check_box(
+							:accepted_terms,
+							required: true ) %>
+						<%= f.label :accepted_terms do %>
+							Accept the terms and conditions *
+							<%= errors_for_field(
+								@applicant,
+								:accepted_terms,
+								full: false) %>
+						<% end %>
+					</div>
+				</div>
+		</div>
+	</fieldset>
+	<div class="form__align-with-fields">
+		<%= f.submit(
+			"Submit request",
+			class: "btn btn--submit") %>
+	</div>
+<% end %>

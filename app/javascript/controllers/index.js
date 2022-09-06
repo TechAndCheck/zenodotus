@@ -22,8 +22,8 @@ application.register("hello", HelloController)
 import ImageSearchController from "./image_search_controller.js"
 application.register("image-search", ImageSearchController)
 
+import JobsStatusController from "./jobs_status_controller.js"
+application.register("jobs-status", JobsStatusController)
+
 import ModalController from "./modal_controller.js"
 application.register("modal", ModalController)
-
-import OrganizationController from "./organization_controller.js"
-application.register("organization", OrganizationController)

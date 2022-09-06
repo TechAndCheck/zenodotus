@@ -1,7 +1,8 @@
 <div class="box box--sm box--miniform">
 	<p>
 		To access Zenodotus, please log in below.
-		Don’t have an account? You’ll be able to request one soon.
+		Don’t have an account?
+		<%= link_to "Request one here", new_applicant_path %>
 	</p>
 	<%= form_for(
 				resource,
