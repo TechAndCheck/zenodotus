@@ -30,6 +30,7 @@ will need to override on a per-icon basis when this isn't correct.
 }
 
 .icon-prefixed .icon {
+	flex-shrink: 0;
 	height: var(--icon-size);
 	width: var(--icon-size);
 }
