@@ -326,6 +326,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_30_181411) do
   add_foreign_key "instagram_images", "instagram_posts"
   add_foreign_key "instagram_videos", "instagram_posts"
   add_foreign_key "media_reviews", "archive_items"
+  add_foreign_key "screenshots", "archive_items"
   add_foreign_key "text_searches", "users"
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"
