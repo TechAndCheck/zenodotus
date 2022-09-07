@@ -25,8 +25,11 @@ Rails.application.routes.draw do
 
   # TODO: Mount `/apply/new` at `/apply` so this redirect isn't necessary.
   get "/apply", to: redirect("/apply/new"), as: :applicant
-  get "/apply/thanks", to: "applicants#thanks", as: :new_applicant_thanks
   resources :applicants, path: "/apply", only: [:new, :create]
+  scope "/apply/confirm" do
+    get "/sent", to: "applicants#confirmation_sent", as: "applicant_confirmation_sent"
+    get "/send_error", to: "applicants#confirmation_send_error", as: "applicant_confirmation_send_error"
+  end
 
   get "/archive/add", to: "archive#add"
   post "/archive/add", to: "archive#submit_url"

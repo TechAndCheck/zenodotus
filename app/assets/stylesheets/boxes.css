@@ -5,6 +5,7 @@ Library for consistent floating boxes with a drop shadow.
 
 ```html
 <div class="box">
+	<h1 class="box__title">Optional title</h1>
 	…
 </div>
 ```
@@ -14,6 +15,7 @@ improvement would be to use SCSS mixins so this styling could be applied directl
 */
 
 .box {
+	--box--external-spacing: 0;
 	--box--internal-spacing: 1rem;
 
 	padding: var(--box--internal-spacing);
@@ -21,8 +23,9 @@ improvement would be to use SCSS mixins so this styling could be applied directl
 	border: 1px solid lightgray;
 	box-shadow: var(--shadow--3);
 
-	margin-left: auto;
-	margin-right: auto;
+	margin: var(--box--external-spacing) auto;
+
+	transition-property: margin, padding;
 }
 
 .box--sm {
@@ -45,23 +48,53 @@ improvement would be to use SCSS mixins so this styling could be applied directl
 	max-width: var(--screen-2xl-floor);
 }
 
+.box__title {
+	--box-title--font-size: 1.25rem;
+
+	font-size: var(--box-title--font-size);
+	line-height: 1.1em;
+	margin-bottom: var(--box--internal-spacing);
+
+	transition-property: margin, font-size;
+}
+
+@media screen and (min-width: 769px) {
+	.box__title {
+		--box-title--font-size: 2rem;
+	}
+}
+
 /*
-Miniform Boxes are customized for little, well, mini-forms, like for log in or sign up.
+Miniform boxes are tweaked for small, standlone forms such as log in or forgot password.
 */
 
 .box--miniform {
-	--box-miniform--spacing: 1rem;
+	--box--external-spacing: 1rem;
+	--box--internal-spacing: 1rem;
 
-	margin-top: var(--box-miniform--spacing);
-	margin-bottom: var(--box-miniform--spacing);
-	padding: var(--box-miniform--spacing);
 	text-align: center;
-
-	transition-property: margin, padding;
 }
 
 @media screen and (min-width: 641px) {
 	.box--miniform {
-		--box-miniform--spacing: 2rem;
+		--box--external-spacing: 2rem;
+		--box--internal-spacing: 2rem;
+	}
+}
+
+/*
+Messaging boxes are when you want a simple page with just a simple, stand-out message.
+Example: a 404 page.
+*/
+
+.box--message {
+	--box--external-spacing: 1rem;
+	--box--internal-spacing: 1rem;
+}
+
+@media screen and (min-width: 769px) {
+	.box--message {
+		--box--external-spacing: 4rem;
+		--box--internal-spacing: 2rem;
 	}
 }
