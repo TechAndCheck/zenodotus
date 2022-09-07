@@ -9,6 +9,8 @@ jane:
   use_case: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
   accepted_terms_at: <%= Time.now %>
   accepted_terms_version: <%= TermsOfService::CURRENT_VERSION %>
+  confirmation_token: <%= Devise.friendly_token %>
+  confirmation_sent_at: <%= Time.now %>
 
 expired_terms:
   name: Jane Doe
@@ -19,3 +21,5 @@ expired_terms:
   use_case: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
   accepted_terms_at: <%= Time.now %>
   accepted_terms_version: <%= Date.parse("2022-08-01") %>
+  confirmation_token: <%= Devise.friendly_token %>
+  confirmation_sent_at: <%= Time.now %>

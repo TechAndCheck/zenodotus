@@ -65,4 +65,28 @@ class ApplicantTest < ActiveSupport::TestCase
       name: "Janes Doe"
     })
   end
+
+  test "can determine confirmation status correctly" do
+    jane = applicants(:jane)
+
+    assert_not jane.confirmed?
+
+    jane.confirm
+
+    assert jane.confirmed?
+  end
+
+  test "does not reconfirm if already confirmed" do
+    jane = applicants(:jane)
+
+    assert jane.confirm
+
+    # Cache this timestamp so we can compare against it later
+    confirmed_at = jane.confirmed_at
+
+    assert_not jane.confirm
+
+    # The timestamps should remain equal
+    assert_equal confirmed_at, jane.confirmed_at
+  end
 end
