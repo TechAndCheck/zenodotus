@@ -22,8 +22,6 @@ will need to override on a per-icon basis when this isn't correct.
 
 .icon-prefixed {
 	--icon-size: 1em;
-	--icon-lg-size: 1.25em;
-	--icon-xl-size: 1.75em;
 	--icon-gap: 0.35em;
 
 	display: flex;
@@ -37,11 +35,9 @@ will need to override on a per-icon basis when this isn't correct.
 }
 
 .icon-prefixed .icon--lg {
-	height: var(--icon-lg-size);
-	width: var(--icon-lg-size);
+	--icon-size: 1.25em;
 }
 
 .icon-prefixed .icon--xl {
-	height: var(--icon-xl-size);
-	width: var(--icon-xl-size);
+	--icon-size: 1.75em;
 }
