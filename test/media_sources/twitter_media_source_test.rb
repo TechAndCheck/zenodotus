@@ -1,4 +1,5 @@
 # typed: ignore
+
 # require "minitest/autorun"
 require "test_helper"
 

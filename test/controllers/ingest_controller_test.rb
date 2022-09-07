@@ -67,7 +67,7 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
         "creator": {
           "@type": "Person",
           "name": "Instagram user",
-          "url": "https://www.instagram.com/wrong_saloon_bear/?hl=en"
+          "url": "https://www.instagram.com/wrong_saloon_bear/"
         },
         "interpretedAsClaim": {
           "@type": "Claim",

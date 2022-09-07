@@ -195,6 +195,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_30_181411) do
     t.boolean "error"
   end
 
+  create_table "screenshots", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "archive_item_id"
+    t.jsonb "image_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["archive_item_id"], name: "index_screenshots_on_archive_item_id"
+  end
+
   create_table "text_searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -299,7 +307,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_30_181411) do
     t.string "language"
     t.string "channel_id"
     t.boolean "made_for_kids"
-    t.jsonb "preview_image_data", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

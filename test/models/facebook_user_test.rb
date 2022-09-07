@@ -1,17 +1,23 @@
 require "test_helper"
 
 class FacebookUserTest < ActiveSupport::TestCase
-  @@forki_user = nil
+  include Minitest::Hooks
 
-  def setup
+  def before_all
     @@forki_user = FacebookMediaSource.extract(
       "https://www.facebook.com/Meta/photos/a.108824087345859/336596487901950", true
-    )["scrape_result"].first["post"]["user"] if @@forki_user.nil?
+    )["scrape_result"].first["post"]["user"]
   end
 
-  def teardown
-    if File.exist?("tmp/forki") && File.directory?("tmp/forki")
-      FileUtils.rm_r "tmp/forki"
+  def around
+    AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
+      super
+    end
+  end
+
+  def after_all
+    if File.exist?("tmp") && File.directory?("tmp")
+      FileUtils.rm_r("tmp")
     end
   end
 
@@ -42,15 +48,6 @@ class FacebookUserTest < ActiveSupport::TestCase
     archive_entity2 = Sources::FacebookUser.create_from_forki_hash([@@forki_user]).first.facebook_user
     assert_equal archive_entity.service_id, archive_entity2.service_id
     assert_equal @@forki_user["number_of_followers"], archive_entity2.followers_count
-  end
-
-  test "can add a second fact check to a user" do
-    post = Sources::FacebookPost.create_from_url!("https://www.facebook.com/Meta/photos/460964425465155")
-    assert_equal 1, post.facebook_post.author.facebook_posts.count
-
-    Sources::FacebookPost.create_from_url!("https://www.facebook.com/Meta/videos/516906563485969")
-    post.reload
-    assert_equal 2, post.facebook_post.author.facebook_posts.count
   end
 
   test "can update facebook user" do

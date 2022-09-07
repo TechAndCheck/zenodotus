@@ -1,12 +1,24 @@
 # typed: false
+ENV["RAILS_ENV"] ||= "test"
+
 require "simplecov"
+require "minitest/autorun"
+require_relative "../config/environment"
+require_relative "mocks/hypatia_mock"
+require_relative "mocks/aws_s3_mock"
+
+include HypatiaMock
+include AwsS3Mock
+
 SimpleCov.start "rails" do
   enable_coverage :branch
 end
 
-ENV["RAILS_ENV"] ||= "test"
-require_relative "../config/environment"
 require "rails/test_help"
+
+S3_MOCK_STUB = Proc.new do |url|
+  AwsS3Mock::S3Mock.download_file_in_s3_received_from_hypatia(url)
+end
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers

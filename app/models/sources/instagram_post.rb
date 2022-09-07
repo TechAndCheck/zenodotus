@@ -86,6 +86,17 @@ class Sources::InstagramPost < ApplicationRecord
 
       image_attributes = []
       video_attributes = []
+      screenshot_attributes = {}
+
+      if zorki_post["aws_screenshot_key"].present?
+        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(zorki_post["aws_screenshot_key"])
+        screenshot_attributes = { image: File.open(downloaded_path, binmode: true) }
+      else
+        tempfile = Tempfile.new(binmode: true)
+        tempfile.write(Base64.decode64(zorki_post["screenshot_file"]))
+        screenshot_attributes = { image: File.open(tempfile.path, binmode: true) }
+        tempfile.close!
+      end
 
       if zorki_post["aws_image_keys"].present?
         image_attributes = zorki_post["aws_image_keys"].map do |key|
@@ -101,9 +112,7 @@ class Sources::InstagramPost < ApplicationRecord
           image_attributes = zorki_post["image_files"].map do |image_file_data|
             tempfile = Tempfile.new(binmode: true)
             tempfile.write(Base64.decode64(image_file_data))
-
             image_attribute = { image: File.open(tempfile.path, binmode: true) }
-
             tempfile.close!
             image_attribute
           end
@@ -112,9 +121,7 @@ class Sources::InstagramPost < ApplicationRecord
         unless zorki_post["video_file"].nil?
           tempfile = Tempfile.new(binmode: true)
           tempfile.write(Base64.decode64(zorki_post["video_file"]))
-
           video_attributes = [{ video: File.open(tempfile.path, binmode: true) }]
-
           tempfile.close!
         end
       end
@@ -129,7 +136,8 @@ class Sources::InstagramPost < ApplicationRecord
         videos_attributes: video_attributes
       }
 
-      ArchiveItem.create! archivable_item: Sources::InstagramPost.create!(hash), submitter: user
+      ArchiveItem.create!(archivable_item: Sources::InstagramPost.create!(hash), submitter: user,
+                          screenshot_attributes: screenshot_attributes)
     end
   end
 

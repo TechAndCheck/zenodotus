@@ -1,4 +1,5 @@
 # typed: ignore
+
 require "test_helper"
 
 class TwitterUserTest < ActiveSupport::TestCase
@@ -8,9 +9,9 @@ class TwitterUserTest < ActiveSupport::TestCase
     ).first.author
   end
 
-  def teardown
-    if File.exist?("tmp/birdsong") && File.directory?("tmp/birdsong")
-      FileUtils.rm_r "tmp/birdsong"
+  def after_all
+    if File.exist?("tmp") && File.directory?("tmp")
+      FileUtils.rm_r("tmp")
     end
   end
 

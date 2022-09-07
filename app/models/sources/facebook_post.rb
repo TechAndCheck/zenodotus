@@ -84,8 +84,19 @@ class Sources::FacebookPost < ApplicationRecord
 
       image_attributes = []
       video_attributes = []
+      screenshot_attributes = {}
 
       # We want to default to using the AWS key if it's available, and fallback to Base64 if it's not
+      if forki_post["aws_screenshot_key"].present?
+        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(forki_post["aws_screenshot_key"])
+        screenshot_attributes = { image: File.open(downloaded_path, binmode: true) }
+      else
+        tempfile = Tempfile.new(binmode: true)
+        tempfile.write(Base64.decode64(forki_post["screenshot_file"]))
+        screenshot_attributes = { image: File.open(tempfile.path, binmode: true) }
+        tempfile.close!
+      end
+
       if forki_post["aws_image_keys"].present?
         downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(forki_post["aws_image_keys"])
         image_attributes = [ { image: File.open(downloaded_path, binmode: true) } ]
@@ -95,23 +106,17 @@ class Sources::FacebookPost < ApplicationRecord
       else
         # Backwards compatibility for if Hypatia sends over files in Base64
         unless forki_post["image_file"].blank?
-          # image_attributes = forki_post["image_files"].map do |image_file_data|
           tempfile = Tempfile.new(binmode: true)
           tempfile.write(Base64.decode64(forki_post["image_file"]))
-
           image_attributes = [ { image: File.open(tempfile.path, binmode: true) } ]
-
           tempfile.close!
-          # end
         end
 
         # Backwards compatibility for if Hypatia sends over files in Base64
         unless forki_post["video_file"].blank?
           tempfile = Tempfile.new(binmode: true)
           tempfile.write(Base64.decode64(forki_post["video_file"]))
-
           video_attributes = [{ video: File.open(tempfile.path, binmode: true) }]
-
           tempfile.close!
         end
       end
@@ -130,7 +135,8 @@ class Sources::FacebookPost < ApplicationRecord
         videos_attributes: video_attributes
       }
 
-      ArchiveItem.create!(archivable_item: Sources::FacebookPost.create!(hash), submitter: user)
+      ArchiveItem.create!(archivable_item: Sources::FacebookPost.create!(hash), submitter: user,
+                          screenshot_attributes: screenshot_attributes)
     end
   end
 

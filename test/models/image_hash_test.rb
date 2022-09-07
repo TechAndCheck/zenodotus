@@ -1,6 +1,8 @@
 require "test_helper"
 
 class ImageHashTest < ActiveSupport::TestCase
+  include Minitest::Hooks
+
   def setup
     Zelkova.graph.reset
   end
