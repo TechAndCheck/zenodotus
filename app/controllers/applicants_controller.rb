@@ -22,7 +22,8 @@ class ApplicantsController < ApplicationController
       # TODO: Actually use the output of this, if possible.
       TypedParams[CreateApplicantParams].new.extract!(applicant_params)
     rescue ActionController::BadRequest
-      return generic_create_error
+      @applicant = Applicant.new # Needed for form rendering
+      generic_create_error && return
     end
 
     params_with_token = applicant_params.merge(confirmation_token: Devise.friendly_token)
@@ -30,12 +31,12 @@ class ApplicantsController < ApplicationController
 
     existing_user = User.readonly.find_by(email: @applicant[:email])
     # We intentionally return a generic error to avoid leaking the existence of the user.
-    return generic_create_error if existing_user
+    (generic_create_error && return) if existing_user
 
     begin
       @applicant.save!
     rescue ActiveRecord::RecordInvalid
-      return generic_create_error(status: :unprocessable_entity)
+      generic_create_error(status: :unprocessable_entity) && return
     end
 
     send_confirmation_email
@@ -64,17 +65,17 @@ class ApplicantsController < ApplicationController
       # TODO: Actually use the output of this, if possible.
       TypedParams[ConfirmApplicantEmailParams].new.extract!(confirm_params)
     rescue ActionController::BadRequest
-      return render :confirmation_not_found, status: :bad_request
+      render(:confirmation_not_found, status: :bad_request) && return
     end
 
     @applicant = Applicant.find_unconfirmed_by_email_and_token(
       email: confirm_params[:email],
       token: confirm_params[:token]
     )
-    return render :confirmation_not_found, status: :not_found unless @applicant.present?
+    (render(:confirmation_not_found, status: :not_found) && return) unless @applicant.present?
 
     @applicant.confirm
-    return render :confirmation_error, status: :internal_server_error unless @applicant.confirmed?
+    (render(:confirmation_error, status: :internal_server_error) && return) unless @applicant.confirmed?
 
     # TODO: Notify admins of a pending application here (#273).
 
