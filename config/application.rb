@@ -21,5 +21,14 @@ module Zenodotus
     config.eager_load_paths << Rails.root.join("lib/utilities")
     config.action_view.form_with_generates_remote_forms = false
     config.active_job.queue_adapter = :sidekiq
+
+    # This lets Action Mailer generate URLs using the helper methods
+    config.action_mailer.default_url_options = { host: Figaro.env.URL }
+
+    config.action_mailer.delivery_method = :mailgun
+    config.action_mailer.mailgun_settings = {
+      api_key: Figaro.env.MAILGUN_API_KEY,
+      domain: "mail.factcheckinsights.com"
+    }
   end
 end

@@ -175,3 +175,6 @@ gem "zelkova"
 # Generates a country selector for forms
 # Also adds and uses the `countries` gem
 gem "country_select", "~> 8.0"
+
+# Used for sending email through Mailgun
+gem "mailgun-ruby", "~> 1.2"

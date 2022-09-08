@@ -22,32 +22,30 @@ class ApplicantsController < ApplicationController
       # TODO: Actually use the output of this, if possible.
       TypedParams[CreateApplicantParams].new.extract!(applicant_params)
     rescue ActionController::BadRequest
-      flash.now[:error] = "We weren’t able to save your application. Please try again, or contact us for help."
-      return render :new, status: :bad_request
+      @applicant = Applicant.new # Needed for form rendering
+      generic_create_error && return
     end
-
-    # TODO: Throw an error if a user with this email exists, but without confirming existence.
 
     params_with_token = applicant_params.merge(confirmation_token: Devise.friendly_token)
-    @applicant = Applicant.create(params_with_token)
+    @applicant = Applicant.new(params_with_token)
 
-    unless @applicant
-      flash.now[:error] = "We weren’t able to save your application. Please check the form below for errors. If there are none, please contact us for help."
-      return render :new, status: :unprocessable_entity
+    existing_user = User.readonly.find_by(email: @applicant[:email])
+    # We intentionally return a generic error to avoid leaking the existence of the user.
+    (generic_create_error && return) if existing_user
+
+    begin
+      @applicant.save!
+    rescue ActiveRecord::RecordInvalid
+      generic_create_error(status: :unprocessable_entity) && return
     end
 
-    if send_confirmation_email
-      redirect_to applicant_confirmation_sent_path
-    else
-      redirect_to applicant_confirmation_send_error_path
-    end
+    send_confirmation_email
+
+    redirect_to applicant_confirmation_sent_path
   end
 
   sig { void }
   def confirmation_sent; end
-
-  sig { void }
-  def confirmation_send_error; end
 
   # A class representing the allowed params into the `confirm` endpoint
   class ConfirmApplicantEmailParams < T::Struct
@@ -67,17 +65,17 @@ class ApplicantsController < ApplicationController
       # TODO: Actually use the output of this, if possible.
       TypedParams[ConfirmApplicantEmailParams].new.extract!(confirm_params)
     rescue ActionController::BadRequest
-      return render :confirmation_not_found, status: :bad_request
+      render(:confirmation_not_found, status: :bad_request) && return
     end
 
     @applicant = Applicant.find_unconfirmed_by_email_and_token(
       email: confirm_params[:email],
       token: confirm_params[:token]
     )
-    return render :confirmation_not_found, status: :not_found unless @applicant.present?
+    (render(:confirmation_not_found, status: :not_found) && return) unless @applicant.present?
 
     @applicant.confirm
-    return render :confirmation_error, status: :internal_server_error unless @applicant.confirmed?
+    (render(:confirmation_error, status: :internal_server_error) && return) unless @applicant.confirmed?
 
     # TODO: Notify admins of a pending application here (#273).
 
@@ -119,23 +117,22 @@ private
     )
   end
 
-  sig { returns(T::Boolean) }
-  def send_confirmation_email
-    # 1. TODO: Actually send email
-    sent = true
-
-    if sent
-      # This shouldn't fail but we don't particularly care if it does.
-      @applicant.update(confirmation_sent_at: Time.now)
-    else
-      notify_of_send_confirmation_error
-      return false
-    end
-
-    sent
+  # This method renders a generic response that the creation failed.
+  #
+  # This response is intentionally vague and used in multiple scenarios, as one of those scenarios
+  # is when someone applies with an email address linked to an existing *user* (not applicant). We
+  # want to prevent this from happening without leaking the existence of the user account.
+  sig { params(status: Symbol).returns(String) }
+  def generic_create_error(status: :bad_request)
+    flash.now[:error] = "We were unable to save your application. Please check the form for errors and try again, or contact us for help."
+    render :new, status: status
   end
 
-  # TODO
   sig { void }
-  def notify_of_send_confirmation_error; end
+  def send_confirmation_email
+    ApplicantsMailer.with(applicant: @applicant).confirmation_email.deliver_later
+
+    # This shouldn't fail but we don't particularly care if it does.
+    @applicant.update(confirmation_sent_at: Time.now)
+  end
 end

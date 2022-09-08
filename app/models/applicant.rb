@@ -33,11 +33,11 @@ class Applicant < ApplicationRecord
   def self.find_unconfirmed_by_email_and_token(email:, token:)
     # Even though tokens are unique (constrained by the database), we want to require the matching
     # email address, and limit to unconfirmed applicants.
-    self.where({
+    self.find_by({
       email: email,
       confirmation_token: token,
       confirmed_at: nil
-    }).first
+    })
   end
 
 private
