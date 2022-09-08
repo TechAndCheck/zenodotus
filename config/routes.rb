@@ -23,13 +23,12 @@ Rails.application.routes.draw do
 
   root "archive#index"
 
-  # TODO: Mount `/apply/new` at `/apply` so this redirect isn't necessary.
-  get "/apply", to: redirect("/apply/new"), as: :applicant
-  resources :applicants, path: "/apply", only: [:new, :create]
-  scope "/apply/confirm" do
-    get "/", to: "applicants#confirm", as: "applicant_confirm"
-    get "/sent", to: "applicants#confirmation_sent", as: "applicant_confirmation_sent"
-    get "/done", to: "applicants#confirmed", as: "applicant_confirmed"
+  scope "/apply" do
+    get "/", to: "applicants#new", as: :new_applicant
+    resources :applicants, path: "/", only: [:create]
+    get "/confirm", to: "applicants#confirm", as: "applicant_confirm"
+    get "/confirm/sent", to: "applicants#confirmation_sent", as: "applicant_confirmation_sent"
+    get "/confirm/done", to: "applicants#confirmed", as: "applicant_confirmed"
   end
 
   get "/archive/add", to: "archive#add"
