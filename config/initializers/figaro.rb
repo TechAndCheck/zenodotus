@@ -11,6 +11,9 @@ Figaro.require_keys("HYPATIA_AUTH_KEY")
 # The URL of the currently running server for Hypatia callbacks
 Figaro.require_keys("URL")
 
+# Mailgun settings for sending email
+Figaro.require_keys("MAILGUN_API_KEY")
+
 if Figaro.env.USE_S3_DEV_TEST == "true" || Rails.env == "production"
   Figaro.require_keys("AWS_REGION")
   Figaro.require_keys("AWS_ACCESS_KEY_ID")
