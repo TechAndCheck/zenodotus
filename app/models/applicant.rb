@@ -9,9 +9,36 @@ class Applicant < ApplicationRecord
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :use_case, presence: true
   validates :accepted_terms, acceptance: { message: "Terms must be accepted." }
+  validates :confirmation_token, uniqueness: true
 
   after_initialize :map_terms_database_values_to_accessor
   before_create :map_terms_accessor_to_database_values
+
+  # Sets the `confirmed_at` attribute to now, which is our proxy for confirmation.
+  # Returns either the boolean result of the `update` or nil if the applicant is already confirmed.
+  sig { returns(T.nilable(T::Boolean)) }
+  def confirm
+    self.update(confirmed_at: Time.now) unless self.confirmed?
+  end
+
+  sig { returns(T::Boolean) }
+  def confirmed?
+    self.confirmed_at.present?
+  end
+
+  sig { params(
+    email: String,
+    token: String
+  ).returns(T.nilable(T.self_type)) }
+  def self.find_unconfirmed_by_email_and_token(email:, token:)
+    # Even though tokens are unique (constrained by the database), we want to require the matching
+    # email address, and limit to unconfirmed applicants.
+    self.where({
+      email: email,
+      confirmation_token: token,
+      confirmed_at: nil
+    }).first
+  end
 
 private
 

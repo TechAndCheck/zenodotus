@@ -29,3 +29,11 @@ body * {
 	transition-duration: var(--transition-duration);
 	transition-timing-function: var(--transition-timing-function);
 }
+
+p {
+	margin-bottom: 1rem;
+}
+
+p:last-child {
+	margin-bottom: 0;
+}

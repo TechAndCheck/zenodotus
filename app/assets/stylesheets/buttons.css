@@ -42,6 +42,17 @@ TODO: This is obviously very minimal at the moment. Will add more styles, variat
 	background-color: var(--color--mood--success--hover);
 }
 
+/* Compound selector is currently necessary to override some Tailwind styling. */
+.btn.btn--primary {
+	border: none;
+	color: var(--color--blue-1);
+	background-color: var(--color--blue-9);
+}
+.btn.btn--primary:hover,
+.btn.btn--primary:focus {
+	background-color: var(--color--blue-6);;
+}
+
 .btn.btn--link {
 	text-decoration: underline;
 }
