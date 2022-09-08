@@ -22,18 +22,20 @@ class ApplicantsController < ApplicationController
       # TODO: Actually use the output of this, if possible.
       TypedParams[CreateApplicantParams].new.extract!(applicant_params)
     rescue ActionController::BadRequest
-      flash.now[:error] = "We weren’t able to save your application. Please try again, or contact us for help."
-      return render :new, status: :bad_request
+      return generic_create_error
     end
 
-    # TODO: Throw an error if a user with this email exists, but without confirming existence.
-
     params_with_token = applicant_params.merge(confirmation_token: Devise.friendly_token)
-    @applicant = Applicant.create(params_with_token)
+    @applicant = Applicant.new(params_with_token)
 
-    unless @applicant
-      flash.now[:error] = "We weren’t able to save your application. Please check the form below for errors. If there are none, please contact us for help."
-      return render :new, status: :unprocessable_entity
+    existing_user = User.readonly.find_by(email: @applicant[:email])
+    # We intentionally return a generic error to avoid leaking the existence of the user.
+    return generic_create_error if existing_user
+
+    begin
+      @applicant.save!
+    rescue ActiveRecord::RecordInvalid
+      return generic_create_error(status: :unprocessable_entity)
     end
 
     send_confirmation_email
@@ -117,6 +119,17 @@ private
       :email,
       :token
     )
+  end
+
+  # This method renders a generic response that the creation failed.
+  #
+  # This response is intentionally vague and used in multiple scenarios, as one of those scenarios
+  # is when someone applies with an email address linked to an existing *user* (not applicant). We
+  # want to prevent this from happening without leaking the existence of the user account.
+  sig { params(status: Symbol).returns(String) }
+  def generic_create_error(status: :bad_request)
+    flash.now[:error] = "We were unable to save your application. Please check the form for errors and try again, or contact us for help."
+    render :new, status: status
   end
 
   sig { void }
