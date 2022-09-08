@@ -36,16 +36,16 @@ class ApplicantsController < ApplicationController
       return render :new, status: :unprocessable_entity
     end
 
-    if send_confirmation_email
-      redirect_to applicant_confirmation_sent_path
-    else
-      redirect_to applicant_confirmation_send_error_path
-    end
+    send_confirmation_email
+
+    redirect_to applicant_confirmation_sent_path
   end
 
   sig { void }
   def confirmation_sent; end
 
+  # This method is no longer used and will be removed in a future commit along with its associated
+  # view and route.
   sig { void }
   def confirmation_send_error; end
 
@@ -119,23 +119,11 @@ private
     )
   end
 
-  sig { returns(T::Boolean) }
-  def send_confirmation_email
-    # 1. TODO: Actually send email
-    sent = true
-
-    if sent
-      # This shouldn't fail but we don't particularly care if it does.
-      @applicant.update(confirmation_sent_at: Time.now)
-    else
-      notify_of_send_confirmation_error
-      return false
-    end
-
-    sent
-  end
-
-  # TODO
   sig { void }
-  def notify_of_send_confirmation_error; end
+  def send_confirmation_email
+    ApplicantsMailer.with(applicant: @applicant).confirmation_email.deliver_later
+
+    # This shouldn't fail but we don't particularly care if it does.
+    @applicant.update(confirmation_sent_at: Time.now)
+  end
 end

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+	</head>
+	<body>
+		<p>Thanks for requesting access to Fact-Check Insights.</p>
+		<p>Before we can evaluate your application, you will need to confirm the email address you provided.</p>
+		<p><%= link_to "Click here to confirm your email address", applicant_confirm_url(email: @applicant[:email], token: @applicant[:confirmation_token]) %>, or visit this URL in your browser:</p>
+		<pre><%= applicant_confirm_url(email: @applicant[:email], token: @applicant[:confirmation_token]) %></pre>
+		<p>Thanks,</p>
+		<p>The Duke Reporters’ Lab Team</p>
+	</body>
+</html>
