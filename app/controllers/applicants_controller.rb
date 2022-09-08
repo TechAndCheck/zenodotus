@@ -46,11 +46,6 @@ class ApplicantsController < ApplicationController
   sig { void }
   def confirmation_sent; end
 
-  # This method is no longer used and will be removed in a future commit along with its associated
-  # view and route.
-  sig { void }
-  def confirmation_send_error; end
-
   # A class representing the allowed params into the `confirm` endpoint
   class ConfirmApplicantEmailParams < T::Struct
     const :email, String
