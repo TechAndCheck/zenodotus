@@ -44,7 +44,7 @@ class AccountsController < ApplicationController
     current_user.email = typed_params.email
     current_user.save
     respond_to do |format|
-      flash.now[:alert] = "Email updated."
+      flash.now[:alert] = "We just sent a confirmation message to the email address you provided. Please check your inbox and follow the confirmation link in the message."
       format.turbo_stream { render turbo_stream: [
         turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
       ] }

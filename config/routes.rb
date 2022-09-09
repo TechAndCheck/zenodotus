@@ -15,10 +15,15 @@ Rails.application.routes.draw do
   # them in this configuration block, that would be amazing.)
   devise_for :users,
              skip: :all,
-             only: [:sessions, :registrations],
+             only: [
+              :sessions,
+              :registrations,
+              :confirmations
+             ],
              controllers: {
                sessions: "users/sessions",
-               registrations: "users/registrations"
+               registrations: "users/registrations",
+               confirmations: "users/confirmations"
              }
 
   root "archive#index"
