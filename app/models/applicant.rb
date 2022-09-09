@@ -5,6 +5,11 @@ class Applicant < ApplicationRecord
   # version number for database storage.
   attr_accessor :accepted_terms
 
+  enum status: {
+    approved: "approved",
+    rejected: "rejected"
+  }
+
   validates :name, presence: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :use_case, presence: true
