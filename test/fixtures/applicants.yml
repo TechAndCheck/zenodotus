@@ -3,9 +3,6 @@
 jane:
   name: Jane Doe
   email: jane@example.com
-  country: US
-  affiliation: Test Organization
-  primary_role: Fact-Checker
   use_case: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
   accepted_terms_at: <%= Time.now %>
   accepted_terms_version: <%= TermsOfService::CURRENT_VERSION %>
@@ -15,9 +12,6 @@ jane:
 expired_terms:
   name: Jane Doe
   email: jane@example.com
-  country: US
-  affiliation: Test Organization
-  primary_role: Fact-Checker
   use_case: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
   accepted_terms_at: <%= Time.now %>
   accepted_terms_version: <%= Date.parse("2022-08-01") %>
