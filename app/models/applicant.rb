@@ -14,25 +14,30 @@ class Applicant < ApplicationRecord
   after_initialize :map_terms_database_values_to_accessor
   before_create :map_terms_accessor_to_database_values
 
-  # Sets the `confirmed_at` attribute to now, which is our proxy for confirmation.
+  # Records the time that the we were able to successful confirm the applicant's email address.
+  #
   # Returns either the boolean result of the `update` or nil if the applicant is already confirmed.
   sig { returns(T.nilable(T::Boolean)) }
   def confirm
     self.update(confirmed_at: Time.now) unless self.confirmed?
   end
 
+  # Has the applicant confirmed their email address?
   sig { returns(T::Boolean) }
   def confirmed?
     self.confirmed_at.present?
   end
 
+  # Class method for finding the applicant that matches this email/token pair.
+  #
+  # Even though tokens are unique (constrained by the database) and we could look it up faster with
+  # just that, we want to *require* that the controller provide the matching email address, and
+  # limit results to only unconfirmed applicants.
   sig { params(
     email: String,
     token: String
   ).returns(T.nilable(T.self_type)) }
   def self.find_unconfirmed_by_email_and_token(email:, token:)
-    # Even though tokens are unique (constrained by the database), we want to require the matching
-    # email address, and limit to unconfirmed applicants.
     self.find_by({
       email: email,
       confirmation_token: token,
