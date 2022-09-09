@@ -36,7 +36,7 @@ class ApplicantTest < ActiveSupport::TestCase
   # This test ensures that if the model has its terms-acceptance database attributes populated
   # properly, that the model itself sets the `accepted_terms` attribute accordingly during init.
   test "can convert terms-acceptance attributes from database" do
-    assert applicants(:jane).accepted_terms
+    assert applicants(:new).accepted_terms
   end
 
   # This test ensures that if the user's accepted terms don't match the current version, then they
@@ -48,45 +48,45 @@ class ApplicantTest < ActiveSupport::TestCase
   # If the user has accepted terms, then they are initially valid.
   # If they attempt to unaccept, their model should not be valid.
   test "cannot un-accept terms" do
-    jane = applicants(:jane)
-    assert jane.valid?
+    new_applicant = applicants(:new)
+    assert new_applicant.valid?
 
     assert_raises ActiveRecord::RecordInvalid do
-      jane.update!({
+      new_applicant.update!({
         accepted_terms: false
       })
     end
   end
 
   test "can edit applicant without triggering acceptance errors" do
-    jane = applicants(:jane)
+    new_applicant = applicants(:new)
 
-    assert jane.update({
+    assert new_applicant.update({
       name: "Janes Doe"
     })
   end
 
   test "can determine confirmation status correctly" do
-    jane = applicants(:jane)
+    new_applicant = applicants(:new)
 
-    assert_not jane.confirmed?
+    assert_not new_applicant.confirmed?
 
-    jane.confirm
+    new_applicant.confirm
 
-    assert jane.confirmed?
+    assert new_applicant.confirmed?
   end
 
   test "does not reconfirm if already confirmed" do
-    jane = applicants(:jane)
+    new_applicant = applicants(:new)
 
-    assert jane.confirm
+    assert new_applicant.confirm
 
     # Cache this timestamp so we can compare against it later
-    confirmed_at = jane.confirmed_at
+    confirmed_at = new_applicant.confirmed_at
 
-    assert_not jane.confirm
+    assert_not new_applicant.confirm
 
     # The timestamps should remain equal
-    assert_equal confirmed_at, jane.confirmed_at
+    assert_equal confirmed_at, new_applicant.confirmed_at
   end
 end
