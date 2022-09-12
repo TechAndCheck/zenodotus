@@ -5,6 +5,11 @@ class Applicant < ApplicationRecord
   # version number for database storage.
   attr_accessor :accepted_terms
 
+  enum status: {
+    approved: "approved",
+    rejected: "rejected"
+  }
+
   validates :name, presence: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :use_case, presence: true
@@ -45,6 +50,65 @@ class Applicant < ApplicationRecord
     })
   end
 
+  # Mark the review status of this applicant as approved.
+  #
+  # Requires that the applicant have confirmed their email address.
+  # Disallows approving previously-approved applicants, but
+  # allows approving unreviewed or previously-rejected applicants.
+  sig { params(
+    review_note: T.nilable(String),
+    review_note_internal: T.nilable(String)
+  ).void }
+  def approve(
+    review_note: nil,
+    review_note_internal: nil
+  )
+    raise UnconfirmedError unless self.confirmed?
+    raise StatusChangeError if self.approved?
+
+    self.update!({
+      status: :approved,
+      review_note: review_note,
+      review_note_internal: review_note_internal,
+      reviewed_at: Time.now
+    })
+  end
+
+  # Mark the review status of this applicant as rejected.
+  #
+  # Requires that the applicant have confirmed their email address.
+  # Disallows rejecting previously-reviewed applicants. (If they were previously approved,
+  # then rejecting the application is pointless and their user account should be disabled instead.
+  # If they were previously rejected, then we don't want to redundantly reject them.)
+  sig { params(
+    review_note: T.nilable(String),
+    review_note_internal: T.nilable(String)
+  ).void }
+  def reject(
+    review_note: nil,
+    review_note_internal: nil
+  )
+    raise UnconfirmedError unless self.confirmed?
+    raise StatusChangeError if self.reviewed?
+
+    self.update!({
+      status: :rejected,
+      review_note:,
+      review_note_internal:,
+      reviewed_at: Time.now
+    })
+  end
+
+  sig { returns(T::Boolean) }
+  def reviewed?
+    self.status.present?
+  end
+
+  sig { returns(T::Boolean) }
+  def unreviewed?
+    self.status.nil?
+  end
+
 private
 
   # The `accepted_terms` attribute should reflect the current status of the database (or itself,
@@ -67,3 +131,6 @@ private
     end
   end
 end
+
+class Applicant::UnconfirmedError < StandardError; end
+class Applicant::StatusChangeError < StandardError; end

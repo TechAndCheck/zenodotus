@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_02_225624) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_08_221614) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "applicant_status", ["approved", "rejected"]
   create_enum "scrape_type", ["instagram", "facebook", "twitter", "youtube"]
 
   create_table "api_keys", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -44,6 +45,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_02_225624) do
     t.string "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
+    t.enum "status", enum_type: "applicant_status"
+    t.datetime "reviewed_at", precision: nil
+    t.text "review_note"
+    t.text "review_note_internal"
     t.index ["confirmation_token"], name: "index_applicants_on_confirmation_token", unique: true
   end
 

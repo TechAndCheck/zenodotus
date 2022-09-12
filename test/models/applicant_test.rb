@@ -89,4 +89,79 @@ class ApplicantTest < ActiveSupport::TestCase
     # The timestamps should remain equal
     assert_equal confirmed_at, new_applicant.confirmed_at
   end
+
+  test "can only review a confirmed applicant" do
+    new_applicant = applicants(:new)
+
+    assert_raises Applicant::UnconfirmedError do
+      new_applicant.approve
+    end
+
+    new_applicant.confirm
+    new_applicant.approve
+
+    assert new_applicant.approved?
+  end
+
+  test "can approve an applicant only once" do
+    confirmed_applicant = applicants(:confirmed)
+
+    confirmed_applicant.approve
+
+    assert confirmed_applicant.approved?
+    assert_raises Applicant::StatusChangeError do
+      confirmed_applicant.approve
+    end
+  end
+
+  test "can reject an applicant only once" do
+    confirmed_applicant = applicants(:confirmed)
+
+    confirmed_applicant.reject
+
+    assert confirmed_applicant.rejected?
+    assert_raises Applicant::StatusChangeError do
+      confirmed_applicant.reject
+    end
+  end
+
+  test "can determine review status of applicant" do
+    confirmed_applicant = applicants(:confirmed)
+
+    assert confirmed_applicant.unreviewed?
+    assert_not confirmed_applicant.reviewed?
+
+    confirmed_applicant.approve
+
+    assert_not confirmed_applicant.unreviewed?
+    assert confirmed_applicant.reviewed?
+  end
+
+  test "can add notes during approval" do
+    confirmed_applicant = applicants(:confirmed)
+
+    review_note = "Friend of mine"
+
+    confirmed_applicant.approve(
+      review_note: review_note,
+      review_note_internal: review_note
+    )
+
+    assert_equal review_note, confirmed_applicant.review_note
+    assert_equal review_note, confirmed_applicant.review_note_internal
+  end
+
+  test "can add notes during rejection" do
+    confirmed_applicant = applicants(:confirmed)
+
+    review_note = "Friend of mine"
+
+    confirmed_applicant.reject(
+      review_note: review_note,
+      review_note_internal: review_note
+    )
+
+    assert_equal review_note, confirmed_applicant.review_note
+    assert_equal review_note, confirmed_applicant.review_note_internal
+  end
 end
