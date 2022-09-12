@@ -1,4 +1,7 @@
 class Applicant < ApplicationRecord
+  # This relationship is optional because not all applicants will become users.
+  belongs_to :user, optional: true
+
   # A boolean value for terms acceptance stored in the database isn't good enough for auditing,
   # but a boolean attribute is useful for magic form composition and validation. Thus, we use a
   # non-database-backed attribute until model creation time, when we generate the timestamp and

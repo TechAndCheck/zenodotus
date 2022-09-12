@@ -7,6 +7,8 @@ class User < ApplicationRecord
   has_many :image_searches, dependent: :destroy
   has_many :text_searches, dependent: :destroy
 
+  has_one :applicant, dependent: :destroy
+
   # Include default devise modules. Others available are:
   # :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
