@@ -28,4 +28,25 @@ class UserTest < ActiveSupport::TestCase
       Applicant.find(applicant_id)
     end
   end
+
+  test "can create user from approved applicant" do
+    approved_applicant = applicants(:approved)
+
+    assert User.create_from_applicant(approved_applicant)
+  end
+
+  test "cannot create user from applicant unless approved" do
+    rejected_applicant = applicants(:rejected)
+
+    assert_raises User::ApplicantNotApprovedError do
+      User.create_from_applicant(rejected_applicant)
+    end
+  end
+
+  test "inherits applicant confirmation token" do
+    approved_applicant = applicants(:approved)
+    user = User.create_from_applicant(approved_applicant)
+
+    assert_equal approved_applicant.confirmation_token, user.confirmation_token
+  end
 end
