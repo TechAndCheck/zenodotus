@@ -8,11 +8,10 @@ class User < ApplicationRecord
   has_many :text_searches, dependent: :destroy
 
   # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  # :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :trackable, :lockable # , :confirmable
-  # TODO: re-enable :confirmable after mailer is set up
+         :trackable, :lockable, :confirmable
 
   sig { returns(T::Boolean) }
   def super_admin?
