@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_08_221614) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_12_215054) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -49,7 +49,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_08_221614) do
     t.datetime "reviewed_at", precision: nil
     t.text "review_note"
     t.text "review_note_internal"
+    t.uuid "user_id"
     t.index ["confirmation_token"], name: "index_applicants_on_confirmation_token", unique: true
+    t.index ["user_id"], name: "index_applicants_on_user_id"
   end
 
   create_table "archive_entities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

@@ -7,6 +7,8 @@ class User < ApplicationRecord
   has_many :image_searches, dependent: :destroy
   has_many :text_searches, dependent: :destroy
 
+  has_one :applicant, dependent: :destroy
+
   # Include default devise modules. Others available are:
   # :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -17,4 +19,27 @@ class User < ApplicationRecord
   def super_admin?
     self.super_admin
   end
+
+  # Create a User from an approved Applicant.
+  #
+  # BUG: This should be `applicant: Applicant`, but that throws an error.
+  #      We are temporarily using this absurdly permissive sig that works.
+  #      See: https://github.com/TechAndCheck/zenodotus/issues/342
+  sig { params(applicant: Object).returns(User) }
+  def self.create_from_applicant(applicant)
+    raise ApplicantNotApprovedError unless applicant.approved?
+
+    self.create!({
+      applicant: applicant,
+      email: applicant.email,
+      # The user will have to change their password immediately. This is just to pass validation.
+      password: Devise.friendly_token,
+      # The user inherits the applicant's email confirmation.
+      confirmation_token: applicant.confirmation_token,
+      confirmed_at: applicant.confirmed_at,
+      confirmation_sent_at: applicant.confirmation_sent_at
+    })
+  end
 end
+
+class User::ApplicantNotApprovedError < StandardError; end
