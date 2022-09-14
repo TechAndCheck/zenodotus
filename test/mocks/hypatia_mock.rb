@@ -42,6 +42,10 @@ module HypatiaMock
     mock_body = mock_data[media_url]
     mock_body = Marshal.load(Marshal.dump(mock_body))  # make a "deep copy" of mock_body to avoid mutating the mock_data hash
 
+    if mock_body.has_key? "error"
+      return Typhoeus::Response.new(body: mock_body, code: mock_body["error"]["response_code"])
+    end
+
     # Stringify the mock body and the scrape_result attribute of mock_body to imitate Hypatia's JSON serialization
     mock_body["scrape_result"] = JSON.dump(mock_body["scrape_result"])
     mock_body = JSON.dump(mock_body)
