@@ -5,7 +5,16 @@ require "test_helper"
 class TwitterMediaSourceTest < ActiveSupport::TestCase
   include Minitest::Hooks
 
-  def setup
+  def around
+    AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
+      super
+    end
+  end
+
+  def after_all
+    if File.exist?("tmp") && File.directory?("tmp")
+      FileUtils.rm_r("tmp")
+    end
   end
 
   def test_non_twitter_url_raise_error
@@ -27,12 +36,6 @@ class TwitterMediaSourceTest < ActiveSupport::TestCase
   def test_extracting_creates_twitter_post_object
     twitter_post_hash = TwitterMediaSource.extract("https://twitter.com/jack/status/20", true)
     assert_not twitter_post_hash.empty?
-  end
-
-  def test_initializing_returns_blank
-    assert_raises(Birdsong::NoTweetFoundError) do
-      TwitterMediaSource.extract("https://twitter.com/jack/status/1")
-    end
   end
 
   def test_unfound_tweet_raises
