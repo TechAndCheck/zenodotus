@@ -66,18 +66,6 @@ class Sources::YoutubePost < ApplicationRecord
     create_from_youtube_archiver_hash(youtube_archiver_videos, user)
   end
 
-  # Find the number of seconds in a YouTube duration string
-  # @ params duration_string [String] A string following the pattern PT#H#M#S, where # is an integer
-  # @ returns [Integer] Number of seconds
-  sig { params(duration_string: String).returns(Integer) }
-  def self.find_length_of_youtube_video(duration_string)
-    if /PT((\d+)H)?((\d+)M)?((\d+)S)?/ =~ duration_string
-      $2.to_i * 3600 + $4.to_i * 60 + $6.to_i
-    else
-      0
-    end
-  end
-
   # Create a +ArchiveItem+ from a +Forki::Post+
   #
   # @!scope class
@@ -122,7 +110,7 @@ class Sources::YoutubePost < ApplicationRecord
         num_comments:      youtube_archiver_video["num_comments"],
         posted_at:         youtube_archiver_video["created_at"],
         language:          youtube_archiver_video["language"],
-        duration:          find_length_of_youtube_video(youtube_archiver_video["duration"]),
+        duration:          youtube_archiver_video["duration"],
         live:              youtube_archiver_video["live"],
         author:            youtube_channel,
         made_for_kids:     youtube_archiver_video["made_for_kids"],

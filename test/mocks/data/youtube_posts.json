@@ -22,7 +22,7 @@
             "view_count": "20478661"
           },
           "created_at": "2022-08-01T19:00:25Z",
-          "duration": "PT10S",
+          "duration": 10,
           "language": "en-US",
           "live": false,
           "made_for_kids": false,
@@ -60,7 +60,7 @@
             "view_count": "20485540"
           },
           "created_at": "2022-03-22T18:00:22Z",
-          "duration": "PT9S",
+          "duration": 9,
           "language": "en-US",
           "live": false,
           "made_for_kids": false,
@@ -98,7 +98,7 @@
             "view_count": "5893527017"
           },
           "created_at": "2022-02-21T13:41:16Z",
-          "duration": "PT27S",
+          "duration": 27,
           "language": null,
           "live": false,
           "made_for_kids": false,
