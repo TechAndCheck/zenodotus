@@ -20,6 +20,14 @@ class User < ApplicationRecord
     self.super_admin
   end
 
+  # `Devise::Recoverable#set_reset_password_token` is a protected method, which prevents us from
+  # calling it directly. Since we need to be able to do that for tests and for duck-punching other
+  # `Devise::Recoverable` methods, we pull it into the public space here.
+  sig { returns(String) }
+  def set_reset_password_token
+    super
+  end
+
   # Create a User from an approved Applicant.
   #
   # BUG: This should be `applicant: Applicant`, but that throws an error.
