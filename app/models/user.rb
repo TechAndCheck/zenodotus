@@ -28,6 +28,23 @@ class User < ApplicationRecord
     super
   end
 
+  # This is basically a clone of `Devise::Recoverable#send_reset_password_instructions`,
+  # but sends an email with setup instructions instead of password reset instructions.
+  # Like the original method, it also creates the user's `reset_password_token`.
+  sig { returns(String) }
+  def send_setup_instructions
+    raise AlreadySetupError if sign_in_count.positive?
+
+    token = set_reset_password_token
+
+    AccountMailer.with({
+      user: self,
+      token: token
+    }).setup_email.deliver_later
+
+    token
+  end
+
   # Create a User from an approved Applicant.
   #
   # BUG: This should be `applicant: Applicant`, but that throws an error.
@@ -51,3 +68,4 @@ class User < ApplicationRecord
 end
 
 class User::ApplicantNotApprovedError < StandardError; end
+class User::AlreadySetupError < StandardError; end

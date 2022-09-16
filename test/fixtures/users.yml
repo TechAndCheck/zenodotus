@@ -25,6 +25,12 @@ user3:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
 
+existing_user:
+  email: "new@example.com"
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  confirmed_at: <%= Time.now %>
+  sign_in_count: 1
+
 super_admin:
   email: "super_admin@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>

@@ -63,4 +63,19 @@ class UserTest < ActiveSupport::TestCase
 
     assert_equal user, User.with_reset_password_token(token)
   end
+
+  test "can send setup email to newly-created user" do
+    approved_applicant = applicants(:approved)
+    new_user = User.create_from_applicant(approved_applicant)
+
+    assert new_user.send_setup_instructions
+  end
+
+  test "cannot send setup email to previously logged-in user" do
+    user = users(:existing_user)
+
+    assert_raises User::AlreadySetupError do
+      user.send_setup_instructions
+    end
+  end
 end

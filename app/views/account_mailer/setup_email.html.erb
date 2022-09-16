@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+	</head>
+	<body>
+		<p>Your request for access to <%= link_to "Fact-Check Insights", root_url %> has been approved!</p>
+		<p>To complete your account setup, you’ll need to choose a password.</p>
+		<p><%= link_to "Click here to finish setting up your account", new_account_url(token: @token) %>, or visit this URL in your browser:</p>
+		<pre><%= new_account_url(token: @token) %></pre>
+		<p>Thanks,</p>
+		<p>The Duke Reporters’ Lab Team</p>
+	</body>
+</html>
