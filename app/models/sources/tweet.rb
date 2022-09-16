@@ -43,9 +43,10 @@ class Sources::Tweet < ApplicationRecord
   # @params user The user adding the ArchiveItem
   # returns ArchiveItem with type Tweet that has been saved to the database
   sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
-  def self.create_from_url(url, user = nil)
-    birdsong_tweet = TwitterMediaSource.extract(url)
-    Sources::Tweet.create_from_birdsong_hash(birdsong_tweet, user).first
+  def self.create_from_url!(url, user = nil)
+    tweet_response = TwitterMediaSource.extract(url, true)["scrape_result"]
+    raise "Error sending job to Hypatia" unless tweet_response.respond_to?(:first) && tweet_response.first.has_key?("id")
+    Sources::Tweet.create_from_birdsong_hash(tweet_response, user).first
   end
 
   # Spawns an ActiveJob tasked with creating an +ArchiveItem+ from a +url+ as a string
@@ -55,7 +56,7 @@ class Sources::Tweet < ApplicationRecord
   # @params user User the current user creating an ArchiveItem
   # returns ScraperJob
   sig { params(url: String, user: T.nilable(User)).returns(ScraperJob) }
-  def self.create_from_url!(url, user = nil)
+  def self.create_from_url(url, user = nil)
     ScraperJob.perform_later(TwitterMediaSource, Sources::Tweet, url, user)
   end
 
@@ -74,35 +75,77 @@ class Sources::Tweet < ApplicationRecord
   # @params birdsong_tweets [Array[Birdsong:Tweet]] an array of tweets grabbed from Birdsong
   # @returns [Array[ArchiveItem]] an array of ArchiveItem with type Tweet that have been
   #   saved to the graph database
-  sig { params(birdsong_tweets: T::Array[Birdsong::Tweet], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
+  sig { params(birdsong_tweets: T::Array[Hash], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
   def self.create_from_birdsong_hash(birdsong_tweets, user = nil)
     birdsong_tweets.map do |birdsong_tweet|
-      twitter_user = Sources::TwitterUser.create_from_birdsong_hash([birdsong_tweet.author]).first.twitter_user
+      birdsong_tweet = birdsong_tweet["post"]
+      twitter_user = Sources::TwitterUser.create_from_birdsong_hash([birdsong_tweet["author"]]).first.twitter_user
 
+      image_attributes = []
+      video_attributes = []
       screenshot_attributes = {}
 
-      image_attributes = birdsong_tweet.image_file_names.map do |image_file_name|
-        { image: File.open(image_file_name, binmode: true) }
+      if birdsong_tweet["aws_screenshot_key"].present?
+        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(birdsong_tweet["aws_screenshot_key"])
+        screenshot_attributes = { image: File.open(downloaded_path, binmode: true) }
+      else
+        tempfile = Tempfile.new(binmode: true)
+        tempfile.write(Base64.decode64(birdsong_tweet["screenshot_file"]))
+        screenshot_attributes = { image: File.open(tempfile.path, binmode: true) }
+        tempfile.close!
       end
 
-      video_attributes = birdsong_tweet.video_file_names.map do |video_file_name|
-        { video: File.open(video_file_name.first, binmode: true), video_type: birdsong_tweet.video_file_type }
+      if birdsong_tweet["aws_image_keys"].present?
+        image_attributes = birdsong_tweet["aws_image_keys"].map do |key|
+          downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(key)
+          { image: File.open(downloaded_path, binmode: true) }
+        end
+      elsif birdsong_tweet["aws_video_key"].present?
+        # Right now we only support one video per tweet, but Hypatia returns an array
+        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(birdsong_tweet["aws_video_key"].first)
+        video_attributes = [ { video: File.open(downloaded_path, binmode: true) } ]
+      else
+        # Backwards compatibility for if Hypatia sends over files in Base64
+        unless birdsong_tweet["image_files"].nil?
+          image_attributes = birdsong_tweet["image_files"].map do |image_file_data|
+            tempfile = Tempfile.new(binmode: true)
+            tempfile.write(Base64.decode64(image_file_data))
+            image_attribute = { image: File.open(tempfile.path, binmode: true) }
+            tempfile.close!
+            image_attribute
+          end
+        end
+
+        unless birdsong_tweet["video_file"].nil?
+          tempfile = Tempfile.new(binmode: true)
+          tempfile.write(Base64.decode64(birdsong_tweet["video_file"]))
+          video_attributes = [{ video: File.open(tempfile.path, binmode: true) }]
+          tempfile.close!
+        end
       end
 
-      # TODO: Uncomment this after Birdsong has been migrated to Hypatia
-      # if birdsong_tweet["aws_screenshot_key"].present?
-      #   downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(birdsong_tweet["aws_screenshot_key"])
-      #   screenshot_attributes = { image: File.open(downloaded_path, binmode: true) }
-      # else
-      #   screenshot_attributes = { image: File.open(birdsong_tweet["screenshot_file"], binmode: true) }
+      # image_attributes = birdsong_tweet.image_file_names.map do |image_file_name|
+      #   { image: File.open(image_file_name, binmode: true) }
       # end
 
+      # video_attributes = birdsong_tweet.video_file_names.map do |video_file_name|
+      #   { video: File.open(video_file_name.first, binmode: true), video_type: birdsong_tweet.video_file_type }
+      # end
+
+      # TODO: Uncomment this after Birdsong has been migrated to Hypatia
+      if birdsong_tweet["aws_screenshot_key"].present?
+        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(birdsong_tweet["aws_screenshot_key"])
+        screenshot_attributes = { image: File.open(downloaded_path, binmode: true) }
+      else
+        screenshot_attributes = { image: File.open(birdsong_tweet["screenshot_file"], binmode: true) }
+      end
+
       tweet_hash = {
-        text:                  birdsong_tweet.text,
-        twitter_id:            birdsong_tweet.id.to_s,
-        language:              birdsong_tweet.language,
+        text:                  birdsong_tweet["text"],
+        twitter_id:            birdsong_tweet["id"].to_s,
+        language:              birdsong_tweet["language"],
         author:                twitter_user,
-        posted_at:             birdsong_tweet.created_at,
+        posted_at:             birdsong_tweet["created_at"],
         images_attributes:     image_attributes,
         videos_attributes:     video_attributes
       }

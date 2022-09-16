@@ -1,0 +1,381 @@
+{
+  "https://twitter.com/AmtrakNECAlerts/status/1397922363551870990": {
+    "scrape_id": null,
+    "scrape_result": [
+      {
+        "id": "1397922363551870990",
+        "post": {
+          "id": "1397922363551870990",
+          "author": {
+            "username": "AmtrakNECAlerts",
+            "created_at": "2011-01-11T14:04:23+00:00",
+            "description": "Get real-time service information for trains in the Northeast Region from VA up through ME. Alerts published 24/7.",
+            "followers_count": 82859,
+            "following_count": 8,
+            "id": "236842868",
+            "location": "Northeast Region",
+            "name": "Amtrak Northeast",
+            "aws_profile_image_key": "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
+            "profile_image": null,
+            "profile_image_url": "https://pbs.twimg.com/profile_images/964530436050440194/_Vt9ECcg.jpg",
+            "url": ""
+          },
+          "aws_image_keys":null,
+          "aws_screenshot_key": "twitter_screenshot_4024c5b2-041e-47db-a407-4e1320cc0011.png",
+          "aws_video_key":null,
+          "aws_video_preview_key":null,
+          "created_at": "2021-05-27T14:27:18+00:00",
+          "image_files":[],
+          "language": "en",
+          "object_type": "twitter",
+          "screenshot_file":null,
+          "text": "UPDATE: Acela Train 2155 is currently operating approx. 50min late due to speed restrictions. An on-time section of Acela Train 2155 will operate between NYP &amp; Washington (WAS). Customers on board the late section of Acela Train 2155 will be accommodated on Train 171 at NYP.",
+          "video_file":null,
+          "video_preview_image":null
+        }
+      }
+    ]
+  },
+  "https://twitter.com/NYCSanitation/status/1517229098795515906?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw": {
+    "scrape_id": null,
+    "scrape_result": [
+      {
+        "id": "1517229098795515906",
+        "post": {
+          "id": "1517229098795515906",
+          "author": {
+            "username": "NYCSanitation",
+            "created_at": "2011-08-17T12:58:36+00:00",
+            "description": "World's largest municipal sanitation force. We collect 24 million pounds of trash/recycling a day. Acct. not monitored 24 hrs. User policy: https://t.co/FXBTkGSTAh",
+            "followers_count": 69594,
+            "following_count": 53,
+            "id": "356834376",
+            "location": "New York City",
+            "name": "NYC Sanitation",
+            "aws_profile_image_key": "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
+            "profile_image": null,
+            "profile_image_url": "https://pbs.twimg.com/profile_images/1520352405409435649/SBuAOkgQ.jpg",
+            "url": "https://t.co/uIRTP5ykSx"
+          },
+          "aws_image_keys": ["twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg"],
+          "aws_screenshot_key": "twitter_screenshot_4024c5b2-041e-47db-a407-4e1320cc0011.png",
+          "aws_video_key": null,
+          "aws_video_preview_key": null,
+          "created_at": "2022-04-21T19:49:40+00:00",
+          "image_files": null,
+          "language": "en",
+          "object_type": "twitter",
+          "screenshot_file": null,
+          "text": "Thanks to everyone who guessed! This is the bristles on our Electric Broom, which is open for viewing at the New York Auto Show until April 24. See our mini collection truck too! https://t.co/R2KSnaxJ35",
+          "video_file": null,
+          "video_preview_image":null
+        }
+      }
+    ]
+  },
+  "https://twitter.com/JoeBiden/status/1258817692448051200": {
+    "scrape_id": null,
+    "scrape_result": [
+      {
+        "id": "1258817692448051200",
+        "post":{
+          "id": "1258817692448051200",
+          "author": {
+            "username": "JoeBiden",
+            "created_at": "2007-03-11T17:51:24+00:00",
+            "description": "Husband to @DrBiden, proud father and grandfather. Ready to build back better for all Americans. Official account is @POTUS.",
+            "followers_count": 35568573,
+            "following_count": 48,
+            "id": "939091",
+            "location": "Washington, DC",
+            "name": "Joe Biden",
+            "aws_profile_image_key": "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
+            "profile_image": null,
+            "profile_image_url": "https://pbs.twimg.com/profile_images/1308769664240160770/AfgzWVE7.jpg",
+            "url": "https://t.co/UClrPuJpyZ"
+          },
+          "aws_image_keys": null,
+          "aws_screenshot_key": "twitter_screenshot_4024c5b2-041e-47db-a407-4e1320cc0011.png",
+          "aws_video_key": ["twitter_media_1337c0bb-288b-4fdf-a8cd-e3cc88eddd89.mp4"],
+          "aws_video_preview_key": ["twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg"],
+          "created_at": "2020-05-08T17:55:00+00:00",
+          "image_files": [],
+          "language": "en",
+          "object_type": "twitter",
+          "screenshot_file": null,
+          "text": "Wouldn't it be nice to have a president who listens to someone other than himself? https://t.co/IN2Wtpacc4",
+          "video_file": null,
+          "video_preview_image":null
+        }
+      }
+    ]
+  },
+  "https://twitter.com/Bucks/status/1412471909296578563": {
+    "scrape_id": null,
+    "scrape_result": [
+      {
+        "id": "1412471909296578563",
+        "post": {
+          "id": "1412471909296578563",
+          "author": {
+            "username": "Bucks",
+            "created_at": "2008-08-19T03:36:35+00:00",
+            "description": "#FearTheDeer | 👟🧳🎒 @bucksinsix",
+            "followers_count": 1860938,
+            "following_count": 6192,
+            "id": "15900167",
+            "location": "Milwaukee, WI",
+            "name": "Milwaukee Bucks",
+            "aws_profile_image_key": "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
+            "profile_image": null,
+            "profile_image_url": "https://pbs.twimg.com/profile_images/1533769587359207424/SKejiV1T.jpg",
+            "url": "https://t.co/MV9tpZYgLm"
+          },
+          "aws_image_keys": ["twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg"],
+          "aws_screenshot_key": "twitter_screenshot_d0832470-4d28-437f-a82d-e07707c68cbd.png",
+          "aws_video_key": null,
+          "aws_video_preview_key": null,
+          "created_at": "2021-07-06T18:02:00+00:00",
+          "image_files": null,
+          "language": "pt",
+          "object_type": "twitter",
+          "screenshot_file": null,
+          "text": "Valeu nosso amigão @MarceloM12. Vai Bucks!! https://t.co/PlJtl9LVF0",
+          "video_file": null,
+          "video_preview_image": null
+        }
+      }
+    ]
+  },
+  "https://twitter.com/jack/status/1": {
+    "error": {
+      "response_code": 500
+    }
+  },
+  "https://twitter.com/jack/status/20": {
+    "scrape_id": null,
+    "scrape_result": [
+      {
+        "id": "20",
+        "post": {
+          "id": "20",
+          "author": {
+            "username": "jack",
+            "created_at": "2006-03-21T20:50:14+00:00",
+            "description": "#bitcoin",
+            "followers_count":6430360,
+            "following_count":4581,
+            "id": "12",
+            "location":null,
+            "name": "jack",
+            "aws_profile_image_key": "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
+            "profile_image": null,
+            "profile_image_url": "https://pbs.twimg.com/profile_images/1115644092329758721/AFjOr-K8.jpg",
+            "url": ""
+          },
+          "aws_image_keys": null,
+          "aws_screenshot_key": "twitter_screenshot_4024c5b2-041e-47db-a407-4e1320cc0011.png",
+          "aws_video_key": null,
+          "aws_video_preview_key": null,
+          "created_at": "2006-03-21T20:50:14+00:00",
+          "image_files":[],
+          "language": "en",
+          "object_type": "twitter",
+          "screenshot_file": null,
+          "text": "just setting up my twttr",
+          "video_file": null,
+          "video_preview_image": null
+        }
+      }
+    ]
+  },
+  "https://twitter.com/POTUS/status/1430341234472669188": {
+    "scrape_id":null,
+    "scrape_result": [
+      {
+        "id": "1430341234472669188",
+        "post": {
+          "id": "1430341234472669188",
+          "author": {
+            "username": "POTUS",
+            "created_at": "2021-01-13T00:37:08+00:00",
+            "description": "46th President of the United States, husband to @FLOTUS, proud dad & pop. Tweets may be archived: https://t.co/HDhBZBkKpU\\nText me: (302) 404-0880",
+            "followers_count": 25349703,
+            "following_count": 12,
+            "id": "1349149096909668363",
+            "location": null,
+            "name": "President Biden",
+            "aws_profile_image_key": "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
+            "profile_image": null,
+            "profile_image_url": "https://pbs.twimg.com/profile_images/1380530524779859970/TfwVAbyX.jpg",
+            "url": "https://t.co/MzB1JWfbJ0"
+          },
+          "aws_image_keys": null,
+          "aws_screenshot_key": "twitter_screenshot_4024c5b2-041e-47db-a407-4e1320cc0011.png",
+          "aws_video_key": ["18adfe69-1956-44a8-8ca6-5019bc610007.mp4"],
+          "aws_video_preview_key": ["3baee389-b553-4ba6-851f-2266b20c27d1.jpg"],
+          "created_at": "2021-08-25T01:28:19+00:00",
+          "image_files": [],
+          "language": "en",
+          "object_type": "twitter",
+          "screenshot_file": null,
+          "text": "We have made significant progress in the last ten days. https://t.co/yySjGDwFO6",
+          "video_file": null,
+          "video_preview_image": null
+        }
+      }
+    ]
+  },
+  "https://twitter.com/ggreenwald/status/1430523746457112578": {
+    "scrape_id":null,
+    "scrape_result": [
+      {
+        "id": "1430523746457112578",
+        "post":{
+          "id": "1430523746457112578",
+          "author": {
+            "username": "ggreenwald",
+            "created_at": "2008-09-01T03:13:32+00:00",
+            "description": "Journalist; Author; Co-Founder: The Intercept, @TheInterceptBr; HOPE Shelter (@abrigo_hope), @FreedomofPress; vegan; Insta: Glenn.11.Greenwald",
+            "followers_count": 1868269,
+            "following_count": 980,
+            "id": "16076032",
+            "location": "GlennGreenwald@gmail.com",
+            "name": "Glenn Greenwald",
+            "aws_profile_image_key": "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
+            "profile_image": null,
+            "profile_image_url": "https://pbs.twimg.com/profile_images/1092582027994509312/cpYWuYI9.jpg",
+            "url": "https://t.co/rw7Uw16ZvA"
+          },
+          "aws_image_keys": null,
+          "aws_screenshot_key": "twitter_screenshot_4024c5b2-041e-47db-a407-4e1320cc0011.png",
+          "aws_video_key": null,
+          "aws_video_preview_key": null,
+          "created_at": "2021-08-25T13:33:33+00:00",
+          "image_files": [],
+          "language": "en",
+          "object_type": "twitter",
+          "screenshot_file": null,
+          "text": "This is the mentality that led to Endless War since 9/11 (and before). It's the mentality Trump, and now Biden, vehemently condemned. But amazingly, a huge chunk of both parties, as well as most of the media and (of course) the National Security Blob, agree with Mitch McConnell: https://t.co/yVMJbwx9rf",
+          "video_file": null,
+          "video_preview_image": null
+        }
+      }
+    ]
+  },
+  "https://twitter.com/bidenfoundation/status/1121446608040755200": {
+    "scrape_id":null,
+    "scrape_result": [
+      {
+        "id": "1121446608040755200",
+        "post": {
+          "id": "1121446608040755200",
+          "author": {
+            "username": "bidenfoundation",
+            "created_at": "2015-12-28T21:10:41+00:00",
+            "description": "Effective April 25, 2019, the Biden Foundation suspended operations.",
+            "followers_count": 104107,
+            "following_count": 25,
+            "id": "4636121783",
+            "location": null,
+            "name": "Biden Foundation",
+            "aws_profile_image_key": "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
+            "profile_image": null,
+            "profile_image_url": "https://pbs.twimg.com/profile_images/888436476316233729/bjzVzVgz.jpg",
+            "url": "https://t.co/hVJy2NLdl9"
+          },
+          "aws_image_keys": null,
+          "aws_screenshot_key": "twitter_screenshot_4024c5b2-041e-47db-a407-4e1320cc0011.png",
+          "aws_video_key": null,
+          "aws_video_preview_key": null,
+          "created_at": "2019-04-25T16:11:21+00:00",
+          "image_files": [],
+          "language": "en",
+          "object_type": "twitter",
+          "screenshot_file": null,
+          "text": "Today the Biden Foundation announced it has suspended operations. We’re proud to have worked with all of you to promote dignity, equality, and opportunity for all. Read more: https://t.co/9DDxD0mUjV",
+          "video_file": null,
+          "video_preview_image": null
+        }
+      }
+    ]
+  },
+  "https://twitter.com/POTUS/status/1428115295756066824": {
+    "scrape_id":null,
+    "scrape_result": [
+      {
+        "id": "1428115295756066824",
+        "post": {
+          "id": "1428115295756066824",
+          "author": {
+            "username": "POTUS",
+            "created_at": "2021-01-13T00:37:08+00:00",
+            "description": "46th President of the United States, husband to @FLOTUS, proud dad & pop. Tweets may be archived: https://t.co/HDhBZBkKpU\\nText me: (302) 404-0880",
+            "followers_count": 25350043,
+            "following_count": 12,
+            "id": "1349149096909668363",
+            "location": null,
+            "name": "President Biden",
+            "aws_profile_image_key": "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
+            "profile_image": null,
+            "profile_image_url": "https://pbs.twimg.com/profile_images/1380530524779859970/TfwVAbyX.jpg",
+            "url": "https://t.co/MzB1JWfbJ0"
+          },
+          "aws_image_keys": null,
+          "aws_screenshot_key": "twitter_screenshot_4024c5b2-041e-47db-a407-4e1320cc0011.png",
+          "aws_video_key": null,
+          "aws_video_preview_key": null,
+          "created_at": "2021-08-18T22:03:14+00:00",
+          "image_files": [],
+          "language": "en",
+          "object_type": "twitter",
+          "screenshot_file": null,
+          "text": "We will not sit by as Governors try to block or intimidate educators protecting kids against COVID-19.\\n \\nThis isn’t about politics. This is about keeping our kids safe and taking on this virus together.",
+          "video_file": null,
+          "video_preview_image":null
+        }
+      }
+    ]
+  },
+  "https://twitter.com/NYCSanitation/status/1517093299298963456?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw": {
+    "scrape_id": null,
+    "scrape_result": [
+      {
+        "id": "1517093299298963456",
+        "post": {
+          "id": "1517093299298963456",
+          "author": {
+            "username": "NYCSanitation",
+            "created_at": "2011-08-17T12:58:36+00:00",
+            "description": "World's largest municipal sanitation force. We collect 24 million pounds of trash/recycling a day. Acct. not monitored 24 hrs. User policy: https://t.co/FXBTkGSTAh",
+            "followers_count": 69598,
+            "following_count": 53,
+            "id": "356834376",
+            "location": "New York City",
+            "name": "NYC Sanitation",
+            "aws_profile_image_key": "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
+            "profile_image": null,
+            "profile_image_url": "https://pbs.twimg.com/profile_images/1520352405409435649/SBuAOkgQ.jpg",
+            "url": "https://t.co/uIRTP5ykSx"
+          },
+          "aws_image_keys":[
+            "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
+            "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
+            "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg"
+          ],
+          "aws_screenshot_key": "twitter_screenshot_4024c5b2-041e-47db-a407-4e1320cc0011.png",
+          "aws_video_key": null,
+          "aws_video_preview_key": null,
+          "created_at": "2022-04-21T10:50:03+00:00",
+          "image_files": null,
+          "language": "en",
+          "object_type": "twitter",
+          "screenshot_file": null,
+          "text": "Early this morning, Commissioner Tisch headed to Bushwick, Brooklyn to meet with more of the nearly 10,000 employees who make up #NewYorksStongest and got up close with one of our big snow melters! https://t.co/2Sa9I4dVSc",
+          "video_file": null,
+          "video_preview_image": null
+        }
+      }
+    ]
+  }
+}

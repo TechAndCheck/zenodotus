@@ -3,6 +3,8 @@
 require "test_helper"
 
 class TwitterMediaSourceTest < ActiveSupport::TestCase
+  include Minitest::Hooks
+
   def setup
   end
 
@@ -27,16 +29,10 @@ class TwitterMediaSourceTest < ActiveSupport::TestCase
     assert_not twitter_post_hash.empty?
   end
 
-  def test_initializing_returns_blank
-    assert_raises(Birdsong::NoTweetFoundError) do
-      TwitterMediaSource.extract("https://twitter.com/jack/status/1")
+  def test_unfound_tweet_raises
+    assert_raises(TwitterMediaSource::ExternalServerError) do
+      TwitterMediaSource.extract("https://twitter.com/jack/status/1", true)
     end
-  end
-
-  def test_extracting_creates_tweet_object
-    tweet_hash = TwitterMediaSource.extract("https://twitter.com/jack/status/20", true)
-    tweet = Sources::Tweet.create_from_birdsong_hash(tweet_hash)
-    assert_not tweet.empty?
   end
 
   def test_bad_url_raises_exception

@@ -1,15 +1,29 @@
 # typed: ignore
 
+
+
+
+###############################################################
+# TODO keep going through these, paying attention to removing
+# Birdson mentions
+###############################################################
+
+
+
+
+
+
+
+
 require "test_helper"
 
 class TweetTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
-
   include Minitest::Hooks
 
   def before_all
     @@birdsong_tweet = TwitterMediaSource.extract("https://twitter.com/NYCSanitation/status/1517229098795515906?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw", true)["scrape_result"]
-    @@birdsong_tweet2 = TwitterMediaSource.extract("https://twitter.com/NYCSanitation/status/1517093299298963456?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw", true)
+    @@birdsong_tweet_2 = TwitterMediaSource.extract("https://twitter.com/NYCSanitation/status/1517093299298963456?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw", true)
   end
 
   def around
@@ -29,11 +43,11 @@ class TweetTest < ActiveSupport::TestCase
     assert_not_nil archive_item
     assert_kind_of ArchiveItem, archive_item
 
-    assert_equal @@birdsong_tweet.first.text, archive_item.tweet.text
-    assert_equal @@birdsong_tweet.first.id, archive_item.tweet.twitter_id
-    assert_equal @@birdsong_tweet.first.id, archive_item.service_id
-    assert_equal @@birdsong_tweet.first.language, archive_item.tweet.language
-    assert_equal @@birdsong_tweet.first.created_at, archive_item.tweet.posted_at
+    assert_equal @@birdsong_tweet.first["post"]["text"], archive_item.tweet.text
+    assert_equal @@birdsong_tweet.first["post"]["id"], archive_item.tweet.twitter_id
+    assert_equal @@birdsong_tweet.first["post"]["id"], archive_item.service_id
+    assert_equal @@birdsong_tweet.first["post"]["language"], archive_item.tweet.language
+    assert_equal DateTime.parse(@@birdsong_tweet.first["post"]["created_at"]), archive_item.tweet.posted_at
 
     assert_not_nil archive_item.tweet.author
     assert_not_nil archive_item.tweet.images
@@ -75,7 +89,7 @@ class TweetTest < ActiveSupport::TestCase
   end
 
   test "can archive video from tweet" do
-    birdsong_tweet_video = TwitterMediaSource.extract("https://twitter.com/JoeBiden/status/1258817692448051200")
+    birdsong_tweet_video = TwitterMediaSource.extract("https://twitter.com/JoeBiden/status/1258817692448051200", true)
     archive_item = Sources::Tweet.create_from_birdsong_hash(birdsong_tweet_video).first
     assert_not_nil archive_item
     assert_kind_of ArchiveItem, archive_item
@@ -83,13 +97,13 @@ class TweetTest < ActiveSupport::TestCase
   end
 
   test "dhash properly generated from image" do
-    birdsong_image_tweet = TwitterMediaSource.extract("https://twitter.com/Bucks/status/1412471909296578563")
+    birdsong_image_tweet = TwitterMediaSource.extract("https://twitter.com/Bucks/status/1412471909296578563", true)
     archive_item = Sources::Tweet.create_from_birdsong_hash(birdsong_image_tweet).first
     assert_not_nil archive_item.image_hashes.first.dhash
   end
 
   test "dhashes properly generated from video" do
-    birdsong_image_tweet = TwitterMediaSource.extract("https://twitter.com/JoeBiden/status/1258817692448051200")
+    birdsong_image_tweet = TwitterMediaSource.extract("https://twitter.com/JoeBiden/status/1258817692448051200", true)
     archive_item = Sources::Tweet.create_from_birdsong_hash(birdsong_image_tweet).first
     assert_not archive_item.image_hashes.empty?
     archive_item.image_hashes.each do |hash|
@@ -98,8 +112,8 @@ class TweetTest < ActiveSupport::TestCase
   end
 
   test "archiving a video creates a preview screenshot" do
-    birdsong_tweet_video = TwitterMediaSource.extract("https://twitter.com/JoeBiden/status/1258817692448051200")
-    archive_item = Sources::Tweet.create_from_birdsong_hash(birdsong_tweet_video).first
+    birdsong_tweet_video = TwitterMediaSource.extract("https://twitter.com/JoeBiden/status/1258817692448051200", true)
+    archive_item = Sources::Tweet.create_from_birdsong_hash(birdsong_tweet_video["scrape_result"]).first
     assert_not_nil archive_item.tweet.videos.first.video_derivatives[:preview]
   end
 end
