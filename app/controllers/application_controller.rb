@@ -1,4 +1,5 @@
 # typed: strict
+
 class ApplicationController < ActionController::Base
   extend T::Sig
   extend T::Helpers
@@ -11,6 +12,29 @@ protected
   sig { returns(T::Boolean) }
   def json_request?
     request.format.json?
+  end
+
+  sig { void }
+  def must_be_logged_out
+    unless current_user.nil?
+      respond_to do |format|
+        format.html do
+          flash[:error] = "You cannot access that resource while logged in. Please log out and try again."
+          redirect_to after_sign_in_path_for(current_user)
+        end
+        format.turbo_stream do
+          flash.now[:error] = "You cannot access that resource while logged in. Please log out and try again."
+          render turbo_stream: [
+            turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
+          ]
+        end
+        format.json do
+          render json: {
+            error: "Resource not available while authenticated."
+          }, status: :unauthorized
+        end
+      end
+    end
   end
 
   sig { void }

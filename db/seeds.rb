@@ -8,27 +8,96 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-User.create!([
-# super-admin account
-{
+easy_password = "password123"
+
+# Super-admin account; no applicant necessary.
+User.create!({
   email: "admin@example.com",
-  password: "password123",
+  password: easy_password,
   super_admin: true,
-  confirmed_at: Time.now
-},
-# standard account
-{
-  email: "user@example.com",
-  password: "password123",
-  confirmed_at: Time.now
-},
-# restricted account
-{
-  email: "restricted@example.com",
-  password: "password123",
+  confirmed_at: Time.now,
+})
+
+Applicant.create!([
+  # This applicant is a fresh, unconfirmed applicant.
+  {
+    name: "Jane Doe (Unconfirmed Applicant)",
+    email: "unconfirmed-applicant@example.com",
+    use_case: "Journalism",
+    accepted_terms: true,
+    confirmation_token: Devise.friendly_token,
+  },
+  # This applicant is confirmed, but not yet reviewed.
+  {
+    name: "Jane Doe (Unreviewed Applicant)",
+    email: "unreviewed-applicant@example.com",
+    use_case: "Journalism",
+    accepted_terms: true,
+    confirmation_token: Devise.friendly_token,
+    confirmed_at: Time.now,
+  },
+  # This applicant is rejected.
+  {
+    name: "Jane Doe (Rejected Applicant)",
+    email: "rejected-applicant@example.com",
+    use_case: "Journalism",
+    accepted_terms: true,
+    confirmation_token: Devise.friendly_token,
+    confirmed_at: Time.now,
+    status: "rejected",
+  },
+  # This applicant is approved, but hasn't yet been converted to a user.
+  {
+    name: "Jane Doe (Approved Applicant)",
+    email: "approved-applicant@example.com",
+    use_case: "Journalism",
+    accepted_terms: true,
+    confirmation_token: Devise.friendly_token,
+    confirmed_at: Time.now,
+    status: "approved",
+  },
+  # This applicant is approved and has been converted to a standard user.
+  {
+    name: "Jane Doe (Standard User)",
+    email: "user@example.com",
+    use_case: "Journalism",
+    accepted_terms: true,
+    confirmation_token: Devise.friendly_token,
+    confirmed_at: Time.now,
+    status: "approved",
+  },
+  # This applicant is approved and has been converted to a restricted user.
+  {
+    name: "Jane Doe (Restricted User)",
+    email: "restricted-user@example.com",
+    use_case: "Journalism",
+    accepted_terms: true,
+    confirmation_token: Devise.friendly_token,
+    confirmed_at: Time.now,
+    status: "approved",
+  },
+])
+
+# Create the standard user (has completed setup and signed in)
+standard_user = User.create_from_applicant(Applicant.find_by(email: "user@example.com"))
+standard_user.update!({
+  # Override the randomized initial password.
+  password: easy_password,
+  password_confirmation: easy_password,
+  # Make sure they don't look fresh.
+  sign_in_count: 1,
+})
+
+# Create the restricted user
+restricted_user = User.create_from_applicant(Applicant.find_by(email: "restricted-user@example.com"))
+restricted_user.update!({
   restricted: true,
-  confirmed_at: Time.now
-}])
+  # Override the randomized initial password.
+  password: easy_password,
+  password_confirmation: easy_password,
+  # Make sure they don't look fresh.
+  sign_in_count: 1,
+})
 
 Sources::Tweet.create_from_url "https://twitter.com/kairyssdal/status/1415029747826905090"
 Sources::Tweet.create_from_url "https://twitter.com/leahstokes/status/1414669810739281920"

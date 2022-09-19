@@ -1,0 +1,48 @@
+<% @title_tag = "Finish setting up account" %>
+
+<%= form_with(
+		url: create_account_path,
+		class: "form"
+	) do |f| %>
+	<%= f.hidden_field(:reset_password_token, value: @reset_password_token) %>
+	<fieldset class="fieldset">
+		<div class="fieldset__header">
+			<div class="fieldset__title">
+				Finish setting up your account
+			</div>
+			<div class="fieldset__description">
+				<p>Your request to access the site has been approved! Please enter and confirm a password to finish setting up your account.</p>
+			</div>
+		</div>
+		<div class="fieldset__fields">
+			<div class="field__wrapper--input">
+				<%= f.label(
+					:password,
+					"Password *") %>
+				<%= f.password_field(
+					:password,
+					required: false) %>
+				<%= errors_for_field(
+					@user,
+					:password) %>
+			</div>
+			<div class="field__wrapper--input">
+				<%= f.label(
+					:password_confirmation,
+					"Confirm password *") %>
+				<%= f.password_field(
+					:password_confirmation,
+					required: false) %>
+				<%= errors_for_field(
+					@user,
+					:password_confirmation) %>
+				<div class="field__description">Your password should be between <%= Devise.password_length.begin %> and <%= Devise.password_length.end %> characters long.</div>
+			</div>
+		</div>
+	</fieldset>
+	<div class="form__align-with-fields">
+		<%= f.submit(
+			"Submit",
+			class: "btn btn--submit") %>
+	</div>
+<% end %>

@@ -1,4 +1,6 @@
 class ApplicantsController < ApplicationController
+  before_action :must_be_logged_out
+
   sig { void }
   def new
     @applicant ||= Applicant.new

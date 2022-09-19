@@ -54,6 +54,8 @@ Rails.application.routes.draw do
   post "/account/change_password", to: "accounts#change_password", as: "change_password"
   post "/account/change_email", to: "accounts#change_email", as: "change_email"
   delete "/account/users/", to: "accounts#destroy", as: "destroy_user"
+  get "/account/setup/(:token)", to: "accounts#new", as: "new_account"
+  post "/account/setup", to: "accounts#create", as: "create_account"
 
   get "/jobs", to: "jobs_status#index", as: "jobs_status_index"
   get "/jobs/scrapes", to: "jobs_status#scrapes", as: "jobs_status_scrapes"
