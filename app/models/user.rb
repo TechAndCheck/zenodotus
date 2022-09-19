@@ -48,7 +48,7 @@ class User < ApplicationRecord
   def self.create_from_applicant(applicant)
     raise ApplicantNotApprovedError unless applicant.approved?
 
-    self.create!({
+    user = self.create!({
       applicant: applicant,
       email: applicant.email,
       # The user will have to change their password immediately. This is just to pass validation.
@@ -58,6 +58,20 @@ class User < ApplicationRecord
       confirmed_at: applicant.confirmed_at,
       confirmation_sent_at: applicant.confirmation_sent_at
     })
+
+    user.assign_default_roles
+
+    user
+  end
+
+  # All new users are implicitly Insights users.
+  # All new users are also "new" until they have completed their initial setup.
+  sig { void }
+  def assign_default_roles
+    if self.roles.blank?
+      self.add_role :new_user
+      self.add_role :insights_user
+    end
   end
 end
 

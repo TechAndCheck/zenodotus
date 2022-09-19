@@ -31,6 +31,14 @@ existing_user:
   confirmed_at: <%= Time.now %>
   sign_in_count: 1
 
+new_user:
+  email: "new-user@example.com"
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  confirmed_at: <%= Time.now %>
+  roles:
+    - new_user
+    - insights_user
+
 admin:
   email: "admin@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>

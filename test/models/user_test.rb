@@ -1,6 +1,15 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
+  test "should assign new users to default roles" do
+    approved_applicant = applicants(:approved)
+
+    user = User.create_from_applicant(approved_applicant)
+
+    assert user.is_new_user?
+    assert user.is_insights_user?
+  end
+
   test "should recognize admins" do
     assert users(:admin).is_admin?
   end
