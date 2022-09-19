@@ -1,6 +1,11 @@
 # typed: strict
 
 class User < ApplicationRecord
+  rolify
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable,
+         :trackable, :lockable, :confirmable
+
   has_many :api_keys, dependent: :delete_all
   has_many :archive_items, foreign_key: :submitter_id, dependent: :nullify
 
@@ -8,12 +13,6 @@ class User < ApplicationRecord
   has_many :text_searches, dependent: :destroy
 
   has_one :applicant, dependent: :destroy
-
-  # Include default devise modules. Others available are:
-  # :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable,
-         :trackable, :lockable, :confirmable
 
   sig { returns(T::Boolean) }
   def super_admin?
