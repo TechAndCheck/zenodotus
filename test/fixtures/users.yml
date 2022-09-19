@@ -31,8 +31,8 @@ existing_user:
   confirmed_at: <%= Time.now %>
   sign_in_count: 1
 
-super_admin:
-  email: "super_admin@example.com"
+admin:
+  email: "admin@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
-  super_admin: true
   confirmed_at: <%= Time.now %>
+  roles: admin

@@ -1,6 +1,14 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
+  test "should recognize admins" do
+    assert users(:admin).is_admin?
+  end
+
+  test "should recognize users are not admins" do
+    assert_not users(:existing_user).is_admin?
+  end
+
   test "can associate a user with an applicant" do
     user = users(:user1)
     applicant = applicants(:approved)

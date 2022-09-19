@@ -11,12 +11,12 @@
 easy_password = "password123"
 
 # Super-admin account; no applicant necessary.
-User.create!({
+admin = User.create!({
   email: "admin@example.com",
   password: easy_password,
-  super_admin: true,
   confirmed_at: Time.now,
 })
+admin.add_role :admin
 
 Applicant.create!([
   # This applicant is a fresh, unconfirmed applicant.

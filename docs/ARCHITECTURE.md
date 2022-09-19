@@ -21,7 +21,7 @@ Zenodotus allows its users to search its archive using image or text inputs. Sea
 
 ## User model
 
-Zenodotus' `User` model handles authentication for the app via [Devise](https://github.com/heartcombo/devise). Internal users may be indicated as such with the `super_admin` boolean.
+Zenodotus' `User` model handles authentication for the app via [Devise](https://github.com/heartcombo/devise). Roles are managed with the Rolify gem. Internal users have the `:admin` role and are recognized with the `is_admin?` helper (provided by Rolify automatically).
 
 ## MediaReview
 Coming soon
