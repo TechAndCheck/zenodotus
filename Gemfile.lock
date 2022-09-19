@@ -326,6 +326,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rexml (3.2.5)
+    rolify (6.0.0)
     rubocop (1.28.1)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
@@ -506,6 +507,7 @@ DEPENDENCIES
   rails (~> 7.0.2.3)
   rake
   redis (~> 4.0)
+  rolify (~> 6.0)
   rubocop
   rubocop-minitest
   rubocop-performance
