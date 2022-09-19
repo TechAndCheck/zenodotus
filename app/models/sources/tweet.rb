@@ -79,6 +79,7 @@ class Sources::Tweet < ApplicationRecord
   def self.create_from_birdsong_hash(birdsong_tweets, user = nil)
     birdsong_tweets.map do |birdsong_tweet|
       birdsong_tweet = birdsong_tweet["post"]
+
       twitter_user = Sources::TwitterUser.create_from_birdsong_hash([birdsong_tweet["author"]]).first.twitter_user
 
       image_attributes = []
