@@ -14,7 +14,7 @@ AllCops:
     - 'redis-stable/**/*'
     - 'bin/**/*'
     - 'vendor/**/*'
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 3.1.2
 
 # Join tables don't really need timestamps
 Rails/CreateTableWithTimestamps:
@@ -80,3 +80,6 @@ CustomCops/YoutubeName:
 Layout/EmptyLinesAroundAccessModifier:
   Enabled: true
   EnforcedStyle: 'around'
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: 'never'

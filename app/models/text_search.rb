@@ -1,4 +1,5 @@
 # typed: strict
+
 class TextSearch < ApplicationRecord
   belongs_to :user, optional: false, class_name: "User"
 

@@ -1,4 +1,5 @@
 # typed: ignore
+
 Spring.watch(
   ".ruby-version",
   ".rbenv-vars",

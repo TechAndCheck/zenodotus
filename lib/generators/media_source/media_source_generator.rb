@@ -1,4 +1,5 @@
 # typed: ignore
+
 class MediaSourceGenerator < Rails::Generators::NamedBase
   desc "This generator creates a new media source for collecting and archiving of content."
 

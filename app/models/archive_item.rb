@@ -22,7 +22,7 @@ class ArchiveItem < ApplicationRecord
   # @return an ArchiveItem created from the media_review
   def self.create_from_media_review(media_review)
     appearance = media_review["itemReviewed"]["mediaItemAppearance"].select do |appearance|
-      appearance.keys.include? "contentUrl"
+      appearance.key?("contentUrl")
     end.first
 
     url = appearance["contentUrl"]
