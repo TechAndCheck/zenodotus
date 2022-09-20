@@ -8,13 +8,8 @@ class ArchiveController < ApplicationController
   sig { void }
   def index
     respond_to do | format |
-      if current_user.nil? || current_user.restricted
-        @archive_items = ArchiveItem.includes(:media_review, archivable_item: [:author]).limit(50).order("created_at DESC")
-        format.html { render "limited_index" }
-      else
-        @archive_items = ArchiveItem.includes(:media_review, { archivable_item: [:author, :images, :videos] }).limit(50).order("created_at DESC")
-        format.html { render "index" }
-      end
+      @archive_items = ArchiveItem.includes(:media_review, { archivable_item: [:author, :images, :videos] }).limit(50).order("created_at DESC")
+      format.html { render "index" }
     end
   end
 
@@ -56,7 +51,6 @@ class ArchiveController < ApplicationController
     end
 
     respond_to do |format|
-      # need to check for restricted users here, too
       flash.now[:success] = "Successfully archived your link!"
       format.turbo_stream { render turbo_stream: [
         turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
