@@ -10,25 +10,13 @@
 # two: {}
 # column: value
 
-user1:
-  email: "test123@example.com"
+user:
+  email: "user@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
-
-user2:
-  email: "test456@example.com"
-  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
-  confirmed_at: <%= Time.now %>
-
-user3:
-  email: "test789@example.com"
-  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
-  confirmed_at: <%= Time.now %>
-
-existing_user:
-  email: "new@example.com"
-  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
-  confirmed_at: <%= Time.now %>
+  roles:
+    - insights_user
+    - media_vault_user
 
 new_user:
   email: "new-user@example.com"

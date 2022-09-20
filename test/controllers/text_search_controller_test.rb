@@ -11,7 +11,7 @@ class ArchiveControllerTest < ActionDispatch::IntegrationTest
     Sources::Tweet.create_from_url("https://twitter.com/ggreenwald/status/1430523746457112578")
     Sources::Tweet.create_from_url("https://twitter.com/bidenfoundation/status/1121446608040755200")
     Sources::Tweet.create_from_url("https://twitter.com/POTUS/status/1428115295756066824")
-    sign_in users(:user1)
+    sign_in users(:user)
 
     # And then search
     get text_search_submit_url, params: { query: "Biden" }

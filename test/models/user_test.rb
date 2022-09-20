@@ -29,11 +29,11 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "should recognize users are not admins" do
-    assert_not users(:existing_user).is_admin?
+    assert_not users(:user).is_admin?
   end
 
   test "can associate a user with an applicant" do
-    user = users(:user1)
+    user = users(:user)
     applicant = applicants(:approved)
 
     user.update(applicant: applicant)
@@ -42,7 +42,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "destroying user destroys applicant too" do
-    user = users(:user1)
+    user = users(:user)
     applicant = applicants(:approved)
 
     user.update(applicant: applicant)
@@ -82,14 +82,14 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "can create a reset password token" do
-    user = users(:user1)
+    user = users(:user)
     token = user.set_reset_password_token
 
     assert token
   end
 
   test "can look up a user with the reset token" do
-    user = users(:user1)
+    user = users(:user)
     token = user.set_reset_password_token
 
     assert_equal user, User.with_reset_password_token(token)

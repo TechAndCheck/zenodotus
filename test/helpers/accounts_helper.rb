@@ -4,7 +4,7 @@ class AccountsHelperTest < ActionView::TestCase
   include Devise::Test::IntegrationHelpers
 
   test "search_history_helper" do
-    sign_in users(:user1)
+    sign_in users(:user)
     TextSearch.create(query: "search term", user: User.first)
     TextSearch.create(query: "another search term", user: User.first)
     TextSearch.create(query: "yet another search term", user: User.first)

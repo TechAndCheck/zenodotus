@@ -6,4 +6,4 @@
 #
 one:
   hashed_api_key: <%= ZenoEncryption.hash_string("123456789") %>
-  user: user1
+  user: user
