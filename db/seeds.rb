@@ -84,8 +84,6 @@ standard_user.update!({
   # Override the randomized initial password.
   password: easy_password,
   password_confirmation: easy_password,
-  # Make sure they don't look fresh.
-  sign_in_count: 1,
 })
 
 # Create the restricted user
@@ -95,8 +93,6 @@ restricted_user.update!({
   # Override the randomized initial password.
   password: easy_password,
   password_confirmation: easy_password,
-  # Make sure they don't look fresh.
-  sign_in_count: 1,
 })
 
 Sources::Tweet.create_from_url "https://twitter.com/kairyssdal/status/1415029747826905090"

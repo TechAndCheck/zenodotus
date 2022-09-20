@@ -27,7 +27,7 @@ class User < ApplicationRecord
   # Like the original method, it also creates the user's `reset_password_token`.
   sig { returns(String) }
   def send_setup_instructions
-    raise AlreadySetupError if sign_in_count.positive?
+    raise AlreadySetupError unless self.is_new_user?
 
     token = set_reset_password_token
 

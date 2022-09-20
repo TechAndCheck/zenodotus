@@ -103,7 +103,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "cannot send setup email to previously logged-in user" do
-    user = users(:existing_user)
+    user = users(:insights_user)
 
     assert_raises User::AlreadySetupError do
       user.send_setup_instructions
