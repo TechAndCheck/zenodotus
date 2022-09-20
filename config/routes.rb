@@ -18,8 +18,8 @@ Rails.application.routes.draw do
   root "archive#index"
 
   scope "/apply" do
-    get "/", to: "applicants#new", as: :new_applicant
-    resources :applicants, path: "/", only: [:create]
+    get "/", to: "applicants#new", as: "new_applicant"
+    post "/", to: "applicants#create", as: "applicants"
     get "/confirm", to: "applicants#confirm", as: "applicant_confirm"
     get "/confirm/sent", to: "applicants#confirmation_sent", as: "applicant_confirmation_sent"
     get "/confirm/done", to: "applicants#confirmed", as: "applicant_confirmed"
