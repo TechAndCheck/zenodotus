@@ -19,8 +19,7 @@ protected
     unless current_user.nil?
       respond_to do |format|
         format.html do
-          flash[:error] = "You cannot access that resource while logged in. Please log out and try again."
-          redirect_to after_sign_in_path_for(current_user)
+          redirect_back_or_to after_sign_in_path_for(current_user), allow_other_host: false, flash: { error: "You cannot access that resource while logged in. Please log out and try again." }
         end
         format.turbo_stream do
           flash.now[:error] = "You cannot access that resource while logged in. Please log out and try again."
