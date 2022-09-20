@@ -8,15 +8,22 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+Role.create!([
+  { name: "new_user" },
+  { name: "insights_user" },
+  { name: "media_vault_user" },
+  { name: "admin" },
+])
+
 easy_password = "password123"
 
 # Super-admin account; no applicant necessary.
-User.create!({
+admin = User.create!({
   email: "admin@example.com",
   password: easy_password,
-  super_admin: true,
   confirmed_at: Time.now,
 })
+admin.add_role :admin
 
 Applicant.create!([
   # This applicant is a fresh, unconfirmed applicant.
@@ -84,8 +91,6 @@ standard_user.update!({
   # Override the randomized initial password.
   password: easy_password,
   password_confirmation: easy_password,
-  # Make sure they don't look fresh.
-  sign_in_count: 1,
 })
 
 # Create the restricted user
@@ -95,8 +100,6 @@ restricted_user.update!({
   # Override the randomized initial password.
   password: easy_password,
   password_confirmation: easy_password,
-  # Make sure they don't look fresh.
-  sign_in_count: 1,
 })
 
 Sources::Tweet.create_from_url "https://twitter.com/kairyssdal/status/1415029747826905090"

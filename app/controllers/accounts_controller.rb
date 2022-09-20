@@ -87,6 +87,8 @@ class AccountsController < ApplicationController
     raise InvalidTokenError if @user.new_record?
     raise InvalidUpdatePasswordError if typed_params.password.blank? || @user.invalid?
 
+    @user.remove_role :new_user
+
     sign_in @user
     redirect_to after_sign_in_path_for(@user)
   end

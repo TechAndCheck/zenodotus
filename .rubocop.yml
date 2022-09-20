@@ -19,7 +19,7 @@ AllCops:
 # Join tables don't really need timestamps
 Rails/CreateTableWithTimestamps:
   Exclude:
-    # - 'db/migrate/20180128231930_create_organizations_and_events.rb'
+    - db/migrate/20220919194501_rolify_create_roles.rb
 
 # Rails generates this file
 Style/BlockComments:
@@ -64,6 +64,10 @@ Rails/HasManyOrHasOneDependent:
 
 Rails/HasAndBelongsToMany:
   Enabled: true
+  Exclude:
+    # Rolify uses HABTM. Despite a decade of the community attempting to implement
+    # `has_many: through`, it still struggles mightily with it. Let's make an exception.
+    - app/models/role.rb
 
 Style/NumericPredicate:
   Enabled: true

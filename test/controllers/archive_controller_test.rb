@@ -24,7 +24,7 @@ class ArchiveControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "load index if authenticated" do
-    sign_in users(:user1)
+    sign_in users(:user)
     get root_url
     assert_response :success
   end

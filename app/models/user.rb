@@ -1,6 +1,11 @@
 # typed: strict
 
 class User < ApplicationRecord
+  rolify
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable,
+         :trackable, :lockable, :confirmable
+
   has_many :api_keys, dependent: :delete_all
   has_many :archive_items, foreign_key: :submitter_id, dependent: :nullify
 
@@ -8,17 +13,6 @@ class User < ApplicationRecord
   has_many :text_searches, dependent: :destroy
 
   has_one :applicant, dependent: :destroy
-
-  # Include default devise modules. Others available are:
-  # :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable,
-         :trackable, :lockable, :confirmable
-
-  sig { returns(T::Boolean) }
-  def super_admin?
-    self.super_admin
-  end
 
   # `Devise::Recoverable#set_reset_password_token` is a protected method, which prevents us from
   # calling it directly. Since we need to be able to do that for tests and for duck-punching other
@@ -33,7 +27,7 @@ class User < ApplicationRecord
   # Like the original method, it also creates the user's `reset_password_token`.
   sig { returns(String) }
   def send_setup_instructions
-    raise AlreadySetupError if sign_in_count.positive?
+    raise AlreadySetupError unless self.is_new_user?
 
     token = set_reset_password_token
 
@@ -54,7 +48,7 @@ class User < ApplicationRecord
   def self.create_from_applicant(applicant)
     raise ApplicantNotApprovedError unless applicant.approved?
 
-    self.create!({
+    user = self.create!({
       applicant: applicant,
       email: applicant.email,
       # The user will have to change their password immediately. This is just to pass validation.
@@ -64,6 +58,20 @@ class User < ApplicationRecord
       confirmed_at: applicant.confirmed_at,
       confirmation_sent_at: applicant.confirmation_sent_at
     })
+
+    user.assign_default_roles
+
+    user
+  end
+
+  # All new users are implicitly Insights users.
+  # All new users are also "new" until they have completed their initial setup.
+  sig { void }
+  def assign_default_roles
+    if self.roles.blank?
+      self.add_role :new_user
+      self.add_role :insights_user
+    end
   end
 end
 

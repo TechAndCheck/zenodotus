@@ -1,8 +1,39 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
+  test "should assign new users to default roles" do
+    approved_applicant = applicants(:approved)
+
+    user = User.create_from_applicant(approved_applicant)
+
+    assert user.is_new_user?
+    assert user.is_insights_user?
+  end
+
+  test "should recognize Insights-only users" do
+    insights_user = users(:insights_user)
+
+    assert insights_user.is_insights_user?
+    assert_not insights_user.is_media_vault_user?
+  end
+
+  test "should recognize MediaVault users" do
+    media_vault_user = users(:media_vault_user)
+
+    assert media_vault_user.is_insights_user?
+    assert media_vault_user.is_media_vault_user?
+  end
+
+  test "should recognize admins" do
+    assert users(:admin).is_admin?
+  end
+
+  test "should recognize users are not admins" do
+    assert_not users(:user).is_admin?
+  end
+
   test "can associate a user with an applicant" do
-    user = users(:user1)
+    user = users(:user)
     applicant = applicants(:approved)
 
     user.update(applicant: applicant)
@@ -11,7 +42,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "destroying user destroys applicant too" do
-    user = users(:user1)
+    user = users(:user)
     applicant = applicants(:approved)
 
     user.update(applicant: applicant)
@@ -51,14 +82,14 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "can create a reset password token" do
-    user = users(:user1)
+    user = users(:user)
     token = user.set_reset_password_token
 
     assert token
   end
 
   test "can look up a user with the reset token" do
-    user = users(:user1)
+    user = users(:user)
     token = user.set_reset_password_token
 
     assert_equal user, User.with_reset_password_token(token)
@@ -72,7 +103,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "cannot send setup email to previously logged-in user" do
-    user = users(:existing_user)
+    user = users(:insights_user)
 
     assert_raises User::AlreadySetupError do
       user.send_setup_instructions

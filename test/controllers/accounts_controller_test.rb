@@ -4,7 +4,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   test "can get the setup page with a valid token" do
-    user = users(:user1)
+    user = users(:user)
 
     token = user.set_reset_password_token
 
@@ -21,7 +21,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "cannot get setup page while logged in" do
-    user = users(:user1)
+    user = users(:user)
 
     # Use a valid token to make this a legitimate test.
     # The redirection will run before the token is even checked, but we want to make sure it's an
@@ -36,7 +36,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can setup an account as a new user" do
-    user = users(:user1)
+    user = users(:user)
 
     post create_account_path({
       reset_password_token: user.set_reset_password_token,
@@ -57,7 +57,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "cannot setup an account with a previously-used token" do
-    user = users(:user1)
+    user = users(:user)
 
     create_params = {
       reset_password_token: user.set_reset_password_token,
@@ -76,7 +76,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "cannot setup an account with blank passwords" do
-    user = users(:user1)
+    user = users(:user)
 
     post create_account_path({
       reset_password_token: user.set_reset_password_token,
@@ -87,7 +87,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "cannot setup an account with short passwords" do
-    user = users(:user1)
+    user = users(:user)
     short_password = "password"[0, Devise.password_length.begin - 1]
 
     post create_account_path({
@@ -99,7 +99,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "cannot setup an account with mismatching passwords" do
-    user = users(:user1)
+    user = users(:user)
 
     post create_account_path({
       reset_password_token: user.set_reset_password_token,
@@ -107,5 +107,19 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
       password_confirmation: "password2"
     })
     assert_response :bad_request
+  end
+
+  test "should remove new_user role during setup" do
+    user = users(:new_user)
+
+    assert user.is_new_user?
+
+    post create_account_path({
+      reset_password_token: user.set_reset_password_token,
+      password: "password1",
+      password_confirmation: "password1"
+    })
+
+    assert_not user.is_new_user?
   end
 end

@@ -74,7 +74,7 @@ protected
     # First we make sure they're logged in at all, this also sets the current user so we can check it
     return false unless authenticate_user!
 
-    current_user.super_admin?
+    current_user.is_admin?
   end
 
   sig { void }
@@ -82,7 +82,7 @@ protected
     # First we make sure they're logged in at all, this also sets the current user so we can check it
     authenticate_user!
 
-    unless current_user.super_admin?
+    unless current_user.is_admin?
       redirect_back_or_to "/", allow_other_host: false, alert: "You must be a super user/admin to access this page."
     end
   end

@@ -178,3 +178,6 @@ gem "country_select", "~> 8.0"
 
 # Used for sending email through Mailgun
 gem "mailgun-ruby", "~> 1.2"
+
+# Rolify is used for user roles
+gem "rolify", "~> 6.0"

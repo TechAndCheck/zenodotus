@@ -4,14 +4,14 @@ class JobsTrackerControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   test "can view jobs" do
-    sign_in users(:user1)
+    sign_in users(:user)
     InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", false)
     get jobs_status_index_path
     assert_response :success
   end
 
   test "can resubmit a scrape" do
-    sign_in users(:user1)
+    sign_in users(:user)
     scrape = Scrape.create({ fulfilled: false, url: "https://www.instagram.com/p/CBcqOkyDDH8/", scrape_type: :instagram })
     assert_not_nil scrape
 
@@ -25,7 +25,7 @@ class JobsTrackerControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can delete a scrape" do
-    sign_in users(:user1)
+    sign_in users(:user)
     scrape = Scrape.create({ fulfilled: false, url: "https://www.instagram.com/p/CBcqOkyDDH8/", scrape_type: :instagram })
     assert_not_nil scrape
 

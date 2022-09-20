@@ -10,29 +10,39 @@
 # two: {}
 # column: value
 
-user1:
-  email: "test123@example.com"
+user:
+  email: "user@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
+  roles:
+    - insights_user
+    - media_vault_user
 
-user2:
-  email: "test456@example.com"
+new_user:
+  email: "new-user@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
+  roles:
+    - new_user
+    - insights_user
 
-user3:
-  email: "test789@example.com"
+insights_user:
+  email: "insights-only-user@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
+  roles:
+    - insights_user
 
-existing_user:
-  email: "new@example.com"
+media_vault_user:
+  email: "media-vault-user@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
-  sign_in_count: 1
+  roles:
+    - insights_user
+    - media_vault_user
 
-super_admin:
-  email: "super_admin@example.com"
+admin:
+  email: "admin@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
-  super_admin: true
   confirmed_at: <%= Time.now %>
+  roles: admin
