@@ -39,6 +39,21 @@ new_user:
     - new_user
     - insights_user
 
+insights_user:
+  email: "insights-only-user@example.com"
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  confirmed_at: <%= Time.now %>
+  roles:
+    - insights_user
+
+media_vault_user:
+  email: "media-vault-user@example.com"
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  confirmed_at: <%= Time.now %>
+  roles:
+    - insights_user
+    - media_vault_user
+
 admin:
   email: "admin@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>

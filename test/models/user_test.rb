@@ -10,6 +10,20 @@ class UserTest < ActiveSupport::TestCase
     assert user.is_insights_user?
   end
 
+  test "should recognize Insights-only users" do
+    insights_user = users(:insights_user)
+
+    assert insights_user.is_insights_user?
+    assert_not insights_user.is_media_vault_user?
+  end
+
+  test "should recognize MediaVault users" do
+    media_vault_user = users(:media_vault_user)
+
+    assert media_vault_user.is_insights_user?
+    assert media_vault_user.is_media_vault_user?
+  end
+
   test "should recognize admins" do
     assert users(:admin).is_admin?
   end
