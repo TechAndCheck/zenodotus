@@ -73,30 +73,11 @@ Applicant.create!([
     confirmed_at: Time.now,
     status: "approved",
   },
-  # This applicant is approved and has been converted to a restricted user.
-  {
-    name: "Jane Doe (Restricted User)",
-    email: "restricted-user@example.com",
-    use_case: "Journalism",
-    accepted_terms: true,
-    confirmation_token: Devise.friendly_token,
-    confirmed_at: Time.now,
-    status: "approved",
-  },
 ])
 
 # Create the standard user (has completed setup and signed in)
 standard_user = User.create_from_applicant(Applicant.find_by(email: "user@example.com"))
 standard_user.update!({
-  # Override the randomized initial password.
-  password: easy_password,
-  password_confirmation: easy_password,
-})
-
-# Create the restricted user
-restricted_user = User.create_from_applicant(Applicant.find_by(email: "restricted-user@example.com"))
-restricted_user.update!({
-  restricted: true,
   # Override the randomized initial password.
   password: easy_password,
   password_confirmation: easy_password,
