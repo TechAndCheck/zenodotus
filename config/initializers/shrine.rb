@@ -1,4 +1,5 @@
 # typed: ignore
+
 require "shrine"
 
 require "shrine/storage/file_system"

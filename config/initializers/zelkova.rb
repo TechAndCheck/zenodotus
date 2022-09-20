@@ -1,4 +1,5 @@
 # typed: strict
+
 require "zelkova"
 
 Rails.configuration.after_initialize do

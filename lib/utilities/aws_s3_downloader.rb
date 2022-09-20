@@ -1,4 +1,5 @@
 # typed: true
+
 #
 # This helps download files from AWS's S3 (or a compatible API such as CloudFlare's R2)
 # To make this a bit less rough and tumble you have to implement a helper for each different bucket

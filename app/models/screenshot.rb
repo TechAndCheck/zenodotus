@@ -1,4 +1,5 @@
 # typed: false
+
 class Screenshot < ApplicationRecord
   include ImageUploader::Attachment(:image)
 

@@ -96,8 +96,8 @@ class Applicant < ApplicationRecord
 
     self.update!({
       status: :rejected,
-      review_note:,
-      review_note_internal:,
+      review_note: review_note,
+      review_note_internal: review_note_internal,
       reviewed_at: Time.now
     })
   end
