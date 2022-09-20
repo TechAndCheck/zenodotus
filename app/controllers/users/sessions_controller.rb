@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
+  before_action :must_be_logged_out, only: [:new]
+
   # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
