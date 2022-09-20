@@ -21,7 +21,14 @@ Zenodotus allows its users to search its archive using image or text inputs. Sea
 
 ## User model
 
-Zenodotus' `User` model handles authentication for the app via [Devise](https://github.com/heartcombo/devise). Roles are managed with the Rolify gem. Internal users have the `:admin` role and are recognized with the `is_admin?` helper (provided by Rolify automatically).
+Zenodotus' `User` model handles authentication for the app via [Devise](https://github.com/heartcombo/devise). Roles are managed with the Rolify gem, which also generates role-specific helpers (e.g., `is_admin?`) at boot time.
+
+Roles:
+
+- `new_user`: Indicates a user was newly-created and has not yet gone through the setup process (clicked the link in their welcome email and chosen their own password). Applied to every new user created from an applicant, and removed when they have completed their own setup process.
+- `insights_user`: Indicates a user has access to Fact-Check Insights. Applied to every new user created from an applicant.
+- `media_vault_user`: Indicates a user has access to MediaVault. Currently only applied manually.
+- `admin`: Indicates a user is authorized to administrate the site. (I.e., an internal user.)
 
 ## MediaReview
 Coming soon

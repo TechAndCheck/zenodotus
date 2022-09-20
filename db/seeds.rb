@@ -8,6 +8,13 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+Role.create!([
+  { name: "new_user" },
+  { name: "insights_user" },
+  { name: "media_vault_user" },
+  { name: "admin" },
+])
+
 easy_password = "password123"
 
 # Super-admin account; no applicant necessary.
