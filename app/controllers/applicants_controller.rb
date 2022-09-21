@@ -31,7 +31,7 @@ class ApplicantsController < ApplicationController
     params_with_token = applicant_params.merge(confirmation_token: Devise.friendly_token)
     @applicant = Applicant.new(params_with_token)
 
-    existing_user = User.readonly.find_by(email: @applicant[:email])
+    existing_user = User.readonly.find_by(email: @applicant[:email].downcase)
     # We intentionally return a generic error to avoid leaking the existence of the user.
     (generic_create_error && return) if existing_user
 

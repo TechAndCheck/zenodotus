@@ -48,12 +48,25 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
     assert_response :bad_request
   end
 
-  test "returns a bad request if user exists for applicant's email" do
+  test "should not allow applying with existing user email" do
     user = users(:user)
 
     post applicants_path(applicant: {
       name: "Jane Doe",
       email: user.email,
+      use_case: "Journalism?",
+      accepted_terms: "1",
+    })
+
+    assert_response :bad_request
+  end
+
+  test "should not allow applying with existing user email in different case" do
+    user = users(:user)
+
+    post applicants_path(applicant: {
+      name: "Jane Doe",
+      email: user.email.upcase,
       use_case: "Journalism?",
       accepted_terms: "1",
     })
