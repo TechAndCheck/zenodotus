@@ -1,10 +1,9 @@
 # typed: strict
 
 class ArchiveController < ApplicationController
-  # It's the index, list all the archived items
-
   before_action :authenticate_user!, except: :scrape_result_callback
 
+  # It's the index, list all the archived items
   sig { void }
   def index
     respond_to do | format |
