@@ -3,6 +3,8 @@
 class JobsStatusController < ApplicationController
   require "sidekiq/api"
 
+  before_action :authenticate_super_user!
+
   RESULTS_PER_PAGE = 10
 
   # A class representing the allowed params into the `search` endpoint
