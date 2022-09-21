@@ -1,0 +1,12 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+instagram_user:
+  handle: example
+  display_name: "Instagram User"
+  profile: "Description of the user."
+  url: "http://www.example.com"
+  profile_image_url: "http://www.example.com/image.jpg"
+  followers_count: 10
+  following_count: 20
+  number_of_posts: 30
+  verified: true

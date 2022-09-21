@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+twitter_user:
+  twitter_id: 1234
+  handle: example
+  display_name: "Twitter User"
+  description: "Description of the user."
+  location: "Dallas, TX"
+  url: "http://www.example.com"
+  profile_image_url: "http://www.example.com/image.jpg"
+  sign_up_date: <%= Time.now %>
+  followers_count: 10
+  following_count: 20

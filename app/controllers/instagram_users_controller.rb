@@ -1,5 +1,8 @@
-"typed: strict"
+# typed: strict
+
 class InstagramUsersController < ApplicationController
+  before_action :authenticate_user!
+
   sig { void }
   def show
     @instagram_user = Sources::InstagramUser.find(params[:id])

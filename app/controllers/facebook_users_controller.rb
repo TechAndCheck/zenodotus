@@ -1,4 +1,8 @@
+# typed: strict
+
 class FacebookUsersController < ApplicationController
+  before_action :authenticate_user!
+
   sig { void }
   def show
     @facebook_user = Sources::FacebookUser.find(params[:id])
