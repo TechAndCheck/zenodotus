@@ -73,4 +73,22 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :bad_request
   end
+
+  test "should lowercase email address during creation" do
+    email_upcase = "APPLICANT@EXAMPLE.COM"
+    email_downcase = email_upcase.downcase
+
+    post applicants_path(applicant: {
+      name: "Jane Doe",
+      email: email_upcase,
+      use_case: "Journalism?",
+      accepted_terms: "1",
+    })
+
+    assert_nil Applicant.find_by(email: email_upcase)
+
+    applicant = Applicant.find_by(email: email_downcase)
+
+    assert_equal email_downcase, applicant.email
+  end
 end

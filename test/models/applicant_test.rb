@@ -24,6 +24,19 @@ class ApplicantTest < ActiveSupport::TestCase
     assert_not @applicant.valid?
   end
 
+  test "should lowercase email address during creation" do
+    applicant = Applicant.create!({
+      name: "Jane Doe",
+      email: "JANE@EXAMPLE.COM",
+      use_case: "Use case",
+      accepted_terms_at: Time.now,
+      accepted_terms_version: TermsOfService::CURRENT_VERSION,
+      confirmation_token: Devise.friendly_token,
+    })
+
+    assert_equal applicant.email.downcase, applicant.email
+  end
+
   test "cannot create an applicant without accepting terms" do
     assert_raises ActiveRecord::RecordInvalid do
       Applicant.create!({
