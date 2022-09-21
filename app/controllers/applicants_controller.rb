@@ -28,8 +28,11 @@ class ApplicantsController < ApplicationController
       generic_create_error && return
     end
 
-    params_with_token = applicant_params.merge(confirmation_token: Devise.friendly_token)
-    @applicant = Applicant.new(params_with_token)
+    decorated_params = applicant_params.merge({
+      # Add the confirmation token the applicant uses to confirm their email address
+      confirmation_token: Devise.friendly_token,
+    })
+    @applicant = Applicant.new(decorated_params)
 
     existing_user = User.readonly.find_by(email: @applicant[:email].downcase)
     # We intentionally return a generic error to avoid leaking the existence of the user.
