@@ -17,7 +17,6 @@ class ImageHashTest < ActiveSupport::TestCase
     end
   end
 
-
   test "dhash properly added to graph" do
     graph_node_count = Zelkova.graph.nodes.count
 

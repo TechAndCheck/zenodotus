@@ -3,7 +3,10 @@
 require "test_helper"
 
 class TwitterUserTest < ActiveSupport::TestCase
+  include Minitest::Hooks
+
   def before
+    puts "***************************************"
     @birdsong_user = TwitterMediaSource.extract(
       "https://twitter.com/AmtrakNECAlerts/status/1397922363551870990", true
     )["scrape_result"].first["post"]["author"]
