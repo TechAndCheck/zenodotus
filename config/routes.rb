@@ -3,34 +3,23 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
-  # These routes come along automatically from Devise, but we don't want them to (for now).
-  # Thus, we redirect them to the root. Must be declared before the `devise_for` block below.
-  get "users/cancel", to: redirect("/")
-  get "users/sign_up", to: redirect("/")
-  get "users/edit", to: redirect("/")
-
-  # This generates only the session and registration-related Devise URLs. We actually only want the
-  # session URLs for the userspace, but the registration-related routes are necessary for tests to
-  # run properly. (The ones that we override above also come from this. If we can somehow exclude
-  # them in this configuration block, that would be amazing.)
+  # This generates only the session and confirmation-related Devise URLs.
   devise_for :users,
              skip: :all,
              only: [
-              :sessions,
-              :registrations,
-              :confirmations
+               :sessions,
+               :confirmations,
              ],
              controllers: {
                sessions: "users/sessions",
-               registrations: "users/registrations",
-               confirmations: "users/confirmations"
+               confirmations: "users/confirmations",
              }
 
   root "archive#index"
 
   scope "/apply" do
-    get "/", to: "applicants#new", as: :new_applicant
-    resources :applicants, path: "/", only: [:create]
+    get "/", to: "applicants#new", as: "new_applicant"
+    post "/", to: "applicants#create", as: "applicants"
     get "/confirm", to: "applicants#confirm", as: "applicant_confirm"
     get "/confirm/sent", to: "applicants#confirmation_sent", as: "applicant_confirmation_sent"
     get "/confirm/done", to: "applicants#confirmed", as: "applicant_confirmed"

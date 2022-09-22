@@ -1,17 +1,25 @@
 require "test_helper"
 
-class JobsTrackerControllerTest < ActionDispatch::IntegrationTest
+class JobsStatusControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   test "can view jobs" do
-    sign_in users(:user)
-    InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", false)
+    sign_in users(:admin)
+
     get jobs_status_index_path
     assert_response :success
   end
 
-  test "can resubmit a scrape" do
+  test "cannot view jobs as a non-admin user" do
     sign_in users(:user)
+
+    get jobs_status_index_path
+    assert_response :redirect
+    assert_equal "You don’t have permission to access that page.", flash[:alert]
+  end
+
+  test "can resubmit a scrape" do
+    sign_in users(:admin)
     scrape = Scrape.create({ fulfilled: false, url: "https://www.instagram.com/p/CBcqOkyDDH8/", scrape_type: :instagram })
     assert_not_nil scrape
 
@@ -25,7 +33,7 @@ class JobsTrackerControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can delete a scrape" do
-    sign_in users(:user)
+    sign_in users(:admin)
     scrape = Scrape.create({ fulfilled: false, url: "https://www.instagram.com/p/CBcqOkyDDH8/", scrape_type: :instagram })
     assert_not_nil scrape
 
