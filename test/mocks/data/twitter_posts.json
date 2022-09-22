@@ -91,7 +91,7 @@
             "name": "Joe Biden",
             "aws_profile_image_key": "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
             "profile_image": null,
-            "profile_image_url": "https://pbs.twimg.com/profile_images/1308769664240160770/AfgzWVE7.jpg",
+            "profile_image_url": "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
             "url": "https://t.co/UClrPuJpyZ"
           },
           "aws_image_keys": null,
@@ -128,7 +128,7 @@
             "name": "Milwaukee Bucks",
             "aws_profile_image_key": "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
             "profile_image": null,
-            "profile_image_url": "https://pbs.twimg.com/profile_images/1533769587359207424/SKejiV1T.jpg",
+            "profile_image_url": "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
             "url": "https://t.co/MV9tpZYgLm"
           },
           "aws_image_keys": ["twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg"],

@@ -3,15 +3,21 @@
 require "test_helper"
 
 class TwitterUserTest < ActiveSupport::TestCase
-  def setup
+  def before
     @birdsong_user = TwitterMediaSource.extract(
-      "https://twitter.com/AmtrakNECAlerts/status/1397922363551870990"
-    ).first.author
+      "https://twitter.com/AmtrakNECAlerts/status/1397922363551870990", true
+    )["scrape_result"].first["post"]["author"]
   end
 
   def after_all
     if File.exist?("tmp") && File.directory?("tmp")
       FileUtils.rm_r("tmp")
+    end
+  end
+
+  def around
+    AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
+      super
     end
   end
 
