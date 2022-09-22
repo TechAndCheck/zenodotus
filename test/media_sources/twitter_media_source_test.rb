@@ -29,6 +29,12 @@ class TwitterMediaSourceTest < ActiveSupport::TestCase
     assert_not twitter_post_hash.empty?
   end
 
+  def test_initializing_returns_blank
+    assert_raises(Birdsong::NoTweetFoundError) do
+      TwitterMediaSource.extract("https://twitter.com/jack/status/1")
+    end
+  end
+
   def test_unfound_tweet_raises
     assert_raises(TwitterMediaSource::ExternalServerError) do
       TwitterMediaSource.extract("https://twitter.com/jack/status/1", true)

@@ -1,5 +1,6 @@
 # typed: ignore
 
+<<<<<<< HEAD
 
 
 
@@ -15,15 +16,23 @@
 
 
 
+=======
+>>>>>>> 77cbf91f6920f0d1267518f215e165de166e141e
 require "test_helper"
 
 class TweetTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
+<<<<<<< HEAD
   include Minitest::Hooks
 
   def before_all
     @@birdsong_tweet = TwitterMediaSource.extract("https://twitter.com/NYCSanitation/status/1517229098795515906?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw", true)["scrape_result"]
     @@birdsong_tweet_2 = TwitterMediaSource.extract("https://twitter.com/NYCSanitation/status/1517093299298963456?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw", true)["scrape_result"]
+=======
+  def setup
+    @@birdsong_tweet = TwitterMediaSource.extract("https://twitter.com/NYCSanitation/status/1517229098795515906?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw", true)["scrape_result"] if @@birdsong_tweet.nil?
+    @@birdsong_tweet2 = TwitterMediaSource.extract("https://twitter.com/NYCSanitation/status/1517093299298963456?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw", true) if @@birdsong_tweet2.nil?
+>>>>>>> 77cbf91f6920f0d1267518f215e165de166e141e
   end
 
   def around
@@ -43,11 +52,19 @@ class TweetTest < ActiveSupport::TestCase
     assert_not_nil archive_item
     assert_kind_of ArchiveItem, archive_item
 
+<<<<<<< HEAD
     assert_equal @@birdsong_tweet.first["post"]["text"], archive_item.tweet.text
     assert_equal @@birdsong_tweet.first["post"]["id"], archive_item.tweet.twitter_id
     assert_equal @@birdsong_tweet.first["post"]["id"], archive_item.service_id
     assert_equal @@birdsong_tweet.first["post"]["language"], archive_item.tweet.language
     assert_equal DateTime.parse(@@birdsong_tweet.first["post"]["created_at"]), archive_item.tweet.posted_at
+=======
+    assert_equal @@birdsong_tweet.first.text, archive_item.tweet.text
+    assert_equal @@birdsong_tweet.first.id, archive_item.tweet.twitter_id
+    assert_equal @@birdsong_tweet.first.id, archive_item.service_id
+    assert_equal @@birdsong_tweet.first.language, archive_item.tweet.language
+    assert_equal @@birdsong_tweet.first.created_at, archive_item.tweet.posted_at
+>>>>>>> 77cbf91f6920f0d1267518f215e165de166e141e
 
     assert_not_nil archive_item.tweet.author
     assert_not_nil archive_item.tweet.images
@@ -74,7 +91,12 @@ class TweetTest < ActiveSupport::TestCase
 
   test "can create two tweets from same author" do
     archive_item = Sources::Tweet.create_from_birdsong_hash(@@birdsong_tweet).first.tweet
+<<<<<<< HEAD
     archive_item2 = Sources::Tweet.create_from_birdsong_hash(@@birdsong_tweet_2).first.tweet
+=======
+    archive_item2 = Sources::Tweet.create_from_birdsong_hash(@@birdsong_tweet2).first.tweet
+
+>>>>>>> 77cbf91f6920f0d1267518f215e165de166e141e
     assert_equal archive_item.author, archive_item2.author
   end
 
