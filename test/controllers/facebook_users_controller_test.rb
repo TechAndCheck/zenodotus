@@ -8,7 +8,7 @@ class FacebookUsersControllerTest < ActionDispatch::IntegrationTest
   test "cannot view Facebook user if logged out" do
     facebook_user = sources_facebook_users(:facebook_user)
 
-    get facebook_user_path(id: facebook_user.id)
+    get facebook_user_path(facebook_user)
 
     assert_response :redirect
   end
@@ -18,7 +18,7 @@ class FacebookUsersControllerTest < ActionDispatch::IntegrationTest
 
     sign_in users(:user)
 
-    get facebook_user_path(id: facebook_user.id)
+    get facebook_user_path(facebook_user)
 
     assert_response :success
   end

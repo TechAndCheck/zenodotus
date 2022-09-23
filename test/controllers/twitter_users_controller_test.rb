@@ -8,7 +8,7 @@ class TwitterUsersControllerTest < ActionDispatch::IntegrationTest
   test "cannot view Twitter user if logged out" do
     twitter_user = sources_twitter_users(:twitter_user)
 
-    get twitter_user_path(id: twitter_user.id)
+    get twitter_user_path(twitter_user)
 
     assert_response :redirect
   end
@@ -18,7 +18,7 @@ class TwitterUsersControllerTest < ActionDispatch::IntegrationTest
 
     sign_in users(:user)
 
-    get twitter_user_path(id: twitter_user.id)
+    get twitter_user_path(twitter_user)
 
     assert_response :success
   end

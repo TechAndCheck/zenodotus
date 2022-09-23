@@ -8,7 +8,7 @@ class YoutubeChannelsControllerTest < ActionDispatch::IntegrationTest
   test "cannot view YouTube channel if logged out" do
     youtube_channel = sources_youtube_channels(:youtube_channel)
 
-    get youtube_channel_path(id: youtube_channel.id)
+    get youtube_channel_path(youtube_channel)
 
     assert_response :redirect
   end
@@ -18,7 +18,7 @@ class YoutubeChannelsControllerTest < ActionDispatch::IntegrationTest
 
     sign_in users(:user)
 
-    get youtube_channel_path(id: youtube_channel.id)
+    get youtube_channel_path(youtube_channel)
 
     assert_response :success
   end
