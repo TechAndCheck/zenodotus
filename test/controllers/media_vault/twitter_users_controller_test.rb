@@ -2,13 +2,13 @@
 
 require "test_helper"
 
-class TwitterUsersControllerTest < ActionDispatch::IntegrationTest
+class MediaVault::TwitterUsersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   test "cannot view Twitter user if logged out" do
     twitter_user = sources_twitter_users(:twitter_user)
 
-    get twitter_user_path(twitter_user)
+    get media_vault_twitter_user_path(twitter_user)
 
     assert_response :redirect
   end
@@ -18,7 +18,7 @@ class TwitterUsersControllerTest < ActionDispatch::IntegrationTest
 
     sign_in users(:user)
 
-    get twitter_user_path(twitter_user)
+    get media_vault_twitter_user_path(twitter_user)
 
     assert_response :success
   end
@@ -28,7 +28,7 @@ class TwitterUsersControllerTest < ActionDispatch::IntegrationTest
 
     sign_in users(:user)
 
-    get twitter_user_path(twitter_user, format: "json")
+    get media_vault_twitter_user_path(twitter_user, format: "json")
 
     assert_response :success
 

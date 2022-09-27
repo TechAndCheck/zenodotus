@@ -1,8 +1,6 @@
 # typed: strict
 
-class TwitterUsersController < ApplicationController
-  before_action :authenticate_user!
-
+class MediaVault::TwitterUsersController < MediaVaultController
   sig { void }
   def show
     @twitter_user = Sources::TwitterUser.find(params[:id])

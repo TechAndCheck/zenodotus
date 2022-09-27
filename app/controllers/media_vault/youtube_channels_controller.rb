@@ -1,8 +1,6 @@
 # typed: strict
 
-class YoutubeChannelsController < ApplicationController
-  before_action :authenticate_user!
-
+class MediaVault::YoutubeChannelsController < MediaVaultController
   sig { void }
   def show
     @youtube_channel = Sources::YoutubeChannel.find(params[:id])

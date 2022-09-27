@@ -2,13 +2,13 @@
 
 require "test_helper"
 
-class FacebookUsersControllerTest < ActionDispatch::IntegrationTest
+class MediaVault::FacebookUsersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   test "cannot view Facebook user if logged out" do
     facebook_user = sources_facebook_users(:facebook_user)
 
-    get facebook_user_path(facebook_user)
+    get media_vault_facebook_user_path(facebook_user)
 
     assert_response :redirect
   end
@@ -18,7 +18,7 @@ class FacebookUsersControllerTest < ActionDispatch::IntegrationTest
 
     sign_in users(:user)
 
-    get facebook_user_path(facebook_user)
+    get media_vault_facebook_user_path(facebook_user)
 
     assert_response :success
   end
@@ -28,7 +28,7 @@ class FacebookUsersControllerTest < ActionDispatch::IntegrationTest
 
     sign_in users(:user)
 
-    get facebook_user_path(facebook_user, format: "json")
+    get media_vault_facebook_user_path(facebook_user, format: "json")
 
     assert_response :success
 

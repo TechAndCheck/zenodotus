@@ -43,6 +43,11 @@ Rails.application.routes.draw do
 
     get "/text_search", to: "text_search#index", as: "text_search"
     get "/text_search/search", to: "text_search#search", as: "text_search_submit"
+
+    resources :twitter_users, only: [:show]
+    resources :instagram_users, only: [:show]
+    resources :facebook_users, only: [:show]
+    resources :youtube_channels, only: [:show]
   end
 
   get "/account", to: "accounts#index", as: "account"
@@ -57,9 +62,4 @@ Rails.application.routes.draw do
   get "/jobs/active_jobs", to: "jobs_status#active_jobs", as: "jobs_status_active_jobs"
   delete "/jobs/:id", to: "jobs_status#delete_scrape", as: "job_status_delete"
   post "/jobs/resubmit/:id", to: "jobs_status#resubmit_scrape", as: "job_status_resubmit"
-
-  resources :twitter_users, only: [:show]
-  resources :instagram_users, only: [:show]
-  resources :facebook_users, only: [:show]
-  resources :youtube_channels, only: [:show]
 end

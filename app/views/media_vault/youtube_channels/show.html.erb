@@ -1,37 +1,37 @@
 <div class="author" data-controller="author">
   <img
     class="author__image"
-    src="<%= @twitter_user.profile_image_url %>"
+    src="<%= @youtube_channel.channel_image_url %>"
     width="300" height="300"
-    alt="Profile photo of <%= @twitter_user.display_name %>"
+    alt="Profile photo of <%= @youtube_channel.title %>"
   >
   <div class="author__profile">
     <div class="author__name">
-      <span class="author__display-name"><%= @twitter_user.display_name %></span>
-      <span class="author__username">@<%= @twitter_user.handle %></span>
+      <span class="author__display-name"><%= @youtube_channel.title %></span>
     </div>
     <div class="author__metadata">
-      <%= abbreviate_number(@twitter_user.followers_count) %>
-      <%= "follower".pluralize(@twitter_user.followers_count) %>
+      <%= abbreviate_number(@youtube_channel.num_subscribers) %>
+      <%= "subscriber".pluralize(@youtube_channel.num_subscribers) %>
       •
-      <%= abbreviate_number(@twitter_user.following_count) %>
-      following
+      <%= abbreviate_number(@youtube_channel.num_views) %>
+      <%= "view".pluralize(@youtube_channel.num_views) %>
       •
-      <%= @twitter_user.location %>
+      <%= abbreviate_number(@youtube_channel.num_videos) %>
+      <%= "video".pluralize(@youtube_channel.num_videos) %>
     </div>
     <div class="author__description">
-      <%= @twitter_user.description %>
+      <%= @youtube_channel.description %>
     </div>
     <div class="author__metadata">
       <span class="icon-prefixed">
         <svg class="icon icon--xl"><use xlink:href="#svg-calendar-outline"></use></svg>
         <span>
-          Joined Twitter on
+          Channel created on
           <time
-            datetime="<%= @twitter_user.sign_up_date.iso8601 %>"
+            datetime="<%= @youtube_channel.sign_up_date.iso8601 %>"
             data-author-target="timestamp"
           >
-            <%= @twitter_user.sign_up_date %>
+            <%= @youtube_channel.sign_up_date %>
           </time>
         </span>
     </div>
@@ -46,8 +46,8 @@
       archived
     </h2>
     <div class="author-archive__actions">
-      <%= link_to twitter_user_path(@twitter_user, format: "json"), {
-        title: "Download user archive in JSON format",
+      <%= link_to media_vault_youtube_channel_path(@youtube_channel, format: "json"), {
+        title: "Download channel archive in JSON format",
         class: "btn icon-prefixed",
         download: true
       } do %>

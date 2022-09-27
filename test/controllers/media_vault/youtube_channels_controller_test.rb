@@ -2,13 +2,13 @@
 
 require "test_helper"
 
-class YoutubeChannelsControllerTest < ActionDispatch::IntegrationTest
+class MediaVault::YoutubeChannelsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   test "cannot view YouTube channel if logged out" do
     youtube_channel = sources_youtube_channels(:youtube_channel)
 
-    get youtube_channel_path(youtube_channel)
+    get media_vault_youtube_channel_path(youtube_channel)
 
     assert_response :redirect
   end
@@ -18,7 +18,7 @@ class YoutubeChannelsControllerTest < ActionDispatch::IntegrationTest
 
     sign_in users(:user)
 
-    get youtube_channel_path(youtube_channel)
+    get media_vault_youtube_channel_path(youtube_channel)
 
     assert_response :success
   end
@@ -28,7 +28,7 @@ class YoutubeChannelsControllerTest < ActionDispatch::IntegrationTest
 
     sign_in users(:user)
 
-    get youtube_channel_path(youtube_channel, format: "json")
+    get media_vault_youtube_channel_path(youtube_channel, format: "json")
 
     assert_response :success
 

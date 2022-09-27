@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
-import { humanizeTimeElement } from '../utilities'
+import { humanizeTimeElement } from '../../utilities'
 
 export default class extends Controller {
   static targets = [

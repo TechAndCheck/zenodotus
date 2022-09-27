@@ -7,9 +7,6 @@ import { application } from "./application"
 import AccountController from "./account_controller.js"
 application.register("account", AccountController)
 
-import AuthorController from "./author_controller.js"
-application.register("author", AuthorController)
-
 import FlashBoxController from "./flash_box_controller.js"
 application.register("flash-box", FlashBoxController)
 
@@ -21,6 +18,9 @@ application.register("jobs-status", JobsStatusController)
 
 import MediaVault__ArchiveController from "./media_vault/archive_controller.js"
 application.register("media-vault--archive", MediaVault__ArchiveController)
+
+import MediaVault__AuthorController from "./media_vault/author_controller.js"
+application.register("media-vault--author", MediaVault__AuthorController)
 
 import MediaVault__ImageSearchController from "./media_vault/image_search_controller.js"
 application.register("media-vault--image-search", MediaVault__ImageSearchController)

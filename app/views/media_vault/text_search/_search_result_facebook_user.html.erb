@@ -1,5 +1,5 @@
 <div class="sm:w-1/3 text-center sm:pr-8 sm:py-8 flex-initial">
-  <%= link_to facebook_user_path(result.id) do %>
+  <%= link_to media_vault_facebook_user_path(result.id) do %>
     <div class="p-1 rounded-full bg-gradient-to-r from-purple-500 to-red-600 inline-block">
       <img src="/uploads/<%= result.profile_image_data["id"] %>" class="w-20 h-20 rounded-full inline-flex items-center justify-center bg-gray-200 text-gray-400"/>
     </div>
