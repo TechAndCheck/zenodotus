@@ -191,6 +191,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_191950) do
   create_table "media_reviews", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "original_media_link", null: false
     t.text "media_authenticity_category", null: false
     t.text "original_media_context_description", null: false
     t.uuid "archive_item_id"

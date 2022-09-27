@@ -90,6 +90,7 @@ Sources::Tweet.create_from_url "https://twitter.com/dissectpodcast/status/140932
 archive_items = ArchiveItem.all
 
 media_review = MediaReview.create(
+  original_media_link: "https://www.foobar.com/1",
   date_published: "2021-02-03",
   url: "https://www.realfact.com/factchecks/2021/feb/03/starwars",
   author: {
@@ -114,6 +115,7 @@ media_review = MediaReview.create(
 )
 
 MediaReview.create(
+  original_media_link: "https://www.foobar.com/2",
   date_published: "2021-02-03",
   url: "https://www.realfact.com/factchecks/2021/feb/05/batman",
   author: {
@@ -138,6 +140,7 @@ MediaReview.create(
 )
 
 MediaReview.create(
+  original_media_link: "https://www.foobar.com/1",
   date_published: "2021-02-03",
   url: "https://www.realfact.com/factchecks/2021/feb/06/back_to_the_future",
   author: {

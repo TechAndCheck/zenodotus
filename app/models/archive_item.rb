@@ -38,6 +38,7 @@ class ArchiveItem < ApplicationRecord
     # That callback will triger the Scrape fulfillment processwhich
     # which will atttach this MediaReview to the ArchiveItem
     media_review_object = MediaReview.create!(
+      original_media_link: url,
       media_authenticity_category: media_review["mediaAuthenticityCategory"],
       original_media_context_description: media_review["originalMediaContextDescription"],
       date_published: media_review["datePublished"],
