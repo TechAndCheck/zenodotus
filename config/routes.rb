@@ -37,13 +37,13 @@ Rails.application.routes.draw do
       post "submit_media_review", to: "ingest#submit_media_review", as: "api_raw"
       post "submit_media_review_source", to: "ingest#submit_media_review_source", as: "api_url"
     end
+
+    get "/image_search", to: "image_search#index", as: "image_search"
+    post "/image_search", to: "image_search#search", as: "image_search_submit"
+
+    get "/text_search", to: "text_search#index", as: "text_search"
+    get "/text_search/search", to: "text_search#search", as: "text_search_submit"
   end
-
-  get "/image_search", to: "image_search#index", as: "image_search"
-  post "/image_search", to: "image_search#search", as: "image_search_submit"
-
-  get "/text_search", to: "text_search#index", as: "text_search"
-  get "/text_search/search", to: "text_search#search", as: "text_search_submit"
 
   get "/account", to: "accounts#index", as: "account"
   post "/account/change_password", to: "accounts#change_password", as: "change_password"

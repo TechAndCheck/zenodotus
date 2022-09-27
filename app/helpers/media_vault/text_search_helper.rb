@@ -1,4 +1,4 @@
-module TextSearchHelper
+module MediaVault::TextSearchHelper
   # Takes an instance of a model like Sources::InstagramPost
   # and returns a string like '_instagram_post'
   def search_view_for_model_instance(model_instance)

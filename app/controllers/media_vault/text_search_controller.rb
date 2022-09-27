@@ -1,8 +1,6 @@
 # typed: strict
 
-class TextSearchController < ApplicationController
-  before_action :authenticate_user!
-
+class MediaVault::TextSearchController < MediaVaultController
   sig { void }
   def index
     @search = TextSearch.new

@@ -1,8 +1,6 @@
 # typed: strict
 
-class ImageSearchController < ApplicationController
-  before_action :authenticate_user!
-
+class MediaVault::ImageSearchController < MediaVaultController
   # A class representing the allowed params into the `index` endpoint
   class IndexUrlParams < T::Struct
     const :q_id, T.nilable(String)
@@ -45,12 +43,12 @@ class ImageSearchController < ApplicationController
         render turbo_stream: [
           turbo_stream.replace(
             "search_results",
-            partial: "image_search/results",
+            partial: "media_vault/image_search/results",
             locals: { search: search, results: results }
           ),
           turbo_stream.replace(
             "search_item",
-            partial: "image_search/search_item",
+            partial: "media_vault/image_search/search_item",
             locals: { search: search, results: results }
           )
         ]

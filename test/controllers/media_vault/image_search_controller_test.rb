@@ -2,24 +2,24 @@
 
 require "test_helper"
 
-class ImageSearchControllerTest < ActionDispatch::IntegrationTest
+class MediaVault::ImageSearchControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   test "must be logged in to view image search" do
-    get image_search_url
+    get media_vault_image_search_url
     assert_response :redirect
   end
 
   test "may view image search if logged in" do
     sign_in users(:user)
 
-    get image_search_url
+    get media_vault_image_search_url
     assert_response :success
   end
 
   # This test is currently meaningless since it redirects even when search worked.
   # test "must be logged in to perform image search" do
-  #   post image_search_submit_url
+  #   post media_vault_image_search_submit_url
   #   assert_response :redirect
   # end
 
@@ -30,7 +30,7 @@ class ImageSearchControllerTest < ActionDispatch::IntegrationTest
 
   #   image_file = "something"
 
-  #   post image_search_submit_url(image_search: {
+  #   post media_vault_image_search_submit_url(image_search: {
   #     image: image_file
   #   })
   #   assert_response :success

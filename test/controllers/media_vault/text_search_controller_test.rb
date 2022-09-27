@@ -2,30 +2,30 @@
 
 require "test_helper"
 
-class TextSearchControllerTest < ActionDispatch::IntegrationTest
+class MediaVault::TextSearchControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   test "must be logged in to view text search" do
-    get text_search_url
+    get media_vault_text_search_url
     assert_response :redirect
   end
 
   test "may view text search if logged in" do
     sign_in users(:user)
 
-    get text_search_url
+    get media_vault_text_search_url
     assert_response :success
   end
 
   test "must be logged in to perform text search" do
-    get text_search_submit_url query: "Biden"
+    get media_vault_text_search_submit_url query: "Biden"
     assert_response :redirect
   end
 
   test "may perform text search if logged in" do
     sign_in users(:user)
 
-    get text_search_submit_url query: "Biden"
+    get media_vault_text_search_submit_url query: "Biden"
     assert_response :success
   end
 
@@ -38,7 +38,7 @@ class TextSearchControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:user)
 
     # And then search
-    get text_search_submit_url, params: { query: "Biden" }
+    get media_vault_text_search_submit_url, params: { query: "Biden" }
 
     assert_response 200
     assert_equal TextSearch.all.length, 1
