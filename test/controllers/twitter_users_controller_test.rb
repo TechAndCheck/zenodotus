@@ -22,4 +22,20 @@ class TwitterUsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
   end
+
+  test "can download user archive in JSON format" do
+    twitter_user = sources_twitter_users(:twitter_user)
+
+    sign_in users(:user)
+
+    get twitter_user_path(twitter_user, format: "json")
+
+    assert_response :success
+
+    begin
+      assert JSON.parse(@response.body)
+    rescue JSON::ParserError
+      flunk "Valid JSON was not returned."
+    end
+  end
 end

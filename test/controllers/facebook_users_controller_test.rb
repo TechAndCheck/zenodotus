@@ -22,4 +22,20 @@ class FacebookUsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
   end
+
+  test "can download user archive in JSON format" do
+    facebook_user = sources_facebook_users(:facebook_user)
+
+    sign_in users(:user)
+
+    get facebook_user_path(facebook_user, format: "json")
+
+    assert_response :success
+
+    begin
+      assert JSON.parse(@response.body)
+    rescue JSON::ParserError
+      flunk "Valid JSON was not returned."
+    end
+  end
 end

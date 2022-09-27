@@ -22,4 +22,20 @@ class YoutubeChannelsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
   end
+
+  test "can download channel archive in JSON format" do
+    youtube_channel = sources_youtube_channels(:youtube_channel)
+
+    sign_in users(:user)
+
+    get youtube_channel_path(youtube_channel, format: "json")
+
+    assert_response :success
+
+    begin
+      assert JSON.parse(@response.body)
+    rescue JSON::ParserError
+      flunk "Valid JSON was not returned."
+    end
+  end
 end
