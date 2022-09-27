@@ -1,0 +1,2 @@
+module MediaVaultHelper
+end
