@@ -32,10 +32,12 @@ Rails.application.routes.draw do
       get "download", to: "archive#export_archive_data", as: "download"
       post "scrape_result_callback", to: "archive#scrape_result_callback", as: "scrape_result_callback"
     end
-  end
 
-  post "/ingest/submit_media_review", to: "ingest#submit_media_review", as: "ingest_api_raw"
-  post "/ingest/submit_media_review_source", to: "ingest#submit_media_review_source", as: "ingest_api_url"
+    scope "ingest", as: "ingest" do
+      post "submit_media_review", to: "ingest#submit_media_review", as: "api_raw"
+      post "submit_media_review_source", to: "ingest#submit_media_review_source", as: "api_url"
+    end
+  end
 
   get "/image_search", to: "image_search#index", as: "image_search"
   post "/image_search", to: "image_search#search", as: "image_search_submit"

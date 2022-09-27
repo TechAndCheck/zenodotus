@@ -2,19 +2,19 @@
 
 require "test_helper"
 
-class IngestControllerTest < ActionDispatch::IntegrationTest
+class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
   test "Submitting an API request without a key will return 401 error" do
-    post ingest_api_raw_path, params: { media_review_json: { title: "Ahoy!" }.to_json }, as: :json
+    post media_vault_ingest_api_raw_path, params: { media_review_json: { title: "Ahoy!" }.to_json }, as: :json
     assert_response 401
   end
 
   test "Submitting an API request with a wrong key will return 401 error" do
-    post ingest_api_raw_path, params: { media_review_json: { title: "Ahoy!" }.to_json, api_key: "wrong password" }, as: :json
+    post media_vault_ingest_api_raw_path, params: { media_review_json: { title: "Ahoy!" }.to_json, api_key: "wrong password" }, as: :json
     assert_response 401
   end
 
   test "Submitting real JSON but with a bad schemas to the ingest API gives a 400" do
-    post ingest_api_raw_path, params: { media_review_json: { title: "Ahoy!" }.to_json, api_key: "123456789" }, as: :json
+    post media_vault_ingest_api_raw_path, params: { media_review_json: { title: "Ahoy!" }.to_json, api_key: "123456789" }, as: :json
     assert_response 400
 
     json = nil
@@ -32,7 +32,7 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "Submitting invalid JSON to the ingest API gives a 400" do
-    post ingest_api_raw_path, params: { media_review_json: { title: "Ahoy!" }, api_key: "123456789" }, as: :json
+    post media_vault_ingest_api_raw_path, params: { media_review_json: { title: "Ahoy!" }, api_key: "123456789" }, as: :json
     assert_response 400
 
     json = nil
@@ -87,7 +87,7 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
       }
     }.to_json
 
-    post ingest_api_raw_path, params: { media_review_json: media_review_json, api_key: "123456789" }, as: :json
+    post media_vault_ingest_api_raw_path, params: { media_review_json: media_review_json, api_key: "123456789" }, as: :json
     assert_response 200
 
     json = nil
@@ -109,7 +109,7 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can archive MediaReview from a webpage" do
-    post ingest_api_url_path, params: { url: "https://oneroyalace.github.io/MediaReview-Fodder/single_embedded_media_review.html", api_key: "123456789" }
+    post media_vault_ingest_api_url_path, params: { url: "https://oneroyalace.github.io/MediaReview-Fodder/single_embedded_media_review.html", api_key: "123456789" }
     assert_response 200
 
     json = nil
@@ -125,7 +125,7 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can archive multiple MediaReview from a webpage" do
-    post ingest_api_url_path, params: { url: "https://oneroyalace.github.io/MediaReview-Fodder/multiple_embedded_media_review.html", api_key: "123456789" }
+    post media_vault_ingest_api_url_path, params: { url: "https://oneroyalace.github.io/MediaReview-Fodder/multiple_embedded_media_review.html", api_key: "123456789" }
     assert_response 200
 
     json = nil
@@ -141,7 +141,7 @@ class IngestControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "return 400 if passed a url that points to a page with no MediaReview" do
-    post ingest_api_url_path, params: { url: "https://oneroyalace.github.io/MediaReview-Fodder/no_embedded_media_review.html", api_key: "123456789" }
+    post media_vault_ingest_api_url_path, params: { url: "https://oneroyalace.github.io/MediaReview-Fodder/no_embedded_media_review.html", api_key: "123456789" }
     assert_response 400
 
     json = nil

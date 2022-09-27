@@ -1,6 +1,8 @@
 # typed: ignore
 
-class IngestController < ApplicationController
+class MediaVault::IngestController < MediaVaultController
+  skip_before_action :authenticate_user!
+
   before_action :authenticate_user_from_api_key!
 
   class ApiResponseCodes < T::Enum
