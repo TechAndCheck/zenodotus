@@ -46,7 +46,7 @@
       archived
     </h2>
     <div class="author-archive__actions">
-      <%= link_to youtube_channel_download_path, {
+      <%= link_to youtube_channel_path(@youtube_channel, format: "json"), {
         title: "Download channel archive in JSON format",
         class: "btn icon-prefixed",
         download: true

@@ -8,7 +8,7 @@ class InstagramUsersControllerTest < ActionDispatch::IntegrationTest
   test "cannot view Instagram user if logged out" do
     instagram_user = sources_instagram_users(:instagram_user)
 
-    get instagram_user_path(id: instagram_user.id)
+    get instagram_user_path(instagram_user)
 
     assert_response :redirect
   end
@@ -18,8 +18,24 @@ class InstagramUsersControllerTest < ActionDispatch::IntegrationTest
 
     sign_in users(:user)
 
-    get instagram_user_path(id: instagram_user.id)
+    get instagram_user_path(instagram_user)
 
     assert_response :success
+  end
+
+  test "can download user archive in JSON format" do
+    instagram_user = sources_instagram_users(:instagram_user)
+
+    sign_in users(:user)
+
+    get instagram_user_path(instagram_user, format: "json")
+
+    assert_response :success
+
+    begin
+      assert JSON.parse(@response.body)
+    rescue JSON::ParserError
+      flunk "Valid JSON was not returned."
+    end
   end
 end

@@ -67,8 +67,9 @@ class ArchiveController < ApplicationController
   # Export entire archive of reviewed media to a JSON File
   sig { void }
   def export_archive_data
-    archive_json = ArchiveItem.prune_archive_items
-    send_data archive_json, type: "application/json; header=present", disposition: "attachment; filename=archive.json"
+    send_data ArchiveItem.generate_pruned_json,
+      type: "application/json",
+      filename: "media_vault_archive.json"
   end
 
   # A class representing the allowed params into the `submit_url` endpoint
