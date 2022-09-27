@@ -180,7 +180,7 @@ private
   # Validate MediaReview that was passed in
   sig { params(media_review: Hash).returns(T::Boolean) }
   def validate_media_review(media_review)
-    schema = File.open("public/json-schemas/claim-review-schema.json").read
+    schema = File.open("public/json-schemas/media-review-schema.json").read
     JSONSchemer.schema(schema).valid?(media_review)
   rescue StandardError
     false

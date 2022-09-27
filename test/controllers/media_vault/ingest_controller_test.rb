@@ -62,6 +62,41 @@ class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
       },
       "mediaAuthenticityCategory": "DecontexualizedContent",
       "originalMediaContextDescription": "Singer Mariah Carey shared a video of herself receiving a COVID-19 vaccination.",
+      "associatedClaimReview": {
+        "@context": "https://schema.org",
+        "@type": "ClaimReview",
+        "datePublished": "2021-04-26",
+        "url": "https://www.politifact.com/factchecks/foobar",
+        "author": {
+          "@type": "Organization",
+          "url": "https://www.politifact.com/",
+          "image": "http://static.politifact.com/mediapage/jpgs/politifact-logo-big.jpg",
+          "sameAs": "https://twitter.com/politifact"
+        },
+        "claimReviewed": "Mariah Carey something something",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "1",
+          "bestRating": "6",
+          "image": "http://static.politifact.com.s3.amazonaws.com/rulings/tom-pantsonfire.gif",
+          "alternateName": "True"
+        },
+        "itemReviewed":
+        {
+          "@type": "CreativeWork",
+          "author": {
+              "@type": "Person",
+              "name": "Mariah Carey",
+              "jobTitle": "Singer",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Gov._Perry_CPAC_February_2015.jpg/440px-Gov._Perry_CPAC_February_2015.jpg",
+              "sameAs": [
+                  "https://en.wikipedia.org/wiki/Mariah_Carey"
+              ]
+          },
+          "datePublished": "2014-07-17",
+          "name": "foobar"
+        }
+      },
       "itemReviewed": {
         "@type": "MediaReviewItem",
         "creator": {

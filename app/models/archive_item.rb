@@ -15,11 +15,11 @@ class ArchiveItem < ApplicationRecord
   belongs_to :submitter, optional: true, class_name: "User"
   belongs_to :scrape, optional: true
 
-  # Creates an +ArchiveEntity
+  # Begins the Scrape process that will allow us to create an ArchiveItem
   #
   # @!scope class
-  # @params media_review Hash a hash of json media_review
-  # @return an ArchiveItem created from the media_review
+  # @params media_review [Hash] A MediaReview JSON object
+  # @return A MediaReview object that we'll attach to the soon-to-be-scraped ArchiveItem during Scrape fulfillment
   def self.create_from_media_review(media_review)
     appearance = media_review["itemReviewed"]["mediaItemAppearance"].select do |appearance|
       appearance.key?("contentUrl")
@@ -33,13 +33,32 @@ class ArchiveItem < ApplicationRecord
     # If so, skip the scrape, create the MediaReview and mark as `orphaned`.
     object_model.create_from_url(url) unless object_model.nil? # Start scraping
 
-    # For the moment we create an "orphan" MediaReview, since the archive_item will be created
-    # later. This will be updated with the associated Scrape gets fulfilled
-    MediaReview.create!(
-      original_media_link: url,
+    # For the moment we create an "orphan" MediaReview without a parent ArchiveItem
+    # The ArchiveItem will be created after Zenodotus receives a callback from Hypatia
+    # That callback will triger the Scrape fulfillment processwhich
+    # which will atttach this MediaReview to the ArchiveItem
+    media_review_object = MediaReview.create!(
       media_authenticity_category: media_review["mediaAuthenticityCategory"],
       original_media_context_description: media_review["originalMediaContextDescription"],
+      date_published: media_review["datePublished"],
+      url: media_review["url"],
+      author: media_review["author"],
+      item_reviewed: media_review["itemReviewed"]
     )
+
+    if media_review.include?("associatedClaimReview")
+      ClaimReview.create!(
+        date_published: media_review["associatedClaimReview"]["datePublished"],
+        url: media_review["associatedClaimReview"]["url"],
+        author: media_review["associatedClaimReview"]["author"],
+        claim_reviewed: media_review["associatedClaimReview"]["claimReviewed"],
+        review_rating: media_review["associatedClaimReview"]["reviewRating"],
+        item_reviewed: media_review["associatedClaimReview"]["itemReviewed"],
+        media_review: media_review_object
+      )
+    end
+
+    media_review_object
   end
 
   # Returns an array of ArchiveItems modified for JSON export
