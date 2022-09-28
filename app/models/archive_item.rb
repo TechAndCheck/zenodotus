@@ -35,8 +35,8 @@ class ArchiveItem < ApplicationRecord
 
     # For the moment we create an "orphan" MediaReview without a parent ArchiveItem
     # The ArchiveItem will be created after Zenodotus receives a callback from Hypatia
-    # That callback will triger the Scrape fulfillment processwhich
-    # which will atttach this MediaReview to the ArchiveItem
+    # That callback will trigger the Scrape fulfillment processwhich
+    # which will attach this MediaReview to the ArchiveItem
     media_review_object = MediaReview.create!(
       original_media_link: url,
       media_authenticity_category: media_review["mediaAuthenticityCategory"],
