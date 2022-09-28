@@ -16,7 +16,7 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
     sign_in users(:user)
     Sources::Tweet.create_from_url! "https://twitter.com/jack/status/20", users(:user)
     assert_not_nil ArchiveItem.first.submitter
-    User.destroy(users(:user3).id)
+    User.destroy(users(:user).id)
     assert_nil ArchiveItem.first.submitter
   end
 
