@@ -15,7 +15,7 @@ Rails.application.routes.draw do
                confirmations: "users/confirmations",
              }
 
-  root "archive#index"
+  root "media_vault/archive#index"
 
   scope "/apply" do
     get "/", to: "applicants#new", as: "new_applicant"
@@ -25,10 +25,14 @@ Rails.application.routes.draw do
     get "/confirm/done", to: "applicants#confirmed", as: "applicant_confirmed"
   end
 
-  get "/archive/add", to: "archive#add"
-  post "/archive/add", to: "archive#submit_url"
-  get "/archive/download", to: "archive#export_archive_data", as: "archive_download"
-  post "/archive/scrape_result_callback", to: "archive#scrape_result_callback", as: "scrape_result_callback"
+  namespace "media_vault" do
+    scope "archive", as: "archive" do
+      get "add", to: "archive#add"
+      post "add", to: "archive#submit_url"
+      get "download", to: "archive#export_archive_data", as: "download"
+      post "scrape_result_callback", to: "archive#scrape_result_callback", as: "scrape_result_callback"
+    end
+  end
 
   post "/ingest/submit_media_review", to: "ingest#submit_media_review", as: "ingest_api_raw"
   post "/ingest/submit_media_review_source", to: "ingest#submit_media_review_source", as: "ingest_api_url"

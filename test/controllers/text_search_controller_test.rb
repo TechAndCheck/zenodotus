@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class ArchiveControllerTest < ActionDispatch::IntegrationTest
+class TextSearchControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   test "must be logged in to view text search" do

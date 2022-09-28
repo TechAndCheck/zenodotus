@@ -1,7 +1,7 @@
 # typed: strict
 
-class ArchiveController < ApplicationController
-  before_action :authenticate_user!, except: :scrape_result_callback
+class MediaVault::ArchiveController < MediaVaultController
+  skip_before_action :authenticate_user!, only: :scrape_result_callback
 
   # It's the index, list all the archived items
   sig { void }
@@ -35,10 +35,10 @@ class ArchiveController < ApplicationController
       respond_to do |format|
         error = "#{e.class}: #{e.message}"
         format.turbo_stream { render turbo_stream: [
-          turbo_stream.replace("modal", partial: "archive/add", locals: { error: error }),
+          turbo_stream.replace("modal", partial: "media_vault/archive/add", locals: { error: error }),
           turbo_stream.update(
             "recent_archived_items",
-            partial: "archive/archive_items",
+            partial: "media_vault/archive/archive_items",
             locals: { archive_items: ArchiveItem.includes({
               archivable_item: [:author, :images, :videos]
             }).order("created_at DESC") }
@@ -53,10 +53,10 @@ class ArchiveController < ApplicationController
       flash.now[:success] = "Successfully archived your link!"
       format.turbo_stream { render turbo_stream: [
         turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
-        turbo_stream.replace("modal", partial: "archive/add", locals: { render_empty: true }),
+        turbo_stream.replace("modal", partial: "media_vault/archive/add", locals: { render_empty: true }),
         turbo_stream.update(
           "recent_archived_items",
-          partial: "archive/archive_items",
+          partial: "media_vault/archive/archive_items",
           locals: { archive_items: ArchiveItem.includes({ archivable_item: [:author] }).order("created_at DESC") }
         )
       ] }
