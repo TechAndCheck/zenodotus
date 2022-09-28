@@ -60,6 +60,7 @@ class TweetTest < ActiveSupport::TestCase
   test "can create two tweets from same author" do
     archive_item = Sources::Tweet.create_from_birdsong_hash(@@birdsong_tweet).first.tweet
     archive_item2 = Sources::Tweet.create_from_birdsong_hash(@@birdsong_tweet_2).first.tweet
+
     assert_equal archive_item.author, archive_item2.author
   end
 
