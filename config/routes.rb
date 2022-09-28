@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     get "/confirm/done", to: "applicants#confirmed", as: "applicant_confirmed"
   end
 
-  namespace "media_vault" do
+  scope module: "media_vault", as: "media_vault" do
     scope "archive", as: "archive" do
       get "add", to: "archive#add"
       post "add", to: "archive#submit_url"
