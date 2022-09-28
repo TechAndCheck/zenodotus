@@ -19,13 +19,13 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index redirects without authentication" do
-    get root_url
+    get media_vault_archive_root_url
     assert_redirected_to new_user_session_path
   end
 
   test "load index if authenticated" do
     sign_in users(:user)
-    get root_url
+    get media_vault_archive_root_url
     assert_response :success
   end
 

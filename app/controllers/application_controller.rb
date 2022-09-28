@@ -7,6 +7,18 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :null_session, if: :json_request?, prepend: true
 
+  sig { void }
+  def index
+    # TODO: Split this based on subdomain.
+    render "media_vault/index"
+  end
+
+  sig { params(user: User).returns(String) }
+  def after_sign_in_path_for(user)
+    # TODO: Split this based on subdomain.
+    media_vault_archive_root_path
+  end
+
 protected
 
   sig { returns(T::Boolean) }
@@ -60,13 +72,6 @@ protected
       return false
     end
     true
-  end
-
-  # Routes users to the sign in page after they've logged out
-  # Overrides the Devise default method, which re-routes users to the root page
-  sig { params(user: Symbol).returns(String) }
-  def after_sign_out_path_for(user)
-    new_user_session_path
   end
 
   sig { returns(T::Boolean) }
