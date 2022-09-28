@@ -32,16 +32,23 @@ Rails.application.routes.draw do
       get "download", to: "archive#export_archive_data", as: "download"
       post "scrape_result_callback", to: "archive#scrape_result_callback", as: "scrape_result_callback"
     end
+
+    scope "ingest", as: "ingest" do
+      post "submit_media_review", to: "ingest#submit_media_review", as: "api_raw"
+      post "submit_media_review_source", to: "ingest#submit_media_review_source", as: "api_url"
+    end
+
+    get "/image_search", to: "image_search#index", as: "image_search"
+    post "/image_search", to: "image_search#search", as: "image_search_submit"
+
+    get "/text_search", to: "text_search#index", as: "text_search"
+    get "/text_search/search", to: "text_search#search", as: "text_search_submit"
+
+    resources :twitter_users, only: [:show]
+    resources :instagram_users, only: [:show]
+    resources :facebook_users, only: [:show]
+    resources :youtube_channels, only: [:show]
   end
-
-  post "/ingest/submit_media_review", to: "ingest#submit_media_review", as: "ingest_api_raw"
-  post "/ingest/submit_media_review_source", to: "ingest#submit_media_review_source", as: "ingest_api_url"
-
-  get "/image_search", to: "image_search#index", as: "image_search"
-  post "/image_search", to: "image_search#search", as: "image_search_submit"
-
-  get "/text_search", to: "text_search#index", as: "text_search"
-  get "/text_search/search", to: "text_search#search", as: "text_search_submit"
 
   get "/account", to: "accounts#index", as: "account"
   post "/account/change_password", to: "accounts#change_password", as: "change_password"
@@ -55,9 +62,4 @@ Rails.application.routes.draw do
   get "/jobs/active_jobs", to: "jobs_status#active_jobs", as: "jobs_status_active_jobs"
   delete "/jobs/:id", to: "jobs_status#delete_scrape", as: "job_status_delete"
   post "/jobs/resubmit/:id", to: "jobs_status#resubmit_scrape", as: "job_status_resubmit"
-
-  resources :twitter_users, only: [:show]
-  resources :instagram_users, only: [:show]
-  resources :facebook_users, only: [:show]
-  resources :youtube_channels, only: [:show]
 end
