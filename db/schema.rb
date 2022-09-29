@@ -74,12 +74,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_191950) do
   create_table "claim_reviews", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "date_published", null: false
-    t.text "url", null: false
-    t.jsonb "author", null: false
-    t.text "claim_reviewed", null: false
-    t.jsonb "review_rating"
+    t.text "claim_reviewed"
+    t.text "url"
+    t.jsonb "author"
+    t.datetime "date_published"
     t.jsonb "item_reviewed"
+    t.jsonb "review_rating"
     t.uuid "media_review_id", null: false
     t.index ["media_review_id"], name: "index_claim_reviews_on_media_review_id"
   end
@@ -191,14 +191,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_191950) do
   create_table "media_reviews", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "original_media_link", null: false
-    t.text "media_authenticity_category", null: false
-    t.text "original_media_context_description", null: false
+    t.text "original_media_link"
+    t.text "media_authenticity_category"
+    t.text "original_media_context_description"
     t.uuid "archive_item_id"
-    t.datetime "date_published", null: false
-    t.text "url", null: false
-    t.jsonb "author", null: false
-    t.jsonb "item_reviewed", null: false
+    t.boolean "taken_down"
+    t.jsonb "author"
+    t.datetime "date_published"
+    t.jsonb "item_reviewed"
+    t.text "url"
     t.index ["archive_item_id"], name: "index_media_reviews_on_archive_item_id"
   end
 
