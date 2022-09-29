@@ -195,7 +195,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_191950) do
     t.text "media_authenticity_category", null: false
     t.text "original_media_context_description", null: false
     t.uuid "archive_item_id"
-    t.boolean "taken_down"
     t.datetime "date_published", null: false
     t.text "url", null: false
     t.jsonb "author", null: false
