@@ -5,6 +5,10 @@ require "test_helper"
 class MediaVault::InstagramUsersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
+  setup do
+    host! "vault.factcheckinsights.local"
+  end
+
   test "cannot view Instagram user if logged out" do
     instagram_user = sources_instagram_users(:instagram_user)
 

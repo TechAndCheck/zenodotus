@@ -6,6 +6,10 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include Minitest::Hooks
 
+  setup do
+    host! "vault.factcheckinsights.local"
+  end
+
   def around
     AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
       super

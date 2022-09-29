@@ -3,6 +3,10 @@
 require "test_helper"
 
 class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    host! "vault.factcheckinsights.local"
+  end
+
   test "Submitting an API request without a key will return 401 error" do
     post media_vault_ingest_api_raw_path, params: { media_review_json: { title: "Ahoy!" }.to_json }, as: :json
     assert_response 401

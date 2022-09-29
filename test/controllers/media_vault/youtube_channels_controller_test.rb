@@ -5,6 +5,10 @@ require "test_helper"
 class MediaVault::YoutubeChannelsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
+  setup do
+    host! "vault.factcheckinsights.local"
+  end
+
   test "cannot view YouTube channel if logged out" do
     youtube_channel = sources_youtube_channels(:youtube_channel)
 
