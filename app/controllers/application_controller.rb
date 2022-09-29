@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :null_session, if: :json_request?, prepend: true
 
+  before_action :set_site_from_subdomain
+
   sig { void }
   def index
     (render("media_vault/index") && return) if site_is_media_vault?
@@ -44,6 +46,18 @@ protected
     # segments[1] == "factcheckinsights" && segments[2] == "www"
     # However, for now, since we want to always fall back to Insights, we'll just do this:
     !site_is_media_vault?
+  end
+
+  sig { void }
+  def set_site_from_subdomain
+    if site_is_media_vault?
+      @site = "media_vault"
+      @site_title = "MediaVault"
+      return
+    end
+
+    @site = "fact_check_insights"
+    @site_title = "Fact-Check Insights"
   end
 
   sig { returns(T::Boolean) }
