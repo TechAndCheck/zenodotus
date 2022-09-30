@@ -33,6 +33,7 @@ Applicant.create!([
     use_case: "Journalism",
     accepted_terms: true,
     confirmation_token: Devise.friendly_token,
+    source_site: "fact_check_insights",
   },
   # This applicant is confirmed, but not yet reviewed.
   {
@@ -42,6 +43,7 @@ Applicant.create!([
     accepted_terms: true,
     confirmation_token: Devise.friendly_token,
     confirmed_at: Time.now,
+    source_site: "fact_check_insights",
   },
   # This applicant is rejected.
   {
@@ -51,6 +53,7 @@ Applicant.create!([
     accepted_terms: true,
     confirmation_token: Devise.friendly_token,
     confirmed_at: Time.now,
+    source_site: "fact_check_insights",
     status: "rejected",
   },
   # This applicant is approved, but hasn't yet been converted to a user.
@@ -61,6 +64,7 @@ Applicant.create!([
     accepted_terms: true,
     confirmation_token: Devise.friendly_token,
     confirmed_at: Time.now,
+    source_site: "fact_check_insights",
     status: "approved",
   },
   # This applicant is approved and has been converted to a standard user.
@@ -71,6 +75,7 @@ Applicant.create!([
     accepted_terms: true,
     confirmation_token: Devise.friendly_token,
     confirmed_at: Time.now,
+    source_site: "fact_check_insights",
     status: "approved",
   },
 ])

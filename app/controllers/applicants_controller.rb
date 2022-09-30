@@ -29,6 +29,8 @@ class ApplicantsController < ApplicationController
     end
 
     decorated_params = applicant_params.merge({
+      # Record what site the visitor is applying from
+      source_site: get_site_from_subdomain,
       # Add the confirmation token the applicant uses to confirm their email address
       confirmation_token: Devise.friendly_token,
     })
