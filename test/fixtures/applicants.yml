@@ -33,6 +33,18 @@ approved:
   confirmed_at: <%= Time.now %>
   status: approved
 
+approved_vault:
+  name: Jane Doe
+  email: jane@example.com
+  use_case: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+  source_site: media_vault
+  accepted_terms_at: <%= Time.now %>
+  accepted_terms_version: <%= TermsOfService::CURRENT_VERSION %>
+  confirmation_token: <%= Devise.friendly_token %>
+  confirmation_sent_at: <%= Time.now %>
+  confirmed_at: <%= Time.now %>
+  status: approved
+
 rejected:
   name: Jane Doe
   email: jane@example.com

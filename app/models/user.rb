@@ -60,6 +60,7 @@ class User < ApplicationRecord
     })
 
     user.assign_default_roles
+    user.assign_applicant_roles(applicant)
 
     user
   end
@@ -72,6 +73,12 @@ class User < ApplicationRecord
       self.add_role :new_user
       self.add_role :insights_user
     end
+  end
+
+  # Assign any roles that are implicit in the application.
+  sig { params(applicant: Applicant).void }
+  def assign_applicant_roles(applicant)
+    self.add_role :media_vault_user if applicant.source_site == "media_vault"
   end
 end
 
