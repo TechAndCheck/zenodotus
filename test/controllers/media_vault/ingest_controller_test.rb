@@ -66,6 +66,41 @@ class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
       },
       "mediaAuthenticityCategory": "DecontexualizedContent",
       "originalMediaContextDescription": "Singer Mariah Carey shared a video of herself receiving a COVID-19 vaccination.",
+      "associatedClaimReview": {
+        "@context": "https://schema.org",
+        "@type": "ClaimReview",
+        "datePublished": "2021-04-26",
+        "url": "https://www.politifact.com/factchecks/foobar",
+        "author": {
+          "@type": "Organization",
+          "url": "https://www.politifact.com/",
+          "image": "http://static.politifact.com/mediapage/jpgs/politifact-logo-big.jpg",
+          "sameAs": "https://twitter.com/politifact"
+        },
+        "claimReviewed": "Mariah Carey something something",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "1",
+          "bestRating": "6",
+          "image": "http://static.politifact.com.s3.amazonaws.com/rulings/tom-pantsonfire.gif",
+          "alternateName": "True"
+        },
+        "itemReviewed":
+        {
+          "@type": "CreativeWork",
+          "author": {
+              "@type": "Person",
+              "name": "Mariah Carey",
+              "jobTitle": "Singer",
+              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Gov._Perry_CPAC_February_2015.jpg/440px-Gov._Perry_CPAC_February_2015.jpg",
+              "sameAs": [
+                  "https://en.wikipedia.org/wiki/Mariah_Carey"
+              ]
+          },
+          "datePublished": "2014-07-17",
+          "name": "foobar"
+        }
+      },
       "itemReviewed": {
         "@type": "MediaReviewItem",
         "creator": {
@@ -108,8 +143,24 @@ class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
     assert_not_empty json["media_object_id"]
 
     # We'll make sure the media review is correctly saved here since archive is async
-    post = MediaReview.find(json["media_object_id"])
-    assert_not_nil post
+    media_review = MediaReview.find(json["media_object_id"])
+    assert_not_nil media_review
+    assert_not_nil media_review.original_media_link
+    assert_not_nil media_review.media_authenticity_category
+    assert_not_nil media_review.original_media_context_description
+    assert_not_nil media_review.item_reviewed
+    assert_not_nil media_review.item_reviewed
+    assert_not_nil media_review.date_published
+    assert_not_nil media_review.url
+    assert_not_nil media_review.author
+
+    assert_not_empty media_review.claim_reviews
+    assert_not_nil media_review.claim_reviews.first.date_published
+    assert_not_nil media_review.claim_reviews.first.author
+    assert_not_nil media_review.claim_reviews.first.url
+    assert_not_nil media_review.claim_reviews.first.claim_reviewed
+    assert_not_nil media_review.claim_reviews.first.review_rating
+    assert_not_nil media_review.claim_reviews.first.item_reviewed
   end
 
   test "can archive MediaReview from a webpage" do

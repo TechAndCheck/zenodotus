@@ -61,9 +61,15 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
 
     # We first create an orphaned `MediaReview` item
     test_post_url = "https://www.instagram.com/p/CBcqOkyDDH8/"
-    media_review_item = MediaReview.create!({ original_media_link: test_post_url,
-                                                   original_media_context_description: "no context",
-                                                   media_authenticity_category: "a category" })
+    media_review_item = MediaReview.create!({
+      original_media_link: "https://www.instagram.com/p/CBcqOkyDDH8/",
+      url: "https://www.foobar.com/",
+      date_published: "2022-02-22",
+      author: { "name": "foobar" },
+      media_authenticity_category: "a category",
+      original_media_context_description: "context context",
+      item_reviewed: { "param": "value" }
+    })
 
     # Next, we create a mock callback response body
     instagram_mocks_file = File.open("test/mocks/data/instagram_posts.json")
