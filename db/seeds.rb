@@ -67,10 +67,10 @@ Applicant.create!([
     source_site: "fact_check_insights",
     status: "approved",
   },
-  # This applicant is approved and has been converted to a standard user.
+  # This applicant is approved and will be converted to a standard Insights user.
   {
-    name: "Jane Doe (Standard User)",
-    email: "user@example.com",
+    name: "Jane Doe (Insights User)",
+    email: "insights@example.com",
     use_case: "Journalism",
     accepted_terms: true,
     confirmation_token: Devise.friendly_token,
@@ -78,11 +78,30 @@ Applicant.create!([
     source_site: "fact_check_insights",
     status: "approved",
   },
+  # This applicant is approved and will be converted to a standard Vault user.
+  {
+    name: "Jane Doe (Vault User)",
+    email: "vault@example.com",
+    use_case: "Journalism",
+    accepted_terms: true,
+    confirmation_token: Devise.friendly_token,
+    confirmed_at: Time.now,
+    source_site: "media_vault",
+    status: "approved",
+  },
 ])
 
-# Create the standard user (has completed setup and signed in)
-standard_user = User.create_from_applicant(Applicant.find_by(email: "user@example.com"))
-standard_user.update!({
+# Create the standard Insights user (has completed setup and signed in)
+insights_user = User.create_from_applicant(Applicant.find_by(email: "insights@example.com"))
+insights_user.update!({
+  # Override the randomized initial password.
+  password: easy_password,
+  password_confirmation: easy_password,
+})
+
+# Create the standard Vault user (has completed setup and signed in)
+vault_user = User.create_from_applicant(Applicant.find_by(email: "vault@example.com"))
+vault_user.update!({
   # Override the randomized initial password.
   password: easy_password,
   password_confirmation: easy_password,
