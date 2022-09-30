@@ -23,6 +23,7 @@ module Zenodotus
     config.active_job.queue_adapter = :sidekiq
 
     # This lets Action Mailer generate URLs using the helper methods
+    # TODO: This should be dynamic in the mailer based on the request subdomain.
     config.action_mailer.default_url_options = { host: Figaro.env.URL }
 
     config.action_mailer.delivery_method = :mailgun

@@ -5,6 +5,10 @@ require "test_helper"
 class MediaVault::TwitterUsersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
+  setup do
+    host! "vault.factcheckinsights.local"
+  end
+
   test "cannot view Twitter user if logged out" do
     twitter_user = sources_twitter_users(:twitter_user)
 

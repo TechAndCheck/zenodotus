@@ -5,6 +5,10 @@ require "test_helper"
 class MediaVault::TextSearchControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
+  setup do
+    host! "vault.factcheckinsights.local"
+  end
+
   test "must be logged in to view text search" do
     get media_vault_text_search_url
     assert_response :redirect

@@ -5,6 +5,10 @@ require "test_helper"
 class MediaVault::FacebookUsersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
+  setup do
+    host! "vault.factcheckinsights.local"
+  end
+
   test "cannot view Facebook user if logged out" do
     facebook_user = sources_facebook_users(:facebook_user)
 

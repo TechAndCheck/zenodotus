@@ -3,6 +3,8 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
+  root "application#index"
+
   # This generates only the session and confirmation-related Devise URLs.
   devise_for :users,
              skip: :all,
@@ -15,8 +17,6 @@ Rails.application.routes.draw do
                confirmations: "users/confirmations",
              }
 
-  root "media_vault/archive#index"
-
   scope "/apply" do
     get "/", to: "applicants#new", as: "new_applicant"
     post "/", to: "applicants#create", as: "applicants"
@@ -25,29 +25,32 @@ Rails.application.routes.draw do
     get "/confirm/done", to: "applicants#confirmed", as: "applicant_confirmed"
   end
 
-  scope module: "media_vault", as: "media_vault" do
-    scope "archive", as: "archive" do
-      get "add", to: "archive#add"
-      post "add", to: "archive#submit_url"
-      get "download", to: "archive#export_archive_data", as: "download"
-      post "scrape_result_callback", to: "archive#scrape_result_callback", as: "scrape_result_callback"
+  constraints subdomain: "vault" do
+    scope module: "media_vault", as: "media_vault" do
+      scope "archive", as: "archive" do
+        root "archive#index"
+        get "add", to: "archive#add"
+        post "add", to: "archive#submit_url"
+        get "download", to: "archive#export_archive_data", as: "download"
+        post "scrape_result_callback", to: "archive#scrape_result_callback", as: "scrape_result_callback"
+      end
+
+      scope "ingest", as: "ingest" do
+        post "submit_media_review", to: "ingest#submit_media_review", as: "api_raw"
+        post "submit_media_review_source", to: "ingest#submit_media_review_source", as: "api_url"
+      end
+
+      get "/image_search", to: "image_search#index", as: "image_search"
+      post "/image_search", to: "image_search#search", as: "image_search_submit"
+
+      get "/text_search", to: "text_search#index", as: "text_search"
+      get "/text_search/search", to: "text_search#search", as: "text_search_submit"
+
+      resources :twitter_users, only: [:show]
+      resources :instagram_users, only: [:show]
+      resources :facebook_users, only: [:show]
+      resources :youtube_channels, only: [:show]
     end
-
-    scope "ingest", as: "ingest" do
-      post "submit_media_review", to: "ingest#submit_media_review", as: "api_raw"
-      post "submit_media_review_source", to: "ingest#submit_media_review_source", as: "api_url"
-    end
-
-    get "/image_search", to: "image_search#index", as: "image_search"
-    post "/image_search", to: "image_search#search", as: "image_search_submit"
-
-    get "/text_search", to: "text_search#index", as: "text_search"
-    get "/text_search/search", to: "text_search#search", as: "text_search_submit"
-
-    resources :twitter_users, only: [:show]
-    resources :instagram_users, only: [:show]
-    resources :facebook_users, only: [:show]
-    resources :youtube_channels, only: [:show]
   end
 
   get "/account", to: "accounts#index", as: "account"

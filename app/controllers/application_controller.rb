@@ -7,7 +7,58 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :null_session, if: :json_request?, prepend: true
 
+  before_action :set_site_from_subdomain
+
+  sig { void }
+  def index
+    (render("media_vault/index") && return) if site_is_media_vault?
+
+    render "fact_check_insights/index"
+  end
+
+  sig { params(user: User).returns(String) }
+  def after_sign_in_path_for(user)
+    return media_vault_archive_root_path if site_is_media_vault?
+
+    root_path
+  end
+
 protected
+
+  # Given a domain hostname, returns an array with each segment in reverse order: TLD first, then
+  # primary domain, then subdomains. E.g., `"www.example.com"` → `["com","example","www"]`.
+  # Explicitly expects to operate on only the hostname, not the protocol, ports, path, etc.
+  sig { params(hostname: String).returns(Array) }
+  def hostname_segments(hostname)
+    hostname.split(".").reverse
+  end
+
+  sig { returns(T::Boolean) }
+  def site_is_media_vault?
+    segments = hostname_segments(request.host)
+    segments[1] == "factcheckinsights" && segments[2] == "vault"
+  end
+
+  sig { returns(T::Boolean) }
+  def site_is_fact_check_insights?
+    # The real way to determine this is:
+    # segments = hostname_segments(request.host)
+    # segments[1] == "factcheckinsights" && segments[2] == "www"
+    # However, for now, since we want to always fall back to Insights, we'll just do this:
+    !site_is_media_vault?
+  end
+
+  sig { void }
+  def set_site_from_subdomain
+    if site_is_media_vault?
+      @site = "media_vault"
+      @site_title = "MediaVault"
+      return
+    end
+
+    @site = "fact_check_insights"
+    @site_title = "Fact-Check Insights"
+  end
 
   sig { returns(T::Boolean) }
   def json_request?
@@ -60,13 +111,6 @@ protected
       return false
     end
     true
-  end
-
-  # Routes users to the sign in page after they've logged out
-  # Overrides the Devise default method, which re-routes users to the root page
-  sig { params(user: Symbol).returns(String) }
-  def after_sign_out_path_for(user)
-    new_user_session_path
   end
 
   sig { returns(T::Boolean) }

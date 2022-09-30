@@ -14,7 +14,7 @@ module ApplicationHelper
       title_tag_content += title_hierarchy.join(" #{opts[:delimeter]} ")
     end
 
-    (title_tag_content.present? ? "#{title_tag_content} #{opts[:delimeter]} " : "") + "Zenodotus"
+    (title_tag_content.present? ? "#{title_tag_content} #{opts[:delimeter]} " : "") + @site_title
   end
 
   def color_for_flash_type(flash_type)

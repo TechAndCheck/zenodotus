@@ -6,6 +6,10 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include Minitest::Hooks
 
+  setup do
+    host! "vault.factcheckinsights.local"
+  end
+
   def around
     AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
       super
@@ -19,13 +23,13 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index redirects without authentication" do
-    get root_url
+    get media_vault_archive_root_url
     assert_redirected_to new_user_session_path
   end
 
   test "load index if authenticated" do
     sign_in users(:user)
-    get root_url
+    get media_vault_archive_root_url
     assert_response :success
   end
 
