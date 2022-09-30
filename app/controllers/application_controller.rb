@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :null_session, if: :json_request?, prepend: true
 
-  before_action :set_site_from_subdomain
+  before_action :set_site_variables_from_subdomain
 
   sig { void }
   def index
@@ -23,6 +23,16 @@ class ApplicationController < ActionController::Base
     root_path
   end
 
+  sig { returns(T::Boolean) }
+  def site_is_fact_check_insights?
+    get_site_from_subdomain == "fact_check_insights"
+  end
+
+  sig { returns(T::Boolean) }
+  def site_is_media_vault?
+    get_site_from_subdomain == "media_vault"
+  end
+
 protected
 
   # Given a domain hostname, returns an array with each segment in reverse order: TLD first, then
@@ -33,30 +43,41 @@ protected
     hostname.split(".").reverse
   end
 
-  sig { returns(T::Boolean) }
-  def site_is_media_vault?
+  # Returns which site is currently being requested based on subdomain.
+  # A little over-engineered, but prepared for future apps and for a different fallback default.
+  # But currently, falls back to Insights.
+  sig { returns(String) }
+  def get_site_from_subdomain
     segments = hostname_segments(request.host)
-    segments[1] == "factcheckinsights" && segments[2] == "vault"
-  end
 
-  sig { returns(T::Boolean) }
-  def site_is_fact_check_insights?
-    # The real way to determine this is:
-    # segments = hostname_segments(request.host)
-    # segments[1] == "factcheckinsights" && segments[2] == "www"
-    # However, for now, since we want to always fall back to Insights, we'll just do this:
-    !site_is_media_vault?
+    # Bail out entirely and move on to the fallback if we aren't on a recognized domain pattern.
+    if segments[1] == "factcheckinsights"
+      case segments[2]
+      when "vault"
+        return "media_vault"
+      # Even though Insights is the default, let's keep it in the list in case that changes.
+      when "www"
+        return "fact_check_insights"
+      end
+    end
+
+    "fact_check_insights"
   end
 
   sig { void }
-  def set_site_from_subdomain
-    if site_is_media_vault?
-      @site = "media_vault"
+  def set_site_variables_from_subdomain
+    @site = get_site_from_subdomain
+
+    case @site
+    when "media_vault"
       @site_title = "MediaVault"
+      return
+    # Even though Insights is the default, let's keep it in the list in case that changes.
+    when "fact_check_insights"
+      @site_title = "Fact-Check Insights"
       return
     end
 
-    @site = "fact_check_insights"
     @site_title = "Fact-Check Insights"
   end
 
