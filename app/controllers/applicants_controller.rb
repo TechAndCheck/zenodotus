@@ -137,7 +137,10 @@ private
 
   sig { void }
   def send_confirmation_email
-    ApplicantsMailer.with(applicant: @applicant).confirmation_email.deliver_later
+    ApplicantsMailer.with({
+      applicant: @applicant,
+      site: @site,
+    }).confirmation_email.deliver_later
 
     # This shouldn't fail but we don't particularly care if it does.
     @applicant.update(confirmation_sent_at: Time.now)

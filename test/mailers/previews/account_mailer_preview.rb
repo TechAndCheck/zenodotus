@@ -5,7 +5,8 @@ class AccountMailerPreview < ActionMailer::Preview
       user: {
         email: "applicant@example.com",
       },
-      token: "abc123"
+      token: "abc123",
+      site: SiteDefinitions::FACT_CHECK_INSIGHTS,
     ).setup_email
   end
 end

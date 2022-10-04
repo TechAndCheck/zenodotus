@@ -4,8 +4,9 @@ class ApplicantsMailerPreview < ActionMailer::Preview
     ApplicantsMailer.with(
       applicant: {
         email: "applicant@example.com",
-        confirmation_token: "asdf1234"
-      }
+        confirmation_token: "asdf1234",
+      },
+      site: SiteDefinitions::FACT_CHECK_INSIGHTS,
     ).confirmation_email
   end
 end
