@@ -82,6 +82,11 @@ class User < ApplicationRecord
     self.add_role :media_vault_user if applicant.source_site == SiteDefinitions::MEDIA_VAULT[:shortname]
   end
 
+  sig { returns(T::Boolean) }
+  def can_access_media_vault?
+    self.is_admin? || self.is_media_vault_user?
+  end
+
 private
 
   # ActionMailer needs to know what site we should use for the setup instructions,

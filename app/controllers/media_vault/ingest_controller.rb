@@ -2,6 +2,7 @@
 
 class MediaVault::IngestController < MediaVaultController
   skip_before_action :authenticate_user!
+  skip_before_action :must_be_media_vault_user
 
   before_action :authenticate_user_from_api_key!
 

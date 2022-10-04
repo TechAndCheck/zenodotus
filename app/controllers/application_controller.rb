@@ -16,7 +16,12 @@ class ApplicationController < ActionController::Base
 
   sig { params(user: User).returns(String) }
   def after_sign_in_path_for(user)
-    return media_vault_archive_root_path if site_is_media_vault?
+    if site_is_media_vault?
+      return media_vault_archive_root_path if user.can_access_media_vault?
+
+      # TODO: Lead to the Media Vault "Request Acces For Existing Insights User" page (#382)
+      return media_vault_root_path
+    end
 
     root_path
   end

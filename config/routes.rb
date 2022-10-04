@@ -27,6 +27,8 @@ Rails.application.routes.draw do
 
   constraints subdomain: "vault" do
     scope module: "media_vault", as: "media_vault" do
+      root "application#index"
+
       scope "archive", as: "archive" do
         root "archive#index"
         get "add", to: "archive#add"
