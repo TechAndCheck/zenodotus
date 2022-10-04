@@ -7,13 +7,11 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :null_session, if: :json_request?, prepend: true
 
-  before_action :set_site_variables_from_subdomain
+  before_action :set_site_from_subdomain
 
   sig { void }
   def index
-    (render("media_vault/index") && return) if site_is_media_vault?
-
-    render "fact_check_insights/index"
+    render "#{@site[:shortname]}/index"
   end
 
   sig { params(user: User).returns(String) }
@@ -25,60 +23,31 @@ class ApplicationController < ActionController::Base
 
   sig { returns(T::Boolean) }
   def site_is_fact_check_insights?
-    get_site_from_subdomain == "fact_check_insights"
+    get_site_from_subdomain == SiteDefinitions::FACT_CHECK_INSIGHTS
   end
 
   sig { returns(T::Boolean) }
   def site_is_media_vault?
-    get_site_from_subdomain == "media_vault"
+    get_site_from_subdomain == SiteDefinitions::MEDIA_VAULT
   end
 
 protected
 
-  # Given a domain hostname, returns an array with each segment in reverse order: TLD first, then
-  # primary domain, then subdomains. E.g., `"www.example.com"` → `["com","example","www"]`.
-  # Explicitly expects to operate on only the hostname, not the protocol, ports, path, etc.
-  sig { params(hostname: String).returns(Array) }
-  def hostname_segments(hostname)
-    hostname.split(".").reverse
-  end
-
   # Returns which site is currently being requested based on subdomain.
   # A little over-engineered, but prepared for future apps and for a different fallback default.
   # But currently, falls back to Insights.
-  sig { returns(String) }
+  sig { returns(Hash) }
   def get_site_from_subdomain
-    segments = hostname_segments(request.host)
+    site = SiteDefinitions::BY_HOST[request.host]
+    return site if site.present?
 
-    # Bail out entirely and move on to the fallback if we aren't on a recognized domain pattern.
-    if segments[1] == "factcheckinsights"
-      case segments[2]
-      when "vault"
-        return "media_vault"
-      # Even though Insights is the default, let's keep it in the list in case that changes.
-      when "www"
-        return "fact_check_insights"
-      end
-    end
-
-    "fact_check_insights"
+    # Fall back to Insights
+    SiteDefinitions::FACT_CHECK_INSIGHTS
   end
 
   sig { void }
-  def set_site_variables_from_subdomain
+  def set_site_from_subdomain
     @site = get_site_from_subdomain
-
-    case @site
-    when "media_vault"
-      @site_title = "MediaVault"
-      return
-    # Even though Insights is the default, let's keep it in the list in case that changes.
-    when "fact_check_insights"
-      @site_title = "Fact-Check Insights"
-      return
-    end
-
-    @site_title = "Fact-Check Insights"
   end
 
   sig { returns(T::Boolean) }

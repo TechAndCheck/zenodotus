@@ -4,7 +4,7 @@ new:
   name: Jane Doe
   email: jane@example.com
   use_case: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  source_site: fact_check_insights
+  source_site: <%= SiteDefinitions::FACT_CHECK_INSIGHTS[:shortname] %>
   accepted_terms_at: <%= Time.now %>
   accepted_terms_version: <%= TermsOfService::CURRENT_VERSION %>
   confirmation_token: <%= Devise.friendly_token %>
@@ -14,7 +14,7 @@ confirmed:
   name: Jane Doe
   email: jane@example.com
   use_case: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  source_site: fact_check_insights
+  source_site: <%= SiteDefinitions::FACT_CHECK_INSIGHTS[:shortname] %>
   accepted_terms_at: <%= Time.now %>
   accepted_terms_version: <%= TermsOfService::CURRENT_VERSION %>
   confirmation_token: <%= Devise.friendly_token %>
@@ -25,7 +25,7 @@ approved:
   name: Jane Doe
   email: jane@example.com
   use_case: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  source_site: fact_check_insights
+  source_site: <%= SiteDefinitions::FACT_CHECK_INSIGHTS[:shortname] %>
   accepted_terms_at: <%= Time.now %>
   accepted_terms_version: <%= TermsOfService::CURRENT_VERSION %>
   confirmation_token: <%= Devise.friendly_token %>
@@ -37,7 +37,7 @@ approved_vault:
   name: Jane Doe
   email: jane@example.com
   use_case: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  source_site: media_vault
+  source_site: <%= SiteDefinitions::MEDIA_VAULT[:shortname] %>
   accepted_terms_at: <%= Time.now %>
   accepted_terms_version: <%= TermsOfService::CURRENT_VERSION %>
   confirmation_token: <%= Devise.friendly_token %>
@@ -49,7 +49,7 @@ rejected:
   name: Jane Doe
   email: jane@example.com
   use_case: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  source_site: fact_check_insights
+  source_site: <%= SiteDefinitions::FACT_CHECK_INSIGHTS[:shortname] %>
   accepted_terms_at: <%= Time.now %>
   accepted_terms_version: <%= TermsOfService::CURRENT_VERSION %>
   confirmation_token: <%= Devise.friendly_token %>
@@ -61,7 +61,7 @@ expired_terms:
   name: Jane Doe
   email: jane@example.com
   use_case: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  source_site: fact_check_insights
+  source_site: <%= SiteDefinitions::FACT_CHECK_INSIGHTS[:shortname] %>
   accepted_terms_at: <%= Time.now %>
   accepted_terms_version: <%= Date.parse("2022-08-01") %>
   confirmation_token: <%= Devise.friendly_token %>

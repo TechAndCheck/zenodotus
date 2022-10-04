@@ -78,7 +78,7 @@ class User < ApplicationRecord
   # Assign any roles that are implicit in the application.
   sig { params(applicant: Applicant).void }
   def assign_applicant_roles(applicant)
-    self.add_role :media_vault_user if applicant.source_site == "media_vault"
+    self.add_role :media_vault_user if applicant.source_site == SiteDefinitions::MEDIA_VAULT[:shortname]
   end
 end
 

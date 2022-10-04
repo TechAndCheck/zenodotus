@@ -101,7 +101,7 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
     })
     applicant = Applicant.find_by(email: "applicant-insights@example.com")
 
-    assert_equal "fact_check_insights", applicant[:source_site]
+    assert_equal SiteDefinitions::FACT_CHECK_INSIGHTS[:shortname], applicant[:source_site]
   end
 
   test "can record that an applicant came from the Vault application page" do
@@ -115,6 +115,6 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
     })
     applicant = Applicant.find_by(email: "applicant-vault@example.com")
 
-    assert_equal "media_vault", applicant[:source_site]
+    assert_equal SiteDefinitions::MEDIA_VAULT[:shortname], applicant[:source_site]
   end
 end

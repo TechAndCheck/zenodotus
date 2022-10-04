@@ -33,7 +33,7 @@ Applicant.create!([
     use_case: "Journalism",
     accepted_terms: true,
     confirmation_token: Devise.friendly_token,
-    source_site: "fact_check_insights",
+    source_site: SiteDefinitions::FACT_CHECK_INSIGHTS[:shortname],
   },
   # This applicant is confirmed, but not yet reviewed.
   {
@@ -43,7 +43,7 @@ Applicant.create!([
     accepted_terms: true,
     confirmation_token: Devise.friendly_token,
     confirmed_at: Time.now,
-    source_site: "fact_check_insights",
+    source_site: SiteDefinitions::FACT_CHECK_INSIGHTS[:shortname],
   },
   # This applicant is rejected.
   {
@@ -53,7 +53,7 @@ Applicant.create!([
     accepted_terms: true,
     confirmation_token: Devise.friendly_token,
     confirmed_at: Time.now,
-    source_site: "fact_check_insights",
+    source_site: SiteDefinitions::FACT_CHECK_INSIGHTS[:shortname],
     status: "rejected",
   },
   # This applicant is approved, but hasn't yet been converted to a user.
@@ -64,7 +64,7 @@ Applicant.create!([
     accepted_terms: true,
     confirmation_token: Devise.friendly_token,
     confirmed_at: Time.now,
-    source_site: "fact_check_insights",
+    source_site: SiteDefinitions::FACT_CHECK_INSIGHTS[:shortname],
     status: "approved",
   },
   # This applicant is approved and will be converted to a standard Insights user.
@@ -75,7 +75,7 @@ Applicant.create!([
     accepted_terms: true,
     confirmation_token: Devise.friendly_token,
     confirmed_at: Time.now,
-    source_site: "fact_check_insights",
+    source_site: SiteDefinitions::FACT_CHECK_INSIGHTS[:shortname],
     status: "approved",
   },
   # This applicant is approved and will be converted to a standard Vault user.
@@ -86,7 +86,7 @@ Applicant.create!([
     accepted_terms: true,
     confirmation_token: Devise.friendly_token,
     confirmed_at: Time.now,
-    source_site: "media_vault",
+    source_site: SiteDefinitions::MEDIA_VAULT[:shortname],
     status: "approved",
   },
 ])
