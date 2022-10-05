@@ -26,6 +26,8 @@
 	/*
 	Typography
 	*/
+	--font-face--serif: "Source Serif Pro", serif;
+	--font-face--sans-serif: "Source Sans Pro", sans-serif;
 	--line-height: 1.5;
 
 	/*
@@ -40,7 +42,7 @@
 	--font-weight-extralight: 200; /* AVOID (accessibility) */
 	--font-weight-light: 300;
 	--font-weight-normal: 400;
-	--font-weight-medium: 500;
+	--font-weight-medium: 500;     /* AVOID for custom fonts (file size) */
 	--font-weight-semibold: 600;
 	--font-weight-bold: 700;
 	--font-weight-extrabold: 800;  /* AVOID for custom fonts (file size) */

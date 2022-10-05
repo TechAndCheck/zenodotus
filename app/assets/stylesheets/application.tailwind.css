@@ -1,3 +1,4 @@
+@import "./fonts.css";
 @import "./variables.css";
 @import "./boxes.css";
 @import "./buttons.css";
@@ -21,6 +22,7 @@
 }
 
 body {
+	font-family: var(--font-face--serif);
 	line-height: var(--line-height);
 }
 

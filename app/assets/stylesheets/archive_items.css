@@ -148,7 +148,7 @@ may never be widely adopted. If you're reading this in a future when it's been a
 
 .archive-item[data-publishing-platform="youtube"] .archive-item__body-caption {
 	font-size: 1.3rem;
-	font-weight: var(--font-weight-medium);
+	font-weight: var(--font-weight-normal);
 }
 
 .archive-item[data-archive-caption-collapse-mode-value="collapsed"] .archive-item__body-caption-content {
@@ -258,7 +258,7 @@ may never be widely adopted. If you're reading this in a future when it's been a
 }
 
 .archive-item__metadatum__label {
-	font-weight: var(--font-weight-medium);
+	font-weight: var(--font-weight-semibold);
 }
 
 .archive-item__metadatum__value {
