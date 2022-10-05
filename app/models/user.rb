@@ -33,7 +33,8 @@ class User < ApplicationRecord
 
     AccountMailer.with({
       user: self,
-      token: token
+      token: token,
+      site: self.site_for_setup,
     }).setup_email.deliver_later
 
     token
@@ -60,6 +61,7 @@ class User < ApplicationRecord
     })
 
     user.assign_default_roles
+    user.assign_applicant_roles(applicant)
 
     user
   end
@@ -72,6 +74,28 @@ class User < ApplicationRecord
       self.add_role :new_user
       self.add_role :insights_user
     end
+  end
+
+  # Assign any roles that are implicit in the application.
+  sig { params(applicant: Applicant).void }
+  def assign_applicant_roles(applicant)
+    self.add_role :media_vault_user if applicant.source_site == SiteDefinitions::MEDIA_VAULT[:shortname]
+  end
+
+  sig { returns(T::Boolean) }
+  def can_access_media_vault?
+    self.is_admin? || self.is_media_vault_user?
+  end
+
+private
+
+  # ActionMailer needs to know what site we should use for the setup instructions,
+  # i.e. what URLs to construct and language to use.
+  sig { returns(Hash) }
+  def site_for_setup
+    return SiteDefinitions::MEDIA_VAULT if self.is_media_vault_user?
+
+    SiteDefinitions::FACT_CHECK_INSIGHTS
   end
 end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_26_191950) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_30_204109) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -50,6 +50,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_191950) do
     t.text "review_note"
     t.text "review_note_internal"
     t.uuid "user_id"
+    t.string "source_site"
     t.index ["confirmation_token"], name: "index_applicants_on_confirmation_token", unique: true
     t.index ["user_id"], name: "index_applicants_on_user_id"
   end

@@ -91,4 +91,30 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal email_downcase, applicant.email
   end
+
+  test "should default the site source to Insights" do
+    post applicants_path(applicant: {
+      name: "Jane Doe",
+      email: "applicant-insights@example.com",
+      use_case: "Journalism?",
+      accepted_terms: "1",
+    })
+    applicant = Applicant.find_by(email: "applicant-insights@example.com")
+
+    assert_equal SiteDefinitions::FACT_CHECK_INSIGHTS[:shortname], applicant[:source_site]
+  end
+
+  test "can record that an applicant came from the Vault application page" do
+    host! "vault.factcheckinsights.local"
+
+    post applicants_path(applicant: {
+      name: "Jane Doe",
+      email: "applicant-vault@example.com",
+      use_case: "Journalism?",
+      accepted_terms: "1",
+    })
+    applicant = Applicant.find_by(email: "applicant-vault@example.com")
+
+    assert_equal SiteDefinitions::MEDIA_VAULT[:shortname], applicant[:source_site]
+  end
 end

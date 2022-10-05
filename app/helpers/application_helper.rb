@@ -3,6 +3,22 @@
 module ApplicationHelper
   include Pagy::Frontend
 
+  # Given a domain hostname, returns an array with each segment in reverse order: TLD first, then
+  # primary domain, then subdomains, then (optionally/rare) an environment.
+  # E.g., `"staging.www.example.com"` → `["com","example","www","staging"]`.
+  #
+  # Explicitly expects to operate on only the hostname, not the protocol, ports, path, etc.
+  def hostname_segments(hostname)
+    segments = hostname.split(".").reverse
+
+    {                           # E.g., `staging.www.example.com` generates:
+      tld:         segments[0], # "com"
+      primary:     segments[1], # "example"
+      subdomain:   segments[2], # "www"
+      environment: segments[3], # "staging" (will usually be `nil`)
+    }
+  end
+
   def make_title_tag_content(title_hierarchy = nil, opts = {
     delimeter: "•"
   })
@@ -14,7 +30,7 @@ module ApplicationHelper
       title_tag_content += title_hierarchy.join(" #{opts[:delimeter]} ")
     end
 
-    (title_tag_content.present? ? "#{title_tag_content} #{opts[:delimeter]} " : "") + @site_title
+    (title_tag_content.present? ? "#{title_tag_content} #{opts[:delimeter]} " : "") + @site[:title]
   end
 
   def color_for_flash_type(flash_type)

@@ -21,7 +21,8 @@ To run Zenodotus, you'll need to set the following environment variables. Ask a 
 - `HYPATIA_AUTH_KEY`
 - `secret_key_base` (Devise secret)
 - `KEY_ENCRYPTION_SALT`
-- `URL`
+- `FACT_CHECK_INSIGHTS_URL`, e.g. `http://www.factcheckinsights.local:3000`
+- `MEDIA_VAULT_URL`, e.g. `http://vault.factcheckinsights.local:3000`
 
 Optional
 - `USE_S3_DEV_TEST` If set to `"true"` (the string) the software will use S3 as a storage backend

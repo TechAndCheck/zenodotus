@@ -2,6 +2,7 @@
 
 class MediaVault::ArchiveController < MediaVaultController
   skip_before_action :authenticate_user!, only: :scrape_result_callback
+  skip_before_action :must_be_media_vault_user, only: :scrape_result_callback
 
   # It's the index, list all the archived items
   sig { void }
