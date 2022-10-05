@@ -17,12 +17,25 @@ Rails.application.routes.draw do
                confirmations: "users/confirmations",
              }
 
+  get "about", to: "application#about"
+  get "contact", to: "application#contact"
+
   scope "/apply" do
     get "/", to: "applicants#new", as: "new_applicant"
     post "/", to: "applicants#create", as: "applicants"
     get "/confirm", to: "applicants#confirm", as: "applicant_confirm"
     get "/confirm/sent", to: "applicants#confirmation_sent", as: "applicant_confirmation_sent"
     get "/confirm/done", to: "applicants#confirmed", as: "applicant_confirmed"
+  end
+
+  constraints subdomain: "www" do
+    scope module: "fact_check_insights", as: "fact_check_insights" do
+      root "application#index"
+
+      get "download"
+      get "guide"
+      get "highlights"
+    end
   end
 
   constraints subdomain: "vault" do

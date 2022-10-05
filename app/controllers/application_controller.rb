@@ -14,6 +14,12 @@ class ApplicationController < ActionController::Base
     render "#{@site[:shortname]}/index"
   end
 
+  sig { void }
+  def about; end
+
+  sig { void }
+  def contact; end
+
   sig { params(user: User).returns(String) }
   def after_sign_in_path_for(user)
     if site_is_media_vault?
