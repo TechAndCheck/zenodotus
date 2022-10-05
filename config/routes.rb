@@ -29,8 +29,10 @@ Rails.application.routes.draw do
     scope module: "media_vault", as: "media_vault" do
       root "application#index"
 
+      get "dashboard", to: "archive#index"
+      get "guide"
+
       scope "archive", as: "archive" do
-        root "archive#index"
         get "add", to: "archive#add"
         post "add", to: "archive#submit_url"
         get "download", to: "archive#export_archive_data", as: "download"
