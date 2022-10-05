@@ -1,9 +1,16 @@
-@import "./fonts.css";
+/* Setup */
 @import "./variables.css";
+
+/* Shared */
+@import "./base.css";
 @import "./boxes.css";
 @import "./buttons.css";
+@import "./fonts.css";
 @import "./forms.css";
 @import "./icons.css";
+@import "./layout.css";
+
+/* Custom Components */
 @import "./archive_items.css";
 @import "./authors.css";
 @import "./author_archives.css";
@@ -19,23 +26,4 @@
 	a:hover {
 		@apply no-underline;
 	}
-}
-
-body {
-	font-family: var(--font-face--serif);
-	line-height: var(--line-height);
-}
-
-body * {
-	transition-property: none;
-	transition-duration: var(--transition-duration);
-	transition-timing-function: var(--transition-timing-function);
-}
-
-p {
-	margin-bottom: 1rem;
-}
-
-p:last-child {
-	margin-bottom: 0;
 }
