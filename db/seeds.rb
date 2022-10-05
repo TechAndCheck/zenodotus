@@ -19,6 +19,7 @@ easy_password = "password123"
 
 # Super-admin account; no applicant necessary.
 admin = User.create!({
+  name: "Admin",
   email: "admin@example.com",
   password: easy_password,
   confirmed_at: Time.now,

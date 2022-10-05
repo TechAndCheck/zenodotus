@@ -14,6 +14,9 @@ class User < ApplicationRecord
 
   has_one :applicant, dependent: :destroy
 
+  validates :name, presence: true
+  validates :email, presence: true
+
   # `Devise::Recoverable#set_reset_password_token` is a protected method, which prevents us from
   # calling it directly. Since we need to be able to do that for tests and for duck-punching other
   # `Devise::Recoverable` methods, we pull it into the public space here.
@@ -51,6 +54,7 @@ class User < ApplicationRecord
 
     user = self.create!({
       applicant: applicant,
+      name: applicant.name,
       email: applicant.email,
       # The user will have to change their password immediately. This is just to pass validation.
       password: Devise.friendly_token,
