@@ -3,6 +3,7 @@
 @import "./themes.css";
 
 /* Shared */
+@import "./alerts.css";
 @import "./base.css";
 @import "./boxes.css";
 @import "./buttons.css";
