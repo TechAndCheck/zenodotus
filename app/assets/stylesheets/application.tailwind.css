@@ -1,5 +1,6 @@
 /* Setup */
 @import "./variables.css";
+@import "./themes.css";
 
 /* Shared */
 @import "./base.css";

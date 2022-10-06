@@ -1,0 +1,49 @@
+#site-wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+#site-main {
+	flex-grow: 1;
+	position: relative;
+	z-index: 1;
+}
+
+#site-header {
+	position: relative;
+	z-index: 10;
+
+	background-color: var(--color--site-theme);
+	font-family: var(--font-family--sans-serif);
+	border-bottom: 1px solid var(--color--dark);
+}
+
+#site-footer {
+	background-color: var(--color--dark);
+	color: white;
+	font-family: var(--font-family--sans-serif);
+	font-size: 0.8125rem;
+}
+
+.contain {
+	--contain--max-width: var(--screen-xl-floor);
+	--contain--gap: 1rem;
+
+	width: 100%;
+	display: grid;
+	grid-template-columns:
+		1fr
+		min(var(--contain--max-width), calc(100% - var(--contain--gap) * 2))
+		1fr;
+	grid-column-gap: var(--contain--gap);
+}
+
+.contain > * {
+	grid-column: 2;
+}
+
+.contain .full-bleed {
+	width: 100%;
+	grid-column: 1 / -1;
+}
