@@ -25,6 +25,7 @@ TODO: This is obviously very minimal at the moment. Will add more styles, variat
 	color: inherit;
 
 	transition-property: background-color, box-shadow, color;
+	font-family: var(--font-family--sans-serif);
 }
 
 .btn:hover {

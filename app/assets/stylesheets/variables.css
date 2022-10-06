@@ -26,8 +26,8 @@
 	/*
 	Typography
 	*/
-	--font-face--serif: "Source Serif Pro", serif;
-	--font-face--sans-serif: "Source Sans Pro", sans-serif;
+	--font-family--serif: "Source Serif Pro", serif;
+	--font-family--sans-serif: "Source Sans Pro", sans-serif;
 	--line-height: 1.5;
 
 	/*
