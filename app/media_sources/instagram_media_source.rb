@@ -21,7 +21,9 @@ class InstagramMediaSource < MediaSource
   # @returns [Boolean or Hash] if `force` is set to `true` returns the scraped hash, otherwise the status of the Hypatia job.
   sig { override.params(url: String, force: T::Boolean).returns(T.any(T::Boolean, T::Hash[String, String])) }
   def self.extract(url, force = false)
+    url = MediaSource.extract_post_url_if_needed(url)
     object = self.new(url)
+
     return object.retrieve_instagram_post! if force
 
     object.retrieve_instagram_post
