@@ -81,7 +81,7 @@ Library for consistent form layout.
 
 .fieldset__title {
 	font-size: 1.2rem;
-	font-weight: var(--font-weight-semibold);
+	font-weight: var(--font-weight--semibold);
 	margin-bottom: 1rem;
 }
 
@@ -95,7 +95,7 @@ Library for consistent form layout.
 	display: block;
 	margin-bottom: 0.5rem;
 	font-family: var(--font-family--sans-serif);
-	font-weight: var(--font-weight-semibold);
+	font-weight: var(--font-weight--semibold);
 }
 
 .field__wrapper--input input,

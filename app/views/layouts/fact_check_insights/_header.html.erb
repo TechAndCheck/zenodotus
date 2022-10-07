@@ -1,62 +1,66 @@
-<header id="site-header">
-  <nav class="flex flex-nowrap justify-between items-center gap-x-8">
-    <%= link_to root_path, class: 'flex items-center p-2 gap-x-2 text-xl font-semibold whitespace-nowrap dark:text-white no-underline mr-auto hover:text-blue-700' do %>
-			<svg class="h-8 w-8"><use xlink:href="#svg-library"></use></svg>
-      <span>Fact-Check Insights</span>
-    <% end %>
-    <div class="flex flex-nowrap items-center md:order-2">
-      <% if user_signed_in? %>
-        <button data-dropdown-toggle="zeno--user-menu" type="button" class="flex text-sm rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="zeno--user-menu-button" aria-expanded="false" type="button">
-          <span class="sr-only">Open user menu</span>
-          <svg class="w-10 h-10 rounded-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd" /></svg>
-        </button>
-        <div id="zeno--user-menu" class="hidden z-50 my-4 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-          <div class="py-3 px-4">
-            <span class="block text-sm font-medium text-gray-500 truncate dark:text-gray-400"><%= current_user.email %></span>
-          </div>
-          <ul class="py-1" aria-labelledby="dropdown">
-            <% if current_user.can_access_media_vault? %>
-              <li>
-                <%= link_to "Switch to #{SiteDefinitions::MEDIA_VAULT[:title]}", SiteDefinitions::MEDIA_VAULT[:url], class: "block no-underline py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" %>
-              </li>
-            <% end %>
-            <li>
-              <%= link_to "Settings", account_path, class: "block no-underline py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" %>
-            </li>
-            <% if current_user.is_admin? %>
-              <li>
-                <%= link_to jobs_status_index_path, class: "flex flex-inline gap-1 block no-underline py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" do %>
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" /></svg>
-                  Jobs Status
-                <% end %>
-              </li>
-            <% end %>
-          </ul>
-          <ul class="py-1">
-            <li>
-              <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "block w-full text-left no-underline py-2 px-4 text-sm text-red-800 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" %>
-            </li>
-          </ul>
-        </div>
-      <% end %>
-      <button data-collapse-toggle="zeno--mobile-menu" type="button" class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
-        <span class="sr-only">Open main menu</span>
-        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
-        <svg class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-      </button>
-    </div>
-    <div id="zeno--mobile-menu" class="hidden justify-between items-center z-50 absolute top-full left-0 px-4 shadow bg-white w-full md:relative md:flex md:w-auto md:h-auto md:shadow-none md:bg-none md:px-0 md:left-auto md:top-auto md:order-1">
-      <ul class="flex flex-nowrap flex-col py-4 md:py-0 md:flex-row md:gap-x-8 md:text-sm md:font-medium md:items-center">
-          <li><%= link_to "Download the Data", fact_check_insights_download_path, class: "no-underline block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" %></li>
-          <li><%= link_to "Guide to the Data", fact_check_insights_guide_path, class: "no-underline block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" %></li>
-          <li><%= link_to "Highlights", fact_check_insights_highlights_path, class: "no-underline block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" %></li>
-          <li><%= link_to "About Us", about_path, class: "no-underline block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" %></li>
-          <li><%= link_to "Contact", contact_path, class: "no-underline block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" %></li>
-				<% unless user_signed_in? %>
-          <li><%= link_to "Request access", new_applicant_path, class: "no-underline block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" %></li>
-          <li><%= link_to "Log in", new_user_session_path, class: "no-underline block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" %></li>
-        <% end %>
-      </ul>
-    </div>
-  </nav>
+<header id="site-header" data-controller="site-nav">
+	<nav id="site-nav--condensed" class="site-nav">
+		<%= link_to root_path, class: "site-nav__logo" do %>
+			<%= image_tag "fact-check-insights-logo-mark.svg", size: "229x138", alt: "Fact-Check Insights", class: "site-nav__logo__mark" %>
+			<span class="site-nav__logo__type">Fact-Check Insights</span>
+		<% end %>
+		<button id="site-nav__mobile-menu-button" data-action="site-nav#toggleFullNav" aria-label="Toggle nav">
+			<span id="site-nav__mobile-menu-button__icon"><span></span></span>
+		</button>
+	</nav>
+	<nav id="site-nav--full" class="site-nav">
+		<%= link_to root_path, class: "site-nav__logo" do %>
+			<%= image_tag "fact-check-insights-logo.svg", size: "255x75", alt: "Fact-Check Insights" %>
+		<% end %>
+		<ol id="site-nav__primary" class="site-nav__links">
+			<li><%= link_to "<span>Download Data</span>".html_safe, fact_check_insights_download_path, class: "btn btn--naked" %></li>
+			<li><%= link_to "<span>Guide</span>".html_safe, fact_check_insights_guide_path, class: "btn btn--naked" %></li>
+			<li><%= link_to "<span>Highlights</span>".html_safe, fact_check_insights_highlights_path, class: "btn btn--naked" %></li>
+			<li><%= link_to "<span>About</span>".html_safe, about_path, class: "btn btn--naked" %></li>
+			<li><%= link_to "<span>Contact</span>".html_safe, contact_path, class: "btn btn--naked" %></li>
+		</ol>
+		<ol id="site-nav__account" class="site-nav__links">
+			<% if user_signed_in? %>
+				<li id="site-nav__account-menu-wrapper">
+					<%= link_to account_path, id: "site-nav__account-name", class: "btn icon-prefixed", data: { action: "site-nav#toggleAccountMenu" } do %>
+						<svg class="icon icon--lg"><use xlink:href="#svg-user-circle"></use></svg>
+						<span><%= current_user.name %></span>
+					<% end %>
+					<ol id="site-nav__account-menu" class="site-nav__links">
+						<% if current_user.can_access_media_vault? %>
+							<li>
+								<%= link_to SiteDefinitions::MEDIA_VAULT[:url], class: "btn btn--naked icon-prefixed" do %>
+									<svg class="icon icon--lg"><use xlink:href="#svg-switch-lr"></use></svg>
+									<span><%= "Switch to #{SiteDefinitions::MEDIA_VAULT[:title]}" %></span>
+								<% end %>
+							</li>
+						<% end %>
+						<% if current_user.is_admin? %>
+							<li>
+								<%= link_to jobs_status_index_path, class: "btn btn--naked icon-prefixed" do %>
+									<svg class="icon icon--lg"><use xlink:href="#svg-bolt"></use></svg>
+									<span>Admin</span>
+								<% end %>
+							</li>
+						<% end %>
+						<li>
+							<%= link_to account_path, class: "btn btn--naked icon-prefixed" do %>
+								<svg class="icon icon--lg"><use xlink:href="#svg-settings"></use></svg>
+								<span>Settings</span>
+							<% end %>
+						</li>
+						<li>
+							<%= button_to destroy_user_session_path, class: "btn btn--naked btn--danger icon-prefixed", method: :delete do %>
+								<svg class="icon icon--lg"><use xlink:href="#svg-power"></use></svg>
+								<span>Logout</span>
+							<% end %>
+						</li>
+					</ol>
+				</li>
+			<% else %>
+				<li><%= link_to "Request access", new_applicant_path, class: "btn" %></li>
+				<li><%= link_to "Log in", new_user_session_path, class: "btn btn--reversed" %></li>
+			<% end %>
+		</ol>
+	</nav>
 </header>

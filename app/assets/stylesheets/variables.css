@@ -38,16 +38,16 @@
 
 	Note that we only use a subset of these values.
 	*/
-	--font-weight-thin: 100;       /* AVOID (accessibility) */
-	--font-weight-extralight: 200; /* AVOID (accessibility) */
-	--font-weight-light: 300;
-	--font-weight-normal: 400;
-	--font-weight-medium: 500;     /* AVOID for custom fonts (file size) */
-	--font-weight-semibold: 600;
-	--font-weight-bold: 700;
-	--font-weight-extrabold: 800;  /* AVOID for custom fonts (file size) */
-	--font-weight-black: 900;      /* AVOID for custom fonts (file size) */
-	--font-weight-extrablack: 950; /* AVOID for custom fonts (file size) */
+	--font-weight--thin: 100;       /* AVOID (accessibility) */
+	--font-weight--extralight: 200; /* AVOID (accessibility) */
+	--font-weight--light: 300;
+	--font-weight--normal: 400;
+	--font-weight--medium: 500;     /* AVOID for custom fonts (file size) */
+	--font-weight--semibold: 600;
+	--font-weight--bold: 700;
+	--font-weight--extrabold: 800;  /* AVOID for custom fonts (file size) */
+	--font-weight--black: 900;      /* AVOID for custom fonts (file size) */
+	--font-weight--extrablack: 950; /* AVOID for custom fonts (file size) */
 
 	/*
 	Shadows
@@ -115,7 +115,7 @@
 	--color--red-10: #FEF2F2;
 
 	--color--brand--claim-review: var(--color--green-6);
-	--color--brand--fact-check-insights: var(--color--tan-6);
+	--color--brand--fact-check-insights: var(--color--tan-8);
 	--color--brand--media-review: var(--color--blue-6);
 	--color--brand--media-vault: var(--color--orange-6);
 
