@@ -35,4 +35,10 @@ class MediaSourceTest < ActiveSupport::TestCase
   test "Can archive media using archive.org URLs" do
     assert_not_nil Sources::Tweet.create_from_url!("https://web.archive.org/web/20220930151009/https://twitter.com/AmtrakNECAlerts/status/1397922363551870990")
   end
+
+  test "archive.org URL extraction does not affect normal URLs" do
+    tweet_url = "https://twitter.com/AmtrakNECAlerts/status/1397922363551870990"
+
+    assert_equal tweet_url, MediaSource.extract_post_url_if_needed(tweet_url)
+  end
 end
