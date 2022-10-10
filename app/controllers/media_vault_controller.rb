@@ -4,6 +4,14 @@ class MediaVaultController < ApplicationController
   before_action :authenticate_user!
   before_action :must_be_media_vault_user
 
+  # We don't route to this URL directly.
+  # Instead, `application#index` renders its template without a redirect.
+  sig { void }
+  def index; end
+
+  sig { void }
+  def guide; end
+
 protected
 
   sig { void }

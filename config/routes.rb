@@ -17,6 +17,9 @@ Rails.application.routes.draw do
                confirmations: "users/confirmations",
              }
 
+  get "about", to: "application#about"
+  get "contact", to: "application#contact"
+
   scope "/apply" do
     get "/", to: "applicants#new", as: "new_applicant"
     post "/", to: "applicants#create", as: "applicants"
@@ -25,12 +28,24 @@ Rails.application.routes.draw do
     get "/confirm/done", to: "applicants#confirmed", as: "applicant_confirmed"
   end
 
+  constraints subdomain: "www" do
+    scope module: "fact_check_insights", as: "fact_check_insights" do
+      root "application#index"
+
+      get "download"
+      get "guide"
+      get "highlights"
+    end
+  end
+
   constraints subdomain: "vault" do
     scope module: "media_vault", as: "media_vault" do
       root "application#index"
 
+      get "dashboard", to: "archive#index"
+      get "guide"
+
       scope "archive", as: "archive" do
-        root "archive#index"
         get "add", to: "archive#add"
         post "add", to: "archive#submit_url"
         get "download", to: "archive#export_archive_data", as: "download"
