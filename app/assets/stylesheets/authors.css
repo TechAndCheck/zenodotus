@@ -48,15 +48,15 @@ a.author:hover .author__username {
 }
 
 .author__display-name {
-	font-weight: var(--font-weight-semibold);
+	font-weight: var(--font-weight--semibold);
 }
 
 .author__username {
-	font-weight: var(--font-weight-light);
+	font-weight: var(--font-weight--light);
 }
 
 .author__metadata {
-	font-weight: var(--font-weight-light);
+	font-weight: var(--font-weight--light);
 	font-size: 0.9rem;
 }
 

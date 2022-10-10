@@ -148,7 +148,7 @@ may never be widely adopted. If you're reading this in a future when it's been a
 
 .archive-item[data-publishing-platform="youtube"] .archive-item__body-caption {
 	font-size: 1.3rem;
-	font-weight: var(--font-weight-medium);
+	font-weight: var(--font-weight--normal);
 }
 
 .archive-item[data-archive-caption-collapse-mode-value="collapsed"] .archive-item__body-caption-content {
@@ -173,7 +173,7 @@ may never be widely adopted. If you're reading this in a future when it's been a
 }
 
 .archive-item__body-caption-toggler {
-	font-weight: var(--font-weight-semibold);
+	font-weight: var(--font-weight--semibold);
 	font-size: 0.9em;
 	text-decoration: underline;
 }
@@ -204,7 +204,7 @@ may never be widely adopted. If you're reading this in a future when it's been a
 	color: white;
 	border-radius: 5px;
 	font-size: 0.8rem;
-	font-weight: var(--font-weight-semibold);
+	font-weight: var(--font-weight--semibold);
 	padding: 0.25em 0.5em;
 }
 
@@ -258,9 +258,9 @@ may never be widely adopted. If you're reading this in a future when it's been a
 }
 
 .archive-item__metadatum__label {
-	font-weight: var(--font-weight-medium);
+	font-weight: var(--font-weight--semibold);
 }
 
 .archive-item__metadatum__value {
-	font-weight: var(--font-weight-light);
+	font-weight: var(--font-weight--light);
 }
