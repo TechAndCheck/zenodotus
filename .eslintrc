@@ -1,12 +1,12 @@
 {
   "extends": "airbnb-base",
   "rules": {
-    "semi": [2, "never"],
+    "semi": ["error", "never"],
     "max-len": ["error", { "code": 150 }],
     "prefer-destructuring": ["error", {"array": false, "object": true}],
-    "no-alert": [0, "never"],
-    "class-methods-use-this": [0, "never"],
     "no-param-reassign": ["error", { "props": false }]
+    "no-alert": ["off", "never"],
+    "class-methods-use-this": ["off", "never"],
   },
   "parserOptions": {
     "ecmaVersion": "latest"
