@@ -3,7 +3,7 @@
 
 <div class="border rounded mb-5 flex flex-col md:flex-row p-6 md:h-48">
   <div class="flex-none h-96 mb-5 md:mb-0 md:h-auto md:w-32 overflow-hidden rounded">
-    <%= render partial: "/archive/item_media_preview", locals: { item: result_media.archivable_item } %>
+    <%= render partial: "media_vault/archive/item_media_preview", locals: { item: result_media.archivable_item } %>
   </div>
   <div class="overflow-hidden md:pl-5 mr-5 flex flex-col md:flex-row w-full text-left justify-around">
     <div class="flex flex-col flex-wrap justify-around">
