@@ -1,22 +1,10 @@
-/* Setup */
-@import "./variables.css";
-@import "./themes.css";
+/*
+This is the Tailwind initialization file.
 
-/* Shared */
-@import "./alerts.css";
-@import "./base.css";
-@import "./boxes.css";
-@import "./buttons.css";
-@import "./fonts.css";
-@import "./forms.css";
-@import "./icons.css";
-@import "./layout.css";
-
-/* Custom Components */
-@import "./archive_items.css";
-@import "./authors.css";
-@import "./author_archives.css";
-
+It's only necessary until we remove Tailwind from the application, at which point we can also
+remove the `tailwindcss-rails` gem, the `tailwind.config.js` config file, the `tailwind` stylesheet
+tag in the layout, and any Tailwind-specific style overrides.
+*/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
