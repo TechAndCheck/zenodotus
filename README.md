@@ -169,11 +169,11 @@ If you want to use this (I recommend it) do the following:
 
 We use mostly a standard Rails stack, with a few new things that are generally recommended by the Rails core team.
 
-- We have converted to the Rails 7+ [importmap](https://github.com/rails/importmap-rails) lifestyle for JavaScript assets
+- We use the Rails 7+ [importmap](https://github.com/rails/importmap-rails) method for managing JavaScript assets
 - We use [StimulusJS](https://stimulus.hotwired.dev) for our JavaScript
 - We use [Turbo](https://turbo.hotwired.dev) for all the page load stuff
 - We use [Sorbet](https://sorbet.org) to add type-checking to our Ruby and prevent a bunch of runtime bugs early
-- We use [Rubocop](https://rubocop.org) for linting
+- We use [Rubocop](https://rubocop.org) for linting Ruby and [ESLint](https://eslint.org/) for linting JavaScript
 
 ## Development
 

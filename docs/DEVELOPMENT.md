@@ -37,16 +37,16 @@ than what you're used to, and if you have questions please ask. However, until t
 most of us, please use the linting rules already included in this repo and if you feel the need to add,
 change, or remove please open an issue first.
 
-#### Javascript
+#### JavaScript
 
-For this project, we'll use [ESLint](https://eslint.org/). This is an extremely powerful project, but we
+For this project, we [ESLint](https://eslint.org/). This is an extremely powerful project, but we
 will only use its checking and highlighting for the moment.
 
 ##### Setup Instructions
 
-General setup instructions are here, followed by editor-specific additional steps.
+ESLint is only available as a Node package, and is the only reason we even use Node on this project at all.
 
-1. Install ESLint `yarn global add eslint` (this installs globally, which is probably fine)
+1. `yarn install`
 
 ###### Sublime Text 4
 
