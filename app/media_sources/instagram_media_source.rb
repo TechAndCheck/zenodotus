@@ -21,7 +21,9 @@ class InstagramMediaSource < MediaSource
   # @returns [Boolean or Hash] if `force` is set to `true` returns the scraped hash, otherwise the status of the Hypatia job.
   sig { override.params(url: String, force: T::Boolean).returns(T.any(T::Boolean, T::Hash[String, String])) }
   def self.extract(url, force = false)
+    url = MediaSource.extract_post_url_if_needed(url)
     object = self.new(url)
+
     return object.retrieve_instagram_post! if force
 
     object.retrieve_instagram_post
@@ -50,7 +52,7 @@ class InstagramMediaSource < MediaSource
     scrape = Scrape.create!({ url: @url, scrape_type: :instagram })
 
     params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: @url, callback_id: scrape.id }
-    params[:callback_url] = Figaro.env.URL unless Figaro.env.URL.blank?
+    params[:callback_url] = Figaro.env.MEDIA_VAULT_URL unless Figaro.env.MEDIA_VAULT_URL.blank?
 
     response = Typhoeus.get(
       Figaro.env.HYPATIA_SERVER_URL,
@@ -78,7 +80,7 @@ class InstagramMediaSource < MediaSource
     scrape = Scrape.create!({ url: @url, scrape_type: :instagram })
 
     params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: @url, callback_id: scrape.id, force: true }
-    params[:callback_url] = Figaro.env.URL unless Figaro.env.URL.blank?
+    params[:callback_url] = Figaro.env.MEDIA_VAULT_URL unless Figaro.env.MEDIA_VAULT_URL.blank?
 
     response = Typhoeus.get(
       Figaro.env.HYPATIA_SERVER_URL,

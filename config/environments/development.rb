@@ -70,5 +70,7 @@ Rails.application.configure do
   # Prefix job queues names to avoid collisions
   config.active_job.queue_name_prefix = "zenodotus_development"
 
+  config.hosts << "www.factcheckinsights.local"
+  config.hosts << "vault.factcheckinsights.local"
   config.hosts << "showoff-reporterslab.pagekite.me"
 end

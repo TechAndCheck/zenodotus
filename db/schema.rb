@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_20_143701) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_05_192230) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -50,6 +50,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_20_143701) do
     t.text "review_note"
     t.text "review_note_internal"
     t.uuid "user_id"
+    t.string "source_site"
     t.index ["confirmation_token"], name: "index_applicants_on_confirmation_token", unique: true
     t.index ["user_id"], name: "index_applicants_on_user_id"
   end
@@ -69,6 +70,19 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_20_143701) do
     t.uuid "submitter_id"
     t.uuid "scrape_id"
     t.index ["submitter_id"], name: "index_archive_items_on_submitter_id"
+  end
+
+  create_table "claim_reviews", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "claim_reviewed"
+    t.text "url"
+    t.jsonb "author"
+    t.datetime "date_published"
+    t.jsonb "item_reviewed"
+    t.jsonb "review_rating"
+    t.uuid "media_review_id", null: false
+    t.index ["media_review_id"], name: "index_claim_reviews_on_media_review_id"
   end
 
   create_table "facebook_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -178,11 +192,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_20_143701) do
   create_table "media_reviews", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "original_media_link", null: false
-    t.text "media_authenticity_category", null: false
-    t.text "original_media_context_description", null: false
+    t.text "original_media_link"
+    t.text "media_authenticity_category"
+    t.text "original_media_context_description"
     t.uuid "archive_item_id"
     t.boolean "taken_down"
+    t.jsonb "author"
+    t.datetime "date_published"
+    t.jsonb "item_reviewed"
+    t.text "url"
     t.index ["archive_item_id"], name: "index_media_reviews_on_archive_item_id"
   end
 
@@ -294,6 +312,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_20_143701) do
     t.datetime "locked_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -347,6 +366,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_20_143701) do
   end
 
   add_foreign_key "api_keys", "users"
+  add_foreign_key "claim_reviews", "media_reviews"
   add_foreign_key "facebook_images", "facebook_posts"
   add_foreign_key "facebook_videos", "facebook_posts"
   add_foreign_key "image_searches", "users"

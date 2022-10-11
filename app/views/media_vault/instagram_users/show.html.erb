@@ -1,0 +1,52 @@
+<div class="author" data-controller="author">
+  <img
+    class="author__image"
+    src="<%= @instagram_user.profile_image_url %>"
+    width="300" height="300"
+    alt="Profile photo of <%= @instagram_user.display_name %>"
+  >
+  <div class="author__profile">
+    <div class="author__name">
+      <span class="author__display-name"><%= @instagram_user.display_name %></span>
+      <span class="author__username">@<%= @instagram_user.handle %></span>
+    </div>
+    <div class="author__metadata">
+      <%= abbreviate_number(@instagram_user.followers_count) %>
+      <%= "follower".pluralize(@instagram_user.followers_count) %>
+      •
+      <%= abbreviate_number(@instagram_user.following_count) %>
+      following
+    </div>
+    <div class="author__description">
+      <%= @instagram_user.profile %>
+    </div>
+  </div>
+</div>
+
+<div class="author-archive">
+  <div class="author-archive__header">
+    <h2 class="author-archive__title">
+      <span class="author-archive__title__archive-size"><%= @archive_items.length %></span>
+      <%= "item".pluralize(@archive_items.length) %>
+      archived
+    </h2>
+    <div class="author-archive__actions">
+      <%= link_to media_vault_instagram_user_path(@instagram_user, format: "json"), {
+        title: "Download user archive in JSON format",
+        class: "btn icon-prefixed",
+        download: true
+      } do %>
+        <svg class="icon icon--lg"><use xlink:href="#svg-download-outline"></use></svg>
+        JSON
+      <% end %>
+    </div>
+  </div>
+  <div class="archive-items archive-items--masonry archive-items--boxed-items">
+    <% @archive_items.each do |archive_item| %>
+      <%= render partial: "media_vault/archive/archive_item", locals: {
+        **archive_item.normalized_attrs_for_views,
+        include_author: false
+      } %>
+    <% end %>
+  </div>
+</div>

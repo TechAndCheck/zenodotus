@@ -6,6 +6,10 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include Minitest::Hooks
 
+  setup do
+    host! "vault.factcheckinsights.local"
+  end
+
   def around
     AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
       super
@@ -19,13 +23,13 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index redirects without authentication" do
-    get root_url
+    get media_vault_dashboard_url
     assert_redirected_to new_user_session_path
   end
 
   test "load index if authenticated" do
     sign_in users(:user)
-    get root_url
+    get media_vault_dashboard_url
     assert_response :success
   end
 
@@ -57,9 +61,15 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
 
     # We first create an orphaned `MediaReview` item
     test_post_url = "https://www.instagram.com/p/CBcqOkyDDH8/"
-    media_review_item = MediaReview.create!({ original_media_link: test_post_url,
-                                                   original_media_context_description: "no context",
-                                                   media_authenticity_category: "a category" })
+    media_review_item = MediaReview.create!({
+      original_media_link: "https://www.instagram.com/p/CBcqOkyDDH8/",
+      url: "https://www.foobar.com/",
+      date_published: "2022-02-22",
+      author: { "name": "foobar" },
+      media_authenticity_category: "a category",
+      original_media_context_description: "context context",
+      item_reviewed: { "param": "value" }
+    })
 
     # Next, we create a mock callback response body
     instagram_mocks_file = File.open("test/mocks/data/instagram_posts.json")

@@ -29,6 +29,8 @@ class ApplicantsController < ApplicationController
     end
 
     decorated_params = applicant_params.merge({
+      # Record what site the visitor is applying from
+      source_site: get_site_from_subdomain[:shortname],
       # Add the confirmation token the applicant uses to confirm their email address
       confirmation_token: Devise.friendly_token,
     })
@@ -135,7 +137,10 @@ private
 
   sig { void }
   def send_confirmation_email
-    ApplicantsMailer.with(applicant: @applicant).confirmation_email.deliver_later
+    ApplicantsMailer.with({
+      applicant: @applicant,
+      site: @site,
+    }).confirmation_email.deliver_later
 
     # This shouldn't fail but we don't particularly care if it does.
     @applicant.update(confirmation_sent_at: Time.now)

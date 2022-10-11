@@ -13,51 +13,75 @@ TODO: This is obviously very minimal at the moment. Will add more styles, variat
 ```
 */
 
-.btn {
-	padding: 0.5em 0.75em;
-	font-weight: var(--font-weight-semibold);
-	text-decoration: none;
-	text-align: center;
+.btn,
+.btn:visited,
+/* The following overrides necessary because of Tailwind reset rules. */
+.btn[type="button"],
+.btn[type="reset"],
+.btn[type="submit"] {
+	--btn--color: black;
+	--btn--background-color: transparent;
+	--btn--border-color: black;
+	--btn--color--hover: var(--btn--color);
+	--btn--background-color--hover: var(--btn--background-color);
+	--btn--border-color--hover: var(--btn--border-color);
+
 	cursor: pointer;
+	padding: 0.5em 0.75em;
+	text-align: center;
+	text-transform: uppercase;
+	font-family: var(--font-family--sans-serif);
+	font-weight: var(--font-weight--semibold);
+	letter-spacing: 0.0625em;
+	line-height: 1.2;
+	text-decoration: none;
+	border-width: 1px;
+	border-style: solid;
+	transition-property: background-color, color, border-color;
 
-	border: 1px solid lightgray;
-	box-shadow: var(--shadow--2);
-	color: inherit;
-
-	transition-property: background-color, box-shadow, color;
+	color: var(--btn--color);
+	background-color: var(--btn--background-color);
+	border-color: var(--btn--border-color);
 }
 
 .btn:hover {
-	box-shadow: var(--shadow--1--dark);
+	color: var(--btn--color--hover);
+	background-color: var(--btn--background-color--hover);
+	border-color: var(--btn--border-color--hover);
 }
 
 /* Compound selector is currently necessary to override some Tailwind styling. */
+.btn.btn--reversed {
+	--btn--color: white;
+	--btn--background-color: var(--color--dark);
+	--btn--border-color: var(--color--dark);
+}
+
 .btn.btn--submit {
-	border: none;
-	color: var(--color--mood--success--contrast);
-	background-color: var(--color--mood--success);
-}
-.btn.btn--submit:hover,
-.btn.btn--submit:focus {
-	background-color: var(--color--mood--success--hover);
+	--btn--color: var(--color--mood--success--contrast);
+	--btn--background-color: var(--color--mood--success);
+	--btn--border-color: var(--color--mood--success);
+	--btn--background-color--hover: var(--color--mood--success--hover);
+	--btn--border-color--hover: var(--color--mood--success--hover);
 }
 
-/* Compound selector is currently necessary to override some Tailwind styling. */
-.btn.btn--primary {
-	border: none;
-	color: var(--color--blue-1);
-	background-color: var(--color--blue-9);
-}
-.btn.btn--primary:hover,
-.btn.btn--primary:focus {
-	background-color: var(--color--blue-6);;
+.btn.btn--danger {
+	--btn--color: var(--color--mood--error--contrast);
+	--btn--background-color: var(--color--mood--error);
+	--btn--border-color: var(--color--mood--error);
+	--btn--background-color--hover: var(--color--mood--error--hover);
+	--btn--border-color--hover: var(--color--mood--error--hover);
 }
 
-.btn.btn--link {
-	text-decoration: underline;
+.btn.btn--naked {
+	--btn--border-color: transparent;
 }
 
-.btn.btn--link:hover,
-.btn.btn--link:focus {
-	text-decoration: none;
+.btn.btn--naked.btn--danger {
+	--btn--color: var(--color--mood--error);
+	--btn--background-color: transparent;
+	--btn--border-color: transparent;
+	--btn--background-color--hover: transparent;
+	--btn--border-color--hover: transparent;
 }
+
