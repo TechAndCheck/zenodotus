@@ -3,43 +3,36 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
-  # These routes come along automatically from Devise, but we don't want them to (for now).
-  # Thus, we redirect them to the root. Must be declared before the `devise_for` block below.
-  get "users/cancel", to: redirect("/")
-  get "users/sign_up", to: redirect("/")
-  get "users/edit", to: redirect("/")
-
-  # This generates only the session and registration-related Devise URLs. We actually only want the
-  # session URLs for the userspace, but the registration-related routes are necessary for tests to
-  # run properly. (The ones that we override above also come from this. If we can somehow exclude
-  # them in this configuration block, that would be amazing.)
+  # This generates only the session and confirmation-related Devise URLs.
   devise_for :users,
              skip: :all,
              only: [
-              :sessions,
-              :registrations,
-              :confirmations
+               :sessions,
+               :confirmations,
              ],
              controllers: {
                sessions: "users/sessions",
-               registrations: "users/registrations",
-               confirmations: "users/confirmations"
+               confirmations: "users/confirmations",
              }
 
-  root "archive#index"
+  root "media_vault/archive#index"
 
   scope "/apply" do
-    get "/", to: "applicants#new", as: :new_applicant
-    resources :applicants, path: "/", only: [:create]
+    get "/", to: "applicants#new", as: "new_applicant"
+    post "/", to: "applicants#create", as: "applicants"
     get "/confirm", to: "applicants#confirm", as: "applicant_confirm"
     get "/confirm/sent", to: "applicants#confirmation_sent", as: "applicant_confirmation_sent"
     get "/confirm/done", to: "applicants#confirmed", as: "applicant_confirmed"
   end
 
-  get "/archive/add", to: "archive#add"
-  post "/archive/add", to: "archive#submit_url"
-  get "/archive/download", to: "archive#export_archive_data", as: "archive_download"
-  post "/archive/scrape_result_callback", to: "archive#scrape_result_callback", as: "scrape_result_callback"
+  namespace "media_vault" do
+    scope "archive", as: "archive" do
+      get "add", to: "archive#add"
+      post "add", to: "archive#submit_url"
+      get "download", to: "archive#export_archive_data", as: "download"
+      post "scrape_result_callback", to: "archive#scrape_result_callback", as: "scrape_result_callback"
+    end
+  end
 
   post "/ingest/submit_media_review", to: "ingest#submit_media_review", as: "ingest_api_raw"
   post "/ingest/submit_media_review_source", to: "ingest#submit_media_review_source", as: "ingest_api_url"
@@ -67,9 +60,4 @@ Rails.application.routes.draw do
   resources :instagram_users, only: [:show]
   resources :facebook_users, only: [:show]
   resources :youtube_channels, only: [:show]
-
-  get "/facebook_users/:id/download", to: "facebook_users#export_facebook_user_data", as: "facebook_user_download"
-  get "/instagram_users/:id/download", to: "instagram_users#export_instagram_user_data", as: "instagram_user_download"
-  get "/twitter_users/:id/download", to: "twitter_users#export_tweeter_data", as: "twitter_user_download"
-  get "/youtube_channels/:id/download", to: "youtube_channels#export_youtube_channel_data", as: "youtube_channel_download"
 end

@@ -1,24 +1,22 @@
-"typed: strict"
+# typed: strict
+
 class InstagramUsersController < ApplicationController
+  before_action :authenticate_user!
+
   sig { void }
   def show
     @instagram_user = Sources::InstagramUser.find(params[:id])
     instagram_post_archive_items = ArchiveItem.includes(archivable_item: [:author, :images, :videos])
                                               .where(archivable_item_type: "Sources::InstagramPost")
     instagram_posts_by_user = instagram_post_archive_items.select { |t| t.instagram_post.author == @instagram_user }
-    @archive_items = instagram_posts_by_user
-  end
 
-  # Exports all media items created by the currently viewed Instagram user to a JSON file
-  sig { void }
-  def export_instagram_user_data
-    instagram_post_archive_items = ArchiveItem.includes(archivable_item: [:author])
-                                     .where(archivable_item_type: "Sources::InstagramPost")
-    instagram_user = Sources::InstagramUser.find(params[:id])
-    instagram_posts_by_user = instagram_post_archive_items.select { |t| t.instagram_post.author == instagram_user }
-    instagram_post_archive_json = ArchiveItem.prune_archive_items(instagram_posts_by_user)
-    send_data instagram_post_archive_json,
-              type: "application/json; header=present",
-              disposition: "attachment; filename=#{instagram_user.display_name.parameterize(separator: '_')}_instagram_archive.json"
+    respond_to do |format|
+      format.html { @archive_items = instagram_posts_by_user }
+      format.json do
+        send_data ArchiveItem.generate_pruned_json(instagram_posts_by_user),
+          type: "application/json",
+          filename: "#{@instagram_user.display_name.parameterize(separator: '_')}_instagram_archive.json"
+      end
+    end
   end
 end

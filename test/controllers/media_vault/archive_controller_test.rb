@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class ArchiveControllerTest < ActionDispatch::IntegrationTest
+class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include Minitest::Hooks
 
@@ -39,10 +39,10 @@ class ArchiveControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "scrape results update errors if there's no scrape found" do
-    post scrape_result_callback_url
+    post media_vault_archive_scrape_result_callback_url
     assert_response :missing
 
-    post(scrape_result_callback_url, as: :json, params: { scrape_id: "XXXX", scrape_result: [{}] })
+    post(media_vault_archive_scrape_result_callback_url, as: :json, params: { scrape_id: "XXXX", scrape_result: [{}] })
     assert_response :missing
   end
 
@@ -75,7 +75,7 @@ class ArchiveControllerTest < ActionDispatch::IntegrationTest
     # This hash is POSTed to Zenodotus' `/scrape_result_callback` route
     # Zenodotus then (eventually) calls `Scrape.fulfill`, which creates an `ArchiveItem` from the Hypatia response data
     # and links the orphaned `MediaReview` to the `ArchiveItem`.
-    post scrape_result_callback_url, as: :json, params: callback_response_json
+    post media_vault_archive_scrape_result_callback_url, as: :json, params: callback_response_json
     assert_response :success
 
     scrape.reload

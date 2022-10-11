@@ -21,6 +21,7 @@ class Applicant < ApplicationRecord
 
   after_initialize :map_terms_database_values_to_accessor
   before_create :map_terms_accessor_to_database_values
+  before_save :downcase_email!
 
   # Records the time that the we were able to successful confirm the applicant's email address.
   #
@@ -113,6 +114,11 @@ class Applicant < ApplicationRecord
   end
 
 private
+
+  sig { void }
+  def downcase_email!
+    self.email.downcase! if self.email
+  end
 
   # The `accepted_terms` attribute should reflect the current status of the database (or itself,
   # if already set).

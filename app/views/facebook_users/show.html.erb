@@ -30,7 +30,7 @@
       archived
     </h2>
     <div class="author-archive__actions">
-      <%= link_to facebook_user_download_path, {
+      <%= link_to facebook_user_path(@facebook_user, format: "json"), {
         title: "Download user archive in JSON format",
         class: "btn icon-prefixed",
         download: true
@@ -42,7 +42,7 @@
   </div>
   <div class="archive-items archive-items--masonry archive-items--boxed-items">
     <% @archive_items.each do |archive_item| %>
-      <%= render partial: "archive/archive_item", locals: {
+      <%= render partial: "media_vault/archive/archive_item", locals: {
         **archive_item.normalized_attrs_for_views,
         include_author: false
       } %>

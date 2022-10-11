@@ -3,7 +3,39 @@
 require "test_helper"
 
 class TwitterUsersControllerTest < ActionDispatch::IntegrationTest
-  # test "the truth" do
-  #   assert true
-  # end
+  include Devise::Test::IntegrationHelpers
+
+  test "cannot view Twitter user if logged out" do
+    twitter_user = sources_twitter_users(:twitter_user)
+
+    get twitter_user_path(twitter_user)
+
+    assert_response :redirect
+  end
+
+  test "can view Twitter user if logged in" do
+    twitter_user = sources_twitter_users(:twitter_user)
+
+    sign_in users(:user)
+
+    get twitter_user_path(twitter_user)
+
+    assert_response :success
+  end
+
+  test "can download user archive in JSON format" do
+    twitter_user = sources_twitter_users(:twitter_user)
+
+    sign_in users(:user)
+
+    get twitter_user_path(twitter_user, format: "json")
+
+    assert_response :success
+
+    begin
+      assert JSON.parse(@response.body)
+    rescue JSON::ParserError
+      flunk "Valid JSON was not returned."
+    end
+  end
 end

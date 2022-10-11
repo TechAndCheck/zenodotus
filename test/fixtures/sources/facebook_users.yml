@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+facebook_user:
+  facebook_id: 1234
+  name: "Facebook User"
+  profile: "Description of the user."
+  url: "http://www.example.com"
+  profile_image_url: "http://www.example.com/image.jpg"
+  followers_count: 10
+  likes_count: 20
+  verified: true

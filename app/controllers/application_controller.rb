@@ -83,7 +83,7 @@ protected
     authenticate_user!
 
     unless current_user.is_admin?
-      redirect_back_or_to "/", allow_other_host: false, alert: "You must be a super user/admin to access this page."
+      redirect_back_or_to "/", allow_other_host: false, alert: "You don’t have permission to access that page."
     end
   end
 end

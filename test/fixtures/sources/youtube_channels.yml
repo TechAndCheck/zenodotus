@@ -1,0 +1,12 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+youtube_channel:
+  youtube_id: 1234
+  title: "YouTube Channel"
+  description: "Description of the channel."
+  sign_up_date: <%= Time.now %>
+  num_videos: 10
+  num_subscribers: 20
+  num_views: 30
+  made_for_kids: true
+  channel_image_data: {}

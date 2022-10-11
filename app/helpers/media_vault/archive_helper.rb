@@ -1,6 +1,6 @@
 # typed: strict
 
-module ArchiveHelper
+module MediaVault::ArchiveHelper
   extend T::Sig
 
   sig { params(number: T.nilable(Integer), noun: String).returns(String) }

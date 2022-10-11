@@ -7,9 +7,6 @@ import { application } from "./application"
 import AccountController from "./account_controller.js"
 application.register("account", AccountController)
 
-import ArchiveController from "./archive_controller.js"
-application.register("archive", ArchiveController)
-
 import AuthorController from "./author_controller.js"
 application.register("author", AuthorController)
 
@@ -24,6 +21,9 @@ application.register("image-search", ImageSearchController)
 
 import JobsStatusController from "./jobs_status_controller.js"
 application.register("jobs-status", JobsStatusController)
+
+import MediaVault__ArchiveController from "./media_vault/archive_controller.js"
+application.register("media-vault--archive", MediaVault__ArchiveController)
 
 import ModalController from "./modal_controller.js"
 application.register("modal", ModalController)

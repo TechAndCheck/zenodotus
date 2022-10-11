@@ -1,10 +1,9 @@
 # typed: strict
 
-class ArchiveController < ApplicationController
+class MediaVault::ArchiveController < MediaVaultController
+  skip_before_action :authenticate_user!, only: :scrape_result_callback
+
   # It's the index, list all the archived items
-
-  before_action :authenticate_user!, except: :scrape_result_callback
-
   sig { void }
   def index
     respond_to do | format |
@@ -36,10 +35,10 @@ class ArchiveController < ApplicationController
       respond_to do |format|
         error = "#{e.class}: #{e.message}"
         format.turbo_stream { render turbo_stream: [
-          turbo_stream.replace("modal", partial: "archive/add", locals: { error: error }),
+          turbo_stream.replace("modal", partial: "media_vault/archive/add", locals: { error: error }),
           turbo_stream.update(
             "recent_archived_items",
-            partial: "archive/archive_items",
+            partial: "media_vault/archive/archive_items",
             locals: { archive_items: ArchiveItem.includes({
               archivable_item: [:author, :images, :videos]
             }).order("created_at DESC") }
@@ -54,10 +53,10 @@ class ArchiveController < ApplicationController
       flash.now[:success] = "Successfully archived your link!"
       format.turbo_stream { render turbo_stream: [
         turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
-        turbo_stream.replace("modal", partial: "archive/add", locals: { render_empty: true }),
+        turbo_stream.replace("modal", partial: "media_vault/archive/add", locals: { render_empty: true }),
         turbo_stream.update(
           "recent_archived_items",
-          partial: "archive/archive_items",
+          partial: "media_vault/archive/archive_items",
           locals: { archive_items: ArchiveItem.includes({ archivable_item: [:author] }).order("created_at DESC") }
         )
       ] }
@@ -68,8 +67,9 @@ class ArchiveController < ApplicationController
   # Export entire archive of reviewed media to a JSON File
   sig { void }
   def export_archive_data
-    archive_json = ArchiveItem.prune_archive_items
-    send_data archive_json, type: "application/json; header=present", disposition: "attachment; filename=archive.json"
+    send_data ArchiveItem.generate_pruned_json,
+      type: "application/json",
+      filename: "media_vault_archive.json"
   end
 
   # A class representing the allowed params into the `submit_url` endpoint
