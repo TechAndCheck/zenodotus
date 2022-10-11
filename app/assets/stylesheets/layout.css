@@ -1,10 +1,14 @@
 .site--fact_check_insights {
 	--logo--aspect-ratio: 255 / 75;
+	--logo--preferred-width: auto;
+	--logo--preferred-height: 74px;
 	--logo-mark--aspect-ratio: 229 / 138;
 }
 
 .site--media_vault {
 	--logo--aspect-ratio: 234 / 107;
+	--logo--preferred-width: auto;
+	--logo--preferred-height: 82px;
 	--logo-mark--aspect-ratio: 140 / 138;
 }
 
@@ -70,7 +74,6 @@
 
 	#site-nav--condensed .site-nav__logo__type {
 		font-family: var(--font-family--serif);
-		font-size: 1.25rem;
 		line-height: 1.2;
 	}
 
@@ -176,8 +179,8 @@
 	#site-nav--full .site-nav__logo {
 		display: flex;
 		aspect-ratio: var(--logo--aspect-ratio);
-		min-width: 150px;
-		height: auto;
+		width: var(--logo--preferred-width);
+		height: var(--logo--preferred-height);
 	}
 
 	.site-nav__links {
