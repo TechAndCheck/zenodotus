@@ -137,8 +137,7 @@ An open-source JavaScript package manager used to install/manage JavaScript depe
    127.0.0.1	www.factcheckinsights.local
    127.0.0.1	vault.factcheckinsights.local
    ```
-1. Bootstrap Tailwind: `rails assets:precompile`
-   - This is only necessary as long as we're including Tailwind, as our application CSS is bundled using the standard asset pipeline
+1. Bootstrap Tailwind: `rails tailwindcss:build`
 1. In your shell, run `rails s`
 
 ✨ The app should now be running and available at [http://www.factcheckinsights.local:3000](http://www.factcheckinsights.local:3000) (Insights) and [http://vault.factcheckinsights.local:3000](http://vault.factcheckinsights.local:3000) (MediaVault). If not, contact @cguess or another developer.
