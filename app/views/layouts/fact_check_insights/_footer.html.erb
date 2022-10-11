@@ -1,0 +1,19 @@
+<footer id="site-footer">
+    <div class="container mx-auto">
+        <div class="text-center">
+            <%= link_to 'Fact-Check Insights', root_path %>
+            is a project of
+            <%= link_to 'Tech & Check', 'https://reporterslab.org/tech-and-check/', class: "whitespace-nowrap"  %>
+            at the
+            <%= link_to 'Duke Reporters’ Lab', 'https://reporterslab.org/', class: "whitespace-nowrap" %>.
+        </div>
+        <ul class="flex flex-wrap justify-center items-center mt-2 gap-x-6">
+            <li class="translate-y-0.5">
+                <%= link_to 'https://github.com/TechAndCheck/zenodotus/', class: "gap-2 inline-flex items-center whitespace-nowrap" do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                    Contribute via GitHub
+                <% end %>
+            </li>
+        </ul>
+    </div>
+</footer>

@@ -4,26 +4,29 @@
 
 import { application } from "./application"
 
-import AccountController from "./account_controller.js"
+import AccountController from "./account_controller"
 application.register("account", AccountController)
 
-import AuthorController from "./author_controller.js"
-application.register("author", AuthorController)
-
-import FlashBoxController from "./flash_box_controller.js"
+import FlashBoxController from "./flash_box_controller"
 application.register("flash-box", FlashBoxController)
 
-import HelloController from "./hello_controller.js"
+import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
-import ImageSearchController from "./image_search_controller.js"
-application.register("image-search", ImageSearchController)
-
-import JobsStatusController from "./jobs_status_controller.js"
+import JobsStatusController from "./jobs_status_controller"
 application.register("jobs-status", JobsStatusController)
 
-import MediaVault__ArchiveController from "./media_vault/archive_controller.js"
+import MediaVault__ArchiveController from "./media_vault/archive_controller"
 application.register("media-vault--archive", MediaVault__ArchiveController)
 
-import ModalController from "./modal_controller.js"
+import MediaVault__AuthorController from "./media_vault/author_controller"
+application.register("media-vault--author", MediaVault__AuthorController)
+
+import MediaVault__ImageSearchController from "./media_vault/image_search_controller"
+application.register("media-vault--image-search", MediaVault__ImageSearchController)
+
+import ModalController from "./modal_controller"
 application.register("modal", ModalController)
+
+import SiteNavController from "./site_nav_controller"
+application.register("site-nav", SiteNavController)

@@ -1,30 +1,41 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= make_title_tag_content(@title_tag) %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+	<head>
+		<title><%= make_title_tag_content(@title_tag) %></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<%= csrf_meta_tags %>
+		<%= csp_meta_tag %>
 
-    <!-- FontAwesome -->
-    <script src="https://kit.fontawesome.com/96ec0b6a71.js" crossorigin="anonymous"></script>
-    <!-- /FontAwesome -->
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+		<!-- FontAwesome -->
+		<script src="https://kit.fontawesome.com/96ec0b6a71.js" crossorigin="anonymous"></script>
+		<!-- /FontAwesome -->
+		<%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+		<%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+	</head>
 
-  </head>
-
-  <body class="bg-gray-50 text-gray-800">
-    <div class="flex flex-col min-h-screen">
-      <%= render "layouts/header" %>
-      <div class="grow flex relative shadow z-1">
-        <div class="container mx-auto max-w-screen-xl px-2 sm:px-4">
-          <%= render "layouts/flashes/turbo_flashes" %>
-          <%= yield %>
-        </div>
-      </div>
-      <%= render "layouts/footer" %>
-    </div>
-    <%= render "layouts/svg_library" %>
-  </body>
+	<body class="site--<%= @site[:shortname]%>">
+		<div id="site-wrapper">
+			<%= render "layouts/#{@site[:shortname]}/header" %>
+			<div id="site-main">
+				<!--
+					This DIV allows the next element to be `.contain`
+					without causing it to stretch to the full `#main` height.
+				-->
+				<div>
+					<div class="contain">
+						<%= render "layouts/flashes/turbo_flashes" %>
+						<!--
+							This DIV ensures that any unwrapped `yield` content still ends up in the correct
+							grid column. It can probably go away once all the layouts are built properly.
+						-->
+						<div>
+							<%= yield %>
+						</div>
+					</div>
+				</div>
+			</div>
+			<%= render "layouts/#{@site[:shortname]}/footer" %>
+		</div>
+		<%= render "layouts/svg_library" %>
+	</body>
 </html>

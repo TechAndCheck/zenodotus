@@ -11,6 +11,7 @@
 # column: value
 
 user:
+  name: "User's Name"
   email: "user@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
@@ -19,6 +20,7 @@ user:
     - media_vault_user
 
 new_user:
+  name: "New User's Name"
   email: "new-user@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
@@ -27,6 +29,7 @@ new_user:
     - insights_user
 
 insights_user:
+  name: "Insights User's Name"
   email: "insights-only-user@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
@@ -34,6 +37,7 @@ insights_user:
     - insights_user
 
 media_vault_user:
+  name: "Vault User's Name"
   email: "media-vault-user@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
@@ -42,6 +46,7 @@ media_vault_user:
     - media_vault_user
 
 admin:
+  name: "Admin's Name"
   email: "admin@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>

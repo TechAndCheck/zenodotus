@@ -2,6 +2,18 @@
 
 ## Environment Setup
 
+### Hosts
+
+This app serves two sites (Fact-Check Insights and MediaVault), each on their own subdomain. To dynamically serve the correct experience, you should no longer access the site via `http://localhost`, but via a locally-routed domains rooted at `factcheckinsights.local`.
+
+Add the following entries to your `/etc/hosts` file:
+```
+127.0.0.1	www.factcheckinsights.local
+127.0.0.1	vault.factcheckinsights.local
+```
+
+After starting the app, you will get to Insights via `http://www.factcheckinsights.local:3000` and to Vault via `http://vault.factcheckinsights.local:3000`. (If you setup your own local reverse proxy, you can do away with the `:3000` and/or setup HTTPS, as you wish.)
+
 ### Environment variables
 To run Zenodotus, you'll need to set the following environment variables. Ask a dev on the team to provide you access to them. 
 - `TWITTER_BEARER_TOKEN`
@@ -9,7 +21,8 @@ To run Zenodotus, you'll need to set the following environment variables. Ask a 
 - `HYPATIA_AUTH_KEY`
 - `secret_key_base` (Devise secret)
 - `KEY_ENCRYPTION_SALT`
-- `URL`
+- `FACT_CHECK_INSIGHTS_URL`, e.g. `http://www.factcheckinsights.local:3000`
+- `MEDIA_VAULT_URL`, e.g. `http://vault.factcheckinsights.local:3000`
 
 Optional
 - `USE_S3_DEV_TEST` If set to `"true"` (the string) the software will use S3 as a storage backend

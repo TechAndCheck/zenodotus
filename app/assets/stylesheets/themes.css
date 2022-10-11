@@ -1,0 +1,11 @@
+:root {
+	--color--site-theme: var(--color--brand--fact-check-insights);
+}
+
+.site--fact_check_insights {
+	--color--site-theme: var(--color--brand--fact-check-insights);
+}
+
+.site--media_vault {
+	--color--site-theme: var(--color--brand--media-vault);
+}

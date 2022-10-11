@@ -81,7 +81,7 @@ Library for consistent form layout.
 
 .fieldset__title {
 	font-size: 1.2rem;
-	font-weight: var(--font-weight-medium);
+	font-weight: var(--font-weight--semibold);
 	margin-bottom: 1rem;
 }
 
@@ -93,20 +93,32 @@ Library for consistent form layout.
 
 .field__wrapper--input label {
 	display: block;
-	font-weight: var(--font-weight-medium);
 	margin-bottom: 0.5rem;
+	font-family: var(--font-family--sans-serif);
+	font-weight: var(--font-weight--semibold);
 }
 
 .field__wrapper--input input,
 .field__wrapper--input textarea,
 .field__wrapper--input select {
 	width: 100%;
+	font-family: var(--font-family--sans-serif);
+}
+
+.field__wrapper--input input::placeholder,
+.field__wrapper--input textarea::placeholder,
+.field__wrapper--input select::placeholder,
+.field__wrapper--input input::-webkit-input-placeholder,
+.field__wrapper--input textarea::-webkit-input-placeholder,
+.field__wrapper--input select::-webkit-input-placeholder {
+	font-family: var(--font-family--sans-serif);
 }
 
 .field__description {
 	font-size: 0.9rem;
 	color: gray;
 	margin-top: 0.5rem;
+	font-family: var(--font-family--sans-serif);
 }
 
 .checkbox {
@@ -118,6 +130,10 @@ Library for consistent form layout.
 .checkbox .field_with_errors {
 	display: flex;
 	align-items: start;
+}
+
+.checkbox label {
+	font-family: var(--font-family--sans-serif);
 }
 
 .checkbox input {
@@ -133,7 +149,7 @@ Library for consistent form layout.
 .field__error-messages {
 	background-color: var(--color--mood--error);
 	color: white;
-	font-weight: var(--font-weight-medium);
+	font-family: var(--font-family--sans-serif);
 }
 
 .field__wrapper--input .field__error-messages {

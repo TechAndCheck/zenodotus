@@ -1,0 +1,2 @@
+module MediaVault::InstagramUsersHelper
+end

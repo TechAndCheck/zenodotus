@@ -133,9 +133,14 @@ A faster image manipulation library than ImageMagick.
    1. For local development, `touch config/application.yml` and ask another developer for the config values
    1. For production, make sure the environment variables are set properly
 1. For local development, bootstrap the assets: `rails assets:precompile`
+1. Add the following entries to your `/etc/hosts` file:
+   ```
+   127.0.0.1	www.factcheckinsights.local
+   127.0.0.1	vault.factcheckinsights.local
+   ```
 1. In your shell, run `rails s` (to fire up just the Puma server) or `./bin/dev` (to also fire up the JS/CSS bundler, if you'll be modifying those assets)
 
-✨ The app should now be running and available at [http://localhost:3000](http://localhost:3000). If not, contact @cguess or another developer.
+✨ The app should now be running and available at [http://www.factcheckinsights.local:3000](http://www.factcheckinsights.local:3000) (Insights) and [http://vault.factcheckinsights.local:3000](http://vault.factcheckinsights.local:3000) (MediaVault). If not, contact @cguess or another developer.
 
 #### Starting the scraper
 

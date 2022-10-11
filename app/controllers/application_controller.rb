@@ -7,7 +7,59 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :null_session, if: :json_request?, prepend: true
 
+  before_action :set_site_from_subdomain
+
+  sig { void }
+  def index
+    render "#{@site[:shortname]}/index"
+  end
+
+  sig { void }
+  def about; end
+
+  sig { void }
+  def contact; end
+
+  sig { params(user: User).returns(String) }
+  def after_sign_in_path_for(user)
+    if site_is_media_vault?
+      return media_vault_dashboard_path if user.can_access_media_vault?
+
+      # TODO: Lead to the Media Vault "Request Acces For Existing Insights User" page (#382)
+      return media_vault_root_path
+    end
+
+    root_path
+  end
+
+  sig { returns(T::Boolean) }
+  def site_is_fact_check_insights?
+    get_site_from_subdomain == SiteDefinitions::FACT_CHECK_INSIGHTS
+  end
+
+  sig { returns(T::Boolean) }
+  def site_is_media_vault?
+    get_site_from_subdomain == SiteDefinitions::MEDIA_VAULT
+  end
+
 protected
+
+  # Returns which site is currently being requested based on subdomain.
+  # A little over-engineered, but prepared for future apps and for a different fallback default.
+  # But currently, falls back to Insights.
+  sig { returns(Hash) }
+  def get_site_from_subdomain
+    site = SiteDefinitions::BY_HOST[request.host]
+    return site if site.present?
+
+    # Fall back to Insights
+    SiteDefinitions::FACT_CHECK_INSIGHTS
+  end
+
+  sig { void }
+  def set_site_from_subdomain
+    @site = get_site_from_subdomain
+  end
 
   sig { returns(T::Boolean) }
   def json_request?
@@ -60,13 +112,6 @@ protected
       return false
     end
     true
-  end
-
-  # Routes users to the sign in page after they've logged out
-  # Overrides the Devise default method, which re-routes users to the root page
-  sig { params(user: Symbol).returns(String) }
-  def after_sign_out_path_for(user)
-    new_user_session_path
   end
 
   sig { returns(T::Boolean) }

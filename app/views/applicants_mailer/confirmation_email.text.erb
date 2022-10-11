@@ -1,10 +1,10 @@
-Thanks for requesting access to Fact-Check Insights.
+Thanks for requesting access to <%= @site[:title] %>.
 
 Before we can evaluate your application, you will need to confirm the email address you provided.
 
 Please visit this URL in your browser:
 
-<%= applicant_confirm_url(email: @applicant[:email], token: @applicant[:confirmation_token]) %>
+<%= applicant_confirm_url(email: @applicant[:email], token: @applicant[:confirmation_token], host: @site[:url]) %>
 
 Thanks,
 

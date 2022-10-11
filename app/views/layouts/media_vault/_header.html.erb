@@ -1,0 +1,70 @@
+<header id="site-header" data-controller="site-nav">
+	<nav id="site-nav--condensed" class="site-nav">
+		<%= link_to root_path, class: "site-nav__logo" do %>
+			<%= image_tag "media-vault-logo-mark.svg", size: "229x138", alt: "MediaVault", class: "site-nav__logo__mark" %>
+			<span class="site-nav__logo__type">MediaVault</span>
+		<% end %>
+		<button id="site-nav__mobile-menu-button" data-action="site-nav#toggleFullNav" aria-label="Toggle nav">
+			<span id="site-nav__mobile-menu-button__icon"><span></span></span>
+		</button>
+	</nav>
+	<nav id="site-nav--full" class="site-nav">
+		<%= link_to root_path, class: "site-nav__logo" do %>
+			<%= image_tag "media-vault-logo.svg", size: "255x75", alt: "MediaVault" %>
+		<% end %>
+		<% if user_signed_in? %>
+			<ol id="site-nav__primary" class="site-nav__links">
+				<% if current_user.can_access_media_vault? %>
+					<li><%= link_to "<span>Dashboard</span>".html_safe, media_vault_dashboard_path, class: "btn btn--naked" %></li>
+					<li><%= link_to "<span>Guide</span>".html_safe, media_vault_guide_path, class: "btn btn--naked" %></li>
+					<li><%= link_to "<span>Text Search</span>".html_safe, media_vault_text_search_path, class: "btn btn--naked" %></li>
+					<li><%= link_to "<span>Media Search</span>".html_safe, media_vault_image_search_path, class: "btn btn--naked" %></li>
+					<li><%= link_to "<span>Add URL</span>".html_safe, media_vault_archive_add_path, class: "btn" %></li>
+				<% else %>
+					<li>(Request Access TBD)</li>
+				<% end %>
+			</ol>
+		<% end %>
+		<ol id="site-nav__account" class="site-nav__links">
+			<% if user_signed_in? %>
+				<li id="site-nav__account-menu-wrapper">
+					<%= link_to account_path, id: "site-nav__account-name", class: "btn icon-prefixed", data: { action: "site-nav#toggleAccountMenu" } do %>
+						<svg class="icon icon--lg"><use xlink:href="#svg-user-circle"></use></svg>
+						<span><%= current_user.name %></span>
+					<% end %>
+					<ol id="site-nav__account-menu" class="site-nav__links">
+						<li>
+							<%= link_to SiteDefinitions::FACT_CHECK_INSIGHTS[:url], class: "btn btn--naked icon-prefixed" do %>
+								<svg class="icon icon--lg"><use xlink:href="#svg-switch-lr"></use></svg>
+								<span><%= "Switch to #{SiteDefinitions::FACT_CHECK_INSIGHTS[:title]}" %></span>
+							<% end %>
+						</li>
+						<% if current_user.is_admin? %>
+							<li>
+								<%= link_to jobs_status_index_path, class: "btn btn--naked icon-prefixed" do %>
+									<svg class="icon icon--lg"><use xlink:href="#svg-bolt"></use></svg>
+									<span>Admin</span>
+								<% end %>
+							</li>
+						<% end %>
+						<li>
+							<%= link_to account_path, class: "btn btn--naked icon-prefixed" do %>
+								<svg class="icon icon--lg"><use xlink:href="#svg-settings"></use></svg>
+								<span>Settings</span>
+							<% end %>
+						</li>
+						<li>
+							<%= button_to destroy_user_session_path, class: "btn btn--naked btn--danger icon-prefixed", method: :delete do %>
+								<svg class="icon icon--lg"><use xlink:href="#svg-power"></use></svg>
+								<span>Logout</span>
+							<% end %>
+						</li>
+					</ol>
+				</li>
+			<% else %>
+				<li><%= link_to "Request access", new_applicant_path, class: "btn" %></li>
+				<li><%= link_to "Log in", new_user_session_path, class: "btn btn--reversed" %></li>
+			<% end %>
+		</ol>
+	</nav>
+</header>

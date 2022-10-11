@@ -171,7 +171,7 @@ class Sources::Tweet < ApplicationRecord
     {
       publishing_platform_shortname:    "twitter",
       publishing_platform_display_name: "Twitter",
-      author_canonical_path:            url_helpers.twitter_user_path(self.author),
+      author_canonical_path:            url_helpers.media_vault_twitter_user_path(self.author),
       author_profile_image_url:         self.author.profile_image_url,
       author_display_name:              self.author.display_name,
       author_username:                  self.author.handle,

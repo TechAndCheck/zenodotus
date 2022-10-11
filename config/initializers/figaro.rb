@@ -9,7 +9,8 @@ Figaro.require_keys("HYPATIA_SERVER_URL")
 Figaro.require_keys("HYPATIA_AUTH_KEY")
 
 # The URL of the currently running server, used for configuring Action Mailer and Hypatia callbacks
-Figaro.require_keys("URL")
+Figaro.require_keys("FACT_CHECK_INSIGHTS_URL")
+Figaro.require_keys("MEDIA_VAULT_URL")
 
 # Mailgun settings for sending email
 Figaro.require_keys("MAILGUN_API_KEY")

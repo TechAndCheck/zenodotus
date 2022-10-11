@@ -10,6 +10,14 @@ class UserTest < ActiveSupport::TestCase
     assert user.is_insights_user?
   end
 
+  test "should assign Vault applicants the Vault role" do
+    approved_vault_applicant = applicants(:approved_vault)
+
+    user = User.create_from_applicant(approved_vault_applicant)
+
+    assert user.is_media_vault_user?
+  end
+
   test "should recognize Insights-only users" do
     insights_user = users(:insights_user)
 
