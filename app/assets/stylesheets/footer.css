@@ -1,0 +1,7 @@
+#site-footer {
+	background-color: var(--color--dark);
+	color: white;
+	font-family: var(--font-family--sans-serif);
+	font-size: 0.8125rem;
+}
+
