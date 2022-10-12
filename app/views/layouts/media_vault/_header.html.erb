@@ -1,7 +1,7 @@
 <header id="site-header" data-controller="site-nav">
 	<nav id="site-nav--condensed" class="site-nav">
 		<%= link_to root_path, class: "site-nav__logo" do %>
-			<%= image_tag "media-vault-logo-mark.svg", size: "229x138", alt: "MediaVault", class: "site-nav__logo__mark" %>
+			<svg class="site-nav__logo__mark" width="24" height="24" aria-hidden="true"><use xlink:href="#svg-media-vault-logo-mark"></use></svg>
 			<span class="site-nav__logo__type">MediaVault</span>
 		<% end %>
 		<button id="site-nav__mobile-menu-button" data-action="site-nav#toggleFullNav" aria-label="Toggle nav">
@@ -10,7 +10,10 @@
 	</nav>
 	<nav id="site-nav--full" class="site-nav">
 		<%= link_to root_path, class: "site-nav__logo" do %>
-			<%= image_tag "media-vault-logo.svg", size: "255x75", alt: "MediaVault" %>
+			<svg width="184" height="82" role="img">
+				<title>MediaVault</title>
+				<use xlink:href="#svg-media-vault-logo"></use>
+			</svg>
 		<% end %>
 		<% if user_signed_in? %>
 			<ol id="site-nav__primary" class="site-nav__links">

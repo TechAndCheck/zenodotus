@@ -1,7 +1,7 @@
 <header id="site-header" data-controller="site-nav">
 	<nav id="site-nav--condensed" class="site-nav">
 		<%= link_to root_path, class: "site-nav__logo" do %>
-			<%= image_tag "fact-check-insights-logo-mark.svg", size: "229x138", alt: "Fact-Check Insights", class: "site-nav__logo__mark" %>
+			<svg class="site-nav__logo__mark" width="40" height="24" aria-hidden="true"><use xlink:href="#svg-fact-check-insights-logo-mark"></use></svg>
 			<span class="site-nav__logo__type">Fact-Check Insights</span>
 		<% end %>
 		<button id="site-nav__mobile-menu-button" data-action="site-nav#toggleFullNav" aria-label="Toggle nav">
@@ -10,7 +10,10 @@
 	</nav>
 	<nav id="site-nav--full" class="site-nav">
 		<%= link_to root_path, class: "site-nav__logo" do %>
-			<%= image_tag "fact-check-insights-logo.svg", size: "255x75", alt: "Fact-Check Insights" %>
+			<svg width="264" height="74" role="img">
+				<title>Fact-Check Insights</title>
+				<use xlink:href="#svg-fact-check-insights-logo"></use>
+			</svg>
 		<% end %>
 		<ol id="site-nav__primary" class="site-nav__links">
 			<li><%= link_to "<span>Download Data</span>".html_safe, fact_check_insights_download_path, class: "btn btn--naked" %></li>
