@@ -125,4 +125,14 @@
 	--color--mood--error: var(--color--red-5);
 	--color--mood--error--contrast: white;
 	--color--mood--error--hover: var(--color--red-3);
+
+	/* Logos */
+	--logo--aspect-ratio--fact-check-insights: 399 / 112;
+	--logo-mark--aspect-ratio--fact-check-insights: 229 / 138;
+	--logo--aspect-ratio--media-vault: 240 / 107;
+	--logo-mark--aspect-ratio--media-vault: 140 / 138;
+	--logo--aspect-ratio--claim-review: 240 / 124;
+	--logo-mark--aspect-ratio--claim-review: 102 / 137;
+	--logo--aspect-ratio--media-review: 261 / 115;
+	--logo-mark--aspect-ratio--media-review: 126 / 128;
 }
