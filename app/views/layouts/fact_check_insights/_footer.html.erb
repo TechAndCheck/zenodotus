@@ -1,19 +1,39 @@
 <footer id="site-footer">
-    <div class="container mx-auto">
-        <div class="text-center">
-            <%= link_to 'Fact-Check Insights', root_path %>
-            is a project of
-            <%= link_to 'Tech & Check', 'https://reporterslab.org/tech-and-check/', class: "whitespace-nowrap"  %>
-            at the
-            <%= link_to 'Duke Reporters’ Lab', 'https://reporterslab.org/', class: "whitespace-nowrap" %>.
-        </div>
-        <ul class="flex flex-wrap justify-center items-center mt-2 gap-x-6">
-            <li class="translate-y-0.5">
-                <%= link_to 'https://github.com/TechAndCheck/zenodotus/', class: "gap-2 inline-flex items-center whitespace-nowrap" do %>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
-                    Contribute via GitHub
-                <% end %>
-            </li>
-        </ul>
-    </div>
+	<div id="site-footer__about">
+		<%= link_to root_path do %>
+			<svg id="site-footer__logo" width="200" height="59" role="img">
+				<title>Fact-Check Insights</title>
+				<use xlink:href="#svg-fact-check-insights-logo"></use>
+			</svg>
+		<% end %>
+
+		<div id="site-footer__legal">
+			<p><%= link_to "Fact-Check Insights", root_path %> is a project of the <%= link_to "Duke Reporters’ Lab", "https://reporterslab.org/" %>. It collects data that is available for download by academics and others who plan to use it for research and development purposes.</p>
+			<p>© <%= link_to "Duke Reporters’ Lab", "https://reporterslab.org/" %> 2022. The compilation of this data is licensed under <%= link_to "CC BY", "https://creativecommons.org/licenses/by/4.0/" %>.</p>
+		</div>
+	</div>
+
+	<nav id="site-footer__nav--primary" class="site-footer__nav">
+		<ol>
+			<li><%= link_to "Download the Data", fact_check_insights_download_path %></li>
+			<li><%= link_to "Guide to the Data", fact_check_insights_guide_path %></li>
+			<li><%= link_to "Highlights", fact_check_insights_highlights_path %></li>
+			<li><%= link_to "About", about_path %></li>
+			<li><%= link_to "Contact", contact_path %></li>
+		</ol>
+	</nav>
+
+	<nav id="site-footer__nav--secondary" class="site-footer__nav">
+		<ol>
+			<li><%= link_to "Terms and Conditions", "#" %></li>
+			<li><%= link_to "Privacy Policy", "#" %></li>
+			<li><%= link_to "Opt Out", "#" %></li>
+			<li><%= link_to "GitHub", "https://github.com/TechAndCheck/zenodotus/" %></li>
+			<li><%= link_to "MediaVault", media_vault_root_url %></li>
+		</ol>
+	</nav>
+
+	<%= link_to "https://reporterslab.org/" do %>
+		<%= image_tag "duke-reporters-lab-logo.png", size: "167x60", alt: "Duke Reporters’ Lab | Sanford School of Public Policy", id: "site-footer__reporters-lab-logo" %>
+	<% end %>
 </footer>

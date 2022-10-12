@@ -1,0 +1,82 @@
+#site-footer {
+	--site-footer--element-spacing: 1rem;
+	--site-footer--grid-spacing: var(--site-footer--element-spacing);
+	--site-footer--about-spacing: var(--site-footer--element-spacing);
+	--site-footer--padding: 3vw;
+
+	background-color: var(--color--dark);
+	color: white;
+	font-family: var(--font-family--sans-serif);
+	font-size: 0.8125rem;
+
+	display: flex;
+	flex-direction: column;
+	padding: max(var(--site-footer--padding), var(--site-footer--element-spacing));
+	gap: max(var(--site-footer--grid-spacing), var(--site-footer--element-spacing));
+}
+
+#site-footer p:not(:last-child) {
+	margin-bottom: var(--site-footer--element-spacing);
+}
+
+#site-footer__about {
+	display: flex;
+	flex-direction: column;
+	gap: max(var(--site-footer--about-spacing), var(--site-footer--element-spacing));
+	flex-shrink: 3;
+}
+
+.site-footer__nav {
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+.site-footer__nav ol {
+	display: flex;
+	flex-direction: column;
+	gap: var(--site-footer--element-spacing);
+}
+
+.site-footer__nav a {
+	text-decoration: none;
+}
+
+.site-footer__nav a:hover {
+	text-decoration: underline;
+}
+
+#site-footer__legal {
+	max-width: 60ch;
+}
+
+/* Tailwind override */
+#site-footer__reporters-lab-logo {
+	max-width: none;
+}
+
+@media screen and (max-width: 1024px) {
+
+}
+
+@media screen and (min-width: 769px) {
+	#site-footer {
+		--site-footer--about-spacing: var(--site-footer--padding);
+		--site-footer--grid-spacing: 5vw;
+
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: flex-start;
+	}
+
+	#site-footer__about {
+		margin-right: auto;
+	}
+}
+
+@media screen and (min-width: 1281px) {
+	#site-footer__about {
+		--site-footer--about-spacing: var(--site-footer--grid-spacing);
+		flex-direction: row;
+	}
+
+}
