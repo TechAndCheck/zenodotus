@@ -28,8 +28,6 @@ gem "pagy", "~> 5.6"
 gem "sidekiq", "~> 6.5.7"
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
-# Use jquery-rails to force confirmation dialogs
-gem "jquery-rails"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.4.4", require: false
@@ -142,16 +140,13 @@ gem "json_schemer"
 # Devise is used for authentication and user management
 gem "devise", "~> 4.8.0"
 
-# Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
-gem "jsbundling-rails"
+# Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
+gem "importmap-rails"
 
-# Bundle and process CSS [https://github.com/rails/cssbundling-rails]
-gem "cssbundling-rails"
-
-# Use Stimulus for Rails 7
+# Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails"
 
-# Hotwire, to make better website without JS
+# Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem "turbo-rails"
 
 gem "sprockets-rails", require: "sprockets/railtie"
@@ -181,3 +176,6 @@ gem "mailgun-ruby", "~> 1.2"
 
 # Rolify is used for user roles
 gem "rolify", "~> 6.0"
+
+# We are temporarily using TailwindCSS to scaffold some layout
+gem "tailwindcss-rails", "~> 2.0"

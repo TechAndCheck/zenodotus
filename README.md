@@ -17,10 +17,10 @@ Things we need to install include (steps below for all this):
 - Chrome (latest version)
 - PostgreSQL (13 or higher)
 - Redis
-- Yarn (v1)
 - ChromeDriver
 - ffmpeg
 - vips
+- Yarn (v1) for JavaScript linting only
 
 #### Homebrew
 
@@ -82,12 +82,6 @@ If you'd like to use Postgres without a password, you'll need to update your `pg
 
 - **macOS:**: `brew install redis`
 
-#### [Yarn](https://classic.yarnpkg.com)
-
-An open-source JavaScript package manager used to install/manage JavaScript dependencies.
-
-**Note:** Yarn went through a significant architectural change in v2, while we continue to use the "classic" v1.
-
 **Ubuntu:**
 
 On Ubuntu 18.04, the `yarn` keyword is associated with another tool, `cmdtest`. To get the desired Yarn,
@@ -120,6 +114,12 @@ A faster image manipulation library than ImageMagick.
 
 - **macOS:** `brew install vips`
 
+#### [Yarn](https://classic.yarnpkg.com)
+
+An open-source JavaScript package manager used to install/manage JavaScript dependencies. We only use it for installing development dependencies, specifically ESLint for linting our JavaScript. **We do not install Node packages for use in the app itself.** Instead, we use the Rails 7+ preference for [importmaps](https://github.com/rails/importmap-rails).
+
+**Note:** Yarn went through a significant architectural change in v2, while we continue to use the "classic" v1.
+
 ### Installation
 
 1. Install all the prerequisites, including the version of Ruby indicated in [/.ruby-version](.ruby-version), ensuring Ruby source files are stored locally (`--keep`)
@@ -132,13 +132,13 @@ A faster image manipulation library than ImageMagick.
 1. Set up your environment variables:
    1. For local development, `touch config/application.yml` and ask another developer for the config values
    1. For production, make sure the environment variables are set properly
-1. For local development, bootstrap the assets: `rails assets:precompile`
 1. Add the following entries to your `/etc/hosts` file:
    ```
    127.0.0.1	www.factcheckinsights.local
    127.0.0.1	vault.factcheckinsights.local
    ```
-1. In your shell, run `rails s` (to fire up just the Puma server) or `./bin/dev` (to also fire up the JS/CSS bundler, if you'll be modifying those assets)
+1. Bootstrap Tailwind: `rails tailwindcss:build`
+1. In your shell, run `rails s`
 
 ✨ The app should now be running and available at [http://www.factcheckinsights.local:3000](http://www.factcheckinsights.local:3000) (Insights) and [http://vault.factcheckinsights.local:3000](http://vault.factcheckinsights.local:3000) (MediaVault). If not, contact @cguess or another developer.
 
@@ -168,11 +168,11 @@ If you want to use this (I recommend it) do the following:
 
 We use mostly a standard Rails stack, with a few new things that are generally recommended by the Rails core team.
 
-- Our CSS is written using [TailwindCSS](https://tailwindcss.com)
+- We use the Rails 7+ [importmap](https://github.com/rails/importmap-rails) method for managing JavaScript assets
 - We use [StimulusJS](https://stimulus.hotwired.dev) for our JavaScript
 - We use [Turbo](https://turbo.hotwired.dev) for all the page load stuff
 - We use [Sorbet](https://sorbet.org) to add type-checking to our Ruby and prevent a bunch of runtime bugs early
-- We use [Rubocop](https://rubocop.org) for linting
+- We use [Rubocop](https://rubocop.org) for linting Ruby and [ESLint](https://eslint.org/) for linting JavaScript
 
 ## Development
 

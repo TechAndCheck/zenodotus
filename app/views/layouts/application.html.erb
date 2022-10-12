@@ -6,11 +6,17 @@
 		<%= csrf_meta_tags %>
 		<%= csp_meta_tag %>
 
-		<!-- FontAwesome -->
+		<!-- Temporary while using Font Awesome -->
 		<script src="https://kit.fontawesome.com/96ec0b6a71.js" crossorigin="anonymous"></script>
-		<!-- /FontAwesome -->
+
+		<!--
+			Temporary while using Tailwind for scaffolding.
+			If you see an error about this file not being in the asset pipeline,
+			run `./bin/dev` once, after which `rails s` will work fine. -->
+		<%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+
 		<%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-		<%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+		<%= javascript_importmap_tags %>
 	</head>
 
 	<body class="site--<%= @site[:shortname]%>">
