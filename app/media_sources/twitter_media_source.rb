@@ -20,7 +20,9 @@ class TwitterMediaSource < MediaSource
   # @returns [String or nil] the path of the screenshot if the screenshot was saved
   sig { override.params(url: String, force: T::Boolean).returns(T.any(T::Boolean, T::Hash[String, String])) }
   def self.extract(url, force = false)
+    url = MediaSource.extract_post_url_if_needed(url)
     object = self.new(url)
+
     return object.retrieve_tweet! if force
 
     object.retrieve_tweet
