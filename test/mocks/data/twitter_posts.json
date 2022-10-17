@@ -413,5 +413,126 @@
         }
       }
     ]
+  },
+  "https://twitter.com/hamandcheese/status/1574789849403592710": {
+    "scrape_id": null,
+    "scrape_result": [
+      {
+        "id": "1574789849403592710",
+        "post": {
+          "id": "1574789849403592710",
+          "author": {
+            "username": "hamandcheese",
+            "aws_profile_image_key": "91725ea7-31a0-4a80-855f-de910626a8bd.png",
+            "created_at": "2007-04-29T14:54:40+00:00",
+            "description": "Social policy synthesizer. Pluralist. 'The world is second best, at best.'\nshammond at niskanencenter dot org",
+            "followers_count": 18584,
+            "following_count": 1479,
+            "id": "5633152",
+            "location": "Washington, DC",
+            "name": "Samuel Hammond 🌐🏛",
+            "profile_image": null,
+            "profile_image_url": "https://pbs.twimg.com/profile_images/1487585957037715462/vV1GI0IH.jpg",
+            "url": "https://t.co/0CrHZfVI4m"
+          },
+          "aws_image_keys": [
+            "91725ea7-31a0-4a80-855f-de910626a8bd.png"
+          ],
+          "aws_screenshot_key": "twitter_screenshot_6c226f00-4b56-4138-9b3f-8108d6e736a2.png",
+          "aws_video_key": null,
+          "aws_video_preview_key": null,
+          "created_at": "2022-09-27T15:55:32+00:00",
+          "image_files": null,
+          "language": "en",
+          "object_type": "twitter",
+          "screenshot_file": null,
+          "text": "@jon_rauch Modern American think tanks and the broader nonprofit advocacy world emerged as an adjunct to weak parties.\n\nGiven tight staff budgets, lawmakers outsource their legislative, comms and networking strategies to whoever overlaps with their political philosophy and electoral base. https://t.co/uOJGzFIV1K",
+          "video_file": null,
+          "video_preview_image": null
+        }
+      }
+    ]
+  },
+  "https://twitter.com/NASA/status/1579902808970649600": {
+    "scrape_id": null,
+    "scrape_result": [
+      {
+        "id": "1579902808970649600",
+        "post": {
+          "id": "1579902808970649600",
+          "author": {
+            "username": "NASA",
+            "aws_profile_image_key": "1b4a69c1-fc27-4f14-b812-96e4faec077e.jpg",
+            "created_at": "2007-12-19T20:20:32+00:00",
+            "description": "There's space for everybody. ✨",
+            "followers_count": 64050524,
+            "following_count": 184,
+            "id": "11348282",
+            "location": "Pale Blue Dot",
+            "name": "NASA",
+            "profile_image": null,
+            "profile_image_url": "https://pbs.twimg.com/profile_images/1321163587679784960/0ZxKlEKB.jpg",
+            "url": "https://t.co/9NkQJKAnuU"
+          },
+          "aws_image_keys": null,
+          "aws_screenshot_key": "twitter_screenshot_5f6ed317-5410-422c-a19d-91eacce21e61.png",
+          "aws_video_key": [
+            "3875fecb-bba8-498d-b9c0-f76fc3833a3a.mp4"
+          ],
+          "aws_video_preview_key": [
+            "525c3fe7-e03e-4fa2-bba5-3c39c98cc653.jpg"
+          ],
+          "created_at": "2022-10-11T18:32:37+00:00",
+          "image_files": [],
+          "language": "en",
+          "object_type": "twitter",
+          "screenshot_file": null,
+          "text": "This just in: The #DARTmission impact is confirmed to have changed the orbit of moonlet Dimorphos around its asteroid Didymos.\n\nFor the first time ever, humans changed the motion of a celestial object. More details: https://t.co/aQj8N7fnuV https://t.co/NLR6AqEcaO",
+          "video_file": null,
+          "video_preview_image": null
+        }
+      }
+    ]
+  },
+  "https://twitter.com/leahstokes/status/1414669810739281920": {
+    "scrape_id": null,
+    "scrape_result": [
+      {
+        "id": "1414669810739281920",
+        "post": {
+          "id": "1414669810739281920",
+          "author": {
+            "username": "leahstokes",
+            "aws_profile_image_key": "0cc3c39f-e87d-4622-914d-994cdf638db3.jpg",
+            "created_at": "2009-02-13T17:59:45+00:00",
+            "description": "Prof climate + energy policy @UCSBpolisci. Author Short Circuiting Policy. Alum @MIT @Columbia @UofT. Host @degreespod. Advise @RewiringAmerica @EvergreenAction",
+            "followers_count": 90635,
+            "following_count": 4188,
+            "id": "20790580",
+            "location": "Santa Barbara, CA, USA",
+            "name": "Dr. Leah Stokes",
+            "profile_image": null,
+            "profile_image_url": "https://pbs.twimg.com/profile_images/1178726402348089346/SfKuDe36.jpg",
+            "url": "https://t.co/7JBNkZs75h"
+          },
+          "aws_image_keys": null,
+          "aws_screenshot_key": "twitter_screenshot_1084a609-1130-49b3-882d-b32016893a3b.png",
+          "aws_video_key": [
+            "d6e963d2-ead0-47f0-b108-a18829688ada.mp4"
+          ],
+          "aws_video_preview_key": [
+            "8be9cc31-fb34-428a-ab73-5090fd4a113a.jpg"
+          ],
+          "created_at": "2021-07-12T19:35:40+00:00",
+          "image_files": [],
+          "language": "en",
+          "object_type": "twitter",
+          "screenshot_file": null,
+          "text": "The American Jobs Plan includes a 100% clean power by 2035 goal. Now we need to fight to get that over the finish line in Congress.\n\nIn the words of the great @RevYearwood: \"Let's Go Get Us A Clean Electricity Standard!\"\n\nNew @degreespod just dropped! https://t.co/8c7YUzXCrw https://t.co/BLnPIQZRoE",
+          "video_file": null,
+          "video_preview_image": null
+        }
+      }
+    ]
   }
 }

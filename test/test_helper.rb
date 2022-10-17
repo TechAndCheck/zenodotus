@@ -18,7 +18,7 @@ end
 require "rails/test_help"
 
 S3_MOCK_STUB = Proc.new do |url|
-  AwsS3Mock::S3Mock.download_file_in_s3_received_from_hypatia(url)
+  AwsS3Mock.download_file_in_s3_received_from_hypatia(url)
 end
 
 class ActiveSupport::TestCase

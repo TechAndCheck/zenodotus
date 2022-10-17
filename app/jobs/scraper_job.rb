@@ -16,6 +16,7 @@ class ScraperJob < ApplicationJob
   def perform(media_source_class, media_model, url, user)
     puts "Beginning to scrape #{url} @ #{Time.now}"
     media_source_class.extract(url)
+
     puts "Done scraping #{url} @ #{Time.now}"
   end
 

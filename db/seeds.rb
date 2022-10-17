@@ -8,6 +8,19 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+require_relative "../test/mocks/hypatia_mock"
+require_relative "../test/mocks/aws_s3_mock"
+include HypatiaMock  # Draw seed data from our Hypatia mock
+include AwsS3Mock
+
+# Use our test s3 mock to override AwsS3Downloader (ensures db:seed task can operate fully offline)
+module S3OverRide
+  def download_file_in_s3_received_from_hypatia(url)
+    AwsS3Mock.download_file_in_s3_received_from_hypatia(url)
+  end
+end
+AwsS3Downloader.singleton_class.prepend(S3OverRide)
+
 Role.create!([
   { name: "new_user" },
   { name: "insights_user" },
@@ -108,9 +121,9 @@ vault_user.update!({
   password_confirmation: easy_password,
 })
 
-Sources::Tweet.create_from_url "https://twitter.com/hamandcheese/status/1574789849403592710"
-Sources::Tweet.create_from_url "https://twitter.com/leahstokes/status/1414669810739281920"
-Sources::Tweet.create_from_url "https://twitter.com/dissectpodcast/status/1409323315735384064"
+Sources::Tweet.create_from_url! "https://twitter.com/hamandcheese/status/1574789849403592710"
+Sources::Tweet.create_from_url! "https://twitter.com/leahstokes/status/1414669810739281920"
+Sources::Tweet.create_from_url! "https://twitter.com/NASA/status/1579902808970649600"
 
 archive_items = ArchiveItem.all
 
