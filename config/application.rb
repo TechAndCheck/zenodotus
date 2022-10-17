@@ -32,7 +32,7 @@ module Zenodotus
     config.action_mailer.delivery_method = :mailgun
     config.action_mailer.mailgun_settings = {
       api_key: Figaro.env.MAILGUN_API_KEY,
-      domain: "mail.factcheckinsights.com"
+      domain: Figaro.env.MAIL_DOMAIN,
     }
   end
 end

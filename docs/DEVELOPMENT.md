@@ -23,6 +23,8 @@ To run Zenodotus, you'll need to set the following environment variables. Ask a 
 - `KEY_ENCRYPTION_SALT`
 - `FACT_CHECK_INSIGHTS_URL`, e.g. `http://www.factcheckinsights.local:3000`
 - `MEDIA_VAULT_URL`, e.g. `http://vault.factcheckinsights.local:3000`
+- `MAIL_DOMAIN`, e.g. `mail.factcheckinsights.org`
+- `MAILGUN_API_KEY`
 
 Optional
 - `USE_S3_DEV_TEST` If set to `"true"` (the string) the software will use S3 as a storage backend
