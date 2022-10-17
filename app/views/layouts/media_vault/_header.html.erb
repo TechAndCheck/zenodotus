@@ -37,7 +37,7 @@
 					<% end %>
 					<ol id="site-nav__account-menu" class="site-nav__links">
 						<li>
-							<%= link_to SiteDefinitions::FACT_CHECK_INSIGHTS[:url], class: "btn btn--naked icon-prefixed" do %>
+							<%= link_to fact_check_insights_root_url, class: "btn btn--naked icon-prefixed" do %>
 								<svg class="icon icon--lg"><use xlink:href="#svg-switch-lr"></use></svg>
 								<span><%= "Switch to #{SiteDefinitions::FACT_CHECK_INSIGHTS[:title]}" %></span>
 							<% end %>

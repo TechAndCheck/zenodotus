@@ -32,7 +32,7 @@
 					<ol id="site-nav__account-menu" class="site-nav__links">
 						<% if current_user.can_access_media_vault? %>
 							<li>
-								<%= link_to SiteDefinitions::MEDIA_VAULT[:url], class: "btn btn--naked icon-prefixed" do %>
+								<%= link_to media_vault_root_url, class: "btn btn--naked icon-prefixed" do %>
 									<svg class="icon icon--lg"><use xlink:href="#svg-switch-lr"></use></svg>
 									<span><%= "Switch to #{SiteDefinitions::MEDIA_VAULT[:title]}" %></span>
 								<% end %>
