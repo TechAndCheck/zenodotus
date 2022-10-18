@@ -3,14 +3,14 @@
 require "test_helper"
 
 class ApplicationControllerTest < ActionDispatch::IntegrationTest
-  test "can recognize the Insights subdomain" do
+  test "can recognize the Insights host" do
     host! "www.factcheckinsights.local"
     get root_url
 
     assert @controller.site_is_fact_check_insights?
   end
 
-  test "can recognize the Vault subdomain" do
+  test "can recognize the Vault host" do
     host! "vault.factcheckinsights.local"
     get root_url
 

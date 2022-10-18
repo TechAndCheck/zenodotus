@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :null_session, if: :json_request?, prepend: true
 
-  before_action :set_site_from_subdomain
+  before_action :set_site_from_host
 
   sig { void }
   def index
@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
     if site_is_media_vault?
       return media_vault_dashboard_path if user.can_access_media_vault?
 
-      # TODO: Lead to the Media Vault "Request Acces For Existing Insights User" page (#382)
+      # TODO: Lead to the Media Vault "Request Access For Existing Insights User" page (#382)
       return media_vault_root_path
     end
 
@@ -34,21 +34,21 @@ class ApplicationController < ActionController::Base
 
   sig { returns(T::Boolean) }
   def site_is_fact_check_insights?
-    get_site_from_subdomain == SiteDefinitions::FACT_CHECK_INSIGHTS
+    get_site_from_host == SiteDefinitions::FACT_CHECK_INSIGHTS
   end
 
   sig { returns(T::Boolean) }
   def site_is_media_vault?
-    get_site_from_subdomain == SiteDefinitions::MEDIA_VAULT
+    get_site_from_host == SiteDefinitions::MEDIA_VAULT
   end
 
 protected
 
-  # Returns which site is currently being requested based on subdomain.
+  # Returns which site is currently being requested based on host.
   # A little over-engineered, but prepared for future apps and for a different fallback default.
-  # But currently, falls back to Insights.
+  # Currently falls back to Insights.
   sig { returns(Hash) }
-  def get_site_from_subdomain
+  def get_site_from_host
     site = SiteDefinitions::BY_HOST[request.host]
     return site if site.present?
 
@@ -57,8 +57,8 @@ protected
   end
 
   sig { void }
-  def set_site_from_subdomain
-    @site = get_site_from_subdomain
+  def set_site_from_host
+    @site = get_site_from_host
   end
 
   sig { returns(T::Boolean) }
