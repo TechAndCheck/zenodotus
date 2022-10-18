@@ -8,9 +8,9 @@ Figaro.require_keys("KEY_ENCRYPTION_SALT")
 Figaro.require_keys("HYPATIA_SERVER_URL")
 Figaro.require_keys("HYPATIA_AUTH_KEY")
 
-# The URL of the currently running server, used for configuring Action Mailer and Hypatia callbacks
-Figaro.require_keys("FACT_CHECK_INSIGHTS_URL")
-Figaro.require_keys("MEDIA_VAULT_URL")
+# The host names for the apps, used for routing requests to the appropriate app
+Figaro.require_keys("FACT_CHECK_INSIGHTS_HOST")
+Figaro.require_keys("MEDIA_VAULT_HOST")
 
 # Settings for sending email
 Figaro.require_keys("MAIL_DOMAIN")

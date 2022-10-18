@@ -6,8 +6,8 @@
 	<body>
 		<p>Your request for access to <%= @site[:title] %> has been approved!</p>
 		<p>To complete your account setup, you’ll need to choose a password.</p>
-		<p><%= link_to "Click here to finish setting up your account", new_account_url(token: @token, host: @site[:url]) %>, or visit this URL in your browser:</p>
-		<pre><%= new_account_url(token: @token, host: @site[:url]) %></pre>
+		<p><%= link_to "Click here to finish setting up your account", new_account_url(token: @token, host: @site[:host]) %>, or visit this URL in your browser:</p>
+		<pre><%= new_account_url(token: @token, host: @site[:host]) %></pre>
 		<p>Thanks,</p>
 		<p>The Duke Reporters’ Lab Team</p>
 	</body>

@@ -4,7 +4,9 @@
 
 ### Hosts
 
-This app serves two sites (Fact-Check Insights and MediaVault), each on their own subdomain. To dynamically serve the correct experience, you should no longer access the site via `http://localhost`, but via a locally-routed domains rooted at `factcheckinsights.local`.
+This app serves two sites (Fact-Check Insights and MediaVault), each on their own unique hosts configured via the `FACT_CHECK_INSIGHTS_HOST` and `MEDIA_VAULT_HOST` env vars. For authentication to be shared between the apps, this should be on the **same domain** but on **separate (unique) subdomains**.
+
+To dynamically serve the correct experience, you should no longer access the site via `http://localhost`, but via these custom domains. We recommend (but do not require) something like `factcheckinsights.local`, routed to localhost.
 
 Add the following entries to your `/etc/hosts` file:
 ```
@@ -15,18 +17,21 @@ Add the following entries to your `/etc/hosts` file:
 After starting the app, you will get to Insights via `http://www.factcheckinsights.local:3000` and to Vault via `http://vault.factcheckinsights.local:3000`. (If you setup your own local reverse proxy, you can do away with the `:3000` and/or setup HTTPS, as you wish.)
 
 ### Environment variables
+
 To run Zenodotus, you'll need to set the following environment variables. Ask a dev on the team to provide you access to them. 
+
 - `TWITTER_BEARER_TOKEN`
 - `HYPATIA_SERVER_URL`
 - `HYPATIA_AUTH_KEY`
 - `secret_key_base` (Devise secret)
 - `KEY_ENCRYPTION_SALT`
-- `FACT_CHECK_INSIGHTS_URL`, e.g. `http://www.factcheckinsights.local:3000`
-- `MEDIA_VAULT_URL`, e.g. `http://vault.factcheckinsights.local:3000`
+- `FACT_CHECK_INSIGHTS_HOST`, e.g. `www.factcheckinsights.local`
+- `MEDIA_VAULT_HOST`, e.g. `vault.factcheckinsights.local`
 - `MAIL_DOMAIN`, e.g. `mail.factcheckinsights.org`
 - `MAILGUN_API_KEY`
 
 Optional
+
 - `USE_S3_DEV_TEST` If set to `"true"` (the string) the software will use S3 as a storage backend
   exactly the same as in production (except the bucket is set to clear itself every 24 hours).
   If set you will be required to also set `AWS_ACCESS_KEY` and `AWS_ACCESS_SECRET`
