@@ -38,6 +38,18 @@ Rails.application.routes.draw do
     end
   end
 
+  scope "ingest", as: "ingest" do
+    post "submit_media_review", to: "media_vault/ingest#submit_media_review", as: "api_raw"
+    post "submit_media_review_source", to: "media_vault/ingest#submit_media_review_source", as: "api_url"
+  end
+
+  scope "archive", as: "archive" do
+    get "add", to: "media_vault/archive#add"
+    post "add", to: "media_vault/archive#submit_url"
+    get "download", to: "media_vault/archive#export_archive_data", as: "download"
+    post "scrape_result_callback", to: "media_vault/archive#scrape_result_callback", as: "scrape_result_callback"
+  end
+
   constraints subdomain: "vault" do
     scope module: "media_vault", as: "media_vault" do
       root "application#index"
@@ -52,10 +64,7 @@ Rails.application.routes.draw do
         post "scrape_result_callback", to: "archive#scrape_result_callback", as: "scrape_result_callback"
       end
 
-      scope "ingest", as: "ingest" do
-        post "submit_media_review", to: "ingest#submit_media_review", as: "api_raw"
-        post "submit_media_review_source", to: "ingest#submit_media_review_source", as: "api_url"
-      end
+
 
       get "/image_search", to: "image_search#index", as: "image_search"
       post "/image_search", to: "image_search#search", as: "image_search_submit"

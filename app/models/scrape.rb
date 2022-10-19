@@ -24,18 +24,20 @@ class Scrape < ApplicationRecord
     ActionCable.server.broadcast("scrapes_channel", { scrapes_count: Scrape.where(fulfilled: false, error: nil).count })
   end
 
-  sig { params(response: String).void }
+  sig { params(response: Array).void }
   def fulfill(response)
-    response = JSON.parse(response)
-
     media_review_item = MediaReview.find_by(original_media_link: self.url, archive_item_id: nil, taken_down: nil)
     raise MediaReviewItemNotFoundError.new(self.url) if media_review_item.nil?
 
-    # Mark removed if we're informed it no longer exists
-    if response.first.key?("status") && response.first["status"] == "removed"
-      self.update!({ fulfilled: true, removed: true })
-      media_review_item.update!({ taken_down: true })
-      return
+    begin
+      # Mark removed if we're informed it no longer exists
+      if response.empty? == false && response.first.key?("status") && response.first["status"] == "removed"
+        self.update!({ fulfilled: true, removed: true })
+        media_review_item.update!({ taken_down: true })
+        return
+      end
+    rescue StandardError
+      # debugger
     end
 
     archive_item = ArchiveItem.model_for_url(self.url).create_from_hash(response)
