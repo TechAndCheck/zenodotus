@@ -27,12 +27,12 @@ module Zenodotus
     #
     # Since this application hosts multiple sites, our URLs are context-specific, and so this will
     # often be over-ridden inline. However, we want to fall back to the primary Insights URL.
-    config.action_mailer.default_url_options = { host: Figaro.env.FACT_CHECK_INSIGHTS_URL }
+    config.action_mailer.default_url_options = { host: Figaro.env.FACT_CHECK_INSIGHTS_HOST }
 
     config.action_mailer.delivery_method = :mailgun
     config.action_mailer.mailgun_settings = {
       api_key: Figaro.env.MAILGUN_API_KEY,
-      domain: "mail.factcheckinsights.com"
+      domain: Figaro.env.MAIL_DOMAIN,
     }
   end
 end

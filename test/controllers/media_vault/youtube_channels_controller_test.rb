@@ -6,7 +6,7 @@ class MediaVault::YoutubeChannelsControllerTest < ActionDispatch::IntegrationTes
   include Devise::Test::IntegrationHelpers
 
   setup do
-    host! "vault.factcheckinsights.local"
+    host! Figaro.env.MEDIA_VAULT_HOST
   end
 
   test "cannot view YouTube channel if logged out" do

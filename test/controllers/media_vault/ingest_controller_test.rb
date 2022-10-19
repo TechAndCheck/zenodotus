@@ -4,7 +4,7 @@ require "test_helper"
 
 class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
   setup do
-    host! "vault.factcheckinsights.local"
+    host! Figaro.env.MEDIA_VAULT_HOST
   end
 
   test "Submitting an API request without a key will return 401 error" do

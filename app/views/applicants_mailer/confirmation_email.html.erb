@@ -6,8 +6,8 @@
 	<body>
 		<p>Thanks for requesting access to <%= @site[:title] %>.</p>
 		<p>Before we can evaluate your application, you will need to confirm the email address you provided.</p>
-		<p><%= link_to "Click here to confirm your email address", applicant_confirm_url(email: @applicant[:email], token: @applicant[:confirmation_token], host: @site[:url]) %>, or visit this URL in your browser:</p>
-		<pre><%= applicant_confirm_url(email: @applicant[:email], token: @applicant[:confirmation_token], host: @site[:url]) %></pre>
+		<p><%= link_to "Click here to confirm your email address", applicant_confirm_url(email: @applicant[:email], token: @applicant[:confirmation_token], host: @site[:host]) %>, or visit this URL in your browser:</p>
+		<pre><%= applicant_confirm_url(email: @applicant[:email], token: @applicant[:confirmation_token], host: @site[:host]) %></pre>
 		<p>Thanks,</p>
 		<p>The Duke Reporters’ Lab Team</p>
 	</body>
