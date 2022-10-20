@@ -12,6 +12,15 @@ class MediaVaultController < ApplicationController
   sig { void }
   def guide; end
 
+  sig { void }
+  def terms; end
+
+  sig { void }
+  def privacy; end
+
+  sig { void }
+  def optout; end
+
 protected
 
   sig { void }

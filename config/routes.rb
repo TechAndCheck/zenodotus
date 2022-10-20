@@ -35,6 +35,9 @@ Rails.application.routes.draw do
       get "download"
       get "guide"
       get "highlights"
+      get "terms"
+      get "privacy"
+      get "optout"
     end
   end
 
@@ -44,6 +47,9 @@ Rails.application.routes.draw do
 
       get "dashboard", to: "archive#index"
       get "guide"
+      get "terms"
+      get "privacy"
+      get "optout"
 
       get "/image_search", to: "image_search#index", as: "image_search"
       post "/image_search", to: "image_search#search", as: "image_search_submit"
