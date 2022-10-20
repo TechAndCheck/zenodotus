@@ -1,16 +1,16 @@
 <div class="flash alert alert--<%= flash_type %>" role="alert" data-controller="flash-box">
-		<div class="alert__message">
-		<% if message.respond_to?(:each) %>
-				<ul>
-				<% message.each do |flash_type_i, message_i| %>
-						<li><%= message_i %></li>
-				<% end %>
-				</ul>
-		<% else %>
-				<%= message %>
+	<div class="alert__message">
+	<% if message.respond_to?(:each) %>
+		<ul>
+		<% message.each do |flash_type_i, message_i| %>
+			<li><%= message_i %></li>
 		<% end %>
-		</div>
-		<button data-action="flash-box#closeBox" type="button" class="alert__close-button" aria-label="Close">
-				<svg class="icon"><use xlink:href="#svg-x"></use></svg>
-		</button>
+		</ul>
+	<% else %>
+		<%= message %>
+	<% end %>
+	</div>
+	<button data-action="flash-box#closeBox" type="button" class="alert__close-button" aria-label="Close">
+		<svg class="icon"><use xlink:href="#svg-x"></use></svg>
+	</button>
 </div>
