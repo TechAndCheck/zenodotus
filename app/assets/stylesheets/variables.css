@@ -24,32 +24,6 @@
 	--transition-timing-function: ease;
 
 	/*
-	Typography
-	*/
-	--font-family--serif: "Source Serif Pro", serif;
-	--font-family--sans-serif: "Source Sans Pro", sans-serif;
-	--line-height: 1.5;
-
-	/*
-	Font Weights
-
-	Weight values based on OpenType weight classes:
-	https://docs.microsoft.com/en-us/typography/opentype/spec/os2#usweightclass
-
-	Note that we only use a subset of these values.
-	*/
-	--font-weight--thin: 100;       /* AVOID (accessibility) */
-	--font-weight--extralight: 200; /* AVOID (accessibility) */
-	--font-weight--light: 300;
-	--font-weight--normal: 400;
-	--font-weight--medium: 500;     /* AVOID for custom fonts (file size) */
-	--font-weight--semibold: 600;
-	--font-weight--bold: 700;
-	--font-weight--extrabold: 800;  /* AVOID for custom fonts (file size) */
-	--font-weight--black: 900;      /* AVOID for custom fonts (file size) */
-	--font-weight--extrablack: 950; /* AVOID for custom fonts (file size) */
-
-	/*
 	Shadows
 	*/
 	--shadow--1: 1px 1px 0 rgba(0, 0, 0, 0.1);
