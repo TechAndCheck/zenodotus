@@ -16,8 +16,8 @@
 			</svg>
 		<% end %>
 		<ol id="site-nav__primary" class="site-nav__links">
-			<li><%= link_to "<span>Download Data</span>".html_safe, fact_check_insights_download_path, class: "btn btn--naked" %></li>
-			<li><%= link_to "<span>Guide</span>".html_safe, fact_check_insights_guide_path, class: "btn btn--naked" %></li>
+			<li><%= link_to "<span>Download <span class=\"hideable\">the Data</span></span>".html_safe, fact_check_insights_download_path, class: "btn btn--naked" %></li>
+			<li><%= link_to "<span>Guide<span class=\"hideable\"> to the Data</span></span>".html_safe, fact_check_insights_guide_path, class: "btn btn--naked" %></li>
 			<li><%= link_to "<span>Highlights</span>".html_safe, fact_check_insights_highlights_path, class: "btn btn--naked" %></li>
 			<li><%= link_to "<span>About</span>".html_safe, about_path, class: "btn btn--naked" %></li>
 			<li><%= link_to "<span>Contact</span>".html_safe, contact_path, class: "btn btn--naked" %></li>

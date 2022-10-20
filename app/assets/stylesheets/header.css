@@ -13,7 +13,7 @@
 }
 
 #site-header {
-	--site-header--internal-spacing: 1rem;
+	--site-header--internal-spacing: max(2vw, 1rem);
 
 	position: relative;
 	z-index: 10;
@@ -149,10 +149,6 @@
 }
 
 @media screen and (min-width: 1025px) {
-	#site-header {
-		--site-header--internal-spacing: 2rem;
-	}
-
 	#site-nav--condensed {
 		display: none;
 	}
@@ -180,8 +176,12 @@
 	.site-nav__links {
 		display: flex;
 		flex-direction: row;
-		gap: 1rem;
+		gap: 1vw;
 		align-items: center;
+	}
+
+	.site-nav__links .hideable {
+		display: none;
 	}
 
 	#site-nav__account-menu {
@@ -243,3 +243,8 @@
 	}
 }
 
+@media screen and (min-width: 1536px) {
+	.site-nav__links .hideable {
+		display: inline;
+	}
+}
