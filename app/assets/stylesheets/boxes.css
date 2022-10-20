@@ -49,19 +49,9 @@ improvement would be to use SCSS mixins so this styling could be applied directl
 }
 
 .box__title {
-	--box-title--font-size: 1.25rem;
-
-	font-size: var(--box-title--font-size);
-	line-height: 1.1em;
 	margin-bottom: var(--box--internal-spacing);
 
 	transition-property: margin, font-size;
-}
-
-@media screen and (min-width: 769px) {
-	.box__title {
-		--box-title--font-size: 2rem;
-	}
 }
 
 /*
