@@ -71,8 +71,8 @@ Semantic variants:
 }
 
 .alert__close-button .icon {
-	height: calc(1em * var(--line-height));
-	width: calc(1em * var(--line-height));
+	height: calc(1em * var(--line-height--base));
+	width: calc(1em * var(--line-height--base));
 }
 
 .alert__close-button:hover,

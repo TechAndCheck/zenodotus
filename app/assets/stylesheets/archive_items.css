@@ -161,7 +161,7 @@ may never be widely adopted. If you're reading this in a future when it's been a
 	it seems that line-clamp acts unexpectedly when there are multiple children of the clamped
 	element. So, for now max-height is unversal and all clamping really gets us is the ellipsis.
 	*/
-	max-height: calc(1em * var(--line-height) * var(--collapsed-lines-of-text));
+	max-height: calc(1em * var(--line-height--base) * var(--collapsed-lines-of-text));
 }
 
 @supports (-webkit-line-clamp: 2) {
