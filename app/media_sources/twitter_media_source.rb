@@ -52,7 +52,6 @@ class TwitterMediaSource < MediaSource
     scrape = Scrape.create!({ url: @url, scrape_type: :twitter })
 
     params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: @url, callback_id: scrape.id }
-    params[:callback_url] = Figaro.env.MEDIA_VAULT_URL unless Figaro.env.MEDIA_VAULT_URL.blank?
 
     response = Typhoeus.get(
       Figaro.env.HYPATIA_SERVER_URL,
@@ -79,7 +78,6 @@ class TwitterMediaSource < MediaSource
     scrape = Scrape.create!({ url: @url, scrape_type: :twitter })
 
     params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: @url, callback_id: scrape.id, force: true }
-    params[:callback_url] = Figaro.env.MEDIA_VAULT_URL unless Figaro.env.MEDIA_VAULT_URL.blank?
 
     response = Typhoeus.get(
       Figaro.env.HYPATIA_SERVER_URL,

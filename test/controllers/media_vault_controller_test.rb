@@ -4,7 +4,7 @@ class MediaVaultControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    host! "vault.factcheckinsights.local"
+    host! Figaro.env.MEDIA_VAULT_HOST
   end
 
   test "should not allow Insights-only users to view dashboard" do

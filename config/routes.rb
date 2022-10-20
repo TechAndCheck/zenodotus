@@ -28,7 +28,7 @@ Rails.application.routes.draw do
     get "/confirm/done", to: "applicants#confirmed", as: "applicant_confirmed"
   end
 
-  constraints subdomain: "www" do
+  constraints host: Figaro.env.FACT_CHECK_INSIGHTS_HOST do
     scope module: "fact_check_insights", as: "fact_check_insights" do
       root "application#index"
 
@@ -50,7 +50,7 @@ Rails.application.routes.draw do
     post "scrape_result_callback", to: "media_vault/archive#scrape_result_callback", as: "scrape_result_callback"
   end
 
-  constraints subdomain: "vault" do
+  constraints host: Figaro.env.MEDIA_VAULT_HOST do
     scope module: "media_vault", as: "media_vault" do
       root "application#index"
 
