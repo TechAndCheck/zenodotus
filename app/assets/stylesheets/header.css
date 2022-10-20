@@ -197,7 +197,7 @@
 
 	#site-nav__primary > li > a > span {
 		display: block;
-		padding-bottom: 0.5em;
+		padding-bottom: var(--btn--padding--vertical);
 		border-bottom: 2px solid transparent;
 		transition-property: border-bottom-color;
 	}
