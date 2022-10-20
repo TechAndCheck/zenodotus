@@ -40,6 +40,8 @@
 
 html,
 body {
+	color: var(--color--dark);
+	background-color: white; /* While not typography, relevant for contrast with text color. */
 	font-family: var(--font-family--serif);
 	font-weight: var(--font-weight--normal);
 	font-size: var(--font-size--base);
