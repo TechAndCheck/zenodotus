@@ -97,3 +97,11 @@ elements, but the examples will just use `<button>`.
 	--btn--border-color--hover: transparent;
 }
 
+.btn.btn--orange {
+	--btn--color: var(--color--dark);
+	--btn--background-color: var(--color--orange-6);
+	--btn--border-color: var(--color--dark);
+	--btn--color--hover: var(--color--dark);
+	--btn--background-color--hover: var(--color--orange-5);
+	--btn--border-color--hover: var(--color--dark);
+}
