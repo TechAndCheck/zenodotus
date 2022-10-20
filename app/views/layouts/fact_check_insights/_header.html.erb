@@ -16,11 +16,11 @@
 	<nav id="site-nav--full" class="site-nav">
 		<%= link_to use_svg("fact-check-insights-logo", title: "Fact-Check Insights", svg_attrs: { width: 264, height: 74, role: "img" }), root_path, class: "site-nav__logo" %>
 		<ol id="site-nav__primary" class="site-nav__links">
-			<li><%= link_to "<span>Download <span class=\"hideable\">the Data</span></span>".html_safe, fact_check_insights_download_path, class: "btn btn--naked" %></li>
-			<li><%= link_to "<span>Guide<span class=\"hideable\"> to the Data</span></span>".html_safe, fact_check_insights_guide_path, class: "btn btn--naked" %></li>
-			<li><%= link_to "<span>Highlights</span>".html_safe, fact_check_insights_highlights_path, class: "btn btn--naked" %></li>
-			<li><%= link_to "<span>About</span>".html_safe, about_path, class: "btn btn--naked" %></li>
-			<li><%= link_to "<span>Contact</span>".html_safe, contact_path, class: "btn btn--naked" %></li>
+			<li><%= link_to fact_check_insights_download_path, class: "btn btn--naked" do %><span>Download <span class="hideable">the Data</span></span><% end %></li>
+			<li><%= link_to fact_check_insights_guide_path, class: "btn btn--naked" do %><span>Guide<span class="hideable"> to the Data</span></span><% end %></li>
+			<li><%= link_to fact_check_insights_highlights_path, class: "btn btn--naked" do %><span>Highlights</span><% end %></li>
+			<li><%= link_to about_path, class: "btn btn--naked" do %><span>About</span><% end %></li>
+			<li><%= link_to contact_path, class: "btn btn--naked" do %><span>Contact</span><% end %></li>
 		</ol>
 		<ol id="site-nav__account" class="site-nav__links">
 			<% if user_signed_in? %>
