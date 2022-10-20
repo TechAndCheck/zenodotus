@@ -11,6 +11,6 @@
 	<% end %>
 	</div>
 	<button data-action="flash-box#closeBox" type="button" class="alert__close-button" aria-label="Close">
-		<svg class="icon"><use xlink:href="#svg-x"></use></svg>
+		<%= use_svg "x", svg_attrs: { class: "icon", aria: { hidden: true } } %>
 	</button>
 </div>

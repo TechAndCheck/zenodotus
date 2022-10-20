@@ -1,8 +1,8 @@
 <% @title_tag = "Email confirmed" %>
 
 <div class="box box--lg box--message">
-		<svg class="icon icon--lg" style="color:var(--color--mood--success);"><use xlink:href="#svg-check-circle-outline"></use></svg>
 	<h4 class="box__title icon-prefixed">
+		<%= use_svg "check-circle-outline", svg_attrs: { class: "icon icon--lg color--success" } %>
 		<span>Email address confirmed.</span>
 	</h4>
 	<p>Thanks for confirming your email address. Your request for access has been received, and we’ll be in touch.</p>

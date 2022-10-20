@@ -1,8 +1,8 @@
 <% @title_tag = "Confirm email" %>
 
 <div class="box box--lg box--message">
-		<svg class="icon icon--lg"><use xlink:href="#svg-email-outline"></use></svg>
 	<h4 class="box__title icon-prefixed">
+		<%= use_svg "email-outline", svg_attrs: { class: "icon icon--lg color--success" } %>
 		<span>Next, confirm your email address.</span>
 	</h4>
 	<p>We just sent a confirmation message to the email address you provided. Please check your inbox and follow the confirmation link in the message so we can process your application.</p>

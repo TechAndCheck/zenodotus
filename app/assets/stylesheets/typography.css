@@ -90,3 +90,11 @@ a {
 a:hover {
 	text-decoration: none;
 }
+
+.color--success {
+	color: var(--color--mood--success);
+}
+
+.color--danger {
+	color: var(--color--mood--error);
+}
