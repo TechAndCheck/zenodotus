@@ -56,111 +56,37 @@ class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
   test "Can archive media review from json" do
     media_review_json = {
       "@context": "https://schema.org",
-      "@type": " MediaReview",
-      "datePublished": "2021-04-27",
-      "url": "https://www.politifact.com/factchecks/2021/apr/27/instagram-posts/mariah-carey-didnt-fake-getting-her-covid-19-vacci/",
+      "@type": "MediaReview",
+      "datePublished": "2020-05-22",
       "author": {
         "@type": "Organization",
         "name": "PolitiFact",
-        "url": "https://politifact.com"
+        "url": "http://www.politifact.com"
       },
-      "mediaAuthenticityCategory": "DecontexualizedContent",
-      "originalMediaContextDescription": "Singer Mariah Carey shared a video of herself receiving a COVID-19 vaccination.",
-      "associatedClaimReview": {
-        "@context": "https://schema.org",
-        "@type": "ClaimReview",
-        "datePublished": "2021-04-26",
-        "url": "https://www.politifact.com/factchecks/foobar",
-        "author": {
-          "@type": "Organization",
-          "url": "https://www.politifact.com/",
-          "image": "http://static.politifact.com/mediapage/jpgs/politifact-logo-big.jpg",
-          "sameAs": "https://twitter.com/politifact"
-        },
-        "claimReviewed": "Mariah Carey something something",
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "1",
-          "bestRating": "6",
-          "image": "http://static.politifact.com.s3.amazonaws.com/rulings/tom-pantsonfire.gif",
-          "alternateName": "True"
-        },
-        "itemReviewed":
-        {
-          "@type": "CreativeWork",
-          "author": {
-              "@type": "Person",
-              "name": "Mariah Carey",
-              "jobTitle": "Singer",
-              "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Gov._Perry_CPAC_February_2015.jpg/440px-Gov._Perry_CPAC_February_2015.jpg",
-              "sameAs": [
-                  "https://en.wikipedia.org/wiki/Mariah_Carey"
-              ]
-          },
-          "datePublished": "2014-07-17",
-          "name": "foobar"
-        }
-      },
+      "mediaAuthenticityCategory": "",
+      "originalMediaContextDescription": "",
       "itemReviewed": {
         "@type": "MediaReviewItem",
         "creator": {
           "@type": "Person",
-          "name": "Instagram user",
-          "url": "https://www.instagram.com/wrong_saloon_bear/"
+          "name": "Viral image",
+          "url": "https://www.facebook.com/photo.php?fbid=10218894279041970&set=a.10202838682462090&type=3&theater"
         },
         "interpretedAsClaim": {
           "@type": "Claim",
-          "description": "Mariah Carey faked getting her COVID-19 vaccine because the needle can’t be seen coming out of her arm."
+          "description": "“If you have had a flu shot in the last 3-5 years, you will probably test positive” for COVID-19."
         },
-        "mediaItemAppearance": [
-          {
-            "@type": "VideoObjectSnapshot",
-            "description": "An Instagram user posted a zoomed-in version of a video of Mariah Carey receiving a COVID vaccination, writing ‘It’s all a scam, don’t celebrate celebrities.’"
-          },
-          {
-            "@type": "VideoObjectSnapshot",
-            "contentUrl": "https://twitter.com/MariahCarey/status/1438419033267871746",
-            "archivedAt": "https://archive.is/EXAMPLE"
-          }
-        ]
-      }
+        "mediaItemAppearance": [{
+          "@type": "ImageObject",
+           "description": "",
+           "contentUrl": "https://www.facebook.com/photo.php?fbid=10218894279041970&set=a.10202838682462090&type=3&theater"
+         }]
+      },
+      "url": "https://www.politifact.com/factchecks/2020/may/21/viral-image/flu-shots-arent-causing-false-positive-covid-19-te/"
     }.to_json
 
     post media_vault_ingest_api_raw_path, params: { media_review_json: media_review_json, api_key: "123456789" }, as: :json
     assert_response 200
-
-    json = nil
-    assert_nothing_raised do
-      json = JSON.parse(response.body)
-    end
-
-    assert_includes json.keys, "response_code"
-    assert_includes json.keys, "response"
-    assert_includes json.keys, "media_object_id"
-
-    assert_equal 20, json["response_code"]
-    assert_equal "Successfully archived media object", json["response"]
-    assert_not_empty json["media_object_id"]
-
-    # We'll make sure the media review is correctly saved here since archive is async
-    media_review = MediaReview.find(json["media_object_id"])
-    assert_not_nil media_review
-    assert_not_nil media_review.original_media_link
-    assert_not_nil media_review.media_authenticity_category
-    assert_not_nil media_review.original_media_context_description
-    assert_not_nil media_review.item_reviewed
-    assert_not_nil media_review.item_reviewed
-    assert_not_nil media_review.date_published
-    assert_not_nil media_review.url
-    assert_not_nil media_review.author
-
-    assert_not_empty media_review.claim_reviews
-    assert_not_nil media_review.claim_reviews.first.date_published
-    assert_not_nil media_review.claim_reviews.first.author
-    assert_not_nil media_review.claim_reviews.first.url
-    assert_not_nil media_review.claim_reviews.first.claim_reviewed
-    assert_not_nil media_review.claim_reviews.first.review_rating
-    assert_not_nil media_review.claim_reviews.first.item_reviewed
   end
 
   test "can archive MediaReview from a webpage" do

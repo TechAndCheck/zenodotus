@@ -7,8 +7,6 @@ class MediaReview < ApplicationRecord
   validates :author, presence: true
   validates :date_published, presence: true
   validates :item_reviewed, presence: true
-  validates :media_authenticity_category, presence: true
-  validates :original_media_link, presence: true
   validates :url, presence: true
 
 
