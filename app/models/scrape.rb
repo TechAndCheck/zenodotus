@@ -29,27 +29,23 @@ class Scrape < ApplicationRecord
     media_review_item = MediaReview.find_by(original_media_link: self.url, archive_item_id: nil, taken_down: nil)
     raise MediaReviewItemNotFoundError.new(self.url) if media_review_item.nil?
 
-    begin
-      # Mark removed if we're informed it no longer exists
-      if response.empty? == false && response.first.key?("status") && response.first["status"] == "removed"
-        self.update!({ fulfilled: true, removed: true })
-        media_review_item.update!({ taken_down: true })
-        return
-      end
-    rescue StandardError
-      # debugger
+    # Mark removed if we're informed it no longer exists
+    if response.empty? == false && response.first.key?("status") && response.first["status"] == "removed"
+      self.update!({ fulfilled: true, removed: true })
+      media_review_item.update!({ taken_down: true })
+      return
     end
 
     archive_item = ArchiveItem.model_for_url(self.url).create_from_hash(response)
 
     # Update the previously created MediaReview item with the now archived stuff
-    # if archive_item.empty?
-    #   media_review_item.update!({ taken_down: true })
-    #   self.update!({ fulfilled: true })
-    # else
-    media_review_item.update({ archive_item_id: archive_item.first.id, taken_down: false })
-    self.update!({ fulfilled: true, archive_item: archive_item.first })
-    # end
+    if archive_item.empty?
+      media_review_item.update!({ taken_down: true })
+      self.update!({ fulfilled: true })
+    else
+      media_review_item.update({ archive_item_id: archive_item.first.id, taken_down: false })
+      self.update!({ fulfilled: true, archive_item: archive_item.first })
+    end
   end
 
   sig { void }
