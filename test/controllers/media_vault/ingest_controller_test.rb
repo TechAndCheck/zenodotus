@@ -63,7 +63,7 @@ class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
         "name": "PolitiFact",
         "url": "http://www.politifact.com"
       },
-      "mediaAuthenticityCategory": "",
+      "mediaAuthenticityCategory": "Authentic",
       "originalMediaContextDescription": "",
       "itemReviewed": {
         "@type": "MediaReviewItem",
