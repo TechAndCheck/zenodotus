@@ -140,14 +140,31 @@ media_review = MediaReview.create(
   original_media_context_description: "Star Wars Ipsum",
   item_reviewed: {
     "@type": "MediaReviewItem",
+    "creator": {
+      "@type": "Person",
+      "name": "Old Ben-Kenobi",
+      "url": "https://www.foobar.com/x/1"
+    },
+    "interpretedAsClaim": {
+      "@type": "Claim",
+      "description": "Two droids on the imperial watchlist entered a hovercraft"
+    },
     "embeddedTextCaption": "Your droids. They’ll have to wait outside. We don’t want them here. Listen, why don’t you wait out by the speeder. We don’t want any trouble.",
-    "originalMediaLink": "https://www.foobar.com/1",
-    "appearance": {
-      "@type": "ImageObjectSnapshot",
-      "sha256sum": ["8bb6caeb301b85cddc7b67745a635bcda939d17044d9bcf31158ef5e9f8ff072"],
-      "accessedOnUrl": "https://www.facebook.com/photo.php?fbid=10217541425752089&set=a.1391489831857&type=3",
-      "archivedAt": "https://archive.is/dfype"
-    }
+    # "originalMediaLink": "https://www.foobar.com/1",
+    "mediaItemAppearance": [
+      {
+        "@type": "ImageObjectSnapshot",
+        "description": "A stormtrooper posted a screenshot of two droids entering a hovercraft",
+        "sha256sum": ["8bb6caeb301b85cddc7b67745a635bcda939d17044d9bcf31158ef5e9f8ff072"],
+        "accessedOnUrl": "https://www.facebook.com/photo.php?fbid=10217541425752089&set=a.1391489831857&type=3",
+        "archivedAt": "https://archive.is/dfype"
+      },
+      {
+        "@type": "ImageObjectSnapshot",
+        "contentUrl": "https://www.foobar.com/1",
+        "archivedAt": "www.archive.org"
+      }
+    ]
   },
   archive_item: archive_items[0]
 )
@@ -166,13 +183,22 @@ MediaReview.create(
   item_reviewed: {
     "@type": "MediaReviewItem",
     "embeddedTextCaption": "But we’ve met before. That was a long time ago, I was a kid at St. Swithin’s, It used to be funded by the Wayne Foundation",
-    "originalMediaLink": "https://www.foobar.com/2",
-    "appearance": {
-      "@type": "ImageObjectSnapshot",
-      "sha256sum": ["8bb6caeb301b85cddc7b67745a635bcda939d17044d9bcf31158ef5e9f8ff072"],
-      "accessedOnUrl": "https://www.facebook.com/photo.php?fbid=10217541425752089&set=a.1391489831857&type=3",
-      "archivedAt": "https://archive.is/dfype"
-    }
+    "interpretedAsClaim": {
+      "@type": "Claim",
+      "description": "Something something batman"
+    },
+    # "originalMediaLink": "https://www.foobar.com/2",
+    "mediaItemAppearance": [
+      {
+      "@type": "VideoObjectSnapshot",
+      "description": "A description of a video snapshot"
+      },
+      {
+      "@type": "VideoObjectSnapshot",
+      "contentUrl": "https://wwww.foobar.com/2",
+      "archivedAt": "https://archive.is/12345"
+      }
+    ]
   },
   archive_item: archive_items[1]
 )
@@ -186,18 +212,29 @@ MediaReview.create(
     "name": "realfact",
     "url": "https://realfact.com"
   },
-  original_media_context_description: "Star Wars Ipsum",
+  original_media_context_description: "Back to the Future Ipsum",
   media_authenticity_category: "TransformedContent",
   item_reviewed: {
     "@type": "MediaReviewItem",
+    "interpretedAsClaim": {
+      "@type": "Claim",
+      "description": "claim description"
+    },
     "embeddedTextCaption": "When could weathermen predict the weather, let alone the future. Yeah, alright, bye-bye.",
-    "originalMediaLink": "https://www.foobar.com/3",
-    "appearance": {
+    # "originalMediaLink": "https://www.foobar.com/3",
+    "mediaItemAppearance": [
+      {
+        "@type": "ImageObjectSnapshot",
+        "sha256sum": ["8bb6caeb301b85cddc7b67745a635bcda939d17044d9bcf31158ef5e9f8ff072"],
+        "accessedOnUrl": "https://www.facebook.com/photo.php?fbid=10217541425752089&set=a.1391489831857&type=3",
+        "archivedAt": "https://archive.is/dfype"
+      },
+      {
       "@type": "ImageObjectSnapshot",
-      "sha256sum": ["8bb6caeb301b85cddc7b67745a635bcda939d17044d9bcf31158ef5e9f8ff072"],
-      "accessedOnUrl": "https://www.facebook.com/photo.php?fbid=10217541425752089&set=a.1391489831857&type=3",
-      "archivedAt": "https://archive.is/dfype"
-    }
+      "contentUrl": "https://wwww.foobar.com/3",
+      "archivedAt": "https://archive.is/145"
+      }
+    ]
   },
   archive_item: archive_items[2]
 )
