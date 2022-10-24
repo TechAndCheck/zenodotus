@@ -8,7 +8,6 @@ class MediaReview < ApplicationRecord
   validates :date_published, presence: true
   validates :item_reviewed, presence: true
   validates :media_authenticity_category, presence: true
-  validates :original_media_link, presence: true
   validates :url, presence: true
 
 
@@ -18,5 +17,9 @@ class MediaReview < ApplicationRecord
   sig { returns(Boolean) }
   def orphaned?
     archive_item.nil?
+  end
+
+  def to_json
+    MediaReviewBlueprint.render(self)
   end
 end
