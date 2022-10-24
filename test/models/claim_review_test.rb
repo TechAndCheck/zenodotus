@@ -21,6 +21,7 @@ class ClaimReviewTest < ActiveSupport::TestCase
       date_published: "2021-02-01",
       item_reviewed: {
         "@type": "Claim",
+        "name": "Claim name",
         "author": {
           "@type": "Person",
           "jobTitle": "On the internet",
@@ -56,6 +57,7 @@ class ClaimReviewTest < ActiveSupport::TestCase
     assert claim_review_json["reviewRating"].has_key?("image")
     assert claim_review_json["reviewRating"].has_key?("alternateName")
 
+    assert_not_nil claim_review_json["itemReviewed"]["name"]
     assert_not_nil claim_review_json["itemReviewed"]["datePublished"]
     assert_not_nil claim_review_json["itemReviewed"]["author"]["name"]
     assert_not_nil claim_review_json["itemReviewed"]["author"]["jobTitle"]

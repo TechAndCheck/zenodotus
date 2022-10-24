@@ -66,6 +66,5 @@ class MediaReviewTest < ActiveSupport::TestCase
 
     assert_not_nil media_review_json["itemReviewed"]["interpretedAsClaim"]["description"]
     assert media_review_json["itemReviewed"]["mediaItemAppearance"].length.positive?
-
   end
 end
