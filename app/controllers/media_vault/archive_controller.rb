@@ -97,7 +97,16 @@ class MediaVault::ArchiveController < MediaVaultController
       render json: { error: "Invalid scrape id" }, status: 404 and return
     end
 
-    scrape.fulfill(parsed_params["scrape_result"])
+    parsed_result = parsed_params["scrape_result"]
+
+    # There's a bug in Hypatia where it may come in as a string, which we need to parse, or an object, where we make it an array
+    begin
+      parsed_result = JSON.parse(parsed_result)
+    rescue TypeError
+      parsed_result = [parsed_result]
+    end
+
+    scrape.fulfill(parsed_result)
 
     render plain: "OK", status: 200
   end
