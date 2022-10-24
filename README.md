@@ -132,15 +132,16 @@ An open-source JavaScript package manager used to install/manage JavaScript depe
 1. Set up your environment variables:
    1. For local development, `touch config/application.yml` and ask another developer for the config values
    1. For production, make sure the environment variables are set properly
-1. Add the following entries to your `/etc/hosts` file:
+1. Add the following entries to your `/etc/hosts` file (or equivalent, if you have a more complex routing setup):
    ```
    127.0.0.1	www.factcheckinsights.local
    127.0.0.1	vault.factcheckinsights.local
    ```
+   - These are just the suggested defaults. Feel free to replace this with an alternative routing method or different URLs.
 1. Bootstrap Tailwind: `rails tailwindcss:build`
 1. In your shell, run `rails s`
 
-✨ The app should now be running and available at [http://www.factcheckinsights.local:3000](http://www.factcheckinsights.local:3000) (Insights) and [http://vault.factcheckinsights.local:3000](http://vault.factcheckinsights.local:3000) (MediaVault). If not, contact @cguess or another developer.
+✨ The app should now be running and available at [http://www.factcheckinsights.local:3000](http://www.factcheckinsights.local:3000) (Insights) and [http://vault.factcheckinsights.local:3000](http://vault.factcheckinsights.local:3000) (MediaVault), or whatever URLs you chose. If not, contact @cguess or another developer.
 
 #### Starting the scraper
 

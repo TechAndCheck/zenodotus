@@ -105,7 +105,7 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can record that an applicant came from the Vault application page" do
-    host! "vault.factcheckinsights.local"
+    host! Figaro.env.MEDIA_VAULT_HOST
 
     post applicants_path(applicant: {
       name: "Jane Doe",

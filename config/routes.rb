@@ -28,7 +28,7 @@ Rails.application.routes.draw do
     get "/confirm/done", to: "applicants#confirmed", as: "applicant_confirmed"
   end
 
-  constraints subdomain: "www" do
+  constraints host: Figaro.env.FACT_CHECK_INSIGHTS_HOST do
     scope module: "fact_check_insights", as: "fact_check_insights" do
       root "application#index"
 
@@ -38,24 +38,12 @@ Rails.application.routes.draw do
     end
   end
 
-  constraints subdomain: "vault" do
+  constraints host: Figaro.env.MEDIA_VAULT_HOST do
     scope module: "media_vault", as: "media_vault" do
       root "application#index"
 
       get "dashboard", to: "archive#index"
       get "guide"
-
-      scope "archive", as: "archive" do
-        get "add", to: "archive#add"
-        post "add", to: "archive#submit_url"
-        get "download", to: "archive#export_archive_data", as: "download"
-        post "scrape_result_callback", to: "archive#scrape_result_callback", as: "scrape_result_callback"
-      end
-
-      scope "ingest", as: "ingest" do
-        post "submit_media_review", to: "ingest#submit_media_review", as: "api_raw"
-        post "submit_media_review_source", to: "ingest#submit_media_review_source", as: "api_url"
-      end
 
       get "/image_search", to: "image_search#index", as: "image_search"
       post "/image_search", to: "image_search#search", as: "image_search_submit"
@@ -67,6 +55,22 @@ Rails.application.routes.draw do
       resources :instagram_users, only: [:show]
       resources :facebook_users, only: [:show]
       resources :youtube_channels, only: [:show]
+    end
+  end
+
+  # These routes shouldn't be nested in the `host` constraints block above,
+  # but should still be scoped by `media_vault` module.
+  scope module: "media_vault", as: "media_vault" do
+    scope "ingest", as: "ingest" do
+      post "submit_media_review", to: "ingest#submit_media_review", as: "api_raw"
+      post "submit_media_review_source", to: "ingest#submit_media_review_source", as: "api_url"
+    end
+
+    scope "archive", as: "archive" do
+      get "add", to: "archive#add"
+      post "add", to: "archive#submit_url"
+      get "download", to: "archive#export_archive_data", as: "download"
+      post "scrape_result_callback", to: "archive#scrape_result_callback", as: "scrape_result_callback"
     end
   end
 

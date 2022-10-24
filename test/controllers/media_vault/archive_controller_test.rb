@@ -7,7 +7,7 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
   include Minitest::Hooks
 
   setup do
-    host! "vault.factcheckinsights.local"
+    host! Figaro.env.MEDIA_VAULT_HOST
   end
 
   def around

@@ -4,7 +4,7 @@ class AccountMailer < ApplicationMailer
     @token = params[:token]
 
     mail({
-      from: email_address_with_name("no-reply@mail.factcheckinsights.com", @site[:title]),
+      from: email_address_with_name("no-reply@#{Figaro.env.MAIL_DOMAIN}", @site[:title]),
       to: params[:user][:email],
       subject: "You’ve been approved for #{@site[:title]}!",
     })

@@ -233,6 +233,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_17_212322) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "error"
+    t.boolean "removed", default: false
   end
 
   create_table "screenshots", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

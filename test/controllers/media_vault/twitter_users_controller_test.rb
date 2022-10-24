@@ -6,7 +6,7 @@ class MediaVault::TwitterUsersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    host! "vault.factcheckinsights.local"
+    host! Figaro.env.MEDIA_VAULT_HOST
   end
 
   test "cannot view Twitter user if logged out" do
