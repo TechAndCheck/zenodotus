@@ -55,7 +55,7 @@ class ScrapeTest < ActiveSupport::TestCase
       archive_item: archive_items[0]
     )
 
-    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", true)["scrape_result"].to_json
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", true)["scrape_result"]
 
     scrape.fulfill(zorki_image_post)
 
@@ -93,7 +93,7 @@ class ScrapeTest < ActiveSupport::TestCase
       archive_item: archive_items[0]
     )
 
-    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/not_found/", true)["scrape_result"].to_json
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/not_found/", true)["scrape_result"]
 
     scrape.fulfill(zorki_image_post)
     media_review.reload
