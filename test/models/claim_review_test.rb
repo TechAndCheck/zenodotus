@@ -34,35 +34,47 @@ class ClaimReviewTest < ActiveSupport::TestCase
         "alternateName": "False",
         "bestRating": "9",
         "ratingValue": "4",
-        "worstRating": "0"
       },
       url: "https://www.realfact.com/factchecks/2021/feb/03/starwars",
       media_review: media_review
     )
 
+    expected = {
+      "id" => claim_review.id,
+      "url" => "https://www.realfact.com/factchecks/2021/feb/03/starwars",
+      "datePublished" => "2021-02-01",
+      "claimReviewed" => "The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide.",
+      "@context" => "https://schema.org",
+      "@type" => "ClaimReview",
+      "author" => {
+        "@type" => "Organization",
+        "name" => "realfact",
+        "url" => "https://www.realfact.com/",
+        "image" => nil,
+        "sameAs" => nil,
+      },
+      "reviewRating" => {
+        "@type" => "Rating",
+        "alternateName" => "False",
+        "bestRating" => "9",
+        "ratingValue" => "4",
+        "image" => nil,
+      },
+      "itemReviewed" => {
+        "@type" => "Claim",
+        "name" => "Claim name",
+        "author" => {
+          "@type" => "Person",
+          "jobTitle" => "On the internet",
+          "name" => "Viral image",
+          "image" => nil,
+          "sameAs" => nil
+        },
+        "datePublished" => "2021-01-30"
+      }
+    }
     claim_review_json = JSON.parse(claim_review.to_json) # call blueprinter
-
-    assert_not_nil claim_review_json["id"]
-    assert_not_nil claim_review_json["url"]
-    assert_not_nil claim_review_json["datePublished"]
-    assert_not_nil claim_review_json["claimReviewed"]
-    assert_not_nil claim_review_json["@type"]
-    assert_not_nil claim_review_json["@context"]
-
-    # Check that author is a Person (has name) or Organization (has url)
-    assert_not_nil claim_review_json["author"]["name"] || claim_review_json["author"]["url"]
-
-    assert_not_nil claim_review_json["reviewRating"]["ratingValue"]
-    assert_not_nil claim_review_json["reviewRating"]["bestRating"]
-    assert claim_review_json["reviewRating"].has_key?("image")
-    assert claim_review_json["reviewRating"].has_key?("alternateName")
-
-    assert_not_nil claim_review_json["itemReviewed"]["name"]
-    assert_not_nil claim_review_json["itemReviewed"]["datePublished"]
-    assert_not_nil claim_review_json["itemReviewed"]["author"]["name"]
-    assert_not_nil claim_review_json["itemReviewed"]["author"]["jobTitle"]
-    assert claim_review_json["itemReviewed"]["author"].has_key?("image")
-    assert claim_review_json["itemReviewed"]["author"].has_key?("sameAs")
+    assert_equal expected, claim_review_json
   end
 
   test "can't create claim review without mediareview" do
@@ -89,7 +101,6 @@ class ClaimReviewTest < ActiveSupport::TestCase
           "alternateName": "False",
           "bestRating": "9",
           "ratingValue": "4",
-          "worstRating": "0"
         },
         url: "https://www.realfact.com/factchecks/2021/feb/03/starwars",
       )
