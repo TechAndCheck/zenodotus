@@ -1,7 +1,20 @@
 @use "shared";
 @use "sass:color";
 
+#page--fact-check-insights--home {
+	--spacing--normal: 2rem;
+	--spacing--roomy: 2rem;
+
+	@media screen and (min-width: shared.$screen-2xl-floor) {
+		--spacing--normal: 5rem;
+		--spacing--roomy: 10rem;
+	}
+}
+
 #section--intro {
+	background-color: shared.$color--brand--fact-check-insights;
+	transition-property: padding;
+
 	.insights-stats {
 		--stat--spacing: 2rem;
 
@@ -41,8 +54,10 @@
 
 #page--fact-check-insights--home {
 	#section--download-cta {
-		padding: 10rem 0;
 		background-color: white;
+		padding-top: var(--spacing--roomy);
+		padding-bottom: var(--spacing--roomy);
+		transition-property: padding;
 
 		@media screen and (min-width: shared.$screen-2xl-floor) {
 			padding-left: 50%;
@@ -158,6 +173,10 @@
 	}
 }
 
+#section--accessing {
+	background-color: shared.$color--brand--fact-check-insights;
+}
+
 #section--powerful-tool {
 	display: flex;
 	align-items: center;
@@ -176,6 +195,7 @@
 
 #section--data-in-action {
 	background-color: shared.$color--brand--claim-review;
+	transition-property: padding;
 
 	@media screen and (min-width: shared.$screen-2xl-floor) {
 		background-image: url("logos/claim-review-logo-mark.svg"), url("brand-ornaments/01.svg");
