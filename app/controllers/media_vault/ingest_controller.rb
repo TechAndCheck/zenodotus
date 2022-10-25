@@ -161,13 +161,13 @@ class MediaVault::IngestController < MediaVaultController
   # @return [Hash]: A hash containing response codes and a reference to the newly created ArchiveItem
   sig { params(media_review_json: Hash).returns(Hash) }
   def archive_from_media_review(media_review_json)
+    saved_object = ArchiveItem.create_from_media_review(media_review_json)
+
     return {
       error_code: ApiErrors::JSONValidationError.code,
       error: ApiErrors::JSONValidationError.message,
       failures: media_review_json
     } unless validate_media_review(media_review_json)
-
-    saved_object = ArchiveItem.create_from_media_review(media_review_json)
 
     {
       response_code: ApiResponseCodes::Success.code,
