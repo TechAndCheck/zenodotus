@@ -79,7 +79,6 @@ class MediaVault::IngestController < MediaVaultController
     response_payload = archive_from_media_review(media_review_json)
 
     render(json: response_payload, status: response_payload.has_key?(:error) ? 400 : 200)
-
   rescue JSON::ParserError
     response_payload = {
       error_code: ApiErrors::JSONParseError.code,
@@ -169,6 +168,7 @@ class MediaVault::IngestController < MediaVaultController
     } unless validate_media_review(media_review_json)
 
     saved_object = ArchiveItem.create_from_media_review(media_review_json)
+
     {
       response_code: ApiResponseCodes::Success.code,
       response: ApiResponseCodes::Success.message,

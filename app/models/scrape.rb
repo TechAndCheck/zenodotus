@@ -46,6 +46,9 @@ class Scrape < ApplicationRecord
       media_review_item.update({ archive_item_id: archive_item.first.id, taken_down: false })
       self.update!({ fulfilled: true, archive_item: archive_item.first })
     end
+
+    # Update any channels listening to the scrape count
+    send_notification
   end
 
   sig { void }
