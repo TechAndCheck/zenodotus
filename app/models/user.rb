@@ -87,6 +87,11 @@ class User < ApplicationRecord
   end
 
   sig { returns(T::Boolean) }
+  def can_access_fact_check_insights?
+    self.is_admin? || self.is_fact_check_insights_user?
+  end
+
+  sig { returns(T::Boolean) }
   def can_access_media_vault?
     self.is_admin? || self.is_media_vault_user?
   end
