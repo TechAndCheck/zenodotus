@@ -4,7 +4,7 @@ class MediaReviewTest < ActiveSupport::TestCase
   include Minitest::Hooks
   include ActiveJob::TestHelper
 
-  test "test_media_review_blueprinter_output_has_required_characteristics" do
+  test "media review blueprinter output has required characteristics" do
     MediaReview.create!(media_authenticity_category: "fake",
                                        author: { "name": "a_name" },
                                        date_published: "2022-10-22",
@@ -34,7 +34,6 @@ class MediaReviewTest < ActiveSupport::TestCase
           "description": "Two droids on the imperial watchlist entered a hovercraft"
         },
         "embeddedTextCaption": "Your droids. They’ll have to wait outside. We don’t want them here. Listen, why don’t you wait out by the speeder. We don’t want any trouble.",
-        # "originalMediaLink": "https://www.foobar.com/1",
         "mediaItemAppearance": [
           {
             "@type": "ImageObjectSnapshot",

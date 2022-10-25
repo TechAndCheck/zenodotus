@@ -4,7 +4,7 @@ class ClaimReviewTest < ActiveSupport::TestCase
   include Minitest::Hooks
   include ActiveJob::TestHelper
 
-  test "test_claim_review_blueprinter_output_has_required_characteristics" do
+  test "claim review blueprinter output has required characteristics" do
     media_review = MediaReview.create!(media_authenticity_category: "fake",
                                        author: { "name": "a_name" },
                                        date_published: "2022-10-22",
@@ -65,7 +65,7 @@ class ClaimReviewTest < ActiveSupport::TestCase
     assert claim_review_json["itemReviewed"]["author"].has_key?("sameAs")
   end
 
-  test "cant_create_claim_review_without_mediareview" do
+  test "can't create claim review without mediareview" do
     assert_raises ActiveRecord::RecordInvalid do
       ClaimReview.create!(
         author: {

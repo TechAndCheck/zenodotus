@@ -150,7 +150,6 @@ media_review = MediaReview.create(
       "description": "Two droids on the imperial watchlist entered a hovercraft"
     },
     "embeddedTextCaption": "Your droids. They’ll have to wait outside. We don’t want them here. Listen, why don’t you wait out by the speeder. We don’t want any trouble.",
-    # "originalMediaLink": "https://www.foobar.com/1",
     "mediaItemAppearance": [
       {
         "@type": "ImageObjectSnapshot",
@@ -187,7 +186,6 @@ MediaReview.create(
       "@type": "Claim",
       "description": "Something something batman"
     },
-    # "originalMediaLink": "https://www.foobar.com/2",
     "mediaItemAppearance": [
       {
       "@type": "VideoObjectSnapshot",
@@ -221,7 +219,6 @@ MediaReview.create(
       "description": "claim description"
     },
     "embeddedTextCaption": "When could weathermen predict the weather, let alone the future. Yeah, alright, bye-bye.",
-    # "originalMediaLink": "https://www.foobar.com/3",
     "mediaItemAppearance": [
       {
         "@type": "ImageObjectSnapshot",
