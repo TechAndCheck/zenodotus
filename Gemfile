@@ -179,3 +179,6 @@ gem "rolify", "~> 6.0"
 
 # We are temporarily using TailwindCSS to scaffold some layout
 gem "tailwindcss-rails", "~> 2.0"
+
+# We use SCSS to write more CSS more concisely
+gem "dartsass-rails", "~> 0.4.0"
