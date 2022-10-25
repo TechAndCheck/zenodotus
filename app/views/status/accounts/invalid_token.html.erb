@@ -2,7 +2,7 @@
 
 <div class="box box--lg box--message">
 	<h1 class="box__title icon-prefixed">
-		<svg class="icon icon--lg" style="color:var(--color--mood--error);"><use xlink:href="#svg-x-circle-outline"></use></svg>
+		<%= use_svg "x-circle-outline", svg_attrs: { class: "icon icon--lg color--danger" } %>
 		<span>Invalid token</span>
 	</h1>
 	<p>That token cannot be used to setup an account, either because it’s invalid or the account linked to it has already been setup. Please <%= link_to "contact us", contact_path %> if you need more help.</p>

@@ -19,6 +19,7 @@ strictly required, but it's a good habit so that your label itself can contain c
 NB: Currently, while you can use an icon of any aspect ratio, it's assumed to be 1 (square). You
 will need to override on a per-icon basis when this isn't correct.
 */
+@use "shared";
 
 .icon-prefixed {
 	--icon-size: 1em;
@@ -27,18 +28,18 @@ will need to override on a per-icon basis when this isn't correct.
 	display: flex;
 	align-items: center;
 	gap: var(--icon-gap);
-}
 
-.icon-prefixed .icon {
-	flex-shrink: 0;
-	height: var(--icon-size);
-	width: var(--icon-size);
-}
+	.icon {
+		flex-shrink: 0;
+		height: var(--icon-size);
+		width: var(--icon-size);
 
-.icon-prefixed .icon--lg {
-	--icon-size: 1.25em;
-}
+		&.icon--lg {
+			--icon-size: 1.25em;
+		}
 
-.icon-prefixed .icon--xl {
-	--icon-size: 1.75em;
+		&.icon--xl {
+			--icon-size: 1.75em;
+		}
+	}
 }

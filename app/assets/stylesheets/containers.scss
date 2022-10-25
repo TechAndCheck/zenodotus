@@ -1,6 +1,8 @@
+@use "shared";
+
 .contain {
-	--contain--max-width: var(--screen-xl-floor);
-	--contain--gap: 1rem;
+	--contain--max-width: 1400px;
+	--contain--gap: max(1rem, 5vw);
 
 	width: 100%;
 	display: grid;
@@ -9,13 +11,13 @@
 		min(var(--contain--max-width), calc(100% - var(--contain--gap) * 2))
 		1fr;
 	grid-column-gap: var(--contain--gap);
-}
 
-.contain > * {
-	grid-column: 2;
-}
+	> * {
+		grid-column: 2;
+	}
 
-.contain .full-bleed {
-	width: 100%;
-	grid-column: 1 / -1;
+	.full-bleed {
+		width: 100%;
+		grid-column: 1 / -1;
+	}
 }

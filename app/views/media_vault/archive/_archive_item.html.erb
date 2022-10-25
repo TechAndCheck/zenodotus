@@ -67,7 +67,7 @@
     </div>
     <div class="archive-item__metadata">
         <div class="icon-prefixed">
-          <svg class="icon"><use xlink:href="#svg-<%= publishing_platform_shortname %>"></use></svg>
+          <%= use_svg publishing_platform_shortname, svg_attrs: { class: "icon", aria: { hidden: true } } %>
           <div class="archive-item__metadatum">
               <div class="archive-item__metadatum__label">Published on <%= publishing_platform_display_name %></div>
               <time

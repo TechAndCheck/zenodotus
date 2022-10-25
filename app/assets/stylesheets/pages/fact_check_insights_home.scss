@@ -1,0 +1,216 @@
+@use "shared";
+@use "sass:color";
+
+#section--intro {
+	.insights-stats {
+		--stat--spacing: 2rem;
+
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-around;
+		gap: var(--stat--spacing);
+	}
+
+	.insights-stat {
+		flex-basis: 30%;
+		flex-grow: 3;
+
+		border: 2px solid shared.$color--dark;
+		padding: var(--stat--spacing);;
+		align-items: center;
+		text-align: center;
+		white-space: nowrap;
+
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--stat--spacing) / 2);
+	}
+
+	.insights-stat__icon {
+		width: 2rem;
+		height: 2rem;
+	}
+
+	.insights-stat__count {
+		font-size: 2rem;
+		font-weight: shared.$font-weight--bold;
+		border-bottom: 2px solid shared.$color--dark;
+	}
+
+}
+
+#page--fact-check-insights--home {
+	#section--download-cta {
+		padding: 10rem 0;
+		background-color: white;
+
+		@media screen and (min-width: shared.$screen-2xl-floor) {
+			padding-left: 50%;
+			background: white url("brand-ornaments/01.svg") 0 center no-repeat;
+			background-size: auto 60%;
+		}
+	}
+}
+
+#section--products {
+	background-color: white;
+	text-align: center;
+
+	.products {
+		display: flex;
+		flex-direction: column;
+
+		@media screen and (min-width: shared.$screen-lg-floor) {
+			flex-direction: row;
+			flex-wrap: wrap;
+		}
+	}
+
+	.product {
+		display: flex;
+		place-content: center;
+		padding: min(5rem, 10vw) min(1rem, 5vw);
+		border-bottom-width: 32px;
+		border-bottom-style: solid;
+		transition-property: border-color;
+
+		> svg {
+			max-width: 100%;
+			height: auto;
+			transition-property: transform;
+		}
+
+		&:hover > svg {
+			transform: scale(1.1);
+		}
+
+		@media screen and (min-width: shared.$screen-lg-floor) {
+			flex-basis: 50%;
+		}
+
+		@media screen and (min-width: shared.$screen-2xl-floor) {
+			flex-basis: 25%;
+		}
+
+	}
+
+	#product--fact-check-insights {
+		border-bottom-color: shared.$color--brand--fact-check-insights;
+	}
+	#product--fact-check-insights:hover {
+		border-bottom-color: shared.$color--tan-5;
+	}
+
+	#product--claim-review {
+		border-bottom-color: shared.$color--brand--claim-review;
+	}
+	#product--claim-review:hover {
+		border-bottom-color: shared.$color--blue-4;
+	}
+
+	#product--media-review {
+		border-bottom-color: shared.$color--brand--media-review;
+	}
+	#product--media-review:hover {
+		border-bottom-color: shared.$color--green-5;
+	}
+
+	#product--media-vault {
+		border-bottom-color: shared.$color--brand--media-vault;
+	}
+	#product--media-vault:hover {
+		border-bottom-color: shared.$color--orange-5;
+	}
+
+}
+
+#section--uncover {
+	position: relative;
+	color: white;
+	background-color: shared.$color--dark;
+	padding: min(5rem, 5vw) 0;
+	overflow: hidden;
+}
+
+#section--uncover aside {
+	max-width: 30ch;
+	position: relative;
+	z-index: 2;
+}
+
+#section--uncover__ornament {
+	--uncover-ornament-height: 70%;
+	--uncover-ornament-offset: calc((100% - var(--uncover-ornament-height)) / 2);
+
+	aspect-ratio: shared.$logo-mark--aspect-ratio--fact-check-insights;
+	display: block;
+	position: absolute;
+	z-index: 1;
+	right: -2rem;
+	top: var(--uncover-ornament-offset);
+	width: auto;
+	height: var(--uncover-ornament-height);
+	color: shared.$color--tan-2;
+	transition-property: color;
+
+	@media screen and (min-width: shared.$screen-2xl-floor) {
+		color: white;
+	}
+}
+
+#section--powerful-tool {
+	display: flex;
+	align-items: center;
+	place-content: center;
+	aspect-ratio: 1920 / 1314;
+	background: shared.$color--dark url("photos/cameras.jpg") center center no-repeat;
+	background-size: cover;
+
+	> aside {
+		box-sizing: content-box;
+		padding: 7vw;
+		background-color: color.adjust(shared.$color--brand--fact-check-insights);
+		max-width: 25ch;
+	}
+}
+
+#section--data-in-action {
+	background-color: shared.$color--brand--claim-review;
+
+	@media screen and (min-width: shared.$screen-2xl-floor) {
+		background-image: url("logos/claim-review-logo-mark.svg"), url("brand-ornaments/01.svg");
+		background-position: 5vw 20%, 90% 45%;
+		background-size: 15% auto, 30% auto;
+		background-repeat: no-repeat;
+	}
+
+	.case-studies {
+		display: flex;
+		gap: 1rem;
+		justify-content: center;
+		flex-direction: column;
+		align-items: center;
+
+		@media screen and (min-width: shared.$screen-2xl-floor) {
+			flex-direction: row;
+			align-items: stretch;
+		}
+	}
+
+	.case-study {
+		background-color: rgba(255, 255, 255, 0.95);
+		padding: 1rem;
+		max-width: 42rem;
+		transition-property: padding;
+
+		@media screen and (min-width: shared.$screen-2xl-floor) {
+			padding: 2rem;
+			flex: 0 1 33%;
+		}
+
+		a {
+			font-weight: shared.$font-weight--semibold;
+		}
+	}
+
+}

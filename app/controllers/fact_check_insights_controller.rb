@@ -14,4 +14,13 @@ class FactCheckInsightsController < ApplicationController
 
   sig { void }
   def highlights; end
+
+  sig { void }
+  def terms; end
+
+  sig { void }
+  def privacy; end
+
+  sig { void }
+  def optout; end
 end

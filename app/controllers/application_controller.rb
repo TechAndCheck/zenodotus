@@ -11,6 +11,18 @@ class ApplicationController < ActionController::Base
 
   sig { void }
   def index
+    if site_is_fact_check_insights?
+      # This is obviously just pretend for now.
+      claim_review_count = [1, ClaimReview.count + 10000].max
+      organization_count = rand(1..claim_review_count)
+      country_count = rand(1..[organization_count, 195].min)
+      @stats = {
+        fact_checks: claim_review_count,
+        countries: country_count,
+        organizations: organization_count,
+      }
+    end
+
     render "#{@site[:shortname]}/index"
   end
 

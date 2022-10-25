@@ -9,6 +9,7 @@ Library for consistent form layout.
 </form>
 ```
 */
+@use "shared";
 
 .form {
 	--form--spacing: 1rem;
@@ -16,20 +17,14 @@ Library for consistent form layout.
 
 	margin-top: var(--form--spacing);
 	margin-bottom: var(--form--spacing);
+
+	@include shared.demargin-edges;
 }
 
-@media screen and (min-width: 641px) {
+@media screen and (min-width: shared.$screen-md-floor) {
 	.form {
 		--form--spacing: 2rem;
 	}
-}
-
-.form:first-child {
-	margin-top: 0;
-}
-
-.form:last-child {
-	margin-bottom: 0;
 }
 
 .form--vertical {
@@ -55,7 +50,7 @@ Library for consistent form layout.
 	margin-bottom: 0;
 }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: shared.$screen-lg-floor) {
 	.form {
 		--form--fieldset-gap: 5rem;
 		--form--fieldset-header-width: 50%;
@@ -81,7 +76,7 @@ Library for consistent form layout.
 
 .fieldset__title {
 	font-size: 1.2rem;
-	font-weight: var(--font-weight--semibold);
+	font-weight: shared.$font-weight--semibold;
 	margin-bottom: 1rem;
 }
 
@@ -94,15 +89,15 @@ Library for consistent form layout.
 .field__wrapper--input label {
 	display: block;
 	margin-bottom: 0.5rem;
-	font-family: var(--font-family--sans-serif);
-	font-weight: var(--font-weight--semibold);
+	font-family: shared.$font-family--sans-serif;
+	font-weight: shared.$font-weight--semibold;
 }
 
 .field__wrapper--input input,
 .field__wrapper--input textarea,
 .field__wrapper--input select {
 	width: 100%;
-	font-family: var(--font-family--sans-serif);
+	font-family: shared.$font-family--sans-serif;
 }
 
 .field__wrapper--input input::placeholder,
@@ -111,14 +106,14 @@ Library for consistent form layout.
 .field__wrapper--input input::-webkit-input-placeholder,
 .field__wrapper--input textarea::-webkit-input-placeholder,
 .field__wrapper--input select::-webkit-input-placeholder {
-	font-family: var(--font-family--sans-serif);
+	font-family: shared.$font-family--sans-serif;
 }
 
 .field__description {
 	font-size: 0.9rem;
 	color: gray;
 	margin-top: 0.5rem;
-	font-family: var(--font-family--sans-serif);
+	font-family: shared.$font-family--sans-serif;
 }
 
 .checkbox {
@@ -133,7 +128,7 @@ Library for consistent form layout.
 }
 
 .checkbox label {
-	font-family: var(--font-family--sans-serif);
+	font-family: shared.$font-family--sans-serif;
 }
 
 .checkbox input {
@@ -143,13 +138,13 @@ Library for consistent form layout.
 /* Errors */
 
 .field_with_errors label {
-	color: var(--color--mood--error);
+	color: shared.$color--mood--error;
 }
 
 .field__error-messages {
-	background-color: var(--color--mood--error);
+	background-color: shared.$color--mood--error;
 	color: white;
-	font-family: var(--font-family--sans-serif);
+	font-family: shared.$font-family--sans-serif;
 }
 
 .field__wrapper--input .field__error-messages {

@@ -77,4 +77,29 @@ module ApplicationHelper
   def generate_class_list_string(class_definition)
     generate_class_list(class_definition).join(" ")
   end
+
+  # Generate an SVG from our SVG library.
+  #
+  # Example: `use_svg("sample-icon", title: "Descriptive title")`
+  # Output:
+  # ```
+  # <svg>
+  #   <title>Descriptive title</title>
+  #   <use xlink:href="#svg-sample-icon">
+  # </svg>
+  # ```
+  #
+  # Note that `id` is a required positional parameter, but all remaining parameters are keywords
+  # and optional.
+  #
+  # @param id String The ID of the desired SVG icon from the `_svg_library.html.erb` template.
+  # @param svg_attrs Hash Optional hash of parameters for the SVG element.
+  # @param title String Optional title content for accessibility.
+  # @param title_attrs Hash Optional hash of parameters for the title element.
+  # @returns String
+  def use_svg(id, svg_attrs: {}, title: nil, title_attrs: {})
+    title_tag = title.present? ? tag.title(title, **title_attrs) : nil
+    use_tag = tag.use "xlink:href": "#svg-#{id}"
+    tag.svg "#{title_tag}#{use_tag}".html_safe, **svg_attrs
+  end
 end
