@@ -169,7 +169,7 @@
 	> aside {
 		box-sizing: content-box;
 		padding: 7vw;
-		background-color: color.adjust(shared.$color--brand--fact-check-insights);
+		background-color: color.adjust(shared.$color--brand--fact-check-insights, $alpha: -0.08);
 		max-width: 25ch;
 	}
 }
