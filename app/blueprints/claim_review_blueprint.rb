@@ -2,7 +2,6 @@ class ClaimReviewBlueprint < Blueprinter::Base
   identifier :id
 
   fields :url
-  field :date_published, name: :datePublished
   field :claim_reviewed, name: :claimReviewed
 
   field :@context do |claim_review|
@@ -11,6 +10,10 @@ class ClaimReviewBlueprint < Blueprinter::Base
 
   field :@type do |claim_review|
     "ClaimReview"
+  end
+
+  field :date_published, name: :datePublished do |claim_review|
+    claim_review.date_published.strftime("%Y-%m-%d")
   end
 
   field :author do |claim_review|

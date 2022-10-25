@@ -2,7 +2,6 @@ class MediaReviewBlueprint < Blueprinter::Base
   identifier :id
 
   fields :url
-  field :date_published, name: :datePublished
   field :media_authenticity_category, name: :mediaAuthenticityCategory
   field :original_media_context_description, name: :originalMediaContextDescription
 
@@ -12,6 +11,10 @@ class MediaReviewBlueprint < Blueprinter::Base
 
   field :@type do |media_review|
     "MediaReview"
+  end
+
+  field :date_published, name: :datePublished do |media_review|
+    media_review.date_published.strftime("%Y-%m-%d")
   end
 
   field :author do |media_review|
