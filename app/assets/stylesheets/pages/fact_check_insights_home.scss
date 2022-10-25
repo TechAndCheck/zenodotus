@@ -130,12 +130,12 @@
 	background-color: shared.$color--dark;
 	padding: min(5rem, 5vw) 0;
 	overflow: hidden;
-}
 
-#section--uncover aside {
-	max-width: 30ch;
-	position: relative;
-	z-index: 2;
+	aside {
+		max-width: 30ch;
+		position: relative;
+		z-index: 2;
+	}
 }
 
 #section--uncover__ornament {
