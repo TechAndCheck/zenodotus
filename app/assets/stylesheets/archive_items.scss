@@ -50,6 +50,7 @@ just to examine the template files unless/until we capture it better here.
 </div>
 ```
 */
+@use "shared";
 
 .archive-items {
 	--archive-item--external-spacing: 5rem;
@@ -67,7 +68,7 @@ just to examine the template files unless/until we capture it better here.
 	--archive-item--external-spacing: 2rem;
 }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: shared.$screen-lg-floor) {
 	.archive-items--masonry {
 		flex-direction: row;
 		flex-wrap: wrap;
@@ -83,7 +84,7 @@ For browsers that support it, use a native CSS Masonry layout. This is currently
 may never be widely adopted. If you're reading this in a future when it's been abandoned, delete.
 */
 @supports (grid-template-rows: masonry) {
-	@media screen and (min-width: 769px) {
+	@media screen and (min-width: shared.$screen-lg-floor) {
 		.archive-items--masonry {
 			flex: none;
 			display: grid;
@@ -101,7 +102,7 @@ may never be widely adopted. If you're reading this in a future when it's been a
 	--archive-item--body-indentation: 0;
 }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: shared.$screen-lg-floor) {
 	.archive-item:not(.archive-item--boxed):not(.archive-items--boxed-items .archive-item) {
 		--archive-item--body-indentation: calc(var(--archive-item--author-profile-image-size) + var(--archive-item--author-profile-image-gap));
 	}
@@ -148,7 +149,7 @@ may never be widely adopted. If you're reading this in a future when it's been a
 
 .archive-item[data-publishing-platform="youtube"] .archive-item__body-caption {
 	font-size: 1.3rem;
-	font-weight: var(--font-weight--normal);
+	font-weight: shared.$font-weight--normal;
 }
 
 .archive-item[data-archive-caption-collapse-mode-value="collapsed"] .archive-item__body-caption-content {
@@ -161,7 +162,7 @@ may never be widely adopted. If you're reading this in a future when it's been a
 	it seems that line-clamp acts unexpectedly when there are multiple children of the clamped
 	element. So, for now max-height is unversal and all clamping really gets us is the ellipsis.
 	*/
-	max-height: calc(1em * var(--line-height--base) * var(--collapsed-lines-of-text));
+	max-height: calc(1em * shared.$line-height--base * var(--collapsed-lines-of-text));
 }
 
 @supports (-webkit-line-clamp: 2) {
@@ -173,7 +174,7 @@ may never be widely adopted. If you're reading this in a future when it's been a
 }
 
 .archive-item__body-caption-toggler {
-	font-weight: var(--font-weight--semibold);
+	font-weight: shared.$font-weight--semibold;
 	font-size: 0.9em;
 	text-decoration: underline;
 }
@@ -204,7 +205,7 @@ may never be widely adopted. If you're reading this in a future when it's been a
 	color: white;
 	border-radius: 5px;
 	font-size: 0.8rem;
-	font-weight: var(--font-weight--semibold);
+	font-weight: shared.$font-weight--semibold;
 	padding: 0.25em 0.5em;
 }
 
@@ -258,9 +259,9 @@ may never be widely adopted. If you're reading this in a future when it's been a
 }
 
 .archive-item__metadatum__label {
-	font-weight: var(--font-weight--semibold);
+	font-weight: shared.$font-weight--semibold;
 }
 
 .archive-item__metadatum__value {
-	font-weight: var(--font-weight--light);
+	font-weight: shared.$font-weight--light;
 }

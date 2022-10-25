@@ -1,3 +1,5 @@
+@use "shared";
+
 body * {
 	transition-property: none;
 	transition-duration: var(--transition-duration);
@@ -6,8 +8,6 @@ body * {
 
 p {
 	margin-bottom: 1em;
-}
 
-p:last-child {
-	margin-bottom: 0;
+	@include shared.demargin-edges;
 }

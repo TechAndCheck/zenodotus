@@ -1,3 +1,5 @@
+@use "shared";
+
 .author {
 	--author--external-spacing: 5rem;
 	--author--internal-spacing: 1rem;
@@ -13,7 +15,7 @@
 	transition-property: gap;
 }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: shared.$screen-lg-floor) {
 	.author {
 		--author--profile-image-gap: 2rem;
 		--author--profile-image-size: 10rem;
@@ -48,15 +50,15 @@ a.author:hover .author__username {
 }
 
 .author__display-name {
-	font-weight: var(--font-weight--semibold);
+	font-weight: shared.$font-weight--semibold;
 }
 
 .author__username {
-	font-weight: var(--font-weight--light);
+	font-weight: shared.$font-weight--light;
 }
 
 .author__metadata {
-	font-weight: var(--font-weight--light);
+	font-weight: shared.$font-weight--light;
 	font-size: 0.9rem;
 }
 

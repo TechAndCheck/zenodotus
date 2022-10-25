@@ -1,0 +1,24 @@
+@mixin demargin-edges {
+	&:first-child {
+		margin-top: 0;
+	}
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+@mixin underline-on {
+	text-decoration: underline;
+
+	&:hover {
+		text-decoration: none;
+	}
+}
+
+@mixin underline-off {
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}

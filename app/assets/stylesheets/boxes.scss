@@ -13,6 +13,7 @@ Library for consistent floating boxes with a drop shadow.
 This styling is also used in other places, such as the `boxed` variants of archive items. A future
 improvement would be to use SCSS mixins so this styling could be applied directly.
 */
+@use "shared";
 
 .box {
 	--box--external-spacing: 0;
@@ -21,7 +22,7 @@ improvement would be to use SCSS mixins so this styling could be applied directl
 	padding: var(--box--internal-spacing);
 	background-color: white;
 	border: 1px solid lightgray;
-	box-shadow: var(--shadow--3);
+	box-shadow: shared.$shadow--3;
 
 	margin: var(--box--external-spacing) auto;
 
@@ -29,23 +30,23 @@ improvement would be to use SCSS mixins so this styling could be applied directl
 }
 
 .box--sm {
-	max-width: var(--screen-sm-floor);
+	max-width: shared.$screen-sm-floor;
 }
 
 .box--md {
-	max-width: var(--screen-md-floor);
+	max-width: shared.$screen-md-floor;
 }
 
 .box--lg {
-	max-width: var(--screen-lg-floor);
+	max-width: shared.$screen-lg-floor;
 }
 
 .box--xl {
-	max-width: var(--screen-xl-floor);
+	max-width: shared.$screen-xl-floor;
 }
 
 .box--2xl {
-	max-width: var(--screen-2xl-floor);
+	max-width: shared.$screen-2xl-floor;
 }
 
 .box__title {
@@ -65,7 +66,7 @@ Miniform boxes are tweaked for small, standlone forms such as log in or forgot p
 	text-align: center;
 }
 
-@media screen and (min-width: 641px) {
+@media screen and (min-width: shared.$screen-md-floor) {
 	.box--miniform {
 		--box--external-spacing: 2rem;
 		--box--internal-spacing: 2rem;
@@ -82,7 +83,7 @@ Example: a 404 page.
 	--box--internal-spacing: 1rem;
 }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: shared.$screen-lg-floor) {
 	.box--message {
 		--box--external-spacing: 4rem;
 		--box--internal-spacing: 2rem;

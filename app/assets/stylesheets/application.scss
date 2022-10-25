@@ -1,0 +1,37 @@
+@use "shared";
+
+// Generic components
+@use "alerts";
+@use "base";
+@use "boxes";
+@use "buttons";
+@use "colors";
+@use "containers";
+@use "fonts";
+@use "footer";
+@use "forms";
+@use "header";
+@use "icons";
+@use "images";
+@use "themes";
+@use "typography";
+
+// Entity components
+@use "archive_items";
+@use "author_archives";
+@use "authors";
+
+// Pages
+@use "pages/fact_check_insights_home";
+
+#site-wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+#site-main {
+	flex-grow: 1;
+	position: relative;
+	z-index: 1;
+}

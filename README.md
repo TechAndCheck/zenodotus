@@ -138,8 +138,8 @@ An open-source JavaScript package manager used to install/manage JavaScript depe
    127.0.0.1	vault.factcheckinsights.local
    ```
    - These are just the suggested defaults. Feel free to replace this with an alternative routing method or different URLs.
-1. Bootstrap Tailwind: `rails tailwindcss:build`
-1. In your shell, run `rails s`
+1. Bootstrap assets: `rails assets:precompile`
+1. In your shell, run `rails s` (or `./bin/dev` if you will be editing the styles or markup)
 
 ✨ The app should now be running and available at [http://www.factcheckinsights.local:3000](http://www.factcheckinsights.local:3000) (Insights) and [http://vault.factcheckinsights.local:3000](http://vault.factcheckinsights.local:3000) (MediaVault), or whatever URLs you chose. If not, contact @cguess or another developer.
 

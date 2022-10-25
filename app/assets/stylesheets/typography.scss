@@ -1,0 +1,98 @@
+@use "shared";
+
+html,
+body {
+	color: shared.$color--dark;
+	background-color: white; /* While not typography, relevant for contrast with text color. */
+	font-family: shared.$font-family--serif;
+	font-weight: shared.$font-weight--normal;
+	font-size: shared.$font-size--base;
+	line-height: shared.$line-height--base;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+	font-family: shared.$font-family--serif;
+	font-weight: shared.$font-weight--semibold;
+	line-height: 1.25;
+	margin-bottom: 1em;
+}
+h1:last-child,
+h2:last-child,
+h3:last-child,
+h4:last-child,
+h5:last-child,
+h6:last-child,
+.h1:last-child,
+.h2:last-child,
+.h3:last-child,
+.h4:last-child,
+.h5:last-child,
+.h6:last-child {
+	margin-bottom: 0;
+}
+
+h1,
+.h1 {
+	font-size: calc(shared.$font-size--base * 3.5);
+}
+
+h2,
+.h2 {
+	font-size: calc(shared.$font-size--base * 2.5);
+}
+
+h3,
+.h3 {
+	font-size: calc(shared.$font-size--base * 2);
+}
+
+h4,
+.h4 {
+	font-size: calc(shared.$font-size--base * 1.667);
+}
+
+h5,
+.h5 {
+	font-size: shared.$font-size--base;
+}
+
+h6,
+.h6 {
+	font-family: shared.$font-family--sans-serif;
+	font-size: calc(shared.$font-size--base * 0.833);
+}
+
+.b1 {
+	font-size: calc(shared.$font-size--base * 1.5);
+}
+
+.b2 {
+	font-size: calc(shared.$font-size--base * 1.25);
+}
+
+a {
+	text-decoration: underline;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+.color--success {
+	color: shared.$color--mood--success;
+}
+
+.color--danger {
+	color: shared.$color--mood--error;
+}

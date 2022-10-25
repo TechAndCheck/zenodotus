@@ -1,13 +1,15 @@
+@use "shared";
+
 .site--fact_check_insights {
-	--site-header--logo--aspect-ratio: var(--logo--aspect-ratio--fact-check-insights);
-	--site-header--logo-mark--aspect-ratio: var(--logo-mark--aspect-ratio--fact-check-insights);;
+	--site-header--logo--aspect-ratio: #{shared.$logo--aspect-ratio--fact-check-insights};
+	--site-header--logo-mark--aspect-ratio: #{shared.$logo-mark--aspect-ratio--fact-check-insights};
 	--site-header--logo--preferred-width: auto;
 	--site-header--logo--preferred-height: 74px;
 }
 
 .site--media_vault {
-	--site-header--logo--aspect-ratio: var(--logo--aspect-ratio--media-vault);
-	--site-header--logo-mark--aspect-ratio: var(--logo-mark--aspect-ratio--media-vault);;
+	--site-header--logo--aspect-ratio: #{shared.$logo--aspect-ratio--media-vault};
+	--site-header--logo-mark--aspect-ratio: #{shared.$logo-mark--aspect-ratio--media-vault};
 	--site-header--logo--preferred-width: auto;
 	--site-header--logo--preferred-height: 82px;
 }
@@ -18,10 +20,10 @@
 	position: relative;
 	z-index: 10;
 	background-color: var(--color--site-theme);
-	font-family: var(--font-family--sans-serif);
-	color: var(--color-dark);
+	font-family: shared.$font-family--sans-serif;
+	color: shared.$color--dark;
 
-	border-bottom: 1px solid var(--color--dark);
+	border-bottom: 1px solid shared.$color--dark;
 	padding: var(--site-header--internal-spacing);
 
 	transition-property: padding;
@@ -35,7 +37,7 @@
 	display: block;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: shared.$screen-lg-ceiling) {
 	body:not(.open-site-nav) #site-nav--full {
 		display: none;
 	}
@@ -61,7 +63,7 @@
 	}
 
 	#site-nav--condensed .site-nav__logo__type {
-		font-family: var(--font-family--serif);
+		font-family: shared.$font-family--serif;
 		line-height: 1.2;
 	}
 
@@ -85,7 +87,7 @@
 	}
 
 	.open-site-nav #site-nav__account-menu {
-		border: 1px solid var(--color--dark);
+		border: 1px solid shared.$color--dark;
 		background: white;
 		padding: 0.5rem;
 		margin-top: 0;
@@ -111,7 +113,7 @@
 		height: var(--site-nav--mobile-menu-icon-weight);
 		width: var(--site-nav--mobile-menu-icon-size);
 		border-radius: 2px;
-		background-color: var(--color--dark);
+		background-color: shared.$color--dark;
 		content: '';
 		transition: all var(--transition-duration);
 	}
@@ -148,7 +150,7 @@
 	}
 }
 
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: shared.$screen-xl-floor) {
 	#site-nav--condensed {
 		display: none;
 	}
@@ -243,7 +245,7 @@
 	}
 }
 
-@media screen and (min-width: 1536px) {
+@media screen and (min-width: shared.$screen-2xl-ceiling) {
 	.site-nav__links .hideable {
 		display: inline;
 	}
