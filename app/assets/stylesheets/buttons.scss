@@ -25,7 +25,7 @@ elements, but the examples will just use `<button>`.
 	--btn-container--external-spacing: 3rem;
 }
 
-.btn_container {
+.btn-container {
 	margin: var(--btn-container--external-spacing) 0;
 
 	@include shared.demargin-edges;
