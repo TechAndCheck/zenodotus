@@ -117,6 +117,7 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     bcrypt (3.1.18)
     bindex (0.8.1)
+    blueprinter (0.25.3)
     bootsnap (1.13.0)
       msgpack (~> 1.2)
     builder (3.2.4)
@@ -485,6 +486,7 @@ PLATFORMS
 DEPENDENCIES
   aws-sdk-s3
   birdsong (= 0.1.0)!
+  blueprinter
   bootsnap (>= 1.4.4)
   bullet
   byebug
