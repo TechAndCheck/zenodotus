@@ -134,7 +134,9 @@ media_review = MediaReview.create(
   author: {
     "@type": "Organization",
     "name": "realfact",
-    "url": "https://realfact.com"
+    "url": "https://realfact.com",
+    "image": "https://i.kym-cdn.com/photos/images/newsfeed/001/207/210/b22.jpg",
+    "sameAs": "https://twitter.com/realfact"
   },
   media_authenticity_category: "TransformedContent",
   original_media_context_description: "Star Wars Ipsum",
@@ -178,9 +180,14 @@ MediaReview.create(
     "url": "https://realfact.com"
   },
   media_authenticity_category: "TransformedContent",
-  original_media_context_description: "Star Wars Ipsum",
+  original_media_context_description: "Batman Ipsum",
   item_reviewed: {
     "@type": "MediaReviewItem",
+    "creator": {
+      "@type": "Person",
+      "name": "Name Nameson",
+      "url": "https://user2.com/"
+    },
     "embeddedTextCaption": "But we’ve met before. That was a long time ago, I was a kid at St. Swithin’s, It used to be funded by the Wayne Foundation",
     "interpretedAsClaim": {
       "@type": "Claim",
@@ -214,6 +221,11 @@ MediaReview.create(
   media_authenticity_category: "TransformedContent",
   item_reviewed: {
     "@type": "MediaReviewItem",
+    "creator": {
+      "@type": "Person",
+      "name": "User",
+      "url": "https://user.com/"
+    },
     "interpretedAsClaim": {
       "@type": "Claim",
       "description": "claim description"
@@ -245,19 +257,20 @@ ClaimReview.create(
   date_published: "2021-02-01",
   item_reviewed: {
     "@type": "Claim",
+    "datePublished": "2021-01-30",
+    "name": "Star Wars claim",
     "author": {
       "@type": "Person",
       "jobTitle": "On the internet",
       "name": "Viral image"
     },
-    "datePublished": "2021-01-30"
   },
   review_rating: {
     "@type": "Rating",
-    "alternateName": "False",
-    "bestRating": "9",
     "ratingValue": "4",
-    "worstRating": "0"
+    "bestRating": "5",
+    "image": "https://static.politifact.com/politifact/rulings/meter-false.jpg",
+    "alternateName": "False"
   },
   url: "https://www.realfact.com/factchecks/2021/feb/03/starwars",
   media_review: media_review
