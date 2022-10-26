@@ -17,11 +17,17 @@ class FactCheckInsightsController < ApplicationController
           }, status: :unauthorized
           return
         end
-
         send_data(generate_json, type: "application/json", filename: "fact_check_insights.json")
       end
 
       format.zip do
+        unless user_signed_in? && current_user.can_access_fact_check_insights?
+          render json: {
+            error: "You do not have permission to view that resource."
+          }, status: :unauthorized
+          return
+        end
+        send_data(generate_csv_zip, type: "application/zip", filename: "fact_check_insights.zip")
       end
     end
   end
@@ -43,6 +49,7 @@ class FactCheckInsightsController < ApplicationController
 
 private
 
+  # Generate a JSON-formatted string of ClaimReview and MediaReview data
   sig { returns(String) }
   def generate_json
     all_claim_reviews = ClaimReview.all.map { |claim_review| JSON.parse(claim_review.render_for_export) }
@@ -56,9 +63,20 @@ private
     JSON.pretty_generate({ "claimReviews": all_claim_reviews, "mediaReviews": all_media_reviews, "meta": metadata })
   end
 
-  sig { returns(T::Boolean) }
+  # Generate a CSV-formatted string of ClaimReview and MediaReview data
+  sig { returns(String) }
   def generate_csv_zip
-    # TODO: Fill this out with real data. #275
-    true
+    compressed_filestream = Zip::OutputStream.write_buffer(::StringIO.new("")) do |zos|
+      zos.put_next_entry "claim_reviews.csv"
+      claim_review_csv = ClaimReview.all.to_comma
+      zos.print claim_review_csv
+
+      zos.put_next_entry "media_reviews.csv"
+      media_review_csv = MediaReview.all.to_comma
+      zos.print media_review_csv
+    end
+
+    compressed_filestream.rewind
+    compressed_filestream.read
   end
 end
