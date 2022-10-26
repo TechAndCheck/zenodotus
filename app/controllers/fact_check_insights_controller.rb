@@ -23,6 +23,17 @@ class FactCheckInsightsController < ApplicationController
           filename: "fact_check_insights_data.json"
         )
       end
+      format.zip do
+        unless user_signed_in? && current_user.can_access_fact_check_insights?
+          render "You do not have permission to view that resource.", status: :unauthorized
+          return
+        end
+
+        send_data(generate_csv_zips,
+          type: "application/zip",
+          filename: "fact_check_insights_data.zip"
+        )
+      end
     end
   end
 
@@ -47,5 +58,11 @@ private
   def generate_json
     # TODO: Fill this out with real data. #275
     {}.to_json
+  end
+
+  sig { returns(T::Boolean) }
+  def generate_csv_zips
+    # TODO: Fill this out with real data. #275
+    true
   end
 end
