@@ -1,0 +1,12 @@
+@use "shared";
+
+#page--fact-check-insights--download {
+	background-color: shared.$color--brand--fact-check-insights;
+
+	@media screen and (min-width: shared.$screen-2xl-floor) {
+		#site-main {
+			background: url("brand-ornaments/02.svg") 90% 80% no-repeat;
+			background-size: 25% auto;
+		}
+	}
+}
