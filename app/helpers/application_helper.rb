@@ -102,4 +102,24 @@ module ApplicationHelper
     use_tag = tag.use "xlink:href": "#svg-#{id}"
     tag.svg "#{title_tag}#{use_tag}".html_safe, **svg_attrs
   end
+
+  # Provided a Twitter username, returns an icon-prefixed link to the Twitter bio.
+  #
+  # @param username String
+  # @returns String Icon-prefixed link to the Twitter account
+  def twitter_link_to(username)
+    icon = use_svg "twitter", svg_attrs: { class: "icon" }
+    label = tag.span "@#{username}"
+    link_to "#{icon}#{label}".html_safe, "https://twitter.com/#{username}", class: "icon-prefixed"
+  end
+
+  # Provided an email address, returns an icon-prefixed mailto link.
+  #
+  # @param email String
+  # @returns String Icon-prefixed mailto link
+  def email_link_to(email)
+    icon = use_svg "email", svg_attrs: { class: "icon" }
+    label = tag.span email
+    mail_to email, "#{icon}#{label}".html_safe, class: "icon-prefixed"
+  end
 end
