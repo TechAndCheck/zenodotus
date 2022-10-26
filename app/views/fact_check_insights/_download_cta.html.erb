@@ -1,6 +1,10 @@
-<div id="section--download-cta" class="<%= section_variant if defined?(section_variant) %>">
-	<h2>Download the Fact-Check Insights dataset to uncover trends and track innovations around the world.</h2>
-	<div class="btn-container">
-		<%= link_to "Download", fact_check_insights_download_path, class: "btn btn--lg #{button_variant if defined?(button_variant)}" %>
+<div class="download-cta full-bleed <%= section_variant if defined?(section_variant) %>">
+	<div class="contain">
+		<div class="download-cta__inner">
+			<h2>Download the Fact-Check Insights dataset to uncover trends and track innovations around the world.</h2>
+			<div class="btn-container">
+				<%= link_to "Download", fact_check_insights_download_path, class: "btn btn--lg #{button_variant if defined?(button_variant)}" %>
+			</div>
+		</div>
 	</div>
 </div>

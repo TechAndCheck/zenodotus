@@ -1,12 +1,11 @@
-<% @page_id = "fact-check-insights--contact" %>
 <% @title_tag = "Contact" %>
 
-<div class="flex flex-col items-stetch lg:items-center lg:flex-row-reverse gap-24 py-10 lg:py-20">
+<div class="full-bleed flex flex-col items-stetch lg:items-center lg:flex-row-reverse gap-24 p-10 lg:p-20">
 	<div class="lg:basis-2/4">
 		<h1>Let's stay in touch</h1>
-		<p class="b1">For questions about the Fact-Check Insights data, please email us at <%= mail_to "info@factcheckinsights.org" %>.</p>
+		<p class="b1 max-w-2xl">For questions about the Fact-Check Insights data, please email us at <%= mail_to "info@factcheckinsights.org" %>.</p>
 	</div>
-	<div class="lg:basis-2/4">
-		<%= image_tag "brand-ornaments/02.svg", width: "100%", height: "auto" %>
+	<div class="lg:basis-2/4 flex justify-center">
+		<%= image_tag "brand-ornaments/02.svg", width: "100%", height: "auto", class: "max-w-2xl" %>
 	</div>
 </div>

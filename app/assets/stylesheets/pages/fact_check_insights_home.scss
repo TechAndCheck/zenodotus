@@ -1,7 +1,7 @@
 @use "shared";
 @use "sass:color";
 
-#page--fact-check-insights--home {
+#page--fact_check_insights--index {
 	--spacing--normal: 2rem;
 	--spacing--roomy: 2rem;
 
@@ -12,7 +12,6 @@
 }
 
 #section--intro {
-	background-color: shared.$color--brand--fact-check-insights;
 	transition-property: padding;
 
 	.insights-stats {
@@ -52,17 +51,22 @@
 
 }
 
-#page--fact-check-insights--home {
-	#section--download-cta {
-		background-color: white;
+.download-cta {
+	#page--fact_check_insights--index & {
 		padding-top: var(--spacing--roomy);
 		padding-bottom: var(--spacing--roomy);
 		transition-property: padding;
+		background-color: white;
 
 		@media screen and (min-width: shared.$screen-2xl-floor) {
-			padding-left: 50%;
-			background: white url("brand-ornaments/01.svg") 0 center no-repeat;
-			background-size: auto 60%;
+			background: white url("brand-ornaments/01.svg") 10% center no-repeat;
+			background-size: auto 80%;
+
+			.download-cta__inner {
+				margin-left: 45%;
+				padding: 0.5rem;
+				background-color: rgba(255, 255, 255, 0.95);
+			}
 		}
 	}
 }
@@ -174,7 +178,6 @@
 }
 
 #section--accessing {
-	background-color: shared.$color--brand--fact-check-insights;
 }
 
 #section--powerful-tool {
