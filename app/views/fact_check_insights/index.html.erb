@@ -1,6 +1,4 @@
-<% @page_id = "fact-check-insights--home" %>
-
-<div id="section--intro" class="full-bleed bg--fact-check-insights py-20">
+<div id="section--intro" class="full-bleed py-10 lg:py-20">
 	<div class="contain">
 		<div class="lg:flex lg:items-center lg:justify-between lg:gap-20">
 			<h1 class="lg:basis-2/4">Fact-Check Insights puts the power of a global database of fact-checks at your fingertips.</h1>
@@ -9,7 +7,7 @@
 			</div>
 		</div>
 
-		<div class="lg:flex lg:items-center lg:justify-between lg:gap-20 my-20">
+		<div class="lg:flex lg:items-center lg:justify-between lg:gap-20 lg:mb-20 mb-10">
 			<p class="b1 lg:basis-2/4">Fact-Check Insights is a powerful and groundbreaking resource for researchers, journalists, technologists and others studying the fight against political falsehoods and online misinformation. Our comprehensive global database contains structured fact-checking data for tens of thousands of claims from politicians and social media posts that have been analyzed and rated by independent fact-checkers.</p>
 			<div class="insights-stats lg:basis-2/4">
 				<div class="insights-stat">
@@ -37,14 +35,14 @@
 			</div>
 		</div>
 
-		<div class="lg:flex lg:items-center lg:justify-between lg:gap-20 my-20">
-			<p class="b1 lg:basis-2/4">This rich, important dataset grows every day, providing key data about articles from hundreds of fact-checkers around the world, including well-known organizations such as The Washington Post, Africa Check, Boom, Full Fact, Chequeado and Pagella Politica.</p>
+		<div class="lg:flex lg:items-center lg:justify-between lg:gap-20 lg:mb-20 mb-10">
+			<p class="b1 lg:basis-2/4 mb-0">This rich, important dataset grows every day, providing key data about articles from hundreds of fact-checkers around the world, including well-known organizations such as The Washington Post, Africa Check, Boom, Full Fact, Chequeado and Pagella Politica.</p>
 			<div class="masked-image masked-image--media-review hidden lg:block lg:basis-2/4 lg:max-w-xl">
 				<%= image_tag "photos/subway.jpg" %>
 			</div>
 		</div>
 
-		<div class="lg:flex lg:items-center lg:justify-between lg:gap-20 my-20">
+		<div class="lg:flex lg:items-center lg:justify-between lg:gap-20 lg:mb-20">
 			<div class="masked-image masked-image--claim-review hidden lg:block lg:basis-2/4 lg:max-w-md">
 				<%= image_tag "photos/newspaper-room.jpg" %>
 			</div>
@@ -55,7 +53,6 @@
 
 <%= render partial: "fact_check_insights/download_cta", locals: {
 	button_variant: "btn--reversed",
-	section_variant: "bg--white",
 } %>
 
 <section id="section--products" class="full-bleed">
@@ -107,7 +104,7 @@
 	<%= use_svg("fact-check-insights-logo-mark", svg_attrs: { id: "section--uncover__ornament" }) %>
 </section>
 
-<section id="section--accessing" class="full-bleed bg--fact-check-insights">
+<section id="section--accessing" class="full-bleed">
 	<div class="contain">
 		<div class="lg:flex">
 			<div class="lg:basis-2/4 lg:shrink-0 py-10 lg:py-20 pr-0 lg:pr-20 border-black border-b lg:border-r lg:border-b-0">
@@ -126,7 +123,7 @@
 	<aside class="h1">Fact-Check Insights is a powerful tool in the fight against political falsehoods and online misinformation.</aside>
 </section>
 
-<section id="section--data-in-action" class="full-bleed py-20 b2">
+<section id="section--data-in-action" class="full-bleed b2 py-10 lg:py-20">
 	<div class="contain">
 		<div class="max-w-2xl justify-self-center mb-20">
 			<h2>Data in Action</h2>

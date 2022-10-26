@@ -13,7 +13,6 @@
 @use "header";
 @use "icons";
 @use "images";
-@use "themes";
 @use "typography";
 
 // Entity components
@@ -23,6 +22,7 @@
 
 // Pages
 @use "pages/fact_check_insights_home";
+@use "pages/fact_check_insights_download";
 
 #site-wrapper {
 	display: flex;

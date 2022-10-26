@@ -8,6 +8,7 @@
 //    reassigned within the browser. They're useful for immutable valuesl (media breakpoints,
 //    colors, etc.) and have the advantage of being usably by things like SCSS functions, like
 //    `color.adjust($brand-blue, $alpha: -0.1)`.
+@use "sass:math";
 
 // SCSS Versions of relevant variables
 
@@ -127,14 +128,14 @@ $font-weight--black: 900;      /* AVOID for custom fonts (file size) */
 $font-weight--extrablack: 950; /* AVOID for custom fonts (file size) */
 
 // Logos
-$logo--aspect-ratio--fact-check-insights: 399 / 112;
-$logo-mark--aspect-ratio--fact-check-insights: 229 / 138;
-$logo--aspect-ratio--media-vault: 240 / 107;
-$logo-mark--aspect-ratio--media-vault: 140 / 138;
-$logo--aspect-ratio--claim-review: 240 / 124;
-$logo-mark--aspect-ratio--claim-review: 102 / 137;
-$logo--aspect-ratio--media-review: 261 / 115;
-$logo-mark--aspect-ratio--media-review: 126 / 128;
+$logo--aspect-ratio--fact-check-insights: math.div(399, 112);
+$logo-mark--aspect-ratio--fact-check-insights: math.div(229, 138);
+$logo--aspect-ratio--media-vault: math.div(240, 107);
+$logo-mark--aspect-ratio--media-vault: math.div(140, 138);
+$logo--aspect-ratio--claim-review: math.div(240, 124);
+$logo-mark--aspect-ratio--claim-review: math.div(102, 137);
+$logo--aspect-ratio--media-review: math.div(261, 115);
+$logo-mark--aspect-ratio--media-review: math.div(126, 128);
 
 // CSS Variables
 :root {

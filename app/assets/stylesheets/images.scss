@@ -1,10 +1,10 @@
 @use "shared";
 @use "sass:math";
 
-$fact-check-insights--aspect-ratio: 235 / 153;
-$media-vault--aspect-ratio: 155 / 153;
-$claim-review--aspect-ratio: 115 / 153;
-$media-review--aspect-ratio: 137 / 153;
+$fact-check-insights--aspect-ratio: math.div(235, 153);
+$media-vault--aspect-ratio: math.div(155, 153);
+$claim-review--aspect-ratio: math.div(115, 153);
+$media-review--aspect-ratio: math.div(137, 153);
 
 $widest-aspect-ratio: math.max(
 	$fact-check-insights--aspect-ratio,
@@ -42,21 +42,21 @@ $tallest-aspect-ratio: math.min(
 }
 
 .masked-image--fact-check-insights {
-	aspect-ratio: 235 / 153;
+	aspect-ratio: $fact-check-insights--aspect-ratio;
 	mask-image: url("masks/fact-check-insights-mask.svg");
 }
 
 .masked-image--media-vault {
-	aspect-ratio: 155 / 153;
+	aspect-ratio: $media-vault--aspect-ratio;
 	mask-image: url("masks/media-vault-mask.svg");
 }
 
 .masked-image--claim-review {
-	aspect-ratio: 115 / 153;
+	aspect-ratio: $claim-review--aspect-ratio;
 	mask-image: url("masks/claim-review-mask.svg");
 }
 
 .masked-image--media-review {
-	aspect-ratio: 137 / 153;
+	aspect-ratio: $media-review--aspect-ratio;
 	mask-image: url("masks/media-review-mask.svg");
 }

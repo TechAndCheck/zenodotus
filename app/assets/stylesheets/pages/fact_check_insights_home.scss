@@ -1,7 +1,19 @@
 @use "shared";
 @use "sass:color";
 
+#page--fact_check_insights--index {
+	--spacing--normal: 2rem;
+	--spacing--roomy: 2rem;
+
+	@media screen and (min-width: shared.$screen-2xl-floor) {
+		--spacing--normal: 5rem;
+		--spacing--roomy: 10rem;
+	}
+}
+
 #section--intro {
+	transition-property: padding;
+
 	.insights-stats {
 		--stat--spacing: 2rem;
 
@@ -39,15 +51,22 @@
 
 }
 
-#page--fact-check-insights--home {
-	#section--download-cta {
-		padding: 10rem 0;
+.download-cta {
+	#page--fact_check_insights--index & {
+		padding-top: var(--spacing--roomy);
+		padding-bottom: var(--spacing--roomy);
+		transition-property: padding;
 		background-color: white;
 
 		@media screen and (min-width: shared.$screen-2xl-floor) {
-			padding-left: 50%;
-			background: white url("brand-ornaments/01.svg") 0 center no-repeat;
-			background-size: auto 60%;
+			background: white url("brand-ornaments/01.svg") 10% center no-repeat;
+			background-size: auto 80%;
+
+			.download-cta__inner {
+				margin-left: 45%;
+				padding: 0.5rem;
+				background-color: rgba(255, 255, 255, 0.95);
+			}
 		}
 	}
 }
@@ -130,12 +149,12 @@
 	background-color: shared.$color--dark;
 	padding: min(5rem, 5vw) 0;
 	overflow: hidden;
-}
 
-#section--uncover aside {
-	max-width: 30ch;
-	position: relative;
-	z-index: 2;
+	aside {
+		max-width: 30ch;
+		position: relative;
+		z-index: 2;
+	}
 }
 
 #section--uncover__ornament {
@@ -158,6 +177,9 @@
 	}
 }
 
+#section--accessing {
+}
+
 #section--powerful-tool {
 	display: flex;
 	align-items: center;
@@ -169,13 +191,14 @@
 	> aside {
 		box-sizing: content-box;
 		padding: 7vw;
-		background-color: color.adjust(shared.$color--brand--fact-check-insights);
+		background-color: color.adjust(shared.$color--brand--fact-check-insights, $alpha: -0.08);
 		max-width: 25ch;
 	}
 }
 
 #section--data-in-action {
 	background-color: shared.$color--brand--claim-review;
+	transition-property: padding;
 
 	@media screen and (min-width: shared.$screen-2xl-floor) {
 		background-image: url("logos/claim-review-logo-mark.svg"), url("brand-ornaments/01.svg");

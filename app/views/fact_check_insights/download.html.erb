@@ -1,13 +1,23 @@
 <% @title_tag = "Download the Data" %>
 
-<p>The Fact-Check Insights dataset includes information about tens of thousands of fact-checks published by fact-checking organizations around the world. Most of the information in the dataset dates from 2016 to the present, and the dataset is updated with new entries every day. Each item includes a URL for the published fact-check, as well as information about the statement being checked, the speaker, the location, the conclusion the fact-checker reached about the statement’s veracity, and more.</p>
-<p>This data is intended for download by academics, researchers, journalists, fact-checkers and others who plan to use it for research and development purposes.</p>
+<div class="flex flex-col lg:flex-row gap-10 lg:gap-24 py-10 lg:py-20">
+	<div class="lg:basis-2/4 b2">
+		<h1 class="h2">The dataset</h1>
+		<p>The Fact-Check Insights dataset includes information about tens of thousands of fact-checks published by fact-checking organizations around the world. Most of the information in the dataset dates from 2016 to the present, and the dataset is updated with new entries every day. Each item includes a URL for the published fact-check, as well as information about the statement being checked, the speaker, the location, the conclusion the fact-checker reached about the statement’s veracity, and more.</p>
+		<p>This data is intended for download by academics, researchers, journalists, fact-checkers and others who plan to use it for research and development purposes.</p>
+	</div>
 
-<% if user_signed_in? %>
-	<%= link_to "Download JSON", fact_check_insights_download_path(format: :json), class: "btn btn--orange" %>
-	<%= link_to "Download CSV", fact_check_insights_download_path(format: :zip), class: "btn btn--orange" %>
-	<p>The compilation of this data is licensed under <%= link_to "CC BY", "https://creativecommons.org/licenses/by/4.0/" %>.</p>
-	<p>Need your organization’s data removed from the dataset? If you’d like for us to remove your organization’s data from the dataset, please email <%= mail_to "help@factcheckinsights.org", subject: "Remove organization from Fact-Check Insights data" %> and let us know.</p>
-<% else %>
-	<%= link_to "Request Access", new_applicant_path, class: "btn btn--orange" %>
-<% end %>
+	<div class="lg:basis-2/4">
+		<% if user_signed_in? %>
+			<h2>Ready to go!</h2>
+			<div class="btn-container">
+				<%= link_to "Download JSON", fact_check_insights_download_path(format: :json), class: "btn btn--orange btn--lg" %>
+				<%= link_to "Download CSV", fact_check_insights_download_path(format: :zip), class: "btn btn--orange btn--lg" %>
+			</div>
+			<p>The compilation of this data is licensed under <%= link_to "CC BY", "https://creativecommons.org/licenses/by/4.0/" %>. <%= link_to "Need your organization’s data removed from the dataset?", fact_check_insights_optout_path %></p>
+		<% else %>
+			<h2>Access is free, but registration is required.</h2>
+			<%= link_to "Request Access", new_applicant_path, class: "btn btn--orange" %> <%= link_to "Log in", new_user_session_path, class: "btn" %>
+		<% end %>
+	</div>
+</div>

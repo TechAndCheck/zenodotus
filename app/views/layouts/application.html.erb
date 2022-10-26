@@ -19,7 +19,7 @@
 		<%= javascript_importmap_tags %>
 	</head>
 
-	<body id="page--<%= @page_id || "generic" %>" class="site--<%= @site[:shortname]%>">
+	<body id="page--<%= @site[:shortname] %>--<%= @page_id || controller.action_name %>" class="site--<%= @site[:shortname]%>">
 		<div id="site-wrapper">
 			<%= render "layouts/#{@site[:shortname]}/header" %>
 			<div id="site-main">
