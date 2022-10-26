@@ -18,10 +18,9 @@ class FactCheckInsightsController < ApplicationController
           return
         end
 
-        # TODO: Fill this out with real data.
-        send_data({}.to_json,
+        send_data(generate_json,
           type: "application/json",
-          filename: "fact_check_insights.json"
+          filename: "fact_check_insights_data.json"
         )
       end
     end
@@ -41,4 +40,12 @@ class FactCheckInsightsController < ApplicationController
 
   sig { void }
   def optout; end
+
+private
+
+  sig { returns(String) }
+  def generate_json
+    # TODO: Fill this out with real data. #275
+    {}.to_json
+  end
 end
