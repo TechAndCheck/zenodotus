@@ -18,10 +18,20 @@ class FactCheckInsightsController < ApplicationController
           return
         end
 
-        # TODO: Fill this out with real data.
-        send_data({}.to_json,
+        send_data(generate_json,
           type: "application/json",
-          filename: "fact_check_insights.json"
+          filename: "fact_check_insights_data.json"
+        )
+      end
+      format.zip do
+        unless user_signed_in? && current_user.can_access_fact_check_insights?
+          render "You do not have permission to view that resource.", status: :unauthorized
+          return
+        end
+
+        send_data(generate_csv_zips,
+          type: "application/zip",
+          filename: "fact_check_insights_data.zip"
         )
       end
     end
@@ -41,4 +51,18 @@ class FactCheckInsightsController < ApplicationController
 
   sig { void }
   def optout; end
+
+private
+
+  sig { returns(String) }
+  def generate_json
+    # TODO: Fill this out with real data. #275
+    {}.to_json
+  end
+
+  sig { returns(T::Boolean) }
+  def generate_csv_zips
+    # TODO: Fill this out with real data. #275
+    true
+  end
 end

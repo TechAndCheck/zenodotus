@@ -5,6 +5,7 @@
 
 <% if user_signed_in? %>
 	<%= link_to "Download JSON", fact_check_insights_download_path(format: :json), class: "btn btn--orange" %>
+	<%= link_to "Download CSV", fact_check_insights_download_path(format: :zip), class: "btn btn--orange" %>
 	<p>The compilation of this data is licensed under <%= link_to "CC BY", "https://creativecommons.org/licenses/by/4.0/" %>.</p>
 	<p>Need your organization’s data removed from the dataset? If you’d like for us to remove your organization’s data from the dataset, please email <%= mail_to "help@factcheckinsights.org", subject: "Remove organization from Fact-Check Insights data" %> and let us know.</p>
 <% else %>
