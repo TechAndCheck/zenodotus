@@ -92,7 +92,7 @@ class MediaReviewTest < ActiveSupport::TestCase
         ]
       }
     }
-    media_review_json = JSON.parse(media_review.to_json) # call blueprinter
+    media_review_json = JSON.parse(media_review.render_for_export) # call blueprinter
     assert_equal expected, media_review_json
   end
 end
