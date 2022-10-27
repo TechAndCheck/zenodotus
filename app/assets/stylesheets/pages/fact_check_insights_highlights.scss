@@ -1,4 +1,3 @@
-
 @use "shared";
 @use "sass:color";
 
@@ -18,8 +17,8 @@
 			padding-top: 10vw;
 			padding-bottom: 10vw;
 			background-image: url("brand-ornaments/01.svg"), url("brand-ornaments/02.svg");
-			background-position: -5% 50%, 95% 20%;
-			background-size: clamp(20%, 40%, 50%) auto, clamp(20%, 30%, 50%) auto;
+			background-position: -15% 80%, 105% 20%;
+			background-size: clamp(20%, 35%, 50%) auto, clamp(20%, 30%, 50%) auto;
 			background-repeat: no-repeat;
 
 			.download-cta__inner {
