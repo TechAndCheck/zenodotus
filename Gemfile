@@ -183,3 +183,6 @@ gem "tailwindcss-rails", "~> 2.0"
 
 # We use SCSS to write more CSS more concisely
 gem "dartsass-rails", "~> 0.4.0"
+
+# Comma lets us generate CSV-formatted data from ActiveRecord models
+gem "comma", "~>4.7.0"
