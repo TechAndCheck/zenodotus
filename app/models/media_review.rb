@@ -19,7 +19,8 @@ class MediaReview < ApplicationRecord
     archive_item.nil?
   end
 
-  def to_json
+  sig { returns(String) }
+  def render_for_export
     MediaReviewBlueprint.render(self)
   end
 end
