@@ -19,9 +19,9 @@
 
 	position: relative;
 	z-index: 10;
-	background-color: var(--color--site-theme);
+	background-color: var(--color--site-theme--ornament);
+	color: var(--color--site-theme--ornament--contrast);
 	font-family: shared.$font-family--sans-serif;
-	color: shared.$color--dark;
 
 	border-bottom: 1px solid shared.$color--dark;
 	padding: var(--site-header--internal-spacing);
