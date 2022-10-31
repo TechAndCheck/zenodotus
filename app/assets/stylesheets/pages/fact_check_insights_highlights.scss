@@ -1,0 +1,33 @@
+@use "shared";
+@use "sass:color";
+
+#page--fact_check_insights--highlights {
+	background-color: white;
+}
+
+.download-cta {
+	#page--fact_check_insights--highlights & {
+		padding-top: 5vw;
+		padding-bottom: 5vw;
+		transition-property: padding;
+		background-color: shared.$color--brand--fact-check-insights;
+
+
+		@media screen and (min-width: shared.$screen-lg-floor) {
+			padding-top: 10vw;
+			padding-bottom: 10vw;
+			background-image: url("brand-ornaments/01.svg"), url("brand-ornaments/02.svg");
+			background-position: -15% 80%, 105% 20%;
+			background-size: clamp(20%, 35%, 50%) auto, clamp(20%, 30%, 50%) auto;
+			background-repeat: no-repeat;
+
+			.download-cta__inner {
+				max-width: 45em;
+				margin-left: auto;
+				margin-right: auto;
+				padding: 1rem;
+				background-color: color.adjust(shared.$color--brand--fact-check-insights, $alpha: -0.05);
+			}
+		}
+	}
+}

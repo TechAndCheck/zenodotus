@@ -19,5 +19,12 @@
 			width: 100%;
 			grid-column: 1 / -1;
 		}
+
+		@media screen and (min-width: shared.$screen-lg-ceiling) {
+			&.lg\:full-bleed {
+				width: 100%;
+				grid-column: 1 / -1;
+			}
+		}
 	}
 }

@@ -23,6 +23,9 @@
 // Pages
 @use "pages/fact_check_insights_home";
 @use "pages/fact_check_insights_download";
+@use "pages/fact_check_insights_guide";
+@use "pages/fact_check_insights_highlights";
+@use "pages/fact_check_insights_about";
 
 #site-wrapper {
 	display: flex;
