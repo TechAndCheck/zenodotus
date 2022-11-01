@@ -15,7 +15,7 @@ body {
 	color: var(--color--site-theme--contrast);
 }
 
-	.site--fact_check_insights {
+.site--fact_check_insights {
 	--color--site-theme: #{shared.$color--brand--fact-check-insights};
 	--color--site-theme--ornament: #{shared.$color--brand--fact-check-insights};
 }
