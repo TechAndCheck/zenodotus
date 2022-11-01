@@ -5,8 +5,8 @@ class FactCheckInsightsControllerTest < ActionDispatch::IntegrationTest
 
   # Create an ArchiveItem, a MediaReview object, and a ClaimReview object
   def before_all
-    return if File.exist?("tmp/") && File.directory?(Forki.temp_storage_location)
-    FileUtils.mkdir_p "/tmp"
+    return if File.exist?("tmp/") && File.directory?("tmp/")
+    FileUtils.mkdir_p("tmp/")
 
     media_review = MediaReview.create!(
       original_media_link: "https://www.foobar.com/1",
