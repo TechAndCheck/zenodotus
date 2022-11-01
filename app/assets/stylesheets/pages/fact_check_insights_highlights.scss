@@ -3,15 +3,48 @@
 
 #page--fact_check_insights--highlights {
 	background-color: white;
-}
 
-.download-cta {
-	#page--fact_check_insights--highlights & {
+	.intro {
+		margin: 5vw auto;
+		text-align: center;
+		max-width: 60ch;
+	}
+
+	.dataviz {
+		margin: 5vw 0;
+		display: flex;
+		flex-direction: column;
+		gap: 5vw;
+
+		@media screen and (min-width: shared.$screen-xl-floor) {
+			flex-direction: row;
+
+			&.dataviz--reversed {
+				flex-direction: row-reverse;
+			}
+		}
+
+		.dataviz__caption {
+			flex-basis: 25%;
+			font-size: calc(shared.$font-size--base * 1.25);
+		}
+
+		.dataviz__visual-wrapper {
+			flex-basis: 75%;
+		}
+
+		.dataviz__visual {
+			aspect-ratio: 4/3;
+			width: 100%;
+		}
+
+	}
+
+	.download-cta {
 		padding-top: 5vw;
 		padding-bottom: 5vw;
 		transition-property: padding;
 		background-color: shared.$color--brand--fact-check-insights;
-
 
 		@media screen and (min-width: shared.$screen-lg-floor) {
 			padding-top: 10vw;
