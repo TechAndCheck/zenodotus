@@ -6,9 +6,9 @@
 
 <div class="lg:full-bleed lg:grid lg:grid-cols-2">
 	<div class="my-20 lg:my-0 lg:p-20">
-		<div class="lg:mx-auto lg:max-w-xl b2">
+		<div class="lg:mx-auto lg:max-w-xl">
 			<h2>ClaimReview: The tagging system for fact-checks</h2>
-			<p>ClaimReview <%= link_to "is a tagging system", "http://schema.org/ClaimReview" %> that publishers use to flag fact-check articles for search engines, apps and social media platforms. It identifies key elements of fact-checks for platforms such as Google, Bing, and Facebook. ClaimReview also summarizes a fact-check, noting the person and claim being checked and a conclusion about its accuracy. Because of this, it has become a source of important data that can be used by researchers, academics and others interested in the work of fact-checkers.</p>
+			<p class="b2">ClaimReview <%= link_to "is a tagging system", "http://schema.org/ClaimReview" %> that publishers use to flag fact-check articles for search engines, apps and social media platforms. It identifies key elements of fact-checks for platforms such as Google, Bing, and Facebook. ClaimReview also summarizes a fact-check, noting the person and claim being checked and a conclusion about its accuracy. Because of this, it has become a source of important data that can be used by researchers, academics and others interested in the work of fact-checkers.</p>
 		</div>
 	</div>
 	<div class="bg--claim-review hidden lg:relative lg:p-20 lg:flex lg:place-content-center lg:overflow-visible">
@@ -24,20 +24,21 @@
 		<%= use_svg "media-review-logo-mark", svg_attrs: { id: "guide--media-review--logo-mark" } %>
 	</div>
 	<div class="my-20 lg:my-0 lg:p-20">
-		<div class="lg:mx-auto lg:max-w-xl b2">
+		<div class="lg:mx-auto lg:max-w-xl">
 			<h2>MediaReview: Fact-checking images, video, and more</h2>
-			<p>MediaReview is a sibling to ClaimReview that allows fact-checkers to share their assessment of whether a given image, video, meme or other piece of media has been manipulated. It is typically used in conjunction with ClaimReview.</p>
-			<p>(Fact-checking organizations interested in tagging their articles with ClaimReview can visit <%= link_to "The ClaimReview Project", "https://www.claimreviewproject.com/" %> website for more information about getting started.)</p>
+			<p class="b2">MediaReview is a sibling to ClaimReview that allows fact-checkers to share their assessment of whether a given image, video, meme or other piece of media has been manipulated. It is typically used in conjunction with ClaimReview.</p>
+			<p class="b3">Fact-checking organizations interested in tagging their articles with ClaimReview can visit <%= link_to "The ClaimReview Project", "https://www.claimreviewproject.com/" %> website for more information about getting started.</p>
 		</div>
 	</div>
 </div>
 
 <div id="section--sources" class="py-10 lg:py-20 full-bleed">
 	<div class="contain">
-		<div class="lg:mx-auto lg:max-w-2xl b2">
+		<div class="lg:mx-auto lg:max-w-2xl">
 			<h2>Where do the data come from?</h2>
-			<p>Fact-checkers at organizations all over the world enter ClaimReview data every time they publish a fact-check. The organizations included in this dataset are limited to those appearing in the <%= link_to "Duke Reporters’ Lab database", "https://reporterslab.org/fact-checking/" %> of global fact-checking sites.</p>
-			<p>The Lab tracks hundreds of nonpartisan organizations that regularly publish articles, videos or audio reports that verify claims made by politicians, debunk social media rumors and hoaxes, and/or review political promises made by candidates or parties. <%= link_to "Visit the Reporters’ Lab site", "https://reporterslab.org/how-we-identify-fact-checkers/" %> for more information on how we determine which organizations to include. (Note: Not all organizations in the Reporters’ Lab database use ClaimReview.)</p>
+			<p class="b2">Fact-checkers at organizations all over the world enter ClaimReview data every time they publish a fact-check. The organizations included in this dataset are limited to those appearing in the <%= link_to "Duke Reporters’ Lab database", "https://reporterslab.org/fact-checking/" %> of global fact-checking sites.</p>
+			<p class="b2">The Lab tracks hundreds of nonpartisan organizations that regularly publish articles, videos or audio reports that verify claims made by politicians, debunk social media rumors and hoaxes, and/or review political promises made by candidates or parties. <%= link_to "Visit the Reporters’ Lab site", "https://reporterslab.org/how-we-identify-fact-checkers/" %> for more information on how we determine which organizations to include. (Note: Not all organizations in the Reporters’ Lab database use ClaimReview.)</p>
+			<p><%= link_to "Need your organization’s data removed from the dataset?", fact_check_insights_optout_path %></p>
 		</div>
 	</div>
 </div>
@@ -45,7 +46,8 @@
 <div id="section--schema" class="py-10 lg:py-20">
 	<div class="max-w-2xl mx-auto b2">
 		<h2>What you can expect when you download the data</h2>
-		<p>The Fact-Check Insights dataset is available for download in JSON and CSV formats. Not every fact-check will contain data for every field, but the main components are:</p>
+		<p>The Fact-Check Insights dataset is available for download as JSON (one file) and CSV (multiple files).</p>
+		<p>Not every fact-check will contain data for every field, but the main components are:</p>
 	</div>
 
 	<div class="alert">Detail coming soon…</div>
@@ -54,7 +56,7 @@
 
 <div id="section--tips" class="full-bleed py-10 lg:py-20">
 	<div class="contain">
-		<h2 class="mb-10 lg:mb-20">A few things we’ve learned about working with this data</h2>
+		<h2 class="mb-10 lg:mb-20">A few things we’ve learned about working with this data:</h2>
 		<ul class="tips">
 			<li class="tip">
 				<h3 class="h4">Check names</h3>
