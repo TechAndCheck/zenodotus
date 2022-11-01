@@ -13,13 +13,13 @@ class ApplicationController < ActionController::Base
   def index
     if site_is_fact_check_insights?
       # This is obviously just pretend for now.
-      claim_review_count = [1, ClaimReview.count + 10000].max
-      organization_count = rand(1..claim_review_count)
-      country_count = rand(1..[organization_count, 195].min)
+      claim_review_count = ClaimReview.count
+      organization_count = 204
+      country_count = 71
       @stats = {
         fact_checks: claim_review_count,
-        countries: country_count,
         organizations: organization_count,
+        countries: country_count,
       }
     end
 
