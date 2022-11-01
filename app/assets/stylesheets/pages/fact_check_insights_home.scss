@@ -71,11 +71,11 @@
 	}
 }
 
-#section--products {
+#section--projects {
 	background-color: white;
 	text-align: center;
 
-	.products {
+	.projects {
 		display: flex;
 		flex-direction: column;
 
@@ -85,7 +85,7 @@
 		}
 	}
 
-	.product {
+	.project {
 		display: flex;
 		place-content: center;
 		padding: min(5rem, 10vw) min(1rem, 5vw);
@@ -113,31 +113,31 @@
 
 	}
 
-	#product--fact-check-insights {
+	#project--fact-check-insights {
 		border-bottom-color: shared.$color--brand--fact-check-insights;
 	}
-	#product--fact-check-insights:hover {
+	#project--fact-check-insights:hover {
 		border-bottom-color: shared.$color--tan-5;
 	}
 
-	#product--claim-review {
+	#project--claim-review {
 		border-bottom-color: shared.$color--brand--claim-review;
 	}
-	#product--claim-review:hover {
+	#project--claim-review:hover {
 		border-bottom-color: shared.$color--blue-4;
 	}
 
-	#product--media-review {
+	#project--media-review {
 		border-bottom-color: shared.$color--brand--media-review;
 	}
-	#product--media-review:hover {
+	#project--media-review:hover {
 		border-bottom-color: shared.$color--green-5;
 	}
 
-	#product--media-vault {
+	#project--media-vault {
 		border-bottom-color: shared.$color--brand--media-vault;
 	}
-	#product--media-vault:hover {
+	#project--media-vault:hover {
 		border-bottom-color: shared.$color--orange-5;
 	}
 
