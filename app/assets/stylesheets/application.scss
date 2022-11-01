@@ -22,11 +22,12 @@
 @use "authors";
 
 // Pages
+@use "pages/about";
 @use "pages/fact_check_insights_home";
 @use "pages/fact_check_insights_download";
 @use "pages/fact_check_insights_guide";
 @use "pages/fact_check_insights_highlights";
-@use "pages/fact_check_insights_about";
+@use "pages/media_vault_home";
 
 #site-wrapper {
 	display: flex;
