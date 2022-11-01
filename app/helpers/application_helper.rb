@@ -3,6 +3,14 @@
 module ApplicationHelper
   include Pagy::Frontend
 
+  def site_is_fact_check_insights?(site)
+    site == SiteDefinitions::FACT_CHECK_INSIGHTS
+  end
+
+  def site_is_media_vault?(site)
+    site == SiteDefinitions::MEDIA_VAULT
+  end
+
   def make_title_tag_content(title_hierarchy = nil, opts = {
     delimeter: "•"
   })
