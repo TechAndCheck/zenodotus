@@ -65,7 +65,6 @@
 			.download-cta__inner {
 				margin-left: 45%;
 				padding: 0.5rem;
-				background-color: rgba(255, 255, 255, 0.95);
 			}
 		}
 	}
@@ -169,7 +168,7 @@
 	top: var(--uncover-ornament-offset);
 	width: auto;
 	height: var(--uncover-ornament-height);
-	color: shared.$color--tan-2;
+	color: white;
 	transition-property: color;
 
 	@media screen and (min-width: shared.$screen-2xl-floor) {
@@ -191,7 +190,6 @@
 	> aside {
 		box-sizing: content-box;
 		padding: 7vw;
-		background-color: color.adjust(shared.$color--brand--fact-check-insights, $alpha: -0.08);
 		max-width: 25ch;
 	}
 }
@@ -221,7 +219,6 @@
 	}
 
 	.case-study {
-		background-color: rgba(255, 255, 255, 0.95);
 		padding: 1rem;
 		max-width: 42rem;
 		transition-property: padding;

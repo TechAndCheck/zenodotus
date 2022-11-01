@@ -1,13 +1,13 @@
 <% @title_tag = "Download the Data" %>
 
-<div class="flex flex-col lg:flex-row gap-10 lg:gap-24 py-10 lg:py-20">
-	<div class="lg:basis-2/4 b2">
+<div class="flex flex-col lg:flex-row gap-10 lg:gap-24 py-10 lg:py-20 bg-shield-from--fact-check-insights">
+	<div class="lg:basis-2/4 b2 bg-shield-children bg-shield-from--fact-check-insights">
 		<h1 class="h2">The dataset</h1>
 		<p>The Fact-Check Insights dataset includes information about tens of thousands of fact-checks published by fact-checking organizations around the world. Most of the information in the dataset dates from 2016 to the present, and the dataset is updated with new entries every day. Each item includes a URL for the published fact-check, as well as information about the statement being checked, the speaker, the location, the conclusion the fact-checker reached about the statement’s veracity, and more.</p>
 		<p>This data is intended for download by academics, researchers, journalists, fact-checkers and others who plan to use it for research and development purposes.</p>
 	</div>
 
-	<div class="lg:basis-2/4">
+	<div class="lg:basis-2/4 bg-shield-children bg-shield-from--fact-check-insights">
 		<% if user_signed_in? %>
 			<h2>Ready to go!</h2>
 			<div class="btn-container">

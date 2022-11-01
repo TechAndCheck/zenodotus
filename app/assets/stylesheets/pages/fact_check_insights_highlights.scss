@@ -44,7 +44,6 @@
 		padding-top: 5vw;
 		padding-bottom: 5vw;
 		transition-property: padding;
-		background-color: shared.$color--brand--fact-check-insights;
 
 		@media screen and (min-width: shared.$screen-lg-floor) {
 			padding-top: 10vw;
@@ -59,7 +58,6 @@
 				margin-left: auto;
 				margin-right: auto;
 				padding: 1rem;
-				background-color: color.adjust(shared.$color--brand--fact-check-insights, $alpha: -0.05);
 			}
 		}
 	}

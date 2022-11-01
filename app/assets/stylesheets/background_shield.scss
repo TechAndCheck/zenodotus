@@ -1,0 +1,98 @@
+/*
+Background Shields
+
+We often have ornamental background images behind elements that contain text and other content.
+To protect the text/content from being obstructed by the background image, we want a translucent
+layer to "magically" appear as needed so the background image doesn't conflict with the content.
+
+With these styles, you can apply `bg-shield` to an element -- or `bg-shield-children` to a
+container element -- and a translucent background color will appear. It tries to determine which
+background color to use based on some parent selectors, but you can also directly influence it by
+applying any of the `bg-shield-from--{color}` modifiers below.
+
+```html
+<div class="has-ornamental-background">
+	<div class="bg-shield">Some content.</div> // This element will be shielded.
+</div>
+
+<div class="has-ornamental-background">
+	<div class="bg-shield-children"> // This element won't be shielded…
+		<h1>Headline</h1> // …but this child will be…
+		<p>Some content.</p> // …and this child, and any other (immediate) children.
+	</div>
+</div>
+
+<div class="has-ornamental-background bg--claim-review">
+	<div class="bg-shield">Some content.</div> // This will know it needs a translucent blue bg…
+</div>
+<div class="has-ornamental-background">
+	<div class="bg-shield bg-shield-from--claim-review">Some content.</div> // …and so will this.
+</div>
+```
+*/
+@use "shared";
+@use "sass:color";
+
+$alpha-adjust: -0.05;
+
+.bg-shield,
+.bg-shield-children > * {
+	--shielded-background-color: #{color.adjust(white, $alpha: $alpha-adjust)};
+
+	background-color: var(--shielded-background-color);
+}
+
+.bg-shield,
+.bg-shield-children > * {
+	.bg--cream &,
+	.bg--fact-check-insights &,
+	&.bg-shield-from--fact-check-insights {
+		--shielded-background-color: #{color.adjust(shared.$color--brand--fact-check-insights, $alpha: $alpha-adjust)};
+	}
+
+	.bg--orange &,
+	.bg--media-vault &,
+	&.bg-shield-from--media-vault {
+		--shielded-background-color: #{color.adjust(shared.$color--brand--media-vault, $alpha: $alpha-adjust)};
+	}
+
+	.bg--blue &,
+	.bg--claim-review &,
+	&.bg-shield-from--claim-review {
+		--shielded-background-color: #{color.adjust(shared.$color--brand--claim-review, $alpha: $alpha-adjust)};
+	}
+
+	.bg--green &,
+	.bg--media-review &,
+	&.bg-shield-from--media-review {
+		--shielded-background-color: #{color.adjust(shared.$color--brand--media-review, $alpha: $alpha-adjust)};
+	}
+
+	.bg--dark &,
+	&.bg-shield-from--dark {
+		--shielded-background-color: #{color.adjust(shared.$color--dark, $alpha: $alpha-adjust)};
+	}
+}
+
+.bg-shield-children {
+	&.bg-shield-from--fact-check-insights > * {
+		--shielded-background-color: #{color.adjust(shared.$color--brand--fact-check-insights, $alpha: $alpha-adjust)};
+	}
+
+	&.bg-shield-from--media-vault > * {
+		--shielded-background-color: #{color.adjust(shared.$color--brand--media-vault, $alpha: $alpha-adjust)};
+	}
+
+	&.bg-shield-from--claim-review > * {
+		--shielded-background-color: #{color.adjust(shared.$color--brand--claim-review, $alpha: $alpha-adjust)};
+	}
+
+	&.bg-shield-from--media-review > * {
+		--shielded-background-color: #{color.adjust(shared.$color--brand--media-review, $alpha: $alpha-adjust)};
+	}
+
+	&.bg-shield-from--dark > * {
+		--shielded-background-color: #{color.adjust(shared.$color--dark, $alpha: $alpha-adjust)};
+	}
+}
+
