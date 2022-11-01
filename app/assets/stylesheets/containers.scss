@@ -28,3 +28,44 @@
 		}
 	}
 }
+
+
+// Content containers are general… containers of content that we want to have consistent padding
+// and sizing.
+
+.content {
+	padding: 5vw 0;
+
+	&.content--center {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	&.content--left {
+		margin-right: auto;
+	}
+
+	&.content--right {
+		margin-left: auto;
+	}
+
+	&.content--xs {
+		max-width: shared.$screen-xs-ceiling;
+	}
+
+	&.content--sm {
+		max-width: shared.$screen-sm-ceiling;
+	}
+
+	&.content--md {
+		max-width: shared.$screen-md-ceiling;
+	}
+
+	&.content--lg {
+		max-width: shared.$screen-lg-ceiling;
+	}
+
+	&.content--xl {
+		max-width: shared.$screen-xl-ceiling;
+	}
+}
