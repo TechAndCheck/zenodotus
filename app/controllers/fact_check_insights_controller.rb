@@ -17,7 +17,7 @@ class FactCheckInsightsController < ApplicationController
           }, status: :unauthorized
           return
         end
-        send_data(generate_json, type: "application/json", filename: "fact_check_insights.json")
+        send_data(FactCheckInsightsController.generate_json, type: "application/json", filename: "fact_check_insights.json")
       end
 
       format.zip do
@@ -27,7 +27,7 @@ class FactCheckInsightsController < ApplicationController
           }, status: :unauthorized
           return
         end
-        send_data(generate_csv_zip, type: "application/zip", filename: "fact_check_insights.zip")
+        send_data(FactCheckInsightsController.generate_csv_zip, type: "application/zip", filename: "fact_check_insights.zip")
       end
     end
   end
@@ -51,7 +51,7 @@ private
 
   # Generate a JSON-formatted string of ClaimReview and MediaReview data
   sig { returns(String) }
-  def generate_json
+  def self.generate_json
     all_claim_reviews = ClaimReview.all.map { |claim_review| JSON.parse(claim_review.render_for_export) }
     all_media_reviews = MediaReview.all.map { |media_review| JSON.parse(media_review.render_for_export) }
     metadata = {
@@ -65,7 +65,7 @@ private
 
   # Generate a CSV-formatted string of ClaimReview and MediaReview data
   sig { returns(String) }
-  def generate_csv_zip
+  def self.generate_csv_zip
     compressed_filestream = Zip::OutputStream.write_buffer(::StringIO.new("")) do |zos|
       zos.put_next_entry "claim_reviews.csv"
       claim_review_csv = ClaimReview.all.to_comma
