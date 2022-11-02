@@ -14,7 +14,7 @@
 				<%= link_to "Download JSON", fact_check_insights_download_path(format: :json), class: "btn btn--orange btn--lg" %>
 				<%= link_to "Download CSV", fact_check_insights_download_path(format: :zip), class: "btn btn--orange btn--lg" %>
 			</div>
-			<p>The compilation of this data is licensed under <%= link_to "CC BY", "https://creativecommons.org/licenses/by/4.0/" %>. <%= link_to "Need your organization’s data removed from the dataset?", fact_check_insights_optout_path %></p>
+			<p>The compilation of this data is licensed under <%= link_to "CC BY", "https://creativecommons.org/licenses/by/4.0/" %>. <%= render partial: "optout_instructions" %></p>
 		<% else %>
 			<h2>Access is free, but registration is required.</h2>
 			<%= link_to "Request Access", new_applicant_path, class: "btn btn--orange" %> <%= link_to "Log in", new_user_session_path, class: "btn" %>

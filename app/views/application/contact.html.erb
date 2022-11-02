@@ -4,10 +4,8 @@
 	<div class="lg:basis-2/4">
 		<div class="max-w-2xl">
 			<h1>Let's stay in touch</h1>
-			<p class="b1 ">For questions about the <%= @site[:title] %> data, please email us at <%= mail_to "hello@factcheckinsights.org" %>.</p>
-			<% if site_is_fact_check_insights?(@site) %>
-				<p><%= link_to "Need your organization’s data removed from the dataset?", fact_check_insights_optout_path %></p>
-			<% end %>
+			<p class="b1">For questions about the <%= @site[:title] %> data, please email us at <%= mail_to "hello@factcheckinsights.org" %>.</p>
+			<p class="b2"><%= render partial: "#{@site[:shortname]}/optout_instructions" %></p>
 		</div>
 	</div>
 	<div class="lg:basis-2/4 flex justify-center">
