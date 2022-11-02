@@ -143,4 +143,12 @@ protected
       redirect_back_or_to "/", allow_other_host: false, alert: "You don’t have permission to access that page."
     end
   end
+
+  sig { returns(String) }
+  def render_unauthorized
+    render file: "#{Rails.root}/public/401.html",
+      layout: false,
+      content_type: "text/html",
+      status: :unauthorized
+  end
 end

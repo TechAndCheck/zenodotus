@@ -10,16 +10,57 @@ class MediaReview < ApplicationRecord
   validates :media_authenticity_category, presence: true
   validates :url, presence: true
 
-
   # All media review without an attached piece of archive
   scope :orphaned, -> { where("archive_item_id = ?", nil) }
+
+  # CSV export formatting
+  comma do
+    url "url"
+    media_authenticity_category "mediaAuthenticityCategory"
+    original_media_context_description "originalMediaContextDescription"
+    date_published "datePublished" do |date_published| date_published.strftime("%Y-%m-%d") end
+    __static_column__ "@context" do "https://schema.org" end
+    __static_column__ "@type" do "MediaReview" end
+
+    author "author_@type" do |author| author["@type"] end
+    author "author_name" do |author| author["name"] end
+    author "author_url" do |author| author["url"] end
+    author "author_image" do |author| author["image"] end
+    author "author_sameAs" do |author| author["sameAs"] end
+
+    item_reviewed "itemReviewed_@type" do |item_reviewed| item_reviewed["@type"] end
+    item_reviewed "itemReviewed_creator_@type" do |item_reviewed| item_reviewed.dig("creator", "@type") end
+    item_reviewed "itemReviewed_creator_name" do |item_reviewed| item_reviewed.dig("creator", "name") end
+    item_reviewed "itemReviewed_creator_url" do |item_reviewed| item_reviewed.dig("creator", "url") end
+    item_reviewed "itemReviewed_interpretedAsClaim_@type" do |item_reviewed| item_reviewed.dig("interpretedAsClaim", "@type") end
+    item_reviewed "itemReviewed_interpretedAsClaim_description" do |item_reviewed| item_reviewed.dig("interpretedAsClaim", "description") end
+
+
+    # The CSV representation of a MediaReview will only include a single object from the mediaItemAppearance array
+    # Namely, the object containing the `contentUrl` attribute
+    item_reviewed "itemReviewed_mediaItemAppearance_@type" do |item_reviewed|
+      appearance = item_reviewed.dig("mediaItemAppearance").filter { |appearance| appearance.has_key?("contentUrl") }.first
+      appearance["@type"]
+    end
+
+    item_reviewed "itemReviewed_mediaItemAppearance_contentUrl" do |item_reviewed|
+      appearance = item_reviewed.dig("mediaItemAppearance").filter { |appearance| appearance.has_key?("contentUrl") }.first
+      appearance["contentUrl"]
+    end
+
+    item_reviewed "itemReviewed_mediaItemAppearance_archivedAt" do |item_reviewed|
+      appearance = item_reviewed.dig("mediaItemAppearance").filter { |appearance| appearance.has_key?("contentUrl") }.first
+      appearance["archivedAt"]
+    end
+  end
 
   sig { returns(Boolean) }
   def orphaned?
     archive_item.nil?
   end
 
-  def to_json
+  sig { returns(String) }
+  def render_for_export
     MediaReviewBlueprint.render(self)
   end
 end
