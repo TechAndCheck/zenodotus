@@ -19,7 +19,7 @@
 			<ol id="site-nav__primary" class="site-nav__links">
 				<% if current_user.can_access_media_vault? %>
 					<li><%= link_to media_vault_dashboard_path, class: "btn btn--naked" do %><span>Dashboard</span><% end %></li>
-					<li><%= link_to media_vault_guide_path, class: "btn btn--naked" do %><span>Guide</span><% end %></li>
+					<li><%= link_to media_vault_guide_path, class: "btn btn--naked" do %><span>Guide<span class="hideable"> to MediaVault</span></span><% end %></li>
 					<li><%= link_to media_vault_text_search_path, class: "btn btn--naked" do %><span>Text Search</span><% end %></li>
 					<li><%= link_to media_vault_image_search_path, class: "btn btn--naked" do %><span>Media Search</span><% end %></li>
 					<li><%= link_to media_vault_archive_add_path, class: "btn" do %><span>Add URL</span><% end %></li>

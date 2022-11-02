@@ -69,3 +69,12 @@
 		max-width: shared.$screen-xl-ceiling;
 	}
 }
+
+.full-bleed-headline {
+	@extend .full-bleed;
+
+	&.reversed {
+		background-color: shared.$color--dark;
+		color: white;
+	}
+}

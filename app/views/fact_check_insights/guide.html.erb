@@ -38,7 +38,7 @@
 			<h2>Where do the data come from?</h2>
 			<p class="b2">Fact-checkers at organizations all over the world enter ClaimReview data every time they publish a fact-check. The organizations included in this dataset are limited to those appearing in the <%= link_to "Duke Reporters’ Lab database", "https://reporterslab.org/fact-checking/" %> of global fact-checking sites.</p>
 			<p class="b2">The Lab tracks hundreds of nonpartisan organizations that regularly publish articles, videos or audio reports that verify claims made by politicians, debunk social media rumors and hoaxes, and/or review political promises made by candidates or parties. <%= link_to "Visit the Reporters’ Lab site", "https://reporterslab.org/how-we-identify-fact-checkers/" %> for more information on how we determine which organizations to include. (Note: Not all organizations in the Reporters’ Lab database use ClaimReview.)</p>
-			<p><%= link_to "Need your organization’s data removed from the dataset?", fact_check_insights_optout_path %></p>
+			<p><%= render partial: "optout_instructions" %></p>
 		</div>
 	</div>
 </div>
