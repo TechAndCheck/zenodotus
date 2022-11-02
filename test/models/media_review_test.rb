@@ -4,14 +4,8 @@ class MediaReviewTest < ActiveSupport::TestCase
   include Minitest::Hooks
   include ActiveJob::TestHelper
 
-  test "media review blueprinter output has required characteristics" do
-    MediaReview.create!(media_authenticity_category: "fake",
-                                       author: { "name": "a_name" },
-                                       date_published: "2022-10-22",
-                                       item_reviewed: { "param": "val" },
-                                       url: "https://foobar.com")
-
-    media_review = MediaReview.create!(
+  def before_all
+    @@media_review_kwargs = {
       original_media_link: "https://www.foobar.com/1",
       date_published: "2021-02-03",
       url: "https://www.realfact.com/factchecks/2021/feb/03/starwars",
@@ -48,12 +42,11 @@ class MediaReviewTest < ActiveSupport::TestCase
           }
         ]
       }
-    )
-
-    expected = {
+    }
+    @@expected = {
       "@context" => "https://schema.org",
       "@type" => "MediaReview",
-      "id" => media_review.id,
+      "id" => nil,
       "datePublished" => "2021-02-03",
       "url" => "https://www.realfact.com/factchecks/2021/feb/03/starwars",
       "author" => {
@@ -92,7 +85,25 @@ class MediaReviewTest < ActiveSupport::TestCase
         ]
       }
     }
+  end
+
+  test "media review blueprinter output has required characteristics" do
+    media_review = MediaReview.create!(**@@media_review_kwargs)
+    expected_copy = @@expected.deep_dup
+    expected_copy["id"] = media_review.id
+
     media_review_json = JSON.parse(media_review.render_for_export) # call blueprinter
-    assert_equal expected, media_review_json
+    assert_equal expected_copy, media_review_json
+  end
+
+  test "can serialize mediareview with empty mediaItemAppearance array" do
+    kwargs_copy = @@media_review_kwargs.deep_dup
+    kwargs_copy[:item_reviewed][:mediaItemAppearance] = []
+
+    media_review = MediaReview.create!(**kwargs_copy)
+
+    # should generate without raising an exception
+    media_review.render_for_export
+    media_review.to_comma
   end
 end
