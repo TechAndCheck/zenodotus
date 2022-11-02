@@ -22,9 +22,7 @@ class FactCheckInsightsController < ApplicationController
 
       format.zip do
         unless user_signed_in? && current_user.can_access_fact_check_insights?
-          render json: {
-            error: "You do not have permission to view that resource."
-          }, status: :unauthorized
+          render_unauthorized
           return
         end
         send_data(FactCheckInsightsController.generate_csv_zip, type: "application/zip", filename: "fact_check_insights.zip")
