@@ -38,19 +38,32 @@ class MediaReview < ApplicationRecord
 
     # The CSV representation of a MediaReview will only include a single object from the mediaItemAppearance array
     # Namely, the object containing the `contentUrl` attribute
+    # If the mediaItemAppearance array is nil or empty, we'll return null values for all related attributes in the CSV
     item_reviewed "itemReviewed_mediaItemAppearance_@type" do |item_reviewed|
-      appearance = item_reviewed.dig("mediaItemAppearance").filter { |appearance| appearance.has_key?("contentUrl") }.first
-      appearance["@type"]
+      if !item_reviewed.has_key?("mediaItemAppearance") || item_reviewed["mediaItemAppearance"].empty?
+        nil
+      else
+        appearance = item_reviewed.fetch("mediaItemAppearance", []).filter { |appearance| appearance.has_key?("contentUrl") }.first
+        appearance["@type"]
+      end
     end
 
     item_reviewed "itemReviewed_mediaItemAppearance_contentUrl" do |item_reviewed|
-      appearance = item_reviewed.dig("mediaItemAppearance").filter { |appearance| appearance.has_key?("contentUrl") }.first
-      appearance["contentUrl"]
+      if !item_reviewed.has_key?("mediaItemAppearance") || item_reviewed["mediaItemAppearance"].empty?
+        nil
+      else
+        appearance = item_reviewed.fetch("mediaItemAppearance", []).filter { |appearance| appearance.has_key?("contentUrl") }.first
+        appearance["contentUrl"]
+      end
     end
 
     item_reviewed "itemReviewed_mediaItemAppearance_archivedAt" do |item_reviewed|
-      appearance = item_reviewed.dig("mediaItemAppearance").filter { |appearance| appearance.has_key?("contentUrl") }.first
-      appearance["archivedAt"]
+      if !item_reviewed.has_key?("mediaItemAppearance") || item_reviewed["mediaItemAppearance"].empty?
+        nil
+      else
+        appearance = item_reviewed.fetch("mediaItemAppearance", []).filter { |appearance| appearance.has_key?("contentUrl") }.first
+        appearance["archivedAt"]
+      end
     end
   end
 
