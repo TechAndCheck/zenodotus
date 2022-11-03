@@ -44,7 +44,7 @@
 						</li>
 						<% if current_user.is_admin? %>
 							<li>
-								<%= link_to jobs_status_index_path, class: "btn btn--naked icon-prefixed" do %>
+								<%= link_to admin_root_path, class: "btn btn--naked icon-prefixed" do %>
 									<%= use_svg "bolt", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
 									<span>Admin</span>
 								<% end %>

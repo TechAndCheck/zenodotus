@@ -15,7 +15,7 @@ class JobsStatusControllerTest < ActionDispatch::IntegrationTest
 
     get jobs_status_index_path
     assert_response :redirect
-    assert_equal "You don’t have permission to access that page.", flash[:alert]
+    assert_equal "You don’t have permission to access that page.", flash[:error]
   end
 
   test "can resubmit a scrape" do
