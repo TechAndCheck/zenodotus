@@ -17,6 +17,6 @@
     <div>&nbsp;</div>
   </div>
   <div id="scrapes-div" class="mt-5">
-    <%= turbo_frame_tag "scrapes", src: jobs_status_scrapes_path(active_scrapes_page: @active_scrapes_page), loading: "lazy"%>
+    <%= turbo_frame_tag "scrapes", src: admin_jobs_status_scrapes_path(active_scrapes_page: @active_scrapes_page), loading: "lazy"%>
   </div>
 </div>

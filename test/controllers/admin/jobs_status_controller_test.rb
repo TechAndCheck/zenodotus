@@ -1,19 +1,19 @@
 require "test_helper"
 
-class JobsStatusControllerTest < ActionDispatch::IntegrationTest
+class Admin::JobsStatusControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   test "can view jobs" do
     sign_in users(:admin)
 
-    get jobs_status_index_path
+    get admin_jobs_status_root_path
     assert_response :success
   end
 
   test "cannot view jobs as a non-admin user" do
     sign_in users(:user)
 
-    get jobs_status_index_path
+    get admin_jobs_status_root_path
     assert_response :redirect
     assert_equal "You don’t have permission to access that page.", flash[:error]
   end
@@ -25,7 +25,7 @@ class JobsStatusControllerTest < ActionDispatch::IntegrationTest
 
     assert_enqueued_jobs 0
 
-    post job_status_resubmit_path(id: scrape.id)
+    post admin_jobs_status_resubmit_path(id: scrape.id)
     scrape.reload
     assert scrape.error
 
@@ -37,7 +37,7 @@ class JobsStatusControllerTest < ActionDispatch::IntegrationTest
     scrape = Scrape.create({ fulfilled: false, url: "https://www.instagram.com/p/CBcqOkyDDH8/", scrape_type: :instagram })
     assert_not_nil scrape
 
-    delete job_status_delete_path(id: scrape.id)
+    delete admin_jobs_status_delete_path(id: scrape.id)
     assert_raises ActiveRecord::RecordNotFound do
       Scrape.find(scrape.id)
     end
