@@ -1,4 +1,4 @@
-<div class="author" data-controller="author">
+<div class="author" data-controller="media-vault--author">
   <img
     class="author__image"
     src="<%= @twitter_user.profile_image_url %>"
@@ -29,7 +29,7 @@
           Joined Twitter on
           <time
             datetime="<%= @twitter_user.sign_up_date.iso8601 %>"
-            data-author-target="timestamp"
+            data-media-vault--author-target="timestamp"
           >
             <%= @twitter_user.sign_up_date %>
           </time>
