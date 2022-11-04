@@ -1,7 +1,12 @@
 require "test_helper"
 
 class FactCheckInsightsControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
   include Minitest::Hooks
+
+  setup do
+    host! Figaro.env.FACT_CHECK_INSIGHTS_HOST
+  end
 
   # Create an ArchiveItem, a MediaReview object, and a ClaimReview object
   def before_all
@@ -86,7 +91,6 @@ class FactCheckInsightsControllerTest < ActionDispatch::IntegrationTest
     assert json_export["meta"]["claimReviewCount"].positive?
   end
 
-
   # Generate a csv zip file, write it to disk, read it, then validate it
   test "can generate Fact Check Insights csv zip export" do
     zipped_csvs = FactCheckInsightsController.generate_csv_zip
@@ -97,6 +101,42 @@ class FactCheckInsightsControllerTest < ActionDispatch::IntegrationTest
     Zip::File.open("tmp/csvs.zip") do |zip_file|
       claim_reviews = CSV.parse(zip_file.glob("claim_reviews.csv").first.get_input_stream.read)
       media_reviews = CSV.parse(zip_file.glob("media_reviews.csv").first.get_input_stream.read)
+    end
+  end
+
+  test "can download data as an admin" do
+    sign_in users(:admin)
+
+    get fact_check_insights_download_path(format: :json)
+    assert_response :success
+
+    get fact_check_insights_download_path(format: :zip)
+    assert_response :success
+  end
+
+  test "can download data as a permitted user" do
+    sign_in users(:insights_user)
+
+    get fact_check_insights_download_path(format: :json)
+    assert_response :success
+
+    get fact_check_insights_download_path(format: :zip)
+    assert_response :success
+  end
+
+  test "cannot download data when not logged in" do
+    get fact_check_insights_download_path(format: :json)
+    assert_response :unauthorized
+
+    get fact_check_insights_download_path(format: :zip)
+    assert_response :unauthorized
+  end
+
+  test "cannot download data from the Vault hostname" do
+    host! Figaro.env.MEDIA_VAULT_HOST
+
+    assert_raises ActionController::RoutingError do
+      get fact_check_insights_download_path(format: :json)
     end
   end
 end
