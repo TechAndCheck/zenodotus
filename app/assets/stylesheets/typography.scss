@@ -94,3 +94,8 @@ a:hover {
 .color--danger {
 	color: shared.$color--mood--error;
 }
+
+.subtle {
+	color: gray;
+	font-weight: shared.$font-weight--light;
+}

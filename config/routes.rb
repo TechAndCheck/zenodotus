@@ -38,6 +38,10 @@ Rails.application.routes.draw do
       delete ":id", action: "delete_scrape", as: "delete"
       post "resubmit/:id", action: "resubmit_scrape", as: "resubmit"
     end
+
+    resources :applicants, only: [:index, :show]
+    post "applicants/:id/approve", to: "applicants#approve", as: "applicant_approve"
+    post "applicants/:id/reject", to: "applicants#reject", as: "applicant_reject"
   end
 
   constraints host: Figaro.env.FACT_CHECK_INSIGHTS_HOST do

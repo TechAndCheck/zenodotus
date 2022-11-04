@@ -1,0 +1,68 @@
+@use "shared";
+
+#page--fact_check_insights--applicants,
+#page--media_vault--applicants {
+	background-color: shared.$color--brand--fact_check_insights;
+
+	.applicants {
+		display: grid;
+		gap: 2rem;
+		margin-bottom: 5rem;
+
+		font-family: shared.$font-family--sans-serif;
+		line-height: 1.2;
+
+		@media screen and (min-width: shared.$screen-xl-floor) {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	.applicant {
+		width: 100%;
+	}
+
+	.applicant__details {
+		display: grid;
+		gap: 1rem;
+		font-size: 1.1rem;
+
+		@media screen and (min-width: shared.$screen-md-floor) {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	.applicant__detail {
+		> dt {
+			font-weight: shared.$font-weight--semibold;
+			font-size: 0.9em;
+		}
+
+		> dd {
+			.na {
+				color: lightgray;
+			}
+		}
+
+		&.applicant__detail--full-width {
+			grid-column: 1 / -1;
+		}
+	}
+
+	.applicant__actions {
+		.form {
+			margin-top: 3rem;
+		}
+	}
+
+	.applicant__status {
+		font-weight: shared.$font-weight--semibold;
+
+		&.applicant__status--approved {
+			color: shared.$color--mood--success;
+		}
+
+		&.applicant__status--rejected {
+			color: shared.$color--mood--error;
+		}
+	}
+}

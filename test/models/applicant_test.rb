@@ -177,4 +177,16 @@ class ApplicantTest < ActiveSupport::TestCase
     assert_equal review_note, confirmed_applicant.review_note
     assert_equal review_note, confirmed_applicant.review_note_internal
   end
+
+  test "can associate a reviewer" do
+    admin = users(:admin)
+    confirmed_applicant = applicants(:confirmed)
+
+    confirmed_applicant.approve(
+      reviewer: admin
+    )
+    confirmed_applicant.reload
+
+    assert_equal admin, confirmed_applicant.reviewer
+  end
 end
