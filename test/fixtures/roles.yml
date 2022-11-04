@@ -3,8 +3,8 @@
 new_user:
   name: :new_user
 
-insights_user:
-  name: :insights_user
+fact_check_insights_user:
+  name: :fact_check_insights_user
 
 media_vault_user:
   name: :media_vault_user

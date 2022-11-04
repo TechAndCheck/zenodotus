@@ -23,7 +23,7 @@ AwsS3Downloader.singleton_class.prepend(S3OverRide)
 
 Role.create!([
   { name: "new_user" },
-  { name: "insights_user" },
+  { name: "fact_check_insights_user" },
   { name: "media_vault_user" },
   { name: "admin" },
 ])
@@ -114,16 +114,16 @@ Applicant.create!([
 ])
 
 # Create the standard Insights user (has completed setup and signed in)
-insights_user = User.create_from_applicant(Applicant.find_by(email: "insights@example.com"))
-insights_user.update!({
+fact_check_insights_user = User.create_from_applicant(Applicant.find_by(email: "insights@example.com"))
+fact_check_insights_user.update!({
   # Override the randomized initial password.
   password: easy_password,
   password_confirmation: easy_password,
 })
 
 # Create the standard Vault user (has completed setup and signed in)
-vault_user = User.create_from_applicant(Applicant.find_by(email: "vault@example.com"))
-vault_user.update!({
+media_vault_user = User.create_from_applicant(Applicant.find_by(email: "vault@example.com"))
+media_vault_user.update!({
   # Override the randomized initial password.
   password: easy_password,
   password_confirmation: easy_password,

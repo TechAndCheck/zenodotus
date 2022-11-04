@@ -115,7 +115,7 @@ class FactCheckInsightsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can download data as a permitted user" do
-    sign_in users(:insights_user)
+    sign_in users(:fact_check_insights_user)
 
     get fact_check_insights_download_path(format: :json)
     assert_response :success
