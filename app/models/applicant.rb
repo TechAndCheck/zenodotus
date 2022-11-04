@@ -2,6 +2,9 @@ class Applicant < ApplicationRecord
   # This relationship is optional because not all applicants will become users.
   belongs_to :user, optional: true
 
+  # Optional because until reviewed, the applicant does not belong to any reviewer.
+  belongs_to :reviewer, class_name: "User", optional: true
+
   # A boolean value for terms acceptance stored in the database isn't good enough for auditing,
   # but a boolean attribute is useful for magic form composition and validation. Thus, we use a
   # non-database-backed attribute until model creation time, when we generate the timestamp and
@@ -60,10 +63,12 @@ class Applicant < ApplicationRecord
   # Disallows approving previously-approved applicants, but
   # allows approving unreviewed or previously-rejected applicants.
   sig { params(
+    reviewer: User,
     review_note: T.nilable(String),
     review_note_internal: T.nilable(String)
   ).void }
   def approve(
+    reviewer: nil,
     review_note: nil,
     review_note_internal: nil
   )
@@ -72,6 +77,7 @@ class Applicant < ApplicationRecord
 
     self.update!({
       status: :approved,
+      reviewer: reviewer,
       review_note: review_note,
       review_note_internal: review_note_internal,
       reviewed_at: Time.now
@@ -85,10 +91,12 @@ class Applicant < ApplicationRecord
   # then rejecting the application is pointless and their user account should be disabled instead.
   # If they were previously rejected, then we don't want to redundantly reject them.)
   sig { params(
+    reviewer: User,
     review_note: T.nilable(String),
     review_note_internal: T.nilable(String)
   ).void }
   def reject(
+    reviewer: nil,
     review_note: nil,
     review_note_internal: nil
   )
@@ -97,6 +105,7 @@ class Applicant < ApplicationRecord
 
     self.update!({
       status: :rejected,
+      reviewer: reviewer,
       review_note: review_note,
       review_note_internal: review_note_internal,
       reviewed_at: Time.now

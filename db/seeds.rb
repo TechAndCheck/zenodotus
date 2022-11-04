@@ -69,6 +69,8 @@ Applicant.create!([
     confirmed_at: Time.now,
     source_site: SiteDefinitions::FACT_CHECK_INSIGHTS[:shortname],
     status: "rejected",
+    reviewed_at: Time.now,
+    reviewer: admin,
   },
   # This applicant is approved, but hasn't yet been converted to a user.
   {
@@ -80,6 +82,8 @@ Applicant.create!([
     confirmed_at: Time.now,
     source_site: SiteDefinitions::FACT_CHECK_INSIGHTS[:shortname],
     status: "approved",
+    reviewed_at: Time.now,
+    reviewer: admin,
   },
   # This applicant is approved and will be converted to a standard Insights user.
   {
@@ -91,6 +95,8 @@ Applicant.create!([
     confirmed_at: Time.now,
     source_site: SiteDefinitions::FACT_CHECK_INSIGHTS[:shortname],
     status: "approved",
+    reviewed_at: Time.now,
+    reviewer: admin,
   },
   # This applicant is approved and will be converted to a standard Vault user.
   {
@@ -102,6 +108,8 @@ Applicant.create!([
     confirmed_at: Time.now,
     source_site: SiteDefinitions::MEDIA_VAULT[:shortname],
     status: "approved",
+    reviewed_at: Time.now,
+    reviewer: admin,
   },
 ])
 

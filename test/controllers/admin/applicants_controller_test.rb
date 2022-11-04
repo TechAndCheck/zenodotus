@@ -55,4 +55,13 @@ class Admin::ApplicantsControllerTest < ActionDispatch::IntegrationTest
     applicant.reload
     assert applicant.approved?
   end
+
+  test "can identify the reviewer" do
+    admin = users(:admin)
+    applicant = applicants(:confirmed)
+
+    post admin_applicant_approve_path(id: applicant[:id])
+    applicant.reload
+    assert_equal admin, applicant.reviewer
+  end
 end

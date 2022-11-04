@@ -17,6 +17,7 @@ class Admin::ApplicantsController < AdminController
     @applicant = Applicant.find(review_params[:id])
 
     @applicant.approve(
+      reviewer: current_user,
       review_note: review_params[:review_note],
       review_note_internal: review_params[:review_note_internal],
     )
@@ -33,6 +34,7 @@ class Admin::ApplicantsController < AdminController
     @applicant = Applicant.find(review_params[:id])
 
     @applicant.reject(
+      reviewer: current_user,
       review_note: review_params[:review_note],
       review_note_internal: review_params[:review_note_internal],
     )

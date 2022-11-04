@@ -127,6 +127,7 @@
 						datetime="<%= applicant.reviewed_at.iso8601 %>"
 						data-admin--applicants-target="timestamp"
 						><%= applicant.reviewed_at %></time>
+					by <%= applicant.reviewer.name %>
 				</td>
 			</tr>
 		<% end %>
