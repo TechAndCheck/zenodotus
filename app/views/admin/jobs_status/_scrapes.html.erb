@@ -16,11 +16,11 @@
             <td><%= scrape.scrape_type %></td>
             <td><%= scrape.created_at %></td>
             <td><%= link_to scrape.url, scrape.url %></td>
-            <td><%= link_to "Delete", job_status_delete_path(scrape.id, page: @active_scrapes_page), data: {
+            <td><%= link_to "Delete", admin_jobs_status_delete_path(scrape.id, page: @active_scrapes_page), data: {
                       turbo_method: :delete,
                       turbo_confirm: "Are you sure you would like to stop this scrape?"
                     } %></td>
-            <td><%= link_to "Resubmit", job_status_resubmit_path(scrape.id, page: @active_scrapes_page), data: {
+            <td><%= link_to "Resubmit", admin_jobs_status_resubmit_path(scrape.id, page: @active_scrapes_page), data: {
                       turbo_method: :post,
                       turbo_confirm: "Are you sure you would like to resubmit this scrape?"
                     } %></td>

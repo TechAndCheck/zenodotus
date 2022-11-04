@@ -1,9 +1,7 @@
 # typed: strict
 
-class JobsStatusController < ApplicationController
+class Admin::JobsStatusController < AdminController
   require "sidekiq/api"
-
-  before_action :authenticate_super_user!
 
   RESULTS_PER_PAGE = 10
 
@@ -26,13 +24,13 @@ class JobsStatusController < ApplicationController
     typed_params = TypedParams[JobsParams].new.extract!(params)
 
     scrapes_for_page_number(typed_params.active_scrapes_page) # set the variables for scrapes
-    render partial: "jobs_status/scrapes", layout: false
+    render partial: "admin/jobs_status/scrapes", layout: false
   end
 
   sig { void }
   def active_jobs
     jobs_count # set the variables for scrapes
-    render partial: "jobs_status/active_jobs", layout: false
+    render partial: "admin/jobs_status/active_jobs", layout: false
   end
 
   # A class representing the allowed params into the `submit_url` endpoint
@@ -51,7 +49,7 @@ class JobsStatusController < ApplicationController
 
     object_model = ArchiveItem.model_for_url(scrape.url)
     object_model.create_from_url(scrape.url, current_user)
-    flash[:alert] = "Successfully resubmitted scrape"
+    flash[:success] = "Successfully resubmitted scrape"
 
     page = typed_params.page.nil? ? 1 : typed_params.page
     scrapes_for_page_number(page) # Fill the variables for turbo
@@ -60,10 +58,10 @@ class JobsStatusController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream { render turbo_stream: [
-        turbo_stream.replace(:scrapes, partial: "jobs_status/scrapes"),
+        turbo_stream.replace(:scrapes, partial: "admin/jobs_status/scrapes"),
         turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash })
       ]}
-      format.html { redirect_back fallback_location: :jobs_status_index }
+      format.html { redirect_back fallback_location: :admin_jobs_status_root }
     end
   end
 
@@ -75,7 +73,7 @@ class JobsStatusController < ApplicationController
 
     @scrape.destroy!
 
-    flash[:alert] = "Successfully deleted scrape"
+    flash[:success] = "Successfully deleted scrape"
 
     page = typed_params.page.nil? ? 1 : typed_params.page
     scrapes_for_page_number(page) # Fill the variables for turbo
@@ -84,10 +82,10 @@ class JobsStatusController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream { render turbo_stream: [
-        turbo_stream.replace(:scrapes, partial: "jobs_status/scrapes"),
+        turbo_stream.replace(:scrapes, partial: "admin/jobs_status/scrapes"),
         turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash })
       ]}
-      format.html { redirect_back fallback_location: :jobs_status_index }
+      format.html { redirect_back fallback_location: :admin_jobs_status_root }
     end
   end
 

@@ -99,8 +99,7 @@ Semantic variants:
 		--alert--focus-background-color: #{shared.$color--orange-8};
 	}
 
-	&.alert--error,
-	&.alert--alert {
+	&.alert--error {
 		--alert--color: #{shared.$color--mood--error--contrast};
 		--alert--background-color: #{shared.$color--mood--error};
 		--alert--focus-background-color: #{shared.$color--mood--error--hover};

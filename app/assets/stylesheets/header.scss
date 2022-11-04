@@ -216,6 +216,7 @@
 		opacity: 0;
 		transform: translateY(-10px);
 		transition-property: opacity, transform;
+		pointer-events: none;
 
 		background-color: white;
 		border: 1px solid black;
@@ -233,6 +234,7 @@
 	.open-account-menu #site-nav__account-menu {
 		transform: translateY(0);
 		opacity: 1;
+		pointer-events: auto;
 	}
 
 	#site-nav__account-name .icon {
