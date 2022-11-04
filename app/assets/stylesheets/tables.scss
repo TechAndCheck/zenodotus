@@ -1,0 +1,58 @@
+@use "shared";
+
+.table {
+	--table--border-color: lightgray;
+	--table--cell-padding-y: 0.5em;
+	--table--cell-padding-x: 0;
+
+	width: 100%;
+
+	font-family: shared.$font-family--sans-serif, sans-serif;
+	line-height: 1.2;
+
+	thead {
+		tr {
+			border-bottom: 1px solid var(--table--border-color);
+		}
+
+		th {
+			font-weight: shared.$font-weight--semibold;
+			vertical-align: bottom;
+		}
+	}
+
+	tbody {
+		tr {
+			border-bottom: 1px solid var(--table--border-color);
+		}
+
+		th {
+			text-align: right;
+		}
+
+		th,
+		td {
+			vertical-align: top;
+		}
+	}
+
+	th,
+	td {
+		text-align: left;
+		padding: var(--table--cell-padding-y) var(--table--cell-padding-x);
+		transition-property: padding;
+
+		.center {
+			text-align: center;
+		}
+
+		.right {
+			text-align: right;
+		}
+	}
+
+	@media screen and (min-width: shared.$screen-lg-floor) {
+		--table--cell-padding-y: 0.5em;
+		--table--cell-padding-x: 0.5em;
+	}
+}

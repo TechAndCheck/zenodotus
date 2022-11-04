@@ -1,0 +1,135 @@
+<% @title_tag = "Applicants" %>
+<% @page_id = "applicants" %>
+
+<div class="content" data-controller="admin--applicants">
+	<h1>Applicants</h1>
+
+	<% if @unreviewed_applicants.any? %>
+	<div class="applicants applicants--unreviewed">
+		<% @unreviewed_applicants.each do |applicant| %>
+			<div class="applicant box">
+				<dl class="applicant__details">
+					<div class="applicant__detail">
+						<dt>Name</dt>
+						<dd><%= applicant.name  %></dd>
+					</div>
+					<div class="applicant__detail">
+						<dt>Email</dt>
+						<dd><%= mail_to applicant.email %></dd>
+					</div>
+					<div class="applicant__detail">
+						<dt>Affiliation</dt>
+						<dd><%= or_na(applicant.affiliation) %></dd>
+					</div>
+					<div class="applicant__detail">
+						<dt>Primary role</dt>
+						<dd><%= or_na(applicant.primary_role) %></dd>
+					</div>
+					<div class="applicant__detail">
+						<dt>Applied for</dt>
+						<dd><%= SiteDefinitions::BY_SHORTNAME[applicant.source_site][:title] %></dd>
+					</div>
+					<div class="applicant__detail">
+						<dt>Applied at</dt>
+						<dd>
+								<time
+									datetime="<%= applicant.created_at.iso8601 %>"
+									data-admin--applicants-target="timestamp"
+									><%= applicant.created_at %></time>
+						</dd>
+					</div>
+					<div class="applicant__detail">
+						<dt>Use case</dt>
+						<dd><%= applicant.use_case %></dd>
+					</div>
+					<div class="applicant__detail">
+						<dt>Country</dt>
+						<dd><%= or_na(applicant.country) %></dd>
+					</div>
+				</dl>
+				<div class="applicant__actions">
+					<%= form_with(
+						class: "form"
+					) do |f| %>
+						<%= f.hidden_field :id, value: applicant.id %>
+						<div class="fieldset__fields">
+							<div class="field__wrapper--input">
+								<%= f.label(
+									:review_note_internal,
+									"🔒 Internal review note *") %>
+								<%= f.text_area(
+									:review_note_internal,
+									size: "50x3",
+									required: true) %>
+								<div class="field__description">Share information with other admins about this applicant, your reasons for approving or rejecting, etc.</div>
+							</div>
+							<div class="field__wrapper--input hidden">
+								<%= f.label(
+									:review_note,
+									"🗣 Reply to applicant") %>
+								<%= f.text_area(
+									:review_note,
+									size: "50x3") %>
+								<div class="field__description"><b class="color--danger">Be careful!</b> Whatever you type here will be sent to the applicant.</div>
+							</div>
+						</div>
+						<div class="btn-container flex justify-evenly">
+							<%= f.submit(
+								"Approve",
+								formaction: admin_applicant_approve_path(applicant),
+								class: "btn btn--submit") %>
+							<%= f.submit(
+								"Reject",
+								formaction: admin_applicant_reject_path(applicant),
+								class: "btn btn--danger") %>
+						</div>
+					<% end %>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	<% else %>
+		<p class="b1" style="margin-bottom:4rem;">There are currently no unreviewed applicants.</p>
+	<% end %>
+
+	<h2>Reviewed applicants</h2>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Affiliation</th>
+				<th>Primary role</th>
+				<th>Use case</th>
+				<th>Country</th>
+				<th>Applied for</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+		<tbody>
+		<% @reviewed_applicants.each do |applicant| %>
+			<tr>
+				<td>
+					<%= applicant.name %><br>
+					<%= mail_to applicant.email, class: "subtle" %>
+				</td>
+				<td><%= applicant.affiliation %></td>
+				<td><%= applicant.primary_role %></td>
+				<td><%= applicant.use_case %></td>
+				<td><%= applicant.country %></td>
+				<td><%= SiteDefinitions::BY_SHORTNAME[applicant.source_site][:title] %></td>
+				<td>
+					<span class="applicant__status applicant__status--<%= applicant.status %>">
+						<%= applicant.status.capitalize %>
+					</span>
+					on
+					<time
+						datetime="<%= applicant.reviewed_at.iso8601 %>"
+						data-admin--applicants-target="timestamp"
+						><%= applicant.reviewed_at %></time>
+				</td>
+			</tr>
+		<% end %>
+		</tbody>
+	</table>
+</div>

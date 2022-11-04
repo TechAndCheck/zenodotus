@@ -14,6 +14,7 @@
 @use "header";
 @use "icons";
 @use "images";
+@use "tables";
 @use "typography";
 
 // Entity components
@@ -23,6 +24,7 @@
 
 // Pages
 @use "pages/about";
+@use "pages/admin_applicants";
 @use "pages/fact_check_insights_home";
 @use "pages/fact_check_insights_download";
 @use "pages/fact_check_insights_guide";

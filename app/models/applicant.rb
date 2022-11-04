@@ -113,6 +113,16 @@ class Applicant < ApplicationRecord
     self.status.nil?
   end
 
+  sig { returns(T.self_type) }
+  def self.unreviewed
+    Applicant.where(status: nil).where.not(confirmed_at: nil)
+  end
+
+  sig { returns(T.self_type) }
+  def self.reviewed
+    Applicant.where.not(status: nil).where.not(confirmed_at: nil)
+  end
+
 private
 
   sig { void }
