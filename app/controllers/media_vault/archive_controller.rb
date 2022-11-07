@@ -1,6 +1,11 @@
 # typed: strict
 
 class MediaVault::ArchiveController < MediaVaultController
+  before_action :authenticate_super_user!, only: [
+    :add,
+    :submit_url,
+  ]
+
   skip_before_action :authenticate_user!, only: :scrape_result_callback
   skip_before_action :must_be_media_vault_user, only: :scrape_result_callback
 
