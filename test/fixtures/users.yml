@@ -16,7 +16,7 @@ user:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
   roles:
-    - insights_user
+    - fact_check_insights_user
     - media_vault_user
 
 new_user:
@@ -26,15 +26,15 @@ new_user:
   confirmed_at: <%= Time.now %>
   roles:
     - new_user
-    - insights_user
+    - fact_check_insights_user
 
-insights_user:
+fact_check_insights_user:
   name: "Insights User's Name"
   email: "insights-only-user@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
   roles:
-    - insights_user
+    - fact_check_insights_user
 
 media_vault_user:
   name: "Vault User's Name"
@@ -42,7 +42,7 @@ media_vault_user:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
   roles:
-    - insights_user
+    - fact_check_insights_user
     - media_vault_user
 
 admin:

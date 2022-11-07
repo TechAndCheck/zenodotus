@@ -81,7 +81,7 @@ class User < ApplicationRecord
   def assign_default_roles
     if self.roles.blank?
       self.add_role :new_user
-      self.add_role :insights_user
+      self.add_role :fact_check_insights_user
     end
   end
 
