@@ -38,6 +38,18 @@ class MediaVault::IngestController < MediaVaultController
       JSONValidationError = new
     end
 
+    class JSONParseException < StandardError
+      def message
+        JSONParseError.message
+      end
+    end
+
+    class JSONValidationException < StandardError
+      def message
+        JSONValidationError.message
+      end
+    end
+
     sig { returns(Integer) }
     def code
       case self
@@ -52,6 +64,15 @@ class MediaVault::IngestController < MediaVaultController
       case self
       when JSONParseError then "Error parsing JSON, invalid JSON"
       when JSONValidationError then "Error parsing JSON, JSON does not conform to schema"
+      else T.absurd(self)
+      end
+    end
+
+    sig { returns(StandardError) }
+    def error
+      case self
+      when JSONParseError then JSONParseException.new
+      when JSONValidationError then JSONValidationException.new
       else T.absurd(self)
       end
     end
@@ -76,6 +97,9 @@ class MediaVault::IngestController < MediaVaultController
     # TODO: Spin off an active job to handle this
     typed_params = TypedParams[SubmitMediaReviewParams].new.extract!(params)
     media_review_json = JSON.parse(typed_params.media_review_json)
+
+    raise ApiErrors::JSONValidationError.error unless media_review_json.key?("itemReviewed") && media_review_json["itemReviewed"].key?("mediaItemAppearance")
+
     response_payload = archive_from_media_review(media_review_json)
 
     render(json: response_payload, status: response_payload.has_key?(:error) ? 400 : 200)
@@ -86,7 +110,15 @@ class MediaVault::IngestController < MediaVaultController
       failures: media_review_json
     }
     render(json: response_payload, status: 400)
+  rescue ApiErrors::JSONValidationException
+    response_payload = {
+      error_code: ApiErrors::JSONValidationError.code,
+      error: ApiErrors::JSONValidationError.message,
+      failures: media_review_json
+    }
+    render(json: response_payload, status: 400)
   end
+
 
 
   # Creates MediaReview and ArchiveItem(s) based on MediaReview founded at the page pointed to by the URL param
@@ -133,8 +165,14 @@ class MediaVault::IngestController < MediaVaultController
       failures: media_review_json
     }
     render(json: response_payload, status: 400)
+  rescue ApiErrors::JSONValidationException
+    response_payload = {
+      error_code: ApiErrors::JSONValidationError.code,
+      error: ApiErrors::JSONValidationError.message,
+      failures: media_review_json
+    }
+    render(json: response_payload, status: 400)
   end
-
   # Finds MediaReview JSON objects embedded in <script> tags at the page pointed to by the url param
   #
   # @param [String] url: the url to look at
@@ -161,13 +199,13 @@ class MediaVault::IngestController < MediaVaultController
   # @return [Hash]: A hash containing response codes and a reference to the newly created ArchiveItem
   sig { params(media_review_json: Hash).returns(Hash) }
   def archive_from_media_review(media_review_json)
+    saved_object = ArchiveItem.create_from_media_review(media_review_json)
+
     return {
       error_code: ApiErrors::JSONValidationError.code,
       error: ApiErrors::JSONValidationError.message,
       failures: media_review_json
     } unless validate_media_review(media_review_json)
-
-    saved_object = ArchiveItem.create_from_media_review(media_review_json)
 
     {
       response_code: ApiResponseCodes::Success.code,
