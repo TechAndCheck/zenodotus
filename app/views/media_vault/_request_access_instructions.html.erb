@@ -1,0 +1,9 @@
+<%= mail_to "hello@factcheckinsights.org", {
+	class: "btn #{button_class if defined?(button_class)}",
+	subject: "Request access to MediaVault by Fact-Check Insights user",
+	body: "I would like to request that my account, #{current_user.email}, be granted access to use MediaVault.
+
+Reason for request:"
+} do %>
+	<span>Request access</span>
+<% end %>

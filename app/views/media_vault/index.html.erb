@@ -6,7 +6,17 @@
 		<p>Our cutting-edge system gathers manipulated images and videos shared around the world that have been analyzed by reputable fact-checking organizations. The MediaVault archive allows fact-checkers to maintain a vital portion of their work, and enables quicker research and identification of patterns used in misleading social media posts.</p>
 		<p>MediaVault is free for use by fact-checkers, journalists and others working to debunk misinformation shared online, but registration is required.</p>
 		<div class="btn-container">
-			<%= link_to "Request Access", new_applicant_path, class: "btn btn--reversed btn--lg" %>
+			<% if user_signed_in? %>
+				<% if current_user.can_access_media_vault? %>
+					<%= link_to "Go to the Dashboard", media_vault_dashboard_path, class: "btn btn--reversed btn--lg" %>
+				<% else %>
+					<%= render partial: "media_vault/request_access_instructions", locals: { button_class: "btn--lg" } %>
+				<% end %>
+			<% else %>
+				<%= link_to "Request Access", new_applicant_path, class: "btn btn--lg" %>
+				<span class="mx-2">or</span>
+				<%= link_to "Log In", new_user_session_path, class: "btn btn--reversed btn--lg" %>
+			<% end %>
 		</div>
 	</div>
 	<div class="hidden lg:block lg:basis-2/4">
