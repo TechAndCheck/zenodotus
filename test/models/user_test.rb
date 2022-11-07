@@ -7,7 +7,7 @@ class UserTest < ActiveSupport::TestCase
     user = User.create_from_applicant(approved_applicant)
 
     assert user.is_new_user?
-    assert user.is_insights_user?
+    assert user.is_fact_check_insights_user?
   end
 
   test "should assign Vault applicants the Vault role" do
@@ -19,16 +19,16 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "should recognize Insights-only users" do
-    insights_user = users(:insights_user)
+    fact_check_insights_user = users(:fact_check_insights_user)
 
-    assert insights_user.is_insights_user?
-    assert_not insights_user.is_media_vault_user?
+    assert fact_check_insights_user.is_fact_check_insights_user?
+    assert_not fact_check_insights_user.is_media_vault_user?
   end
 
   test "should recognize MediaVault users" do
     media_vault_user = users(:media_vault_user)
 
-    assert media_vault_user.is_insights_user?
+    assert media_vault_user.is_fact_check_insights_user?
     assert media_vault_user.is_media_vault_user?
   end
 
@@ -111,7 +111,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "cannot send setup email to previously logged-in user" do
-    user = users(:insights_user)
+    user = users(:fact_check_insights_user)
 
     assert_raises User::AlreadySetupError do
       user.send_setup_instructions

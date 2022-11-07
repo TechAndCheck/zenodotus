@@ -8,7 +8,7 @@ class MediaVaultControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not allow Insights-only users to view dashboard" do
-    sign_in users(:insights_user)
+    sign_in users(:fact_check_insights_user)
 
     get media_vault_dashboard_url
 
