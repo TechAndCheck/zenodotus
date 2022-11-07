@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_17_172004) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_04_200350) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -51,7 +51,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_17_172004) do
     t.text "review_note_internal"
     t.uuid "user_id"
     t.string "source_site"
+    t.uuid "reviewer_id"
     t.index ["confirmation_token"], name: "index_applicants_on_confirmation_token", unique: true
+    t.index ["reviewer_id"], name: "index_applicants_on_reviewer_id"
     t.index ["user_id"], name: "index_applicants_on_user_id"
   end
 
@@ -201,6 +203,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_17_172004) do
     t.datetime "date_published"
     t.jsonb "item_reviewed"
     t.text "url"
+    t.jsonb "media_item_appearance"
     t.index ["archive_item_id"], name: "index_media_reviews_on_archive_item_id"
   end
 
