@@ -1,3 +1,14 @@
 <% @title_tag = "Contact" %>
 
-Contact
+<div class="full-bleed flex flex-col items-stetch lg:items-center lg:flex-row-reverse gap-24 p-10 lg:p-20">
+	<div class="lg:basis-2/4">
+		<div class="max-w-2xl">
+			<h1>Let's stay in touch</h1>
+			<p class="b1">For questions about the <%= @site[:title] %> data, please email us at <%= mail_to "hello@factcheckinsights.org" %>.</p>
+			<p class="b2"><%= render partial: "#{@site[:shortname]}/optout_instructions" %></p>
+		</div>
+	</div>
+	<div class="lg:basis-2/4 flex justify-center">
+		<%= image_tag "brand-ornaments/02.svg", width: "100%", height: "auto", class: "max-w-2xl" %>
+	</div>
+</div>

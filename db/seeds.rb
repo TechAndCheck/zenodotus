@@ -69,6 +69,8 @@ Applicant.create!([
     confirmed_at: Time.now,
     source_site: SiteDefinitions::FACT_CHECK_INSIGHTS[:shortname],
     status: "rejected",
+    reviewed_at: Time.now,
+    reviewer: admin,
   },
   # This applicant is approved, but hasn't yet been converted to a user.
   {
@@ -80,6 +82,8 @@ Applicant.create!([
     confirmed_at: Time.now,
     source_site: SiteDefinitions::FACT_CHECK_INSIGHTS[:shortname],
     status: "approved",
+    reviewed_at: Time.now,
+    reviewer: admin,
   },
   # This applicant is approved and will be converted to a standard Insights user.
   {
@@ -91,6 +95,8 @@ Applicant.create!([
     confirmed_at: Time.now,
     source_site: SiteDefinitions::FACT_CHECK_INSIGHTS[:shortname],
     status: "approved",
+    reviewed_at: Time.now,
+    reviewer: admin,
   },
   # This applicant is approved and will be converted to a standard Vault user.
   {
@@ -102,6 +108,8 @@ Applicant.create!([
     confirmed_at: Time.now,
     source_site: SiteDefinitions::MEDIA_VAULT[:shortname],
     status: "approved",
+    reviewed_at: Time.now,
+    reviewer: admin,
   },
 ])
 
@@ -134,20 +142,38 @@ media_review = MediaReview.create(
   author: {
     "@type": "Organization",
     "name": "realfact",
-    "url": "https://realfact.com"
+    "url": "https://realfact.com",
+    "image": "https://i.kym-cdn.com/photos/images/newsfeed/001/207/210/b22.jpg",
+    "sameAs": "https://twitter.com/realfact"
   },
   media_authenticity_category: "TransformedContent",
   original_media_context_description: "Star Wars Ipsum",
   item_reviewed: {
     "@type": "MediaReviewItem",
+    "creator": {
+      "@type": "Person",
+      "name": "Old Ben-Kenobi",
+      "url": "https://www.foobar.com/x/1"
+    },
+    "interpretedAsClaim": {
+      "@type": "Claim",
+      "description": "Two droids on the imperial watchlist entered a hovercraft"
+    },
     "embeddedTextCaption": "Your droids. They’ll have to wait outside. We don’t want them here. Listen, why don’t you wait out by the speeder. We don’t want any trouble.",
-    "originalMediaLink": "https://www.foobar.com/1",
-    "appearance": {
-      "@type": "ImageObjectSnapshot",
-      "sha256sum": ["8bb6caeb301b85cddc7b67745a635bcda939d17044d9bcf31158ef5e9f8ff072"],
-      "accessedOnUrl": "https://www.facebook.com/photo.php?fbid=10217541425752089&set=a.1391489831857&type=3",
-      "archivedAt": "https://archive.is/dfype"
-    }
+    "mediaItemAppearance": [
+      {
+        "@type": "ImageObjectSnapshot",
+        "description": "A stormtrooper posted a screenshot of two droids entering a hovercraft",
+        "sha256sum": ["8bb6caeb301b85cddc7b67745a635bcda939d17044d9bcf31158ef5e9f8ff072"],
+        "accessedOnUrl": "https://www.facebook.com/photo.php?fbid=10217541425752089&set=a.1391489831857&type=3",
+        "archivedAt": "https://archive.is/dfype"
+      },
+      {
+        "@type": "ImageObjectSnapshot",
+        "contentUrl": "https://www.foobar.com/1",
+        "archivedAt": "www.archive.org"
+      }
+    ]
   },
   archive_item: archive_items[0]
 )
@@ -162,17 +188,30 @@ MediaReview.create(
     "url": "https://realfact.com"
   },
   media_authenticity_category: "TransformedContent",
-  original_media_context_description: "Star Wars Ipsum",
+  original_media_context_description: "Batman Ipsum",
   item_reviewed: {
     "@type": "MediaReviewItem",
+    "creator": {
+      "@type": "Person",
+      "name": "Name Nameson",
+      "url": "https://user2.com/"
+    },
     "embeddedTextCaption": "But we’ve met before. That was a long time ago, I was a kid at St. Swithin’s, It used to be funded by the Wayne Foundation",
-    "originalMediaLink": "https://www.foobar.com/2",
-    "appearance": {
-      "@type": "ImageObjectSnapshot",
-      "sha256sum": ["8bb6caeb301b85cddc7b67745a635bcda939d17044d9bcf31158ef5e9f8ff072"],
-      "accessedOnUrl": "https://www.facebook.com/photo.php?fbid=10217541425752089&set=a.1391489831857&type=3",
-      "archivedAt": "https://archive.is/dfype"
-    }
+    "interpretedAsClaim": {
+      "@type": "Claim",
+      "description": "Something something batman"
+    },
+    "mediaItemAppearance": [
+      {
+      "@type": "VideoObjectSnapshot",
+      "description": "A description of a video snapshot"
+      },
+      {
+      "@type": "VideoObjectSnapshot",
+      "contentUrl": "https://wwww.foobar.com/2",
+      "archivedAt": "https://archive.is/12345"
+      }
+    ]
   },
   archive_item: archive_items[1]
 )
@@ -186,18 +225,33 @@ MediaReview.create(
     "name": "realfact",
     "url": "https://realfact.com"
   },
-  original_media_context_description: "Star Wars Ipsum",
+  original_media_context_description: "Back to the Future Ipsum",
   media_authenticity_category: "TransformedContent",
   item_reviewed: {
     "@type": "MediaReviewItem",
+    "creator": {
+      "@type": "Person",
+      "name": "User",
+      "url": "https://user.com/"
+    },
+    "interpretedAsClaim": {
+      "@type": "Claim",
+      "description": "claim description"
+    },
     "embeddedTextCaption": "When could weathermen predict the weather, let alone the future. Yeah, alright, bye-bye.",
-    "originalMediaLink": "https://www.foobar.com/3",
-    "appearance": {
+    "mediaItemAppearance": [
+      {
+        "@type": "ImageObjectSnapshot",
+        "sha256sum": ["8bb6caeb301b85cddc7b67745a635bcda939d17044d9bcf31158ef5e9f8ff072"],
+        "accessedOnUrl": "https://www.facebook.com/photo.php?fbid=10217541425752089&set=a.1391489831857&type=3",
+        "archivedAt": "https://archive.is/dfype"
+      },
+      {
       "@type": "ImageObjectSnapshot",
-      "sha256sum": ["8bb6caeb301b85cddc7b67745a635bcda939d17044d9bcf31158ef5e9f8ff072"],
-      "accessedOnUrl": "https://www.facebook.com/photo.php?fbid=10217541425752089&set=a.1391489831857&type=3",
-      "archivedAt": "https://archive.is/dfype"
-    }
+      "contentUrl": "https://wwww.foobar.com/3",
+      "archivedAt": "https://archive.is/145"
+      }
+    ]
   },
   archive_item: archive_items[2]
 )
@@ -211,19 +265,20 @@ ClaimReview.create(
   date_published: "2021-02-01",
   item_reviewed: {
     "@type": "Claim",
+    "datePublished": "2021-01-30",
+    "name": "Star Wars claim",
     "author": {
       "@type": "Person",
       "jobTitle": "On the internet",
       "name": "Viral image"
     },
-    "datePublished": "2021-01-30"
   },
   review_rating: {
     "@type": "Rating",
-    "alternateName": "False",
-    "bestRating": "9",
     "ratingValue": "4",
-    "worstRating": "0"
+    "bestRating": "5",
+    "image": "https://static.politifact.com/politifact/rulings/meter-false.jpg",
+    "alternateName": "False"
   },
   url: "https://www.realfact.com/factchecks/2021/feb/03/starwars",
   media_review: media_review

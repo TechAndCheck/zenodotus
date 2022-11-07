@@ -12,7 +12,12 @@ class User < ApplicationRecord
   has_many :image_searches, dependent: :destroy
   has_many :text_searches, dependent: :destroy
 
+  # This is the applicant that the user was created from.
+  # I.e., this is the user's own application.
   has_one :applicant, dependent: :destroy
+
+  # These are the applicants that this user has reviewed.
+  has_many :applicants, foreign_key: :reviewer_id, dependent: :nullify
 
   validates :name, presence: true
   validates :email, presence: true
@@ -84,6 +89,11 @@ class User < ApplicationRecord
   sig { params(applicant: Applicant).void }
   def assign_applicant_roles(applicant)
     self.add_role :media_vault_user if applicant.source_site == SiteDefinitions::MEDIA_VAULT[:shortname]
+  end
+
+  sig { returns(T::Boolean) }
+  def can_access_fact_check_insights?
+    self.is_admin? || self.is_fact_check_insights_user?
   end
 
   sig { returns(T::Boolean) }

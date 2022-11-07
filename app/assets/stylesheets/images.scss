@@ -1,0 +1,62 @@
+@use "shared";
+@use "sass:math";
+
+$fact-check-insights--aspect-ratio: math.div(235, 153);
+$media-vault--aspect-ratio: math.div(155, 153);
+$claim-review--aspect-ratio: math.div(115, 153);
+$media-review--aspect-ratio: math.div(137, 153);
+
+$widest-aspect-ratio: math.max(
+	$fact-check-insights--aspect-ratio,
+	$media-vault--aspect-ratio,
+	$claim-review--aspect-ratio,
+	$media-review--aspect-ratio,
+);
+
+$tallest-aspect-ratio: math.min(
+	$fact-check-insights--aspect-ratio,
+	$media-vault--aspect-ratio,
+	$claim-review--aspect-ratio,
+	$media-review--aspect-ratio,
+);
+
+.masked-image {
+	position: relative;
+	overflow: hidden;
+	mask-repeat: no-repeat;
+	mask-size: cover;
+
+	> img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: auto;
+		height: auto;
+		min-width: 100%;
+		min-height: 100%;
+		/* Set this calc() to the widest of the aspect ratios below. */
+		max-width: calc($widest-aspect-ratio * 100%);
+		/* Set this calc() to the tallest of the aspect ratios below. */
+		max-height: calc($tallest-aspect-ratio * 100%);
+	}
+}
+
+.masked-image--fact-check-insights {
+	aspect-ratio: $fact-check-insights--aspect-ratio;
+	mask-image: url("masks/fact-check-insights-mask.svg");
+}
+
+.masked-image--media-vault {
+	aspect-ratio: $media-vault--aspect-ratio;
+	mask-image: url("masks/media-vault-mask.svg");
+}
+
+.masked-image--claim-review {
+	aspect-ratio: $claim-review--aspect-ratio;
+	mask-image: url("masks/claim-review-mask.svg");
+}
+
+.masked-image--media-review {
+	aspect-ratio: $media-review--aspect-ratio;
+	mask-image: url("masks/media-review-mask.svg");
+}

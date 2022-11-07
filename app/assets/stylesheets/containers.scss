@@ -1,0 +1,80 @@
+@use "shared";
+
+.contain {
+	--contain--max-width: 1400px;
+	--contain--gap: max(1rem, 5vw);
+
+	width: 100%;
+	display: grid;
+	grid-template-columns:
+		1fr
+		min(var(--contain--max-width), calc(100% - var(--contain--gap) * 2))
+		1fr;
+	grid-column-gap: var(--contain--gap);
+
+	> * {
+		grid-column: 2;
+
+		&.full-bleed {
+			width: 100%;
+			grid-column: 1 / -1;
+		}
+
+		@media screen and (min-width: shared.$screen-lg-ceiling) {
+			&.lg\:full-bleed {
+				width: 100%;
+				grid-column: 1 / -1;
+			}
+		}
+	}
+}
+
+
+// Content containers are general… containers of content that we want to have consistent padding
+// and sizing.
+
+.content {
+	padding: 5vw 0;
+
+	&.content--center {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	&.content--left {
+		margin-right: auto;
+	}
+
+	&.content--right {
+		margin-left: auto;
+	}
+
+	&.content--xs {
+		max-width: shared.$screen-xs-ceiling;
+	}
+
+	&.content--sm {
+		max-width: shared.$screen-sm-ceiling;
+	}
+
+	&.content--md {
+		max-width: shared.$screen-md-ceiling;
+	}
+
+	&.content--lg {
+		max-width: shared.$screen-lg-ceiling;
+	}
+
+	&.content--xl {
+		max-width: shared.$screen-xl-ceiling;
+	}
+}
+
+.full-bleed-headline {
+	@extend .full-bleed;
+
+	&.reversed {
+		background-color: shared.$color--dark;
+		color: white;
+	}
+}

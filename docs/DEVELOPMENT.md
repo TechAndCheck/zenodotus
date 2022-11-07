@@ -109,3 +109,11 @@ We have a `pre-commit` githook that will enforce RuboCop style compliance. To in
 1. Save the file and restart Sublime
 
 TODO: Add Sorbet instructions
+
+## Front-End Development
+
+### CSS/Style Development
+
+We use [SCSS](https://sass-lang.com/) for more concise and powerful CSS, and use [Tailwind](https://tailwindcss.com/) selectively for rapid iterating on front-end components.
+
+When editing HTML markup or SCSS styles, you will need to fire up the `./bin/dev` process to ensure Tailwind and SCSS watcher are running. If you are just running `rails s`, you won't see your changes reflected.

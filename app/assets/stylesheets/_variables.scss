@@ -1,0 +1,214 @@
+// Variables
+// ---------
+// This file defines variables in two ways:
+// 1. Native CSS variables (e.g., `--color-foo`) are evalualated by the browser and can be
+//    reassigned by more specific selectors or later contexts. They're very useful when you want
+//    values to be mutable based on context, such as responsive styling.
+// 2. SCSS variables (e.g., `$color-foo`) are evaluated at asset compilation time and cannot be
+//    reassigned within the browser. They're useful for immutable valuesl (media breakpoints,
+//    colors, etc.) and have the advantage of being usably by things like SCSS functions, like
+//    `color.adjust($brand-blue, $alpha: -0.1)`.
+@use "sass:math";
+
+// SCSS Versions of relevant variables
+
+// Breakpoints
+$screen-xs-ceiling: 420px;
+$screen-sm-floor: 421px;
+$screen-sm-ceiling: 640px;
+$screen-md-floor: 641px;
+$screen-md-ceiling: 768px;
+$screen-lg-floor: 769px;
+$screen-lg-ceiling: 1024px;
+$screen-xl-floor: 1025px;
+$screen-xl-ceiling: 1280px;
+$screen-2xl-floor: 1281px;
+$screen-2xl-ceiling: 1536px;
+
+// Transitions
+$transition-duration: 200ms;
+$transition-timing-function: ease;
+
+// Shadows
+$shadow--1: 1px 1px 0 rgba(0, 0, 0, 0.1);
+$shadow--1--dark: 1px 1px 0 rgba(0, 0, 0, 0.2);
+$shadow--2: 2px 2px 0 rgba(0, 0, 0, 0.1);
+$shadow--2--dark: 2px 2px 0 rgba(0, 0, 0, 0.2);
+$shadow--3: 3px 3px 0 rgba(0, 0, 0, 0.1);
+$shadow--3--dark: 3px 3px 0 rgba(0, 0, 0, 0.2);
+
+// Colors
+$color--dark: rgb(26, 23, 23);
+$color--tan-1: rgb(33, 32, 31);
+$color--tan-2: rgb(97, 91, 83);
+$color--tan-3: rgb(145, 136, 124);
+$color--tan-4: rgb(194, 182, 166);
+$color--tan-5: rgb(242, 227, 207);
+$color--tan-6: rgb(250, 244, 236);
+$color--tan-7: rgb(252, 248, 244);
+$color--tan-8: rgb(253, 249, 246);
+$color--tan-9: rgb(253, 251, 248);
+$color--tan-10: rgb(254, 252, 251);
+$color--orange-1: rgb(33, 26, 22);
+$color--orange-2: rgb(49, 28, 13);
+$color--orange-3: rgb(98, 56, 26);
+$color--orange-4: rgb(148, 85, 39);
+$color--orange-5: rgb(197, 113, 52);
+$color--orange-6: rgb(246, 141, 65);
+$color--orange-7: rgb(248, 164, 103);
+$color--orange-8: rgb(250, 187, 141);
+$color--orange-9: rgb(251, 209, 179);
+$color--orange-10: rgb(253, 232, 217);
+$color--blue-1: rgb(35, 51, 54);
+$color--blue-2: rgb(39, 80, 88);
+$color--blue-3: rgb(59, 121, 132);
+$color--blue-4: rgb(78, 161, 176);
+$color--blue-5: rgb(98, 201, 220);
+$color--blue-6: rgb(141, 208, 225);
+$color--blue-7: rgb(164, 217, 231);
+$color--blue-8: rgb(187, 227, 237);
+$color--blue-9: rgb(209, 236, 243);
+$color--blue-10: rgb(232, 246, 249);
+$color--green-1: rgb(25, 30, 23);
+$color--green-2: rgb(31, 47, 23);
+$color--green-3: rgb(61, 95, 46);
+$color--green-4: rgb(92, 142, 69);
+$color--green-5: rgb(122, 190, 92);
+$color--green-6: rgb(153, 237, 115);
+$color--green-7: rgb(173, 241, 143);
+$color--green-8: rgb(194, 244, 171);
+$color--green-9: rgb(214, 248, 199);
+$color--green-10: rgb(235, 251, 227);
+$color--red-1: #7F1D1D;
+$color--red-2: #991B1B;
+$color--red-3: #B91C1C;
+$color--red-4: #DC2626;
+$color--red-5: #E74C3C;
+$color--red-6: #F87171;
+$color--red-7: #FCA5A5;
+$color--red-8: #FECACA;
+$color--red-9: #FEE2E2;
+$color--red-10: #FEF2F2;
+
+// Color brands
+$color--brand--claim-review: $color--blue-6;
+$color--brand--fact-check-insights: $color--tan-8;
+$color--brand--media-review: $color--green-6;
+$color--brand--media-vault: $color--orange-6;
+
+// Color moods
+$color--mood--success: $color--green-4;
+$color--mood--success--contrast: white;
+$color--mood--success--hover: $color--green-3;
+$color--mood--error: $color--red-5;
+$color--mood--error--contrast: white;
+$color--mood--error--hover: $color--red-3;
+
+// Font Sizes
+$font-size--base: 16px;
+$line-height--base: 1.5;
+
+// Font Families
+$font-family--serif: "Source Serif Pro", serif;
+$font-family--sans-serif: "Source Sans Pro", sans-serif;
+
+// Font Weights
+// Weight values based on OpenType weight classes:
+// https://docs.microsoft.com/en-us/typography/opentype/spec/os2#usweightclass
+// Note that we only use a subset of these values.
+$font-weight--thin: 100;       /* AVOID (accessibility) */
+$font-weight--extralight: 200; /* AVOID (accessibility) */
+$font-weight--light: 300;
+$font-weight--normal: 400;
+$font-weight--medium: 500;     /* AVOID for custom fonts (file size) */
+$font-weight--semibold: 600;
+$font-weight--bold: 700;
+$font-weight--extrabold: 800;  /* AVOID for custom fonts (file size) */
+$font-weight--black: 900;      /* AVOID for custom fonts (file size) */
+$font-weight--extrablack: 950; /* AVOID for custom fonts (file size) */
+
+// Logos
+$logo--aspect-ratio--fact-check-insights: math.div(399, 112);
+$logo-mark--aspect-ratio--fact-check-insights: math.div(229, 138);
+$logo--aspect-ratio--media-vault: math.div(240, 107);
+$logo-mark--aspect-ratio--media-vault: math.div(140, 138);
+$logo--aspect-ratio--claim-review: math.div(240, 124);
+$logo-mark--aspect-ratio--claim-review: math.div(102, 137);
+$logo--aspect-ratio--media-review: math.div(261, 115);
+$logo-mark--aspect-ratio--media-review: math.div(126, 128);
+
+// CSS Variables
+:root {
+	/*
+	Transitions
+	*/
+	--transition-duration: 200ms;
+	--transition-timing-function: ease;
+
+	/*
+	Colors
+	*/
+	--color--dark: rgb(26, 23, 23);
+	--color--tan-1: rgb(33, 32, 31);
+	--color--tan-2: rgb(97, 91, 83);
+	--color--tan-3: rgb(145, 136, 124);
+	--color--tan-4: rgb(194, 182, 166);
+	--color--tan-5: rgb(242, 227, 207);
+	--color--tan-6: rgb(250, 244, 236);
+	--color--tan-7: rgb(252, 248, 244);
+	--color--tan-8: rgb(253, 249, 246);
+	--color--tan-9: rgb(253, 251, 248);
+	--color--tan-10: rgb(254, 252, 251);
+	--color--orange-1: rgb(33, 26, 22);
+	--color--orange-2: rgb(49, 28, 13);
+	--color--orange-3: rgb(98, 56, 26);
+	--color--orange-4: rgb(148, 85, 39);
+	--color--orange-5: rgb(197, 113, 52);
+	--color--orange-6: rgb(246, 141, 65);
+	--color--orange-7: rgb(248, 164, 103);
+	--color--orange-8: rgb(250, 187, 141);
+	--color--orange-9: rgb(251, 209, 179);
+	--color--orange-10: rgb(253, 232, 217);
+	--color--blue-1: rgb(35, 51, 54);
+	--color--blue-2: rgb(39, 80, 88);
+	--color--blue-3: rgb(59, 121, 132);
+	--color--blue-4: rgb(78, 161, 176);
+	--color--blue-5: rgb(98, 201, 220);
+	--color--blue-6: rgb(141, 208, 225);
+	--color--blue-7: rgb(164, 217, 231);
+	--color--blue-8: rgb(187, 227, 237);
+	--color--blue-9: rgb(209, 236, 243);
+	--color--blue-10: rgb(232, 246, 249);
+	--color--green-1: rgb(25, 30, 23);
+	--color--green-2: rgb(31, 47, 23);
+	--color--green-3: rgb(61, 95, 46);
+	--color--green-4: rgb(92, 142, 69);
+	--color--green-5: rgb(122, 190, 92);
+	--color--green-6: rgb(153, 237, 115);
+	--color--green-7: rgb(173, 241, 143);
+	--color--green-8: rgb(194, 244, 171);
+	--color--green-9: rgb(214, 248, 199);
+	--color--green-10: rgb(235, 251, 227);
+	--color--red-1: #7F1D1D;
+	--color--red-2: #991B1B;
+	--color--red-3: #B91C1C;
+	--color--red-4: #DC2626;
+	--color--red-5: #E74C3C;
+	--color--red-6: #F87171;
+	--color--red-7: #FCA5A5;
+	--color--red-8: #FECACA;
+	--color--red-9: #FEE2E2;
+	--color--red-10: #FEF2F2;
+
+	--color--brand--claim-review: $color--blue-6;
+	--color--brand--fact-check-insights: $color--tan-8;
+	--color--brand--media-review: $color--green-6;
+	--color--brand--media-vault: $color--orange-6;
+
+	--color--mood--success: $color--green-4;
+	--color--mood--success--contrast: white;
+	--color--mood--success--hover: $color--green-3;
+	--color--mood--error: $color--red-5;
+	--color--mood--error--contrast: white;
+	--color--mood--error--hover: $color--red-3;
+}

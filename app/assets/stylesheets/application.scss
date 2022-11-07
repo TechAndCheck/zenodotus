@@ -1,0 +1,45 @@
+@use "shared";
+
+// Generic components
+@use "alerts";
+@use "background_shield";
+@use "base";
+@use "boxes";
+@use "buttons";
+@use "colors";
+@use "containers";
+@use "fonts";
+@use "footer";
+@use "forms";
+@use "header";
+@use "icons";
+@use "images";
+@use "tables";
+@use "typography";
+
+// Entity components
+@use "archive_items";
+@use "author_archives";
+@use "authors";
+
+// Pages
+@use "pages/about";
+@use "pages/admin_applicants";
+@use "pages/fact_check_insights_home";
+@use "pages/fact_check_insights_download";
+@use "pages/fact_check_insights_guide";
+@use "pages/fact_check_insights_highlights";
+@use "pages/media_vault_home";
+@use "pages/media_vault_guide";
+
+#site-wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+#site-main {
+	flex-grow: 1;
+	position: relative;
+	z-index: 1;
+}

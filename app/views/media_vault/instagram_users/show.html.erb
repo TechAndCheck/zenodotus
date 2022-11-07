@@ -1,4 +1,4 @@
-<div class="author" data-controller="author">
+<div class="author" data-controller="media-vault--author">
   <img
     class="author__image"
     src="<%= @instagram_user.profile_image_url %>"
@@ -36,7 +36,7 @@
         class: "btn icon-prefixed",
         download: true
       } do %>
-        <svg class="icon icon--lg"><use xlink:href="#svg-download-outline"></use></svg>
+        <%= use_svg "download-outline", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
         JSON
       <% end %>
     </div>

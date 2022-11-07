@@ -1,8 +1,16 @@
 # typed: strict
 
 class MediaVaultController < ApplicationController
-  before_action :authenticate_user!
-  before_action :must_be_media_vault_user
+  before_action :authenticate_user!, except: [
+    :terms,
+    :privacy,
+    :optout,
+  ]
+  before_action :must_be_media_vault_user, except: [
+    :terms,
+    :privacy,
+    :optout,
+  ]
 
   # We don't route to this URL directly.
   # Instead, `application#index` renders its template without a redirect.
@@ -11,6 +19,15 @@ class MediaVaultController < ApplicationController
 
   sig { void }
   def guide; end
+
+  sig { void }
+  def terms; end
+
+  sig { void }
+  def privacy; end
+
+  sig { void }
+  def optout; end
 
 protected
 

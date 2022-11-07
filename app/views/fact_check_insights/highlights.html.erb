@@ -1,3 +1,35 @@
 <% @title_tag = "Highlights" %>
 
-Highlights
+<div class="intro">
+	<h1>Highlights</h1>
+	<p class="b1">To give you a sense of what researchers can do with the Fact-Check Insights dataset, here are a few key findings based on the data.</p>
+</div>
+
+<div class="dataviz">
+	<div class="dataviz__caption">
+		<p>Explore which organizations contribute ClaimReviews to the corpus.</p>
+	</div>
+	<div class="dataviz__visual-wrapper">
+		<%= render partial: "tableau_embed", locals: {
+			title: "ClaimReview Count by Organization",
+			url: "public.tableau.com/views/ClaimReviewOrgCount/Sheet1",
+		} %>
+	</div>
+</div>
+
+<div class="dataviz dataviz--reversed">
+	<div class="dataviz__caption">
+		<p>Observe the pattern of contributions to the ClaimReview corpus by year.</p>
+	</div>
+	<div class="dataviz__visual-wrapper">
+		<%= render partial: "tableau_embed", locals: {
+			title: "Running Sum of ClaimReview Entries by Year",
+			url: "public.tableau.com/views/ClaimReviewRunningSum/Sheet3",
+		} %>
+	</div>
+</div>
+
+<%= render partial: "download_cta", locals: {
+	section_variant: "bg--fact-check-insights",
+	button_variant: "btn--orange",
+} %>

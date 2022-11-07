@@ -3,6 +3,14 @@
 module ApplicationHelper
   include Pagy::Frontend
 
+  def site_is_fact_check_insights?(site)
+    site == SiteDefinitions::FACT_CHECK_INSIGHTS
+  end
+
+  def site_is_media_vault?(site)
+    site == SiteDefinitions::MEDIA_VAULT
+  end
+
   def make_title_tag_content(title_hierarchy = nil, opts = {
     delimeter: "•"
   })
@@ -76,5 +84,50 @@ module ApplicationHelper
   # @returns String The class names whose values resolved to True, joined for HTML use.
   def generate_class_list_string(class_definition)
     generate_class_list(class_definition).join(" ")
+  end
+
+  # Generate an SVG from our SVG library.
+  #
+  # Example: `use_svg("sample-icon", title: "Descriptive title")`
+  # Output:
+  # ```
+  # <svg>
+  #   <title>Descriptive title</title>
+  #   <use xlink:href="#svg-sample-icon">
+  # </svg>
+  # ```
+  #
+  # Note that `id` is a required positional parameter, but all remaining parameters are keywords
+  # and optional.
+  #
+  # @param id String The ID of the desired SVG icon from the `_svg_library.html.erb` template.
+  # @param svg_attrs Hash Optional hash of parameters for the SVG element.
+  # @param title String Optional title content for accessibility.
+  # @param title_attrs Hash Optional hash of parameters for the title element.
+  # @returns String
+  def use_svg(id, svg_attrs: {}, title: nil, title_attrs: {})
+    title_tag = title.present? ? tag.title(title, **title_attrs) : nil
+    use_tag = tag.use "xlink:href": "#svg-#{id}"
+    tag.svg "#{title_tag}#{use_tag}".html_safe, **svg_attrs
+  end
+
+  # Provided a Twitter username, returns an icon-prefixed link to the Twitter bio.
+  #
+  # @param username String
+  # @returns String Icon-prefixed link to the Twitter account
+  def twitter_link_to(username)
+    icon = use_svg "twitter", svg_attrs: { class: "icon" }
+    label = tag.span "@#{username}"
+    link_to "#{icon}#{label}".html_safe, "https://twitter.com/#{username}", class: "icon-prefixed"
+  end
+
+  # Provided an email address, returns an icon-prefixed mailto link.
+  #
+  # @param email String
+  # @returns String Icon-prefixed mailto link
+  def email_link_to(email)
+    icon = use_svg "email", svg_attrs: { class: "icon" }
+    label = tag.span email
+    mail_to email, "#{icon}#{label}".html_safe, class: "icon-prefixed"
   end
 end

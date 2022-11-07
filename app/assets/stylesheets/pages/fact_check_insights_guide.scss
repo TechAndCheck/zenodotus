@@ -1,0 +1,78 @@
+@use "shared";
+@use "sass:color";
+
+#guide--claim-review--logo-mark {
+	position: absolute;
+	top: 45%;
+	left: 35%;
+	height: 35%;
+	width: auto;
+	aspect-ratio: shared.$logo-mark--aspect-ratio--claim-review;
+}
+
+#guide--media-review--logo-mark {
+	position: absolute;
+	top: 15%;
+	right: 25%;
+	height: 35%;
+	width: auto;
+	aspect-ratio: shared.$logo-mark--aspect-ratio--media-review;
+}
+
+#section--sources {
+	background-color: shared.$color--dark;
+	color: white;
+}
+
+
+#section--tips {
+	background-color: shared.$color--brand--claim-review;
+
+	h2 {
+		text-align: center;
+	}
+
+	.tips {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+
+		@media screen and (min-width: shared.$screen-lg-floor) {
+			flex-direction: row;
+			align-items: stretch;
+			align-content: stretch;
+			justify-content: space-between;
+			flex-wrap: wrap;
+
+			.tip {
+				flex: 1 1 30%;
+			}
+		}
+	}
+}
+
+.download-cta {
+	#page--fact_check_insights--guide & {
+		padding-top: 5vw;
+		padding-bottom: 5vw;
+		transition-property: padding;
+		background-color: shared.$color--brand--fact-check-insights;
+
+
+		@media screen and (min-width: shared.$screen-lg-floor) {
+			padding-top: 10vw;
+			padding-bottom: 10vw;
+			background-image: url("brand-ornaments/01.svg"), url("brand-ornaments/02.svg");
+			background-position: -15% 80%, 105% 20%;
+			background-size: clamp(20%, 35%, 50%) auto, clamp(20%, 30%, 50%) auto;
+			background-repeat: no-repeat;
+
+			.download-cta__inner {
+				max-width: 45em;
+				margin-left: auto;
+				margin-right: auto;
+				padding: 1rem;
+			}
+		}
+	}
+}

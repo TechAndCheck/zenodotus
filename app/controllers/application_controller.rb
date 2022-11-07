@@ -11,6 +11,18 @@ class ApplicationController < ActionController::Base
 
   sig { void }
   def index
+    if site_is_fact_check_insights?
+      # This is obviously just pretend for now.
+      claim_review_count = ClaimReview.count
+      organization_count = 204
+      country_count = 71
+      @stats = {
+        fact_checks: claim_review_count,
+        organizations: organization_count,
+        countries: country_count,
+      }
+    end
+
     render "#{@site[:shortname]}/index"
   end
 
@@ -128,7 +140,15 @@ protected
     authenticate_user!
 
     unless current_user.is_admin?
-      redirect_back_or_to "/", allow_other_host: false, alert: "You don’t have permission to access that page."
+      redirect_back_or_to "/", allow_other_host: false, flash: { error: "You don’t have permission to access that page." }
     end
+  end
+
+  sig { returns(String) }
+  def render_unauthorized
+    render file: "#{Rails.root}/public/401.html",
+      layout: false,
+      content_type: "text/html",
+      status: :unauthorized
   end
 end

@@ -10,7 +10,7 @@
 <div
     class="<%= archive_item_class_list %>"
     data-publishing-platform="<%= publishing_platform_shortname %>"
-    data-controller="archive"
+    data-controller="media-vault--archive"
     data-archive-caption-collapse-mode-value="<%= caption_is_collapsable ? 'collapsed' : 'static' %>"
 >
   <div class="archive-item__inner">
@@ -50,14 +50,14 @@
         <div class="archive-item__body-caption">
             <div
                 class="archive-item__body-caption-content"
-                data-archive-target="captionContent"
+                data-media-vault--archive-target="captionContent"
             >
                 <%= linkify_urls_in_text(simple_format(archive_item_caption)) %>
             </div>
             <% if caption_is_collapsable %>
                 <button
                     class="archive-item__body-caption-toggler"
-                    data-archive-target="captionToggler"
+                    data-media-vault--archive-target="captionToggler"
                     data-action="archive#toggleCaption"
                     data-collapse-label="Collapse caption ↑"
                     data-expand-label="Expand caption ↓"
@@ -67,13 +67,13 @@
     </div>
     <div class="archive-item__metadata">
         <div class="icon-prefixed">
-          <svg class="icon"><use xlink:href="#svg-<%= publishing_platform_shortname %>"></use></svg>
+          <%= use_svg publishing_platform_shortname, svg_attrs: { class: "icon", aria: { hidden: true } } %>
           <div class="archive-item__metadatum">
               <div class="archive-item__metadatum__label">Published on <%= publishing_platform_display_name %></div>
               <time
                   class="archive-item__metadatum__value"
                   datetime="<%= published_at.iso8601 %>"
-                  data-archive-target="timestamp"
+                  data-media-vault--archive-target="timestamp"
               >
                   <%= published_at %>
               </time>
@@ -84,7 +84,7 @@
             <time
                 class="archive-item__metadatum__value"
                 datetime="<%= archived_at.iso8601 %>"
-                data-archive-target="timestamp"
+                data-media-vault--archive-target="timestamp"
             >
                 <%= archived_at %>
             </time>

@@ -1,0 +1,13 @@
+@use "shared";
+
+body * {
+	transition-property: none;
+	transition-duration: var(--transition-duration);
+	transition-timing-function: var(--transition-timing-function);
+}
+
+p {
+	margin-bottom: 1em;
+
+	@include shared.demargin-edges;
+}

@@ -19,7 +19,7 @@
 		<%= javascript_importmap_tags %>
 	</head>
 
-	<body class="site--<%= @site[:shortname]%>">
+	<body id="page--<%= @site[:shortname] %>--<%= @page_id || controller.action_name %>" class="site--<%= @site[:shortname]%>">
 		<div id="site-wrapper">
 			<%= render "layouts/#{@site[:shortname]}/header" %>
 			<div id="site-main">
@@ -30,13 +30,7 @@
 				<div>
 					<div class="contain">
 						<%= render "layouts/flashes/turbo_flashes" %>
-						<!--
-							This DIV ensures that any unwrapped `yield` content still ends up in the correct
-							grid column. It can probably go away once all the layouts are built properly.
-						-->
-						<div>
-							<%= yield %>
-						</div>
+						<%= yield %>
 					</div>
 				</div>
 			</div>

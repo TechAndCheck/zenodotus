@@ -1,0 +1,126 @@
+/*
+Buttons
+
+Library for common button and button-like styling. Can be used with either `<button>` or `<a>`
+elements, but the examples will just use `<button>`.
+
+```html
+<button class="btn">
+	…
+</button>
+```
+*/
+@use "shared";
+
+:root {
+	--btn--font-family: #{shared.$font-family--sans-serif};
+	--btn--font-weight: #{shared.$font-weight--semibold};
+	--btn--font-size: #{shared.$font-size--base};
+	--btn--line-height: 1.2;
+	--btn--letter-spacing: 0.0625em;
+
+	--btn--padding--vertical: 0.5em;
+	--btn--padding--horizontal: 0.75em;
+
+	--btn-container--external-spacing: 3rem;
+}
+
+.btn-container {
+	margin: var(--btn-container--external-spacing) 0;
+
+	@include shared.demargin-edges;
+}
+
+.btn,
+.btn:visited,
+/* The following overrides necessary because of Tailwind reset rules. */
+.btn[type="button"],
+.btn[type="reset"],
+.btn[type="submit"] {
+	/* Declare the colors here so that the hover states can follow the static states by default. */
+	--btn--color: black;
+	--btn--background-color: transparent;
+	--btn--border-color: black;
+	--btn--color--hover: var(--btn--color);
+	--btn--background-color--hover: var(--btn--background-color);
+	--btn--border-color--hover: var(--btn--border-color);
+
+	cursor: pointer;
+	padding: var(--btn--padding--vertical) var(--btn--padding--horizontal);
+	font-family: var(--btn--font-family);
+	font-size: var(--btn--font-size);
+	font-weight: var(--btn--font-weight);
+	line-height: var(--btn--line-height);
+	letter-spacing: var(--btn--letter-spacing);
+	text-align: center;
+	text-decoration: none;
+	text-transform: uppercase;
+	border-width: 1px;
+	border-style: solid;
+	transition-property: background-color, color, border-color;
+
+	color: var(--btn--color);
+	background-color: var(--btn--background-color);
+	border-color: var(--btn--border-color);
+
+	&:hover {
+		color: var(--btn--color--hover);
+		background-color: var(--btn--background-color--hover);
+		border-color: var(--btn--border-color--hover);
+	}
+
+	&:not(.icon-prefixed) {
+		display: inline-block;
+	}
+
+	&.btn--lg {
+		--btn--font-size: calc(shared.$font-size--base * 1.2);
+		--btn--padding--vertical: 1em;
+		--btn--padding--horizontal: 2em;
+	}
+
+	&.btn--reversed {
+		--btn--color: white;
+		--btn--background-color: #{shared.$color--dark};
+		--btn--border-color: #{shared.$color--dark};
+	}
+
+	&.btn--submit {
+		--btn--color: #{shared.$color--mood--success--contrast};
+		--btn--background-color: #{shared.$color--mood--success};
+		--btn--border-color: #{shared.$color--mood--success};
+		--btn--color--hover: #{shared.$color--mood--success--contrast};
+		--btn--background-color--hover: #{shared.$color--mood--success--hover};
+		--btn--border-color--hover: #{shared.$color--mood--success--hover};
+	}
+
+	&.btn--danger {
+		--btn--color: #{shared.$color--mood--error--contrast};
+		--btn--background-color: #{shared.$color--mood--error};
+		--btn--border-color: #{shared.$color--mood--error};
+		--btn--background-color--hover: #{shared.$color--mood--error--hover};
+		--btn--border-color--hover: #{shared.$color--mood--error--hover};
+	}
+
+	&.btn--orange {
+		--btn--color: #{shared.$color--dark};
+		--btn--background-color: #{shared.$color--orange-6};
+		--btn--border-color: #{shared.$color--dark};
+		--btn--color--hover: #{shared.$color--dark};
+		--btn--background-color--hover: #{shared.$color--orange-5};
+		--btn--border-color--hover: #{shared.$color--dark};
+	}
+
+	&.btn--naked {
+		--btn--border-color: transparent;
+
+		&.btn--danger {
+			--btn--color: #{shared.$color--mood--error};
+			--btn--background-color: transparent;
+			--btn--border-color: transparent;
+			--btn--color--hover: #{shared.$color--mood--error};
+			--btn--background-color--hover: transparent;
+			--btn--border-color--hover: transparent;
+		}
+	}
+}

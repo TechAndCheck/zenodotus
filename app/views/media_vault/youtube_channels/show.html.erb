@@ -1,4 +1,4 @@
-<div class="author" data-controller="author">
+<div class="author" data-controller="media-vault--author">
   <img
     class="author__image"
     src="<%= @youtube_channel.channel_image_url %>"
@@ -24,12 +24,12 @@
     </div>
     <div class="author__metadata">
       <span class="icon-prefixed">
-        <svg class="icon icon--xl"><use xlink:href="#svg-calendar-outline"></use></svg>
+        <%= use_svg "calendar-outline", svg_attrs: { class: "icon icon--xl", aria: { hidden: true } } %>
         <span>
           Channel created on
           <time
             datetime="<%= @youtube_channel.sign_up_date.iso8601 %>"
-            data-author-target="timestamp"
+            data-media-vault--author-target="timestamp"
           >
             <%= @youtube_channel.sign_up_date %>
           </time>
@@ -51,7 +51,7 @@
         class: "btn icon-prefixed",
         download: true
       } do %>
-        <svg class="icon icon--lg"><use xlink:href="#svg-download-outline"></use></svg>
+        <%= use_svg "download-outline", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
         JSON
       <% end %>
     </div>

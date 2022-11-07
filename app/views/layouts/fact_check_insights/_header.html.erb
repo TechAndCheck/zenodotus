@@ -1,7 +1,12 @@
 <header id="site-header" data-controller="site-nav">
 	<nav id="site-nav--condensed" class="site-nav">
 		<%= link_to root_path, class: "site-nav__logo" do %>
-			<svg class="site-nav__logo__mark" width="40" height="24" aria-hidden="true"><use xlink:href="#svg-fact-check-insights-logo-mark"></use></svg>
+			<%= use_svg "fact-check-insights-logo-mark", svg_attrs: {
+				class: "site-nav__logo__mark",
+				width: 40,
+				height: 24,
+				aria: { hidden: true },
+			} %>
 			<span class="site-nav__logo__type">Fact-Check Insights</span>
 		<% end %>
 		<button id="site-nav__mobile-menu-button" data-action="site-nav#toggleFullNav" aria-label="Toggle nav">
@@ -9,52 +14,47 @@
 		</button>
 	</nav>
 	<nav id="site-nav--full" class="site-nav">
-		<%= link_to root_path, class: "site-nav__logo" do %>
-			<svg width="264" height="74" role="img">
-				<title>Fact-Check Insights</title>
-				<use xlink:href="#svg-fact-check-insights-logo"></use>
-			</svg>
-		<% end %>
+		<%= link_to use_svg("fact-check-insights-logo", title: "Fact-Check Insights", svg_attrs: { width: 264, height: 74, role: "img" }), root_path, class: "site-nav__logo" %>
 		<ol id="site-nav__primary" class="site-nav__links">
-			<li><%= link_to "<span>Download Data</span>".html_safe, fact_check_insights_download_path, class: "btn btn--naked" %></li>
-			<li><%= link_to "<span>Guide</span>".html_safe, fact_check_insights_guide_path, class: "btn btn--naked" %></li>
-			<li><%= link_to "<span>Highlights</span>".html_safe, fact_check_insights_highlights_path, class: "btn btn--naked" %></li>
-			<li><%= link_to "<span>About</span>".html_safe, about_path, class: "btn btn--naked" %></li>
-			<li><%= link_to "<span>Contact</span>".html_safe, contact_path, class: "btn btn--naked" %></li>
+			<li><%= link_to fact_check_insights_download_path, class: "btn btn--naked" do %><span>Download <span class="hideable">the Data</span></span><% end %></li>
+			<li><%= link_to fact_check_insights_guide_path, class: "btn btn--naked" do %><span>Guide<span class="hideable"> to the Data</span></span><% end %></li>
+			<li><%= link_to fact_check_insights_highlights_path, class: "btn btn--naked" do %><span>Highlights</span><% end %></li>
+			<li><%= link_to about_path, class: "btn btn--naked" do %><span>About</span><% end %></li>
+			<li><%= link_to contact_path, class: "btn btn--naked" do %><span>Contact</span><% end %></li>
 		</ol>
 		<ol id="site-nav__account" class="site-nav__links">
 			<% if user_signed_in? %>
 				<li id="site-nav__account-menu-wrapper">
 					<%= link_to account_path, id: "site-nav__account-name", class: "btn icon-prefixed", data: { action: "site-nav#toggleAccountMenu" } do %>
-						<svg class="icon icon--lg"><use xlink:href="#svg-user-circle"></use></svg>
+						<%= use_svg "user-circle", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
 						<span><%= current_user.name %></span>
 					<% end %>
 					<ol id="site-nav__account-menu" class="site-nav__links">
 						<% if current_user.can_access_media_vault? %>
 							<li>
 								<%= link_to media_vault_root_url, class: "btn btn--naked icon-prefixed" do %>
-									<svg class="icon icon--lg"><use xlink:href="#svg-switch-lr"></use></svg>
+									<%= use_svg "switch-lr", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
 									<span><%= "Switch to #{SiteDefinitions::MEDIA_VAULT[:title]}" %></span>
 								<% end %>
 							</li>
 						<% end %>
 						<% if current_user.is_admin? %>
 							<li>
-								<%= link_to jobs_status_index_path, class: "btn btn--naked icon-prefixed" do %>
-									<svg class="icon icon--lg"><use xlink:href="#svg-bolt"></use></svg>
+								<%= link_to admin_root_path, class: "btn btn--naked icon-prefixed" do %>
+									<%= use_svg "bolt", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
 									<span>Admin</span>
 								<% end %>
 							</li>
 						<% end %>
 						<li>
 							<%= link_to account_path, class: "btn btn--naked icon-prefixed" do %>
-								<svg class="icon icon--lg"><use xlink:href="#svg-settings"></use></svg>
+								<%= use_svg "settings", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
 								<span>Settings</span>
 							<% end %>
 						</li>
 						<li>
 							<%= button_to destroy_user_session_path, class: "btn btn--naked btn--danger icon-prefixed", method: :delete do %>
-								<svg class="icon icon--lg"><use xlink:href="#svg-power"></use></svg>
+								<%= use_svg "power", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
 								<span>Logout</span>
 							<% end %>
 						</li>

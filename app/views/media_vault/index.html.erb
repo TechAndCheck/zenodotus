@@ -1,1 +1,17 @@
-<h1>Welcome to MediaVault.</h1>
+<% @page_id = "home" %>
+
+<div class="content lg:flex lg:items-center lg:gap-20">
+	<div class="lg:basis-2/4 b2">
+		<h2>MediaVault is a unique and unprecedented tool in the fight against social media misinformation.</h2>
+		<p>Our cutting-edge system gathers manipulated images and videos shared around the world that have been analyzed by reputable fact-checking organizations. The MediaVault archive allows fact-checkers to maintain a vital portion of their work, and enables quicker research and identification of patterns used in misleading social media posts.</p>
+		<p>MediaVault is free for use by fact-checkers, journalists and others working to debunk misinformation shared online, but registration is required.</p>
+		<div class="btn-container">
+			<%= link_to "Request Access", new_applicant_path, class: "btn btn--reversed btn--lg" %>
+		</div>
+	</div>
+	<div class="hidden lg:block lg:basis-2/4">
+		<div class="masked-image masked-image--media-vault max-w-md mx-auto">
+			<%= image_tag "photos/cameras.jpg" %>
+		</div>
+	</div>
+</div>

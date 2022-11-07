@@ -4,6 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.1.2"
 
 gem "rake"
+gem "blueprinter"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 7.0.2.3"
@@ -179,3 +180,9 @@ gem "rolify", "~> 6.0"
 
 # We are temporarily using TailwindCSS to scaffold some layout
 gem "tailwindcss-rails", "~> 2.0"
+
+# We use SCSS to write more CSS more concisely
+gem "dartsass-rails", "~> 0.4.0"
+
+# Comma lets us generate CSV-formatted data from ActiveRecord models
+gem "comma", "~>4.7.0"

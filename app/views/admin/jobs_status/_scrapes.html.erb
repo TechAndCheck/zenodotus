@@ -1,0 +1,44 @@
+<%= turbo_frame_tag "scrapes" do %>
+  <table id="scrapes-table" class="table-auto w-full">
+    <thead id="scrapes-table-head">
+    <tr>
+      <th class="border text-center">Id</th>
+      <th class="border text-center">Scrape Type</th>
+      <th class="border text-center">Enqueued at</th>
+      <th class="border text-center">Url to scrape</th>
+      <th class="border text-center" colspan="2">Actions</th>
+    </tr>
+    </thead>
+    <tbody id="jobs-table-body">
+      <% @scrapes.each do |scrape| %>
+          <tr class="border text-gray-600 text-center">
+            <td><%= scrape.id %></td>
+            <td><%= scrape.scrape_type %></td>
+            <td><%= scrape.created_at %></td>
+            <td><%= link_to scrape.url, scrape.url %></td>
+            <td><%= link_to "Delete", admin_jobs_status_delete_path(scrape.id, page: @active_scrapes_page), data: {
+                      turbo_method: :delete,
+                      turbo_confirm: "Are you sure you would like to stop this scrape?"
+                    } %></td>
+            <td><%= link_to "Resubmit", admin_jobs_status_resubmit_path(scrape.id, page: @active_scrapes_page), data: {
+                      turbo_method: :post,
+                      turbo_confirm: "Are you sure you would like to resubmit this scrape?"
+                    } %></td>
+          </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="mt-5 mb-10">
+    <% unless @previous_scrapes_page.nil? %>
+      <a href="/jobs/scrapes?active_scrapes_page=<%= @previous_scrapes_page %>" rel="previous">Previous Page</a>
+    <% else %>
+      <span class="text-slate-400">Previous Page</span>
+    <% end %>
+    &nbsp;&nbsp;&nbsp;
+    <% unless @next_scrapes_page.nil? %>
+      <a href="/jobs/scrapes?active_scrapes_page=<%= @next_scrapes_page %>" rel="next">Next Page</a>
+    <% else %>
+      <span class="text-slate-400">Next Page</span>
+    <% end %>
+  </div>
+<% end %>

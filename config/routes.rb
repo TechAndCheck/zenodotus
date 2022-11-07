@@ -28,6 +28,22 @@ Rails.application.routes.draw do
     get "/confirm/done", to: "applicants#confirmed", as: "applicant_confirmed"
   end
 
+  namespace "admin" do
+    root action: "dashboard"
+
+    namespace "jobs_status" do
+      root action: "index"
+      get "scrapes"
+      get "active_jobs"
+      delete ":id", action: "delete_scrape", as: "delete"
+      post "resubmit/:id", action: "resubmit_scrape", as: "resubmit"
+    end
+
+    resources :applicants, only: [:index, :show]
+    post "applicants/:id/approve", to: "applicants#approve", as: "applicant_approve"
+    post "applicants/:id/reject", to: "applicants#reject", as: "applicant_reject"
+  end
+
   constraints host: Figaro.env.FACT_CHECK_INSIGHTS_HOST do
     scope module: "fact_check_insights", as: "fact_check_insights" do
       root "application#index"
@@ -35,6 +51,9 @@ Rails.application.routes.draw do
       get "download"
       get "guide"
       get "highlights"
+      get "terms"
+      get "privacy"
+      get "optout"
     end
   end
 
@@ -44,6 +63,9 @@ Rails.application.routes.draw do
 
       get "dashboard", to: "archive#index"
       get "guide"
+      get "terms"
+      get "privacy"
+      get "optout"
 
       get "/image_search", to: "image_search#index", as: "image_search"
       post "/image_search", to: "image_search#search", as: "image_search_submit"
@@ -80,10 +102,4 @@ Rails.application.routes.draw do
   delete "/account/users/", to: "accounts#destroy", as: "destroy_user"
   get "/account/setup/(:token)", to: "accounts#new", as: "new_account"
   post "/account/setup", to: "accounts#create", as: "create_account"
-
-  get "/jobs", to: "jobs_status#index", as: "jobs_status_index"
-  get "/jobs/scrapes", to: "jobs_status#scrapes", as: "jobs_status_scrapes"
-  get "/jobs/active_jobs", to: "jobs_status#active_jobs", as: "jobs_status_active_jobs"
-  delete "/jobs/:id", to: "jobs_status#delete_scrape", as: "job_status_delete"
-  post "/jobs/resubmit/:id", to: "jobs_status#resubmit_scrape", as: "job_status_resubmit"
 end

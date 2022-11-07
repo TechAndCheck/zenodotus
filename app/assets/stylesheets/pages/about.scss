@@ -1,0 +1,30 @@
+@use "shared";
+
+.team-members {
+	display: flex;
+	align-items: stretch;
+	align-content: stretch;
+	flex-wrap: wrap;
+	gap: 5rem 2rem;
+}
+
+.team-member {
+	flex: 1 0 30%;
+}
+
+.team-member__name {
+	margin-top: 1em;
+}
+
+.team-member__photo-wrapper {
+	background-color: white;
+	border: 1px solid var(--color--dark);
+	aspect-ratio: 1;
+	display: flex;
+	place-content: center;
+}
+
+.team-member__photo {
+	height: 100%;
+	width: auto;
+}
