@@ -37,6 +37,24 @@
 	display: block;
 }
 
+.site-nav__search {
+	.form--oner__field {
+		border-color: shared.$color--dark;
+		border-right: none;
+		background-color: rgba(255, 255, 255, 0.1);
+		transition-property: background-color;
+		transition-duration: 100ms;
+
+		&:focus {
+			background-color: white;
+		}
+	}
+
+	.form--oner__btn {
+		width: auto;
+	}
+}
+
 @media screen and (max-width: shared.$screen-lg-ceiling) {
 	body:not(.open-site-nav) #site-nav--full {
 		display: none;

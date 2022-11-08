@@ -1,12 +1,6 @@
 # typed: strict
 
 class MediaVault::TextSearchController < MediaVaultController
-  sig { void }
-  def index
-    @search = TextSearch.new
-    @results = nil
-  end
-
   # A class representing the allowed params into the `search` endpoint
   class SubmitUrlParams < T::Struct
     const :query, String
@@ -20,7 +14,8 @@ class MediaVault::TextSearchController < MediaVaultController
     typed_params = TypedParams[SubmitUrlParams].new.extract!(params)
 
     # Create a search object
-    search = TextSearch.create(query: typed_params.query, user: current_user)
+    @query = typed_params.query
+    search = TextSearch.create(query: @query, user: current_user)
     results = search.run
 
     @post_search_hits = []

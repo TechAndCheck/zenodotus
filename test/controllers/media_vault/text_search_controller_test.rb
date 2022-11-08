@@ -9,18 +9,6 @@ class MediaVault::TextSearchControllerTest < ActionDispatch::IntegrationTest
     host! Figaro.env.MEDIA_VAULT_HOST
   end
 
-  test "must be logged in to view text search" do
-    get media_vault_text_search_url
-    assert_response :redirect
-  end
-
-  test "may view text search if logged in" do
-    sign_in users(:user)
-
-    get media_vault_text_search_url
-    assert_response :success
-  end
-
   test "must be logged in to perform text search" do
     get media_vault_text_search_submit_url query: "Biden"
     assert_response :redirect
