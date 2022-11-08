@@ -84,7 +84,7 @@ Rails.application.routes.draw do
   # but should still be scoped by `media_vault` module.
   scope module: "media_vault", as: "media_vault" do
     scope "ingest", as: "ingest" do
-      post "submit_media_review", to: "ingest#submit_review", as: "api_raw"
+      post "submit_review", to: "ingest#submit_review", as: "api_raw"
       post "submit_media_review_source", to: "ingest#submit_media_review_source", as: "api_url"
     end
 
