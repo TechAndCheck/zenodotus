@@ -79,12 +79,12 @@ class MediaVault::IngestController < MediaVaultController
   end
 
   # A class representing the allowed params into the `submit_media_review` endpoint
-  class SubmitMediaReviewParams < T::Struct
-    const :media_review_json, String
+  class SubmitReviewParams < T::Struct
+    const :review_json, String
   end
 
   # A class representing the allowed params into the `submit_media_review_source` endpoint
-  class SubmitMediaReviewSourceParams < T::Struct
+  class SubmitReviewSourceParams < T::Struct
     const :url, String
   end
 
@@ -93,38 +93,45 @@ class MediaVault::IngestController < MediaVaultController
   #
   #  @params {media_review_json} A MediaReview JSON object
   sig { void }
-  def submit_media_review
+  def submit_review
     # TODO: Spin off an active job to handle this
-    typed_params = TypedParams[SubmitMediaReviewParams].new.extract!(params)
-    media_review_json = JSON.parse(typed_params.media_review_json)
+    typed_params = TypedParams[SubmitReviewParams].new.extract!(params)
+    review_json = JSON.parse(typed_params.review_json)
 
-    raise ApiErrors::JSONValidationError.error unless media_review_json.key?("itemReviewed") && media_review_json["itemReviewed"].key?("mediaItemAppearance")
+    raise ApiErrors::JSONValidationError.error unless review_json.key?("@type")
 
-    response_payload = archive_from_media_review(media_review_json)
+    case review_json["@type"]
+    when "ClaimReview"
+      response_payload = archive_from_claim_review(review_json)
+    when "MediaReview"
+      response_payload = archive_from_media_review(review_json)
+    else
+      raise ApiErrors::JSONValidationException
+    end
 
     render(json: response_payload, status: response_payload.has_key?(:error) ? 400 : 200)
   rescue JSON::ParserError
     response_payload = {
       error_code: ApiErrors::JSONParseError.code,
       error: ApiErrors::JSONParseError.message,
-      failures: media_review_json
+      failures: review_json
     }
     render(json: response_payload, status: 400)
   rescue ApiErrors::JSONValidationException
     response_payload = {
       error_code: ApiErrors::JSONValidationError.code,
       error: ApiErrors::JSONValidationError.message,
-      failures: media_review_json
+      failures: review_json
     }
     render(json: response_payload, status: 400)
   end
 
-
-
   # Creates MediaReview and ArchiveItem(s) based on MediaReview founded at the page pointed to by the URL param
+  #
+  # UNUSED!!!!!!
   sig { void }
   def submit_media_review_source
-    typed_params = TypedParams[SubmitMediaReviewSourceParams].new.extract!(params)
+    typed_params = TypedParams[SubmitReviewSourceParams].new.extract!(params)
     mediareview_array = find_media_review_in_page(typed_params.url)
 
     unless mediareview_array.length.positive?
@@ -173,10 +180,15 @@ class MediaVault::IngestController < MediaVaultController
     }
     render(json: response_payload, status: 400)
   end
+
   # Finds MediaReview JSON objects embedded in <script> tags at the page pointed to by the url param
   #
   # @param [String] url: the url to look at
   # @return An array of MediaReview hashes
+  #
+  #
+  #
+  # # UNUSED!!!!!!
   sig { params(url: String).returns(T::Array[Hash]) }
   def find_media_review_in_page(url)
     mediareview_javascript = /<script.*?>(\[.*MediaReview.*\]).*<\/script>/
@@ -194,23 +206,50 @@ class MediaVault::IngestController < MediaVaultController
     JSON.parse mediareview_array
   end
 
-  # Creates an ArchiveITem and MediaReview object based on a MediaReview hash
+  # Creates an ArchiveItem and MediaReview object based on a MediaReview hash
   # @param [Hash] media_review_json: A MediaReview hash object
   # @return [Hash]: A hash containing response codes and a reference to the newly created ArchiveItem
   sig { params(media_review_json: Hash).returns(Hash) }
   def archive_from_media_review(media_review_json)
-    saved_object = ArchiveItem.create_from_media_review(media_review_json)
-
     return {
       error_code: ApiErrors::JSONValidationError.code,
       error: ApiErrors::JSONValidationError.message,
       failures: media_review_json
     } unless validate_media_review(media_review_json)
 
+    saved_object = ArchiveItem.create_from_media_review(media_review_json)
+
     {
       response_code: ApiResponseCodes::Success.code,
       response: ApiResponseCodes::Success.message,
       media_object_id: saved_object.id
+    }
+  end
+
+  # Creates a ClaimReview object based on a ClaimReview hash
+  # @param [Hash] media_review_json: A MediaReview hash object
+  # @return [Hash]: A hash containing response codes and a reference to the newly created ArchiveItem
+  sig { params(claim_review_json: Hash).returns(Hash) }
+  def archive_from_claim_review(claim_review_json)
+    return {
+      error_code: ApiErrors::JSONValidationError.code,
+      error: ApiErrors::JSONValidationError.message,
+      failures: claim_review_json
+    } unless validate_claim_review(claim_review_json)
+
+    saved_object = ClaimReview.create!(
+      date_published: claim_review_json["datePublished"],
+      url: claim_review_json["url"],
+      author: claim_review_json["author"],
+      claim_reviewed: claim_review_json["claimReviewed"],
+      review_rating: claim_review_json["reviewRating"],
+      item_reviewed: claim_review_json["itemReviewed"],
+    )
+
+    {
+      response_code: ApiResponseCodes::Success.code,
+      response: ApiResponseCodes::Success.message,
+      claim_review_id: saved_object.id
     }
   end
 
@@ -221,6 +260,15 @@ private
   def validate_media_review(media_review)
     schema = File.open("public/json-schemas/media-review-schema.json").read
     JSONSchemer.schema(schema).valid?(media_review)
+  rescue StandardError
+    false
+  end
+
+  # Validate MediaReview that was passed in
+  sig { params(claim_review: Hash).returns(T::Boolean) }
+  def validate_claim_review(claim_review)
+    schema = File.open("public/json-schemas/claim-review-schema.json").read
+    JSONSchemer.schema(schema).valid?(claim_review)
   rescue StandardError
     false
   end

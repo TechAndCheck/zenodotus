@@ -1,0 +1,174 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/claimReview",
+  "definitions": {
+    "claimReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "@context": {
+          "type": "string"
+        },
+        "@type": {
+          "type": "string"
+        },
+        "datePublished": {
+          "type": "string",
+          "format": "date"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "qt-uri-protocols": [
+            "https"
+          ]
+        },
+        "author": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/person"
+            },
+            {
+              "$ref": "#/definitions/organization"
+            }
+          ]
+        },
+        "claimReviewed": {
+          "type": "string"
+        },
+        "reviewRating": {
+          "$ref": "#/definitions/reviewRating"
+        },
+        "itemReviewed": {
+          "$ref": "#/definitions/claimReviewItemReviewed"
+        }
+      }
+    },
+    "person": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "@type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "jobTitle": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "sameAs": {
+          "type": "array"
+        }
+      },
+      "required": [
+        "@type",
+        "name"
+      ],
+      "title": "Person"
+    },
+    "organization": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "@type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string",
+          "format": "uri",
+          "qt-uri-protocols": [
+            "https"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "qt-uri-protocols": [
+            "https"
+          ]
+        }
+      },
+      "required": [
+        "@type",
+        "url"
+      ],
+      "title": "Organization"
+    },
+    "reviewRating": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "@type": {
+          "type": "string"
+        },
+        "ratingValue": {
+          "type": "string"
+        },
+        "bestRating": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string",
+          "format": "uri",
+          "qt-uri-protocols": [
+            "https"
+          ]
+        },
+        "alternateName": {
+          "type": "string"
+        },
+        "ratingExplanation": {
+          "type": "string"
+        },
+        "worstRating": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "@type",
+        "alternateName"
+      ],
+      "title": "ReviewRating"
+    },
+    "claimReviewItemReviewed": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "@type": {
+          "type": "string"
+        },
+        "author": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/person"
+            },
+            {
+              "$ref": "#/definitions/organization"
+            }
+          ]
+        },
+        "appearance": {
+          "type": "array"
+        },
+        "datePublished": {
+          "type": "string",
+          "format": "date"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "@type"
+      ],
+      "title": "MediaReviewItemReviewed"
+    }
+  }
+}
