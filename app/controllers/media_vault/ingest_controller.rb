@@ -265,10 +265,14 @@ private
   end
 
   # Validate MediaReview that was passed in
-  sig { params(claim_review: Hash).returns(T::Boolean) }
+  sig { params(claim_review: Hash).returns(T.any(T::Boolean, Array)) }
   def validate_claim_review(claim_review)
     schema = File.open("public/json-schemas/claim-review-schema.json").read
-    JSONSchemer.schema(schema).valid?(claim_review)
+    if JSONSchemer.schema(schema).valid?(claim_review)
+      true
+    else
+      JSONSchemer.schema(schema).validate(claim_review).map { |error| error.slice("data", "data_pointer", "type") }
+    end
   rescue StandardError
     false
   end

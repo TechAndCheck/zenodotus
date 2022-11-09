@@ -76,34 +76,4 @@ class ClaimReviewTest < ActiveSupport::TestCase
     claim_review_json = JSON.parse(claim_review.render_for_export) # call blueprinter
     assert_equal expected, claim_review_json
   end
-
-  test "can't create claim review without mediareview" do
-    assert_raises ActiveRecord::RecordInvalid do
-      ClaimReview.create!(
-        author: {
-          "@type": "Organization",
-          "name": "realfact",
-          "url": "https://www.realfact.com/"
-        },
-        claim_reviewed: "The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide.",
-        date_published: "2021-02-01",
-        item_reviewed: {
-          "@type": "Claim",
-          "author": {
-            "@type": "Person",
-            "jobTitle": "On the internet",
-            "name": "Viral image"
-          },
-          "datePublished": "2021-01-30"
-        },
-        review_rating: {
-          "@type": "Rating",
-          "alternateName": "False",
-          "bestRating": "9",
-          "ratingValue": "4",
-        },
-        url: "https://www.realfact.com/factchecks/2021/feb/03/starwars",
-      )
-    end
-  end
 end
