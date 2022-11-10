@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_08_194425) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_09_152113) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -84,6 +84,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_08_194425) do
     t.jsonb "item_reviewed"
     t.jsonb "review_rating"
     t.uuid "media_review_id"
+    t.uuid "external_unique_id"
     t.index ["media_review_id"], name: "index_claim_reviews_on_media_review_id"
   end
 
@@ -204,6 +205,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_08_194425) do
     t.jsonb "item_reviewed"
     t.text "url"
     t.jsonb "media_item_appearance"
+    t.uuid "external_unique_id"
     t.index ["archive_item_id"], name: "index_media_reviews_on_archive_item_id"
   end
 
