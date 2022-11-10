@@ -31,6 +31,32 @@ class ClaimReview < ApplicationRecord
     item_reviewed "itemReviewed_author_sameAs" do |item_reviewed| item_reviewed.dig("author", "sameAs") end
   end
 
+  sig { params(claim_review_hash: Hash, external_unique_id: T.nilable(String), should_update: T::Boolean).returns(ClaimReview) }
+  def self.create_or_update_from_claim_review_hash(claim_review_hash, external_unique_id, should_update)
+    if should_update
+      existing_claim_review = ClaimReview.where(external_unique_id: external_unique_id).first
+      existing_claim_review.update!(
+        date_published: claim_review_hash["datePublished"],
+        url: claim_review_hash["url"],
+        author: claim_review_hash["author"],
+        claim_reviewed: claim_review_hash["claimReviewed"],
+        review_rating: claim_review_hash["reviewRating"],
+        item_reviewed: claim_review_hash["itemReviewed"],
+      )
+      existing_claim_review.reload
+    else
+      ClaimReview.create!(
+        external_unique_id: external_unique_id,
+        date_published: claim_review_hash["datePublished"],
+        url: claim_review_hash["url"],
+        author: claim_review_hash["author"],
+        claim_reviewed: claim_review_hash["claimReviewed"],
+        review_rating: claim_review_hash["reviewRating"],
+        item_reviewed: claim_review_hash["itemReviewed"],
+      )
+    end
+  end
+
   sig { returns(String) }
   def render_for_export
     ClaimReviewBlueprint.render(self)
