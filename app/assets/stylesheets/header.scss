@@ -55,7 +55,7 @@
 	}
 }
 
-@media screen and (max-width: shared.$screen-lg-ceiling) {
+@media screen and (max-width: shared.$screen-condensed-nav-ceiling) {
 	body:not(.open-site-nav) #site-nav--full {
 		display: none;
 	}
@@ -168,7 +168,7 @@
 	}
 }
 
-@media screen and (min-width: shared.$screen-xl-floor) {
+@media screen and (min-width: shared.$screen-full-nav-floor) {
 	#site-nav--condensed {
 		display: none;
 	}
