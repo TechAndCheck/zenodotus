@@ -39,7 +39,8 @@ module Dhashable
       when :image
         dhashes = [Eikon.dhash_for_image(tempfile_path)]
       when :video
-        dhashes = Eikon.dhash_for_video(tempfile_path).map { |dhash| dhash[:dhash] }
+        frame_count = self.methods.include?(:limit_video_frames_hashed) ? self.limit_video_frames_hashed : 0
+        dhashes = Eikon.dhash_for_video(tempfile_path, frame_count).map { |dhash| dhash[:dhash] }
       end
 
       dhashes.map do |dhash|
@@ -64,11 +65,12 @@ module Dhashable
     tempfile_path = media_item.tempfile.path
 
     # Note on reasoning: `dhash_for_image` return a single object, while `dhash_for_video` returns an array
-    # Since the association is an array, we need to put the single image into an array bewfore saving.
+    # Since the association is an array, we need to put the single image into an array before saving.
     if self.video.nil?
       self.dhashes = [Eikon.dhash_for_image(tempfile_path)]
     else
-      self.dhashes = Eikon.dhash_for_video(tempfile_path)
+      frame_count = self.methods.include?(:limit_video_frames_hashed) ? self.limit_video_frames_hashed : 0
+      self.dhashes = Eikon.dhash_for_video(tempfile_path, frame_count)
     end
   end
 

@@ -14,6 +14,13 @@ class ImageSearch < ApplicationRecord
     self.video_derivatives! unless self.video.nil?
   end
 
+  # Implemented for Dhashable to find so that only certain number of frames of video are hashed
+  # when searching
+  sig { returns(Integer) }
+  def limit_video_frames_hashed
+    4
+  end
+
   sig { params(media_item: ActionDispatch::Http::UploadedFile, current_user: User).returns(ImageSearch) }
   def self.create_with_media_item(media_item, current_user)
     mime = IO.popen(
@@ -47,9 +54,6 @@ class ImageSearch < ApplicationRecord
     if self.image.nil? == false
       image_hashes = Zelkova.graph.search(self.dhashes.first)
 
-      # For videos we have to loop
-
-
       images = image_hashes.map do |image_hash|
         hash = ImageHash.find(image_hash[:node].metadata[:id])
         { image: hash.archive_item, distance: image_hash[:distance] }
@@ -57,6 +61,8 @@ class ImageSearch < ApplicationRecord
 
       images
     else
+      # For videos we have to loop
+
       video_hashes = []
       self.dhashes.each do |dhash|
         video_hashes = video_hashes | Zelkova.graph.search(dhash["dhash"])
