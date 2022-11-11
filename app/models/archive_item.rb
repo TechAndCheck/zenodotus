@@ -20,13 +20,8 @@ class ArchiveItem < ApplicationRecord
   # @!scope class
   # @params media_review [Hash] A MediaReview JSON object
   # @return A MediaReview object that we'll attach to the soon-to-be-scraped ArchiveItem during Scrape fulfillment
-  def self.create_from_media_review(media_review)
-    appearance = media_review["itemReviewed"]["mediaItemAppearance"].select do |appearance|
-      appearance.key?("contentUrl")
-    end.first
-
-    url = appearance["contentUrl"]
-
+  def self.create_from_media_review(media_review, external_unique_id)
+    url = MediaReview.get_content_url(media_review)
     object_model = model_for_url(url)
 
     # Stuff is going to come in that was misinputted, or that we don't have a scraper for.
@@ -37,15 +32,7 @@ class ArchiveItem < ApplicationRecord
     # The ArchiveItem will be created after Zenodotus receives a callback from Hypatia
     # That callback will trigger the Scrape fulfillment process which
     # which will attach this MediaReview to the ArchiveItem
-    media_review_object = MediaReview.create!(
-      original_media_link: url,
-      media_authenticity_category: media_review["mediaAuthenticityCategory"],
-      original_media_context_description: media_review["originalMediaContextDescription"],
-      date_published: media_review["datePublished"],
-      url: media_review["url"],
-      author: media_review["author"],
-      item_reviewed: media_review["itemReviewed"]
-    )
+    media_review_object = MediaReview.create_or_update_from_media_review_hash(media_review, external_unique_id, false)
 
     if media_review.include?("associatedClaimReview")
       ClaimReview.create!(

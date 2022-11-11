@@ -10,13 +10,15 @@ class MediaVault::IngestController < MediaVaultController
     extend T::Sig
 
     enums do
-      Success = new
+      Created = new
+      Updated = new
     end
 
     sig { returns(Integer) }
     def code
       case self
-      when Success then 20
+      when Created then 20
+      when Updated then 20
       else T.absurd(self)
       end
     end
@@ -24,7 +26,8 @@ class MediaVault::IngestController < MediaVaultController
     sig { returns(String) }
     def message
       case self
-      when Success then "Successfully archived media object"
+      when Created then "Successfully archived media object"
+      when Updated then "Successfully updated mediareview for existing object"
       else T.absurd(self)
       end
     end
@@ -81,6 +84,7 @@ class MediaVault::IngestController < MediaVaultController
   # A class representing the allowed params into the `submit_media_review` endpoint
   class SubmitReviewParams < T::Struct
     const :review_json, String
+    const :external_unique_id, String
   end
 
   # A class representing the allowed params into the `submit_media_review_source` endpoint
@@ -89,22 +93,25 @@ class MediaVault::IngestController < MediaVaultController
   end
 
 
-  # Creates a MediaReview and ArchiveItem based on a POSTed MediaReview JSON object
-  #
-  #  @params {media_review_json} A MediaReview JSON object
+  # Uses a JSON object to create a combination of ArchiveItem, MediaReview, and ClaimReview records
+  #  @params {review_json} A JSON object
+  #  @params {external_unique_id} A UUID
   sig { void }
   def submit_review
     # TODO: Spin off an active job to handle this
     typed_params = TypedParams[SubmitReviewParams].new.extract!(params)
     review_json = JSON.parse(typed_params.review_json)
+    external_unique_id = typed_params.external_unique_id
 
     raise ApiErrors::JSONValidationError.error unless review_json.key?("@type")
 
     case review_json["@type"]
     when "ClaimReview"
-      response_payload = archive_from_claim_review(review_json)
+      should_update = ClaimReview.where(external_unique_id: external_unique_id).present?
+      response_payload = archive_from_claim_review(review_json, external_unique_id, should_update)
     when "MediaReview"
-      response_payload = archive_from_media_review(review_json)
+      should_update = MediaReview.where(external_unique_id: external_unique_id).present?
+      response_payload = archive_from_media_review(review_json, external_unique_id, should_update)
     else
       raise ApiErrors::JSONValidationException
     end
@@ -144,14 +151,14 @@ class MediaVault::IngestController < MediaVaultController
     end
 
     # Archive items
-    responses = mediareview_array.each do |review|
-      archive_from_media_review review
+    responses = mediareview_array.each do |media_review|
+      archive_from_media_review(media_review, nil)
     end
 
     archive_success = responses.all? { |response| !response.has_key?(:error) }
     if archive_success
       success_response = {
-        response_code: ApiResponseCodes::Success.code,
+        response_code: ApiResponseCodes::Created.code,
         response: "Successfully archived #{responses.length} MediaReview object(s) and associated media"
       }
       render(json: success_response, status: 200)
@@ -208,48 +215,55 @@ class MediaVault::IngestController < MediaVaultController
 
   # Creates an ArchiveItem and MediaReview object based on a MediaReview hash
   # @param [Hash] media_review_json: A MediaReview hash object
+  # @param [Boolean] should_update: A boolean indicating whether we should create or update a record
   # @return [Hash]: A hash containing response codes and a reference to the newly created ArchiveItem
-  sig { params(media_review_json: Hash).returns(Hash) }
-  def archive_from_media_review(media_review_json)
+  sig { params(media_review_json: Hash,
+               external_unique_id: T.nilable(String),
+               should_update: T::Boolean
+              ).returns(Hash) }
+  def archive_from_media_review(media_review_json, external_unique_id, should_update = false)
     return {
       error_code: ApiErrors::JSONValidationError.code,
       error: ApiErrors::JSONValidationError.message,
       failures: media_review_json
     } unless validate_media_review(media_review_json)
 
-    saved_object = ArchiveItem.create_from_media_review(media_review_json)
+    if should_update
+      media_review = MediaReview.create_or_update_from_media_review_hash(media_review_json, external_unique_id, should_update)
+      saved_object = media_review.archive_item
+      response = ApiResponseCodes::Updated
+    else
+      saved_object = ArchiveItem.create_from_media_review(media_review_json, external_unique_id)
+      response = ApiResponseCodes::Created
+    end
 
     {
-      response_code: ApiResponseCodes::Success.code,
-      response: ApiResponseCodes::Success.message,
+      response_code: response.code,
+      response: response.message,
       media_object_id: saved_object.id
     }
   end
 
-  # Creates a ClaimReview object based on a ClaimReview hash
+  # Creates or updates a ClaimReview object based on a ClaimReview hash
   # @param [Hash] media_review_json: A MediaReview hash object
+  # @param [String] external_unique_id: A unique ID for the ClaimReview
+  # @param [Boolean] should_update: A boolean indicating whether we should create or update a record
   # @return [Hash]: A hash containing response codes and a reference to the newly created ArchiveItem
-  sig { params(claim_review_json: Hash).returns(Hash) }
-  def archive_from_claim_review(claim_review_json)
+  sig { params(claim_review_json: Hash, external_unique_id: T.nilable(String), should_update: T::Boolean).returns(Hash) }
+  def archive_from_claim_review(claim_review_json, external_unique_id, should_update = false)
     return {
       error_code: ApiErrors::JSONValidationError.code,
       error: ApiErrors::JSONValidationError.message,
       failures: claim_review_json
     } unless validate_claim_review(claim_review_json)
 
-    saved_object = ClaimReview.create!(
-      date_published: claim_review_json["datePublished"],
-      url: claim_review_json["url"],
-      author: claim_review_json["author"],
-      claim_reviewed: claim_review_json["claimReviewed"],
-      review_rating: claim_review_json["reviewRating"],
-      item_reviewed: claim_review_json["itemReviewed"],
-    )
+    claim_review_object = ClaimReview.create_or_update_from_claim_review_hash(claim_review_json, external_unique_id, should_update)
+    response = should_update ? ApiResponseCodes::Updated : ApiResponseCodes::Created
 
     {
-      response_code: ApiResponseCodes::Success.code,
-      response: ApiResponseCodes::Success.message,
-      claim_review_id: saved_object.id
+      response_code: response.code,
+      response: response.message,
+      claim_review_id: claim_review_object.id
     }
   end
 

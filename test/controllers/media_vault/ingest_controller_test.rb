@@ -3,6 +3,14 @@
 require "test_helper"
 
 class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
+  include Minitest::Hooks
+
+  def around
+    AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
+      super
+    end
+  end
+
   setup do
     host! Figaro.env.MEDIA_VAULT_HOST
 
@@ -70,17 +78,17 @@ class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "Submitting an API request without a key will return 401 error" do
-    post media_vault_ingest_api_raw_path, params: { media_review_json: @@media_review_json }, as: :json
+    post media_vault_ingest_api_raw_path, params: { review_json: @@media_review_json, external_unique_id: SecureRandom.uuid }, as: :json
     assert_response 401
   end
 
   test "Submitting an API request with a wrong key will return 401 error" do
-    post media_vault_ingest_api_raw_path, params: { review_json: @@media_review_json, api_key: "wrong password" }, as: :json
+    post media_vault_ingest_api_raw_path, params: { review_json: @@media_review_json, external_unique_id: SecureRandom.uuid, api_key: "wrong password" }, as: :json
     assert_response 401
   end
 
   test "Submitting real JSON but with a bad schemas to the ingest API gives a 400" do
-    post media_vault_ingest_api_raw_path, params: { review_json: { title: "Ahoy!" }.to_json, api_key: "123456789" }, as: :json
+    post media_vault_ingest_api_raw_path, params: { review_json: { title: "Ahoy!" }.to_json, external_unique_id: SecureRandom.uuid, api_key: "123456789" }, as: :json
     assert_response 400
 
     json = nil
@@ -98,7 +106,7 @@ class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "Submitting invalid JSON to the ingest API gives a 400" do
-    post media_vault_ingest_api_raw_path, params: { review_json: { title: "Ahoy!" }, api_key: "123456789" }, as: :json
+    post media_vault_ingest_api_raw_path, params: { review_json: { title: "Ahoy!" }, external_unique_id: SecureRandom.uuid, api_key: "123456789" }, as: :json
     assert_response 400
 
     json = nil
@@ -117,7 +125,7 @@ class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
 
   test "Can archive ClaimReview from json" do
     starting_claim_review_count = ClaimReview.count
-    post media_vault_ingest_api_raw_path, params: { review_json: @@claim_review_json, api_key: "123456789" }, as: :json
+    post media_vault_ingest_api_raw_path, params: { review_json: @@claim_review_json, external_unique_id: SecureRandom.uuid, api_key: "123456789" }, as: :json
     assert_response 200
 
     assert_equal starting_claim_review_count + 1, ClaimReview.count
@@ -126,14 +134,14 @@ class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
   test "Can archive MediaReview from json" do
     starting_media_review_count = MediaReview.count
 
-    post media_vault_ingest_api_raw_path, params: { review_json: @@media_review_json, api_key: "123456789" }, as: :json
+    post media_vault_ingest_api_raw_path, params: { review_json: @@media_review_json, external_unique_id: SecureRandom.uuid, api_key: "123456789" }, as: :json
     assert_response 200
 
     assert_equal starting_media_review_count + 1, MediaReview.count
   end
 
   test "can archive MediaReview from a webpage" do
-    post media_vault_ingest_api_url_path, params: { url: "https://oneroyalace.github.io/MediaReview-Fodder/single_embedded_media_review.html", api_key: "123456789" }
+    post media_vault_ingest_api_url_path, params: { url: "https://oneroyalace.github.io/MediaReview-Fodder/single_embedded_media_review.html", external_unique_id: SecureRandom.uuid, api_key: "123456789" }
     assert_response 200
 
     json = nil
@@ -149,7 +157,7 @@ class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can archive multiple MediaReview from a webpage" do
-    post media_vault_ingest_api_url_path, params: { url: "https://oneroyalace.github.io/MediaReview-Fodder/multiple_embedded_media_review.html", api_key: "123456789" }
+    post media_vault_ingest_api_url_path, params: { url: "https://oneroyalace.github.io/MediaReview-Fodder/multiple_embedded_media_review.html", external_unique_id: SecureRandom.uuid, api_key: "123456789" }
     assert_response 200
 
     json = nil
@@ -165,7 +173,7 @@ class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "return 400 if passed a url that points to a page with no MediaReview" do
-    post media_vault_ingest_api_url_path, params: { url: "https://oneroyalace.github.io/MediaReview-Fodder/no_embedded_media_review.html", api_key: "123456789" }
+    post media_vault_ingest_api_url_path, params: { url: "https://oneroyalace.github.io/MediaReview-Fodder/no_embedded_media_review.html", external_unique_id: SecureRandom.uuid, api_key: "123456789" }
     assert_response 400
 
     json = nil
@@ -178,5 +186,46 @@ class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal 40, json["response_code"]
     assert_equal "Could not find MediaReview in webpage", json["response"]
+  end
+
+  test "Submitting a MediaReview with a known external_unique_id updates the existing MediaReivew object" do
+    # Ingest a MediaReview json
+    common_uuid = SecureRandom.uuid
+    post media_vault_ingest_api_raw_path, params: { review_json: @@media_review_json, external_unique_id: common_uuid, api_key: "123456789" }, as: :JSON
+
+    # Attach the MediaReview to a dummy archive item
+    dummy_archive_item = Sources::Tweet.create_from_url!("https://twitter.com/AmtrakNECAlerts/status/1397922363551870990")
+    media_review_object = MediaReview.where(external_unique_id: common_uuid).first
+    media_review_object.archive_item = dummy_archive_item
+    media_review_object.save
+
+    assert_equal "manipulated", media_review_object.media_authenticity_category
+
+    # Ingest a MediaReview json with the same external_unique_id value
+    modified_media_review_json = JSON.parse(@@media_review_json)
+    modified_media_review_json["mediaAuthenticityCategory"] = "Not manipulated"
+    post media_vault_ingest_api_raw_path, params: { review_json: modified_media_review_json.to_json, external_unique_id: common_uuid, api_key: "123456789" }, as: :json
+
+    # Check that the old MediaReview object has been updated
+    media_review_object.reload
+    assert_equal "Not manipulated", media_review_object.media_authenticity_category
+  end
+
+  test "Submitting a ClaimReview with a known external_unique_id updates the existing ClaimReview object" do
+    # Ingest a ClaimReview json
+    common_uuid = SecureRandom.uuid
+    post media_vault_ingest_api_raw_path, params: { review_json: @@claim_review_json, external_unique_id: common_uuid, api_key: "123456789" }, as: :JSON
+
+    claim_review_object = ClaimReview.where(external_unique_id: common_uuid).first
+    assert_equal "https://www.politifact.com/factchecks/2020/mar/10/facebook-posts/melanin-doesnt-protect-against-coronavirus/", claim_review_object.url
+
+    # Ingest a MediaReview json with the same external_unique_id value
+    modified_claim_review_json = JSON.parse(@@claim_review_json)
+    modified_claim_review_json["url"] = "https://www.foobar.com/"
+    post media_vault_ingest_api_raw_path, params: { review_json: modified_claim_review_json.to_json, external_unique_id: common_uuid, api_key: "123456789" }, as: :json
+
+    # Check that the old MediaReview object has been updated
+    claim_review_object.reload
+    assert_equal "https://www.foobar.com/", claim_review_object.url
   end
 end

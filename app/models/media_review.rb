@@ -67,6 +67,51 @@ class MediaReview < ApplicationRecord
     end
   end
 
+  # Extract the content URL from a MediaReview hash
+  sig { params(media_review_hash: Hash).returns(String) }
+  def self.get_content_url(media_review_hash)
+    appearance = media_review_hash["itemReviewed"]["mediaItemAppearance"].select do |appearance|
+      appearance.key?("contentUrl")
+    end.first
+
+    appearance["contentUrl"]
+  end
+
+  # Create or update a MediaReview Record using the input hash
+  sig { params(media_review_hash: Hash,
+               external_unique_id: T.nilable(String), # We won't have a uuid when we scrape mediareview from pages
+               should_update: T::Boolean
+              ).returns(MediaReview) }
+  def self.create_or_update_from_media_review_hash(media_review_hash, external_unique_id, should_update)
+    url = MediaReview.get_content_url(media_review_hash)
+
+    if should_update
+      existing_media_review = MediaReview.where(external_unique_id: external_unique_id).first
+      existing_media_review.update!(
+        original_media_link: url,
+        media_authenticity_category: media_review_hash["mediaAuthenticityCategory"],
+        original_media_context_description: media_review_hash["originalMediaContextDescription"],
+        date_published: media_review_hash["datePublished"],
+        url: media_review_hash["url"],
+        author: media_review_hash["author"],
+        item_reviewed: media_review_hash["itemReviewed"]
+      )
+      existing_media_review.reload
+      existing_media_review
+    else
+      MediaReview.create!(
+        external_unique_id: external_unique_id,
+        original_media_link: url,
+        media_authenticity_category: media_review_hash["mediaAuthenticityCategory"],
+        original_media_context_description: media_review_hash["originalMediaContextDescription"],
+        date_published: media_review_hash["datePublished"],
+        url: media_review_hash["url"],
+        author: media_review_hash["author"],
+        item_reviewed: media_review_hash["itemReviewed"]
+      )
+    end
+  end
+
   sig { returns(Boolean) }
   def orphaned?
     archive_item.nil?
