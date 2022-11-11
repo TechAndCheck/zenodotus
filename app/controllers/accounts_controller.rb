@@ -96,7 +96,11 @@ class AccountsController < ApplicationController
   sig { void }
   def change_password
     typed_params = TypedParams[ChangePasswordParams].new.extract!(params)
+
     current_user.reset_password(typed_params.password, typed_params.confirmed_password)
+    # For some reason, despite having the settings correct, changing the password logs the user out
+    # This logs them straight back in
+    bypass_sign_in(current_user)
 
     respond_to do |format|
       if typed_params.password != typed_params.confirmed_password
