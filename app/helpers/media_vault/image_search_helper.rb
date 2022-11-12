@@ -1,2 +1,0 @@
-module MediaVault::ImageSearchHelper
-end

@@ -1,0 +1,103 @@
+/*
+Search Box
+
+A combination text field and submit button, that also allows drag-and-drop file uploading.
+
+```html
+<div class="search-box">
+	<form class="search-box__form search-box__form--text">
+		<fieldset class="search-box__fieldset">
+			<label class="search-box__form__label">…</label>
+			<input class="search-box__form__field" type="text" />
+			<button class="search-box__form__submit" type="submit">…</button>
+		</fieldset>
+		<div class="search-box__toggle-mode-message">…</div>
+	</form>
+	<form class="search-box__form search-box__form--media">
+		<fieldset class="search-box__fieldset">
+			<label class="search-box__form__label">…</label>
+			<input class="search-box__form__field" type="file" />
+			<button class="search-box__form__submit" type="submit">…</button>
+		</fieldset>
+		<div class="search-box__toggle-mode-message">…</div>
+	</form>
+</div>
+```
+*/
+@use "shared";
+@use "buttons";
+
+.search-box__form {
+	width: 100%;
+
+	@media screen and (min-width: shared.$screen-full-nav-floor) {
+		width: 400px;
+	}
+}
+
+.search-box__form--text {
+	.search-box--media-mode > & {
+		display: none;
+	}
+}
+
+.search-box__form--file {
+	:not(.search-box--media-mode) > & {
+		display: none;
+	}
+}
+
+.search-box__fieldset {
+	width: 100%;
+	display: flex;
+
+	&:disabled,
+	*:disabled {
+		cursor: not-allowed;
+		opacity: 0.5;
+	}
+}
+
+.search-box__form__label {
+	display: none;
+}
+
+.search-box__form__field {
+	width: 100%;
+	flex: 0 1 100%;
+	border: 1px solid shared.$color--dark;
+	border-right: none;
+
+	background-color: rgba(255, 255, 255, 0.3);
+	transition-property: background-color;
+	transition-duration: 100ms;
+
+	&:focus {
+		background-color: rgba(255, 255, 255, 0.9);
+	}
+
+	&[type=file] {
+		// Mimic default text inputs
+		padding: 0.5rem 0.75rem;
+		line-height: inherit;
+
+		&::file-selector-button {
+			appearance: none;
+			padding: 0;
+			border: none;
+			font-family: inherit;
+			font-size: inherit;
+			line-height: inherit;
+			@extend .btn;
+			@extend .btn--naked;
+		}
+	}
+}
+
+.search-box__form__submit {
+	flex: 0 0 min-content;
+}
+
+.search-box__toggle-mode-message {
+	font-size: 0.9rem;
+}
