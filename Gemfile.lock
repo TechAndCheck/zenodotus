@@ -19,7 +19,7 @@ GIT
 
 GIT
   remote: https://github.com/cguess/birdsong
-  revision: 5a3c0ea58040517ef8d1289055a2a0f1bc418559
+  revision: a0363b1a917e2c4ec9083ac71c7ac800cfb8ade1
   specs:
     birdsong (0.1.0)
       oauth (~> 0.5.6)
@@ -175,7 +175,7 @@ GEM
       terrapin (~> 0.6.0)
     erubi (1.11.0)
     erubis (2.7.0)
-    ethon (0.15.0)
+    ethon (0.16.0)
       ffi (>= 1.15.0)
     ferrum (0.12)
       addressable (~> 2.5)
