@@ -62,7 +62,6 @@ class ImageSearch < ApplicationRecord
       images
     else
       # For videos we have to loop
-
       video_hashes = []
       self.dhashes.each do |dhash|
         video_hashes = video_hashes | Zelkova.graph.search(dhash["dhash"])
@@ -71,9 +70,13 @@ class ImageSearch < ApplicationRecord
       videos = video_hashes.map do |video_hash|
         hash = ImageHash.find(video_hash[:node].metadata[:id])
         { video: hash.archive_item, distance: video_hash[:distance] }
-      end.uniq
+      end
 
       videos.sort_by! { |video| video[:distance] }
+
+      # Videos are now sorted by distance, but we want to only keep the shortest distance
+      videos.uniq! { |video_hash| video_hash[:video] }
+
       videos
     end
   end
