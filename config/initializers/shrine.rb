@@ -28,13 +28,14 @@ def make_shrine_cache
 end
 
 def make_shrine_storage
+  bucket_name = Figaro.env.AWS_S3_BUCKET_NAME
   case Rails.env
   when "development"
-    Figaro.env.USE_S3_DEV_TEST == "true" ? make_s3_bucket("zenodotus-testing") : Shrine::Storage::FileSystem.new("public", prefix: "uploads")
+    Figaro.env.USE_S3_DEV_TEST == "true" ? make_s3_bucket(bucket_name) : Shrine::Storage::FileSystem.new("public", prefix: "uploads")
   when "test"
-    Figaro.env.USE_S3_DEV_TEST == "true" ? make_s3_bucket("zenodotus-testing") : Shrine::Storage::Memory.new
+    Figaro.env.USE_S3_DEV_TEST == "true" ? make_s3_bucket(bucket_name) : Shrine::Storage::Memory.new
   when "production"
-    make_s3_bucket("zenodotus-production")
+    make_s3_bucket(bucket_name)
   end
 end
 
