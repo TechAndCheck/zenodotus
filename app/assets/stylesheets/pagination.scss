@@ -1,0 +1,52 @@
+/*
+Pagination
+
+Styling for the Pagy gem's pagination output.
+
+```html
+<nav class="pagy-nav pagination" aria-label="pager">
+	<span class="page prev"><a rel="prev" aria-label="previous">‹&nbsp;Prev</a></span>
+	<span class="page"><a>1</a></span>
+	<span class="page"><a rel="prev">2</a></span>
+	<span class="page active">3</span>
+	<span class="page"><a rel="next">4</a></span>
+	<span class="page"><a>5</a></span>
+	<span class="page gap">…</span>
+	<span class="page"><a>10</a></span>
+	<span class="page next"><a rel="next" aria-label="next">Next&nbsp;›</a></span>
+</nav>
+```
+*/
+@use "shared";
+@use "buttons";
+
+.pagination {
+	--pagination--external-spacing: clamp(2rem, 5vw, 4rem);
+	--pagination--internal-spacing: 0.25rem;
+
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: var(--pagination--internal-spacing);
+	margin-top: var(--pagination--external-spacing);;
+
+	.page {
+		> a {
+			@extend .btn;
+		}
+
+		&.disabled {
+			@extend .btn;
+
+			cursor: text;
+		}
+
+		&.active {
+			@extend .btn;
+			@extend .btn--reversed;
+
+			cursor: text;
+		}
+	}
+}
