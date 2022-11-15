@@ -9,11 +9,18 @@ class MediaVault::ArchiveController < MediaVaultController
   skip_before_action :authenticate_user!, only: :scrape_result_callback
   skip_before_action :must_be_media_vault_user, only: :scrape_result_callback
 
+  ARCHIVE_ITEMS_PER_PAGE = 15
+
   # It's the index, list all the archived items
   sig { void }
   def index
+    @pagy_archive_items, @archive_items = pagy(
+      ArchiveItem.includes(:media_review, { archivable_item: [:author, :images, :videos] }).order("created_at DESC"),
+      page_param: :p,
+      items: ARCHIVE_ITEMS_PER_PAGE
+    )
+
     respond_to do | format |
-      @archive_items = ArchiveItem.includes(:media_review, { archivable_item: [:author, :images, :videos] }).limit(50).order("created_at DESC")
       format.html { render "index" }
     end
   end
@@ -42,31 +49,41 @@ class MediaVault::ArchiveController < MediaVaultController
         error = "#{e.class}: #{e.message}"
         format.turbo_stream { render turbo_stream: [
           turbo_stream.replace("modal", partial: "media_vault/archive/add", locals: { error: error }),
-          turbo_stream.update(
-            "recent_archived_items",
-            partial: "media_vault/archive/archive_items",
-            locals: { archive_items: ArchiveItem.includes({
-              archivable_item: [:author, :images, :videos]
-            }).order("created_at DESC") }
-          )
         ] }
-        format.html { redirect_to :root }
+        format.html { redirect_to media_vault_dashboard_path }
       end
       return
     end
 
     respond_to do |format|
       flash.now[:success] = "Successfully archived your link!"
-      format.turbo_stream { render turbo_stream: [
-        turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
-        turbo_stream.replace("modal", partial: "media_vault/archive/add", locals: { render_empty: true }),
-        turbo_stream.update(
-          "recent_archived_items",
-          partial: "media_vault/archive/archive_items",
-          locals: { archive_items: ArchiveItem.includes({ archivable_item: [:author] }).order("created_at DESC") }
+      # TODO: Turbo-updating the archive items doesn't currently seem to work.
+      #       Leaving it alone for now since this is an admin-only function anyway.
+      format.turbo_stream do
+        @pagy_archive_items, @archive_items = pagy(
+          ArchiveItem.includes(:media_review, { archivable_item: [:author, :images, :videos] }).order("created_at DESC"),
+          page_param: :p,
+          items: ARCHIVE_ITEMS_PER_PAGE
         )
-      ] }
-      format.html { redirect_to :root }
+        render turbo_stream: [
+          turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
+          turbo_stream.replace("modal", partial: "media_vault/archive/add", locals: { render_empty: true }),
+          turbo_stream.update(
+            "archived_items",
+            partial: "media_vault/archive/archive_items",
+            locals: { archive_items: @archive_items }
+          ),
+          # TODO: In addition to none of the Turbo-updating working, updating the paginator fails
+          # because the `pagy/nav` partial can't be found despite being directly from the docs:
+          # https://ddnexus.github.io/pagy/how-to.html#use-it-in-your-app
+          # turbo_stream.update(
+          #   "archived_items_pagination",
+          #   partial: "pagy/nav",
+          #   locals: { pagy: @pagy_archive_items }
+          # )
+        ]
+      end
+      format.html { redirect_to media_vault_dashboard_path }
     end
   end
 
