@@ -1,0 +1,22 @@
+@use "shared";
+
+// Most of MediaVault should use a cleaner, sans-serif font.
+.site--media_vault {
+	font-family: shared.$font-family--sans-serif;
+	background-color: shared.$color--brand--fact-check-insights;
+}
+
+// But, certain pages (more reading-oriented ones) should use standard serif.
+#page--media_vault--home,
+#page--media_vault--guide,
+#page--media_vault--about,
+#page--media_vault--contact,
+#page--media_vault--optout,
+#page--media_vault--terms,
+#page--media_vault--privacy {
+	font-family: shared.$font-family--serif;
+}
+
+#page--media_vault--home {
+	background-color: shared.$color--brand--media-vault;
+}
