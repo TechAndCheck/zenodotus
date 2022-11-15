@@ -1,5 +1,5 @@
 <% if media.try(:image_url) %>
-    <a href="<%= media.image_url %>" title="Click to view full-size version of media">
+    <a href="<%= media_vault_medium_path(media.id) %>" title="Click to view full-size version of media">
         <img class="archive-item__body-media__image" src="<%= media.image_url %>" width="100%" height="auto">
     </a>
 <% elsif media.try(:video_url) %>
