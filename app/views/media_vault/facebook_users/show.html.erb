@@ -1,51 +1,53 @@
-<div class="author" data-controller="media-vault--author">
-  <img
-    class="author__image"
-    src="<%= @facebook_user.profile_image_url %>"
-    width="300" height="300"
-    alt="Profile photo of <%= @facebook_user.name %>"
-  >
-  <div class="author__profile">
-    <div class="author__name">
-      <span class="author__display-name"><%= @facebook_user.name %></span>
-    </div>
-    <div class="author__metadata">
-      <%= abbreviate_number(@facebook_user.followers_count) %>
-      <%= "follower".pluralize(@facebook_user.followers_count) %>
-      •
-      <%= abbreviate_number(@facebook_user.likes_count) %>
-      <%= "like".pluralize(@facebook_user.likes_count) %>
-    </div>
-    <div class="author__description">
-      <%= @facebook_user.profile %>
-    </div>
-  </div>
-</div>
+<div>
+	<div class="author" data-controller="media-vault--author">
+		<img
+			class="author__image"
+			src="<%= @facebook_user.profile_image_url %>"
+			width="300" height="300"
+			alt="Profile photo of <%= @facebook_user.name %>"
+		>
+		<div class="author__profile">
+			<div class="author__name">
+				<span class="author__display-name"><%= @facebook_user.name %></span>
+			</div>
+			<div class="author__metadata">
+				<%= abbreviate_number(@facebook_user.followers_count) %>
+				<%= "follower".pluralize(@facebook_user.followers_count) %>
+				•
+				<%= abbreviate_number(@facebook_user.likes_count) %>
+				<%= "like".pluralize(@facebook_user.likes_count) %>
+			</div>
+			<div class="author__description">
+				<%= @facebook_user.profile %>
+			</div>
+		</div>
+	</div>
 
-<div class="author-archive">
-  <div class="author-archive__header">
-    <h2 class="author-archive__title">
-      <span class="author-archive__title__archive-size"><%= @archive_items.length %></span>
-      <%= "item".pluralize(@archive_items.length) %>
-      archived
-    </h2>
-    <div class="author-archive__actions">
-      <%= link_to media_vault_facebook_user_path(@facebook_user, format: "json"), {
-        title: "Download user archive in JSON format",
-        class: "btn icon-prefixed",
-        download: true
-      } do %>
-        <%= use_svg "download-outline", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
-        JSON
-      <% end %>
-    </div>
-  </div>
-  <div class="archive-items archive-items--masonry archive-items--boxed-items">
-    <% @archive_items.each do |archive_item| %>
-      <%= render partial: "media_vault/archive/archive_item", locals: {
-        **archive_item.normalized_attrs_for_views,
-        include_author: false
-      } %>
-    <% end %>
-  </div>
+	<div class="author-archive">
+		<div class="author-archive__header">
+			<h2 class="author-archive__title">
+				<span class="author-archive__title__archive-size"><%= @archive_items.length %></span>
+				<%= "item".pluralize(@archive_items.length) %>
+				archived
+			</h2>
+			<div class="author-archive__actions">
+				<%= link_to media_vault_facebook_user_path(@facebook_user, format: "json"), {
+					title: "Download user archive in JSON format",
+					class: "btn icon-prefixed",
+					download: true
+				} do %>
+					<%= use_svg "download-outline", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
+					JSON
+				<% end %>
+			</div>
+		</div>
+		<div class="archive-items archive-items--masonry archive-items--boxed-items">
+			<% @archive_items.each do |archive_item| %>
+				<%= render partial: "media_vault/archive/archive_item", locals: {
+					**archive_item.normalized_attrs_for_views,
+					include_author: false
+				} %>
+			<% end %>
+		</div>
+	</div>
 </div>
