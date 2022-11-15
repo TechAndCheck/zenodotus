@@ -21,12 +21,8 @@
 					<li><%= link_to media_vault_dashboard_path, class: "btn btn--naked" do %><span>Dashboard</span><% end %></li>
 					<li><%= link_to media_vault_guide_path, class: "btn btn--naked" do %><span>Guide<span class="hideable"> to MediaVault</span></span><% end %></li>
 					<li class="site-nav__search">
-						<%= form_with url: media_vault_text_search_submit_path, method: :get, class: "form form--oner" do |f| %>
-							<%= f.text_field :query, value: (@query if defined?(@query)), class: "form--oner__field" %>
-							<%= f.submit "Search", class: "form--oner__btn btn" %>
-						<% end %>
+						<%= render partial: "media_vault/search/search_box" %>
 					</li>
-					<li><%= link_to media_vault_image_search_path, class: "btn btn--naked" do %><span>Media Search</span><% end %></li>
 				<% else %>
 					<li><%= render partial: "media_vault/request_access_instructions" %></li>
 				<% end %>

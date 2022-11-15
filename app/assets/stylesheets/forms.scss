@@ -34,24 +34,6 @@ Library for consistent form layout.
 	gap: 0.5rem;
 }
 
-// This is for a single input plus submit button.
-.form--oner {
-	display: flex;
-
-	> * {
-		width: auto;
-	}
-
-	.form--oner__field {
-		flex: 3 1 auto;
-	}
-
-	.form--oner__btn {
-		flex: 1 3 auto;
-		width: auto;
-	}
-}
-
 .form__extra-links {
 	font-size: 0.9rem;
 }

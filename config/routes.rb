@@ -67,10 +67,8 @@ Rails.application.routes.draw do
       get "privacy"
       get "optout"
 
-      get "/image_search", to: "image_search#index", as: "image_search"
-      post "/image_search", to: "image_search#search", as: "image_search_submit"
-
-      get "/text_search/search", to: "text_search#search", as: "text_search_submit"
+      get "search", to: "search#index", as: "search"
+      post "search_by_media", to: "search#search_by_media", as: "search_by_media"
 
       resources :twitter_users, only: [:show]
       resources :instagram_users, only: [:show]

@@ -1,0 +1,43 @@
+<div class="search-box <%= "search-box--media-mode" if (defined?(@media_search)) %>"
+	data-controller="media-vault--search-box"
+	data-media-vault--search-box-target="searchBox"
+>
+	<%= form_with url: media_vault_search_path, method: :get,
+		class: "search-box__form search-box__form--text",
+		data: { "media-vault--search-box-target": "searchByTextForm" } do |f|
+	%>
+		<fieldset class="search-box__fieldset" data-media-vault--search-box-target="searchByTextFieldset">
+			<%= f.label :q, "Search by text", class: "search-box__form__label" %>
+			<%= f.text_field :q, class: "search-box__form__field", value: (@query if defined?(@query)), "data-media-vault--search-box-target": "searchByTextField" %>
+			<%= f.submit "Search", class: "search-box__form__submit btn btn--reversed-subtle" %>
+		</fieldset>
+		<div class="search-box__toggle-mode-message">
+			Drag and drop images or video to
+			<%= tag.button "search by media", class: "btn--text", type: "button", data: {
+				action: "click->media-vault--search-box#switchToMediaMode:prevent"
+			} %>
+		</div>
+	<% end %>
+	<%= form_with url: media_vault_search_by_media_path,
+		method: :post,
+		class: "search-box__form search-box__form--file",
+		data: {
+			"media-vault--search-box-target": "searchByMediaForm",
+			action: "submit->onMediaSearch",
+			# See #456 for why we aren't using Turbo here.
+			turbo: false,
+		} do |f|
+	%>
+		<fieldset class="search-box__fieldset" data-media-vault--search-box-target="searchByMediaFieldset">
+			<%= f.label :media, "Search by media", class: "search-box__form__label" %>
+			<%= f.file_field :media, class: "search-box__form__field", "data-media-vault--search-box-target": "searchByMediaFileInput" %>
+			<%= f.submit "Search", class: "search-box__form__submit btn btn--reversed-subtle" %>
+		</fieldset>
+		<div class="search-box__toggle-mode-message">
+			You can also
+			<%= tag.button "search by text", class: "btn--text", type: "button", data: {
+				action: "click->media-vault--search-box#switchToTextMode:prevent"
+			} %>
+		</div>
+	<% end %>
+</div>

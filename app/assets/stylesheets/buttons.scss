@@ -11,6 +11,7 @@ elements, but the examples will just use `<button>`.
 ```
 */
 @use "shared";
+@use "sass:color";
 
 :root {
 	--btn--font-family: #{shared.$font-family--sans-serif};
@@ -85,6 +86,16 @@ elements, but the examples will just use `<button>`.
 		--btn--border-color: #{shared.$color--dark};
 	}
 
+	&.btn--reversed-subtle {
+		--btn--color: white;
+		--btn--background-color: #{color.adjust(shared.$color--dark, $alpha: -0.5)};
+		--btn--border-color: #{shared.$color--dark};
+
+		&:focus {
+			--btn--background-color: #{color.adjust(shared.$color--dark, $alpha: -0.3)};
+		}
+	}
+
 	&.btn--submit {
 		--btn--color: #{shared.$color--mood--success--contrast};
 		--btn--background-color: #{shared.$color--mood--success};
@@ -123,4 +134,8 @@ elements, but the examples will just use `<button>`.
 			--btn--border-color--hover: transparent;
 		}
 	}
+}
+
+.btn--text {
+	@include shared.underline-on;
 }

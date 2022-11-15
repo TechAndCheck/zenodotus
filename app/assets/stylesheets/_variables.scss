@@ -25,6 +25,9 @@ $screen-xl-ceiling: 1280px;
 $screen-2xl-floor: 1281px;
 $screen-2xl-ceiling: 1536px;
 
+$screen-condensed-nav-ceiling: $screen-lg-ceiling;
+$screen-full-nav-floor: $screen-xl-floor;
+
 // Transitions
 $transition-duration: 200ms;
 $transition-timing-function: ease;

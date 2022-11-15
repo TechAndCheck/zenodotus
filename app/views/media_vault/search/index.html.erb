@@ -1,0 +1,17 @@
+<h1>Search Results</h1>
+
+<% @user_results.each do |record| %>
+	<%= render partial: search_view_for_model_instance(record) , locals: { result: record } %>
+<% end unless @user_results.nil? %>
+
+<% @post_results.each do |record| %>
+	<%= render partial: search_view_for_model_instance(record) , locals: { result: record } %>
+<% end unless @post_results.nil? %>
+
+<%= turbo_frame_tag "search_item" do %>
+	<%= render partial: "media_vault/image_search/search_item", locals: { search: @media_search, results: @media_results } unless @media_results.nil? %>
+<% end %>
+
+<%= turbo_frame_tag "search_results" do %>
+	<%= render partial: "media_vault/image_search/results", locals: { search: @media_search, results: @media_results } unless @media_results.nil? %>
+<% end %>
