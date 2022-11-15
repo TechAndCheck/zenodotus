@@ -80,6 +80,15 @@ elements, but the examples will just use `<button>`.
 		--btn--padding--horizontal: 2em;
 	}
 
+	&.disabled {
+		--btn--color: gray;
+		--btn--background-color: transparent;
+		--btn--border-color: lightgray;
+		--btn--color--hover: gray;
+		--btn--background-color--hover: transparent;
+		--btn--border-color--hover: lightgray;
+	}
+
 	&.btn--reversed {
 		--btn--color: white;
 		--btn--background-color: #{shared.$color--dark};
@@ -124,6 +133,15 @@ elements, but the examples will just use `<button>`.
 
 	&.btn--naked {
 		--btn--border-color: transparent;
+
+		&.disabled {
+			--btn--color: gray;
+			--btn--background-color: transparent;
+			--btn--border-color: transparent;
+			--btn--color--hover: gray;
+			--btn--background-color--hover: transparent;
+			--btn--border-color--hover: transparent;
+		}
 
 		&.btn--danger {
 			--btn--color: #{shared.$color--mood--error};
