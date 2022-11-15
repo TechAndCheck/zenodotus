@@ -56,3 +56,37 @@
 		--table--cell-padding-x: 0.5em;
 	}
 }
+
+.schema-table {
+	.code {
+		font-family: monospace;
+
+		$font-size-multiplier: 0.75;
+		font-size: calc($font-size-multiplier * shared.$font-size--base);
+		line-height: calc(shared.$line-height--base / $font-size-multiplier);
+	}
+
+	.na {
+		color: gray;
+
+		$font-size-multiplier: 0.9;
+		font-size: calc($font-size-multiplier * shared.$font-size--base);
+		line-height: calc(shared.$line-height--base / $font-size-multiplier);
+	}
+
+	$levels: 1, 2, 3, 4, 5, 6;
+	@for $level from 1 through 6 {
+		.indent--#{$level} > td:first-child {
+			padding-left: #{$level * 4}ch;
+		}
+	}
+
+	.code {
+		.key {
+			color: shared.$color--blue-2;
+		}
+		.value {
+			color: shared.$color--red-1;
+		}
+	}
+}
