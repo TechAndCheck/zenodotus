@@ -1,15 +1,9 @@
-<% @page_id = "dashboard" %>
+<% @page_id = "medium" %>
+<% @title_tag = [
+	"“#{truncate(@archive_item.normalized_attrs_for_views[:archive_item_caption], length: 30)}”",
+	@archive_item.normalized_attrs_for_views[:author_display_name],
+] %>
 
-<%= turbo_frame_tag "modal" %>
-
-<div class="hidden container mx-auto my-4 shadow rounded-lg bg-white py-5">
-  <form class="my-4 flex flex-inline gap-2">
-    <input type="text" placeholder="Search the vault…" required class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-    <button type="submit" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Search</button>
-  </form>
-</div>
-
-<div class="py-10 mx-auto" style="max-width:50rem;">
-  <h2 class="text-2xl mb-10">Lorem ipsum dolor set</h2>
-
+<div class="content content--md content--center">
+	<%= render partial: "media_vault/media/archive_item", locals: { **@archive_item.normalized_attrs_for_views } %>
 </div>
