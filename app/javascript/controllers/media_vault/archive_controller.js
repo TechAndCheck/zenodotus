@@ -27,7 +27,7 @@ export default class extends Controller {
       default:
         // This doesn't break anything for users, but we developers would want to know.
         // eslint-disable-next-line no-console
-        console.error('archive#toggleCaption called unexpectedly.')
+        console.error('media-vault--archive#toggleCaption called unexpectedly.')
     }
   }
 }
