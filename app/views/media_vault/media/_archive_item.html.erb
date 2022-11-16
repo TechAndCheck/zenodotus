@@ -79,7 +79,7 @@
               </time>
           </div>
         </div>
-        <div class="archive-item__metadatum">
+        <%= link_to media_vault_medium_path(archive_item_self.archive_item), class: "archive-item__metadatum" do %>
             <div class="archive-item__metadatum__label">Archived</div>
             <time
                 class="archive-item__metadatum__value"
@@ -88,7 +88,7 @@
             >
                 <%= archived_at %>
             </time>
-        </div>
+        <% end %>
     </div>
   </div>
 </div>
