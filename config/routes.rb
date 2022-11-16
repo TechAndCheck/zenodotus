@@ -70,10 +70,7 @@ Rails.application.routes.draw do
       get "search", to: "search#index", as: "search"
       post "search_by_media", to: "search#search_by_media", as: "search_by_media"
 
-      resources :twitter_users, only: [:show]
-      resources :instagram_users, only: [:show]
-      resources :facebook_users, only: [:show]
-      resources :youtube_channels, only: [:show]
+      get "authors/:platform/:id", to: "authors#show", as: "author"
       resources :media, only: [:show]
     end
   end

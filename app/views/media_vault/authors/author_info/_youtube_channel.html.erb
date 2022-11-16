@@ -1,0 +1,39 @@
+<div class="author" data-controller="media-vault--author">
+	<img
+		class="author__image"
+		src="<%= @author.channel_image_url %>"
+		width="300" height="300"
+		alt="Profile photo of <%= @author.title %>"
+	>
+	<div class="author__profile">
+		<div class="author__name">
+			<span class="author__display-name"><%= @author.title %></span>
+		</div>
+		<div class="author__metadata">
+			<%= abbreviate_number(@author.num_subscribers) %>
+			<%= "subscriber".pluralize(@author.num_subscribers) %>
+			•
+			<%= abbreviate_number(@author.num_views) %>
+			<%= "view".pluralize(@author.num_views) %>
+			•
+			<%= abbreviate_number(@author.num_videos) %>
+			<%= "video".pluralize(@author.num_videos) %>
+		</div>
+		<div class="author__description">
+			<%= @author.description %>
+		</div>
+		<div class="author__metadata">
+			<span class="icon-prefixed">
+				<%= use_svg "calendar-outline", svg_attrs: { class: "icon icon--xl", aria: { hidden: true } } %>
+				<span>
+					Channel created on
+					<time
+						datetime="<%= @author.sign_up_date.iso8601 %>"
+						data-media-vault--author-target="timestamp"
+					>
+						<%= @author.sign_up_date %>
+					</time>
+				</span>
+		</div>
+	</div>
+</div>
