@@ -59,7 +59,7 @@
 		</div>
 		<div class="archive-items archive-items--masonry archive-items--boxed-items">
 			<% @archive_items.each do |archive_item| %>
-				<%= render partial: "media_vault/archive/archive_item", locals: {
+				<%= render partial: "media_vault/media/archive_item", locals: {
 					**archive_item.normalized_attrs_for_views,
 					include_author: false
 				} %>
