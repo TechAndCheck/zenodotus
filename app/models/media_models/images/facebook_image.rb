@@ -10,7 +10,7 @@ class MediaModels::Images::FacebookImage < ApplicationRecord
   # Returns the parent object of this item. All the MediaModels implement this.
   #
   # @return the parent post of this object
-  sig { returns(Sources::InstagramPost) }
+  sig { returns(Sources::FacebookPost) }
   def parent_post
     self.facebook_post
   end
