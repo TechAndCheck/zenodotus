@@ -57,12 +57,16 @@ class ClaimReviewTest < ActiveSupport::TestCase
         "@type" => "Rating",
         "alternateName" => "False",
         "bestRating" => "9",
+        "worstRating" => nil,
+        "ratingExplanation" => nil,
         "ratingValue" => "4",
         "image" => nil,
       },
       "itemReviewed" => {
         "@type" => "Claim",
         "name" => "Claim name",
+        "appearance" => nil,
+        "firstAppearance" => nil,
         "author" => {
           "@type" => "Person",
           "jobTitle" => "On the internet",

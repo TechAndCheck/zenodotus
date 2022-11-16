@@ -32,6 +32,8 @@ class ClaimReviewBlueprint < Blueprinter::Base
       "@type": claim_review.review_rating.dig("@type"),
       "ratingValue": claim_review.review_rating.dig("ratingValue"),
       "bestRating": claim_review.review_rating.dig("bestRating"),
+      "worstRating": claim_review.review_rating.dig("worstRating"),
+      "ratingExplanation": claim_review.review_rating.dig("ratingExplanation"),
       "image": claim_review.review_rating.dig("image"),
       "alternateName": claim_review.review_rating.dig("alternateName"),
     }
@@ -42,6 +44,8 @@ class ClaimReviewBlueprint < Blueprinter::Base
       "@type": claim_review.item_reviewed.dig("@type"),
       "datePublished": claim_review.item_reviewed.dig("datePublished"),
       "name": claim_review.item_reviewed.dig("name"),
+      "appearance": claim_review.item_reviewed.dig("appearance"),
+      "firstAppearance": claim_review.item_reviewed.dig("appearance", 0),
       "author": {
         "@type": claim_review.item_reviewed.dig("author", "@type"),
         "name": claim_review.item_reviewed.dig("author", "name"),

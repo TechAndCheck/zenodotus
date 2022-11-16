@@ -272,11 +272,19 @@ ClaimReview.create(
       "jobTitle": "On the internet",
       "name": "Viral image"
     },
+    "appearance": [
+      {
+        "@type": "CreativeWork",
+        "url": "https://foobar.com/13531"
+      }
+    ]
   },
   review_rating: {
     "@type": "Rating",
     "ratingValue": "4",
     "bestRating": "5",
+    "worstRating": "0",
+    "ratingExplanation": "Don't worry about it",
     "image": "https://static.politifact.com/politifact/rulings/meter-false.jpg",
     "alternateName": "False"
   },

@@ -17,10 +17,14 @@ class ClaimReview < ApplicationRecord
 
     review_rating "reviewRating_@type" do |review_rating| review_rating["@type"] end
     review_rating "reviewRating_ratingValue" do |review_rating| review_rating["ratingValue"] end
+    review_rating "reviewRating_ratingExplanation" do |review_rating| review_rating["ratingExplanation"] end
     review_rating "reviewRating_bestRating" do |review_rating| review_rating["bestRating"] end
+    review_rating "reviewRating_worstRating" do |review_rating| review_rating["worstRating"] end
     review_rating "reviewRating_image" do |review_rating| review_rating["image"] end
     review_rating "reviewRating_alternateName" do |review_rating| review_rating["alternateName"] end
 
+    item_reviewed "itemReviewed_firstAppearance_@type" do |item_reviewed| item_reviewed.dig("appearance", 0, "@type") end
+    item_reviewed "itemReviewed_firstAppearance_url" do |item_reviewed| item_reviewed.dig("appearance", 0, "url") end
     item_reviewed "itemReviewed_@type" do |item_reviewed| item_reviewed["@type"] end
     item_reviewed "itemReviewed_datePublished" do |item_reviewed| item_reviewed["datePublished"] end
     item_reviewed "itemReviewed_name" do |item_reviewed| item_reviewed["name"] end
