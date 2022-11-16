@@ -19,7 +19,7 @@ module ApplicationHelper
     if title_hierarchy.is_a? String
       title_tag_content += title_hierarchy
     elsif title_hierarchy.is_a? Array
-      title_tag_content += title_hierarchy.join(" #{opts[:delimeter]} ")
+      title_tag_content += title_hierarchy.compact.join(" #{opts[:delimeter]} ")
     end
 
     (title_tag_content.present? ? "#{title_tag_content} #{opts[:delimeter]} " : "") + @site[:title]
