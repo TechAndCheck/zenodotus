@@ -3,7 +3,7 @@
 <%= turbo_frame_tag "modal" %>
 
 <div class="content content--md content--center">
-	<%= turbo_frame_tag "archived_items", target: "_top", class: "archive-items" do %>
+	<%= turbo_frame_tag "archived_items", target: "_top", class: "archive-items archive-items--boxed-items" do %>
 		<% render partial: "archive_items", locals: { archive_items: @archive_items } %>
 	<% end %>
 
