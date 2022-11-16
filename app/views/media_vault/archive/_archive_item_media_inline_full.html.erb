@@ -1,5 +1,4 @@
 <% if media.try(:image_url) %>
-    <% debugger %>
     <a href="<%= media_vault_medium_path(media.parent_post.archive_item.id) %>" title="Click to view full-size version of media">
         <img class="archive-item__body-media__image" src="<%= media.image_url %>" width="100%" height="auto">
     </a>
