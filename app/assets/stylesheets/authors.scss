@@ -54,6 +54,7 @@ a.author:hover .author__username {
 
 .author__username {
 	font-weight: shared.$font-weight--light;
+	overflow-wrap: anywhere;
 }
 
 .author__metadata {
