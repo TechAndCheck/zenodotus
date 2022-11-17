@@ -51,6 +51,8 @@ just to examine the template files unless/until we capture it better here.
 ```
 */
 @use "shared";
+@use "boxes";
+@use "masonry";
 
 .archive-items {
 	--archive-item--external-spacing: 5rem;
@@ -58,39 +60,14 @@ just to examine the template files unless/until we capture it better here.
 	display: flex;
 	flex-direction: column;
 	gap: var(--archive-item--external-spacing);
-}
 
-.archive-items--masonry {
-	--archive-items--masonry-column-count: 2;
-}
-
-.archive-items--boxed-items {
-	--archive-item--external-spacing: 2rem;
-}
-
-@media screen and (min-width: shared.$screen-lg-floor) {
-	.archive-items--masonry {
-		flex-direction: row;
-		flex-wrap: wrap;
+	&.archive-items--masonry {
+		@extend .masonry;
+		--masonry-item--external-spacing: var(--archive-item--external-spacing);
 	}
 
-	.archive-items--masonry .archive-item {
-		flex-basis: calc((100% - var(--archive-item--external-spacing)) / var(--archive-items--masonry-column-count));
-	}
-}
-
-/*
-For browsers that support it, use a native CSS Masonry layout. This is currently experimental and
-may never be widely adopted. If you're reading this in a future when it's been abandoned, delete.
-*/
-@supports (grid-template-rows: masonry) {
-	@media screen and (min-width: shared.$screen-lg-floor) {
-		.archive-items--masonry {
-			flex: none;
-			display: grid;
-			grid-template-columns: repeat(var(--archive-items--masonry-column-count), 1fr);
-			grid-template-rows: masonry;
-		}
+	&.archive-items--boxed-items {
+		--archive-item--external-spacing: 2rem;
 	}
 }
 
@@ -100,29 +77,30 @@ may never be widely adopted. If you're reading this in a future when it's been a
 	--archive-item--author-profile-image-size: 4rem;
 	--archive-item--author-profile-image-gap: 1rem;
 	--archive-item--body-indentation: 0;
-}
 
-@media screen and (min-width: shared.$screen-lg-floor) {
-	.archive-item:not(.archive-item--boxed):not(.archive-items--boxed-items .archive-item) {
-		--archive-item--body-indentation: calc(var(--archive-item--author-profile-image-size) + var(--archive-item--author-profile-image-gap));
+	.author {
+		--author--external-spacing: var(--archive-item--internal-spacing);
+		--author--profile-image-size: var(--archive-item--author-profile-image-size);
+		--author--profile-image-gap: var(--archive-item--author-profile-image-gap);
+		--author--name-font-size: 1.4rem;
+
+		margin-top: 0;
+	}
+
+	@media screen and (min-width: shared.$screen-lg-floor) {
+		&:not(.archive-item--boxed):not(.archive-items--boxed-items &) {
+			--archive-item--body-indentation: calc(var(--archive-item--author-profile-image-size) + var(--archive-item--author-profile-image-gap));
+		}
 	}
 }
 
-.archive-items--boxed-items .archive-item__inner,
-.archive-item--boxed .archive-item__inner {
-	padding: calc(var(--archive-item--internal-spacing) * 2);
-	background-color: white;
-	border: 1px solid lightgray;
-	box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
-}
-
-.archive-item .author {
-	--author--external-spacing: var(--archive-item--internal-spacing);
-	--author--profile-image-size: var(--archive-item--author-profile-image-size);
-	--author--profile-image-gap: var(--archive-item--author-profile-image-gap);
-	--author--name-font-size: 1.4rem;
-
-	margin-top: 0;
+.archive-item__inner {
+	.archive-items--boxed-items &,
+	.archive-item--boxed & {
+		@extend .box;
+		--box--external-spacing: 0;
+		--box--internal-spacing: calc(var(--archive-item--internal-spacing) * 2);
+	}
 }
 
 .archive-item__body {
@@ -132,24 +110,24 @@ may never be widely adopted. If you're reading this in a future when it's been a
 
 	margin-left: var(--archive-item--body-indentation);
 	transition-property: margin-left;
-}
 
-.archive-item[data-publishing-platform="facebook"] .archive-item__body,
-.archive-item[data-publishing-platform="youtube"] .archive-item__body {
-	flex-direction: column-reverse;
+	.archive-item[data-publishing-platform="facebook"] &,
+	.archive-item[data-publishing-platform="youtube"] & {
+		flex-direction: column-reverse;
+	}
 }
 
 .archive-item__body-caption {
 	font-size: 1rem;
-}
 
-.archive-item[data-publishing-platform="twitter"] .archive-item__body-caption {
-	font-size: 1.3rem;
-}
+	.archive-item[data-publishing-platform="twitter"] & {
+		font-size: 1.3rem;
+	}
 
-.archive-item[data-publishing-platform="youtube"] .archive-item__body-caption {
-	font-size: 1.3rem;
-	font-weight: shared.$font-weight--normal;
+	.archive-item[data-publishing-platform="youtube"] & {
+		font-size: 1.3rem;
+		font-weight: shared.$font-weight--normal;
+	}
 }
 
 .archive-item[data-archive-caption-collapse-mode-value="collapsed"] .archive-item__body-caption-content {
@@ -163,10 +141,8 @@ may never be widely adopted. If you're reading this in a future when it's been a
 	element. So, for now max-height is unversal and all clamping really gets us is the ellipsis.
 	*/
 	max-height: calc(1em * shared.$line-height--base * var(--collapsed-lines-of-text));
-}
 
-@supports (-webkit-line-clamp: 2) {
-	.archive-item[data-archive-caption-collapse-mode-value="collapsed"] .archive-item__body-caption-content {
+	@supports (-webkit-line-clamp: 2) {
 		display: -webkit-box;
 		-webkit-line-clamp: var(--collapsed-lines-of-text);
 		-webkit-box-orient: vertical;
@@ -176,11 +152,8 @@ may never be widely adopted. If you're reading this in a future when it's been a
 .archive-item__body-caption-toggler {
 	font-weight: shared.$font-weight--semibold;
 	font-size: 0.9em;
-	text-decoration: underline;
-}
 
-.archive-item__body-caption-toggler:hover {
-	text-decoration: none;
+	@include shared.underline-on;
 }
 
 .archive-item__body-media__image {
@@ -241,21 +214,19 @@ may never be widely adopted. If you're reading this in a future when it's been a
 	line-height: var(--archive-item--metadata-line-height);
 
 	transition-property: margin-left;
-}
 
-@media screen and (max-width: 500px) {
-	.archive-item__metadata {
+	@media screen and (max-width: 500px) {
 		flex-direction: column;
 	}
-}
 
-.archive-item__metadata .icon-prefixed {
-	--icon-gap: calc(var(--archive-item--metadata-font-size) * var(--archive-item--metadata-line-height) / 2);
-}
+	.icon-prefixed {
+		--icon-gap: calc(var(--archive-item--metadata-font-size) * var(--archive-item--metadata-line-height) / 2);
 
-.archive-item__metadata .icon-prefixed .icon {
-	--icon-size: calc(var(--archive-item--metadata-font-size) * var(--archive-item--metadata-line-height) * 2);
-	align-self: flex-start;
+		.icon {
+			--icon-size: calc(var(--archive-item--metadata-font-size) * var(--archive-item--metadata-line-height) * 2);
+			align-self: flex-start;
+		}
+	}
 }
 
 a.archive-item__metadatum {

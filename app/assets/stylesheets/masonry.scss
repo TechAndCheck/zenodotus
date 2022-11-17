@@ -1,0 +1,39 @@
+/*
+Masonry
+
+Attempts to generate a masonry-style layout. Defaults to a normal flexbox layout, but opts in to a
+browser-native masonry layout when the browser supports it. (Currently experimental.)
+
+This is intended to be mixed in to other layouts with `@extend .masonry` SCSS.
+*/
+@use "shared";
+
+.masonry {
+	--masonry-item--external-spacing: 2rem;
+	--masonry--column-count: 2;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--masonry-item--external-spacing);
+
+	@media screen and (min-width: shared.$screen-lg-floor) {
+
+		flex-direction: row;
+		flex-wrap: wrap;
+
+		> * {
+			flex-basis: calc((100% - var(--masonry-item--external-spacing)) / var(--masonry--column-count));
+		}
+
+		/*
+		For browsers that support it, use a native CSS Masonry layout. This is currently experimental and
+		may never be widely adopted. If you're reading this in a future when it's been abandoned, delete.
+		*/
+		@supports (grid-template-rows: masonry) {
+			flex: none;
+			display: grid;
+			grid-template-columns: repeat(var(--masonry--column-count), 1fr);
+			grid-template-rows: masonry;
+		}
+	}
+}
