@@ -1,23 +1,23 @@
 <div class="author" data-controller="media-vault--author">
 	<img
 		class="author__image"
-		src="<%= @author.profile_image_url %>"
+		src="<%= author.profile_image_url %>"
 		width="300" height="300"
-		alt="Profile photo of <%= @author.name %>"
+		alt="Profile photo of <%= author.name %>"
 	>
 	<div class="author__profile">
 		<div class="author__name">
-			<span class="author__display-name"><%= @author.name %></span>
+			<span class="author__display-name"><%= author.name %></span>
 		</div>
 		<div class="author__metadata">
-			<%= abbreviate_number(@author.followers_count) %>
-			<%= "follower".pluralize(@author.followers_count) %>
+			<%= abbreviate_number(author.followers_count) %>
+			<%= "follower".pluralize(author.followers_count) %>
 			•
-			<%= abbreviate_number(@author.likes_count) %>
-			<%= "like".pluralize(@author.likes_count) %>
+			<%= abbreviate_number(author.likes_count) %>
+			<%= "like".pluralize(author.likes_count) %>
 		</div>
 		<div class="author__description">
-			<%= @author.profile %>
+			<%= author.profile %>
 		</div>
 	</div>
 </div>

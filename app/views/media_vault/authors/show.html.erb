@@ -1,4 +1,4 @@
 <div>
-	<%= render partial: "media_vault/authors/author_info/#{@platform[:author_source_model_name].underscore}" %>
+	<%= render partial: "media_vault/authors/author_info/#{@platform[:author_source_model_name].underscore}", locals: { author: @author } %>
 	<%= render partial: "media_vault/authors/author_archive" %>
 </div>
