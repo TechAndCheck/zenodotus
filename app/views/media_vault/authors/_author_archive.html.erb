@@ -6,7 +6,7 @@
 			archived
 		</h2>
 		<div class="author-archive__actions">
-			<%= link_to media_vault_author_path(@author, platform: :facebook, format: :json), {
+			<%= link_to media_vault_author_path(@author, platform: @author.platform, format: :json), {
 				title: "Download user archive in JSON format",
 				class: "btn icon-prefixed",
 				download: true
