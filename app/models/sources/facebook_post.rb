@@ -185,7 +185,7 @@ class Sources::FacebookPost < ApplicationRecord
     {
       publishing_platform_shortname:    "facebook",
       publishing_platform_display_name: "Facebook",
-      author_canonical_path:            url_helpers.media_vault_facebook_user_path(self.author),
+      author_canonical_path:            url_helpers.media_vault_author_path(self.author, platform: :facebook),
       author_profile_image_url:         self.author.profile_image_url,
       author_display_name:              self.author.name,
       author_username:                  nil,
