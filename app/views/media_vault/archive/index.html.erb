@@ -3,6 +3,8 @@
 <%= turbo_frame_tag "modal" %>
 
 <div class="content">
+	<h2>Recently-archived media:</h2>
+
 	<%= turbo_frame_tag "archived_items", target: "_top", class: "archive-items archive-items--boxed-items archive-items--masonry" do %>
 		<% render partial: "archive_items", locals: { archive_items: @archive_items } %>
 	<% end %>
