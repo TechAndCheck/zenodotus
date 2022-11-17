@@ -41,9 +41,9 @@
         <% if archive_item_self.has_displayable_media? %>
             <div class="archive-item__body-media">
                 <% if archive_item_self.combined_media.length == 1 %>
-                    <%= render partial: "media_vault/archive/archive_item_media_inline_full", locals: { media: archive_item_self.combined_media.first } %>
+                    <%= render partial: "media_vault/media/archive_item_medium", locals: { media: archive_item_self.combined_media.first } %>
                 <% else %>
-                    <%= render partial: "media_vault/archive/archive_item_media_inline_thumbnails", locals: { combined_media: archive_item_self.combined_media } %>
+                    <%= render partial: "media_vault/media/archive_item_medium_thumbnails", locals: { combined_media: archive_item_self.combined_media } %>
                 <% end %>
             </div>
         <% end %>
@@ -79,7 +79,7 @@
               </time>
           </div>
         </div>
-        <div class="archive-item__metadatum">
+        <%= link_to media_vault_medium_path(archive_item_self.archive_item), class: "archive-item__metadatum" do %>
             <div class="archive-item__metadatum__label">Archived</div>
             <time
                 class="archive-item__metadatum__value"
@@ -88,7 +88,7 @@
             >
                 <%= archived_at %>
             </time>
-        </div>
+        <% end %>
     </div>
   </div>
 </div>

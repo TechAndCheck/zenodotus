@@ -258,8 +258,12 @@ may never be widely adopted. If you're reading this in a future when it's been a
 	align-self: flex-start;
 }
 
+a.archive-item__metadatum {
+	@include shared.underline-off;
+}
+
 .archive-item__metadatum__label {
-	font-weight: shared.$font-weight--semibold;
+	font-weight: shared.$font-weight--normal;
 }
 
 .archive-item__metadatum__value {

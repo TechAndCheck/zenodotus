@@ -74,6 +74,7 @@ Rails.application.routes.draw do
       resources :instagram_users, only: [:show]
       resources :facebook_users, only: [:show]
       resources :youtube_channels, only: [:show]
+      resources :media, only: [:show]
     end
   end
 

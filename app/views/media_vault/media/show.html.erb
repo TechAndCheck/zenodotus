@@ -1,0 +1,9 @@
+<% @page_id = "medium" %>
+<% @title_tag = [
+	@archive_item.normalized_attrs_for_views[:archive_item_caption].present? ? "“#{truncate(@archive_item.normalized_attrs_for_views[:archive_item_caption], length: 30)}”" : "(uncaptioned media)",
+	@archive_item.normalized_attrs_for_views[:author_display_name],
+] %>
+
+<div class="content content--md content--center">
+	<%= render partial: "media_vault/media/archive_item", locals: { **@archive_item.normalized_attrs_for_views } %>
+</div>
