@@ -13,6 +13,10 @@
 	gap: var(--author--profile-image-gap);
 
 	transition-property: gap;
+
+	.search-result & {
+		--author--external-spacing: 0;
+	}
 }
 
 @media screen and (min-width: shared.$screen-lg-floor) {
