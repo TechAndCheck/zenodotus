@@ -1,4 +1,5 @@
 @use "shared";
+@use "sass:math";
 
 .contain {
 	--contain--max-width: 1400px;
@@ -30,12 +31,20 @@
 }
 
 
-// Content containers are general… containers of content that we want to have consistent padding
+// Content containers are general… containers of content that we want to have consistent spacing
 // and sizing.
 
 .content {
 	width: 100%;
-	padding: 5vw 0;
+	padding: clamp(1rem, 5vw, 5rem) 0;
+
+	.content > &:first-child {
+		padding-top: 0;
+	}
+
+	.content > &:last-child {
+		padding-bottom: 0;
+	}
 
 	&.content--center {
 		margin-left: auto;
@@ -48,6 +57,10 @@
 
 	&.content--right {
 		margin-left: auto;
+	}
+
+	&.content--2xs {
+		max-width: math.div(shared.$screen-xs-ceiling, 2);
 	}
 
 	&.content--xs {
