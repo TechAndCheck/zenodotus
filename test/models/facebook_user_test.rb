@@ -61,4 +61,10 @@ class FacebookUserTest < ActiveSupport::TestCase
     assert_equal archive_entity.service_id, archive_entity2.service_id
     assert_equal @@forki_user["number_of_followers"], archive_entity2.followers_count
   end
+
+  test "can get correct platform from author" do
+    author = sources_facebook_users(:facebook_user)
+
+    assert_equal "facebook", author.platform
+  end
 end

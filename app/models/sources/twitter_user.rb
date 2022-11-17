@@ -49,6 +49,14 @@ class Sources::TwitterUser < ApplicationRecord
     twitter_id
   end
 
+  # The platform that this author is associated with.
+  #
+  # @returns String of the platform name
+  sig { returns(String) }
+  def platform
+    "twitter"
+  end
+
 private
 
   # Create a hash from a Birdsong::User suitable for a new TwitterUser or updating one

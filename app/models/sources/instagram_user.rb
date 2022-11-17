@@ -50,6 +50,14 @@ class Sources::InstagramUser < ApplicationRecord
     handle
   end
 
+  # The platform that this author is associated with.
+  #
+  # @returns String of the platform name
+  sig { returns(String) }
+  def platform
+    "instagram"
+  end
+
 private
 
   # Create a hash from a Zorki::User suitable for a new InstagramUser or updating one

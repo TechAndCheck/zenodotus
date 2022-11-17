@@ -49,6 +49,14 @@ class Sources::FacebookUser < ApplicationRecord
     facebook_id
   end
 
+  # The platform that this author is associated with.
+  #
+  # @returns String of the platform name
+  sig { returns(String) }
+  def platform
+    "facebook"
+  end
+
   private
 
     # Create a hash from a Forki::User suitable for a new FacebookUser or updating one

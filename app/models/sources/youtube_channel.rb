@@ -49,6 +49,14 @@ class Sources::YoutubeChannel < ApplicationRecord
     youtube_id
   end
 
+  # The platform that this author is associated with.
+  #
+  # @returns String of the platform name
+  sig { returns(String) }
+  def platform
+    "youtube"
+  end
+
 private
 
   # Create a hash from a YoutubeArchiver::Channel suitable for a new YoutubeChannel or updating one

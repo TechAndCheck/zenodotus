@@ -56,4 +56,10 @@ class TwitterUserTest < ActiveSupport::TestCase
     assert_equal archive_entity.service_id, archive_entity2.service_id
     assert_equal @birdsong_user["followers_count"], archive_entity2.followers_count
   end
+
+  test "can get correct platform from author" do
+    author = sources_twitter_users(:twitter_user)
+
+    assert_equal "twitter", author.platform
+  end
 end
