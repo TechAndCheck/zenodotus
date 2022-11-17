@@ -11,7 +11,7 @@
     class="<%= archive_item_class_list %>"
     data-publishing-platform="<%= publishing_platform_shortname %>"
     data-controller="media-vault--archive"
-    data-archive-caption-collapse-mode-value="<%= caption_is_collapsable ? 'collapsed' : 'static' %>"
+    data-media-vault--archive-caption-collapse-mode-value="<%= caption_is_collapsable ? 'collapsed' : 'static' %>"
 >
   <div class="archive-item__inner">
     <% if include_author %>
@@ -58,7 +58,7 @@
                 <button
                     class="archive-item__body-caption-toggler"
                     data-media-vault--archive-target="captionToggler"
-                    data-action="archive#toggleCaption"
+                    data-action="media-vault--archive#toggleCaption"
                     data-collapse-label="Collapse caption ↑"
                     data-expand-label="Expand caption ↓"
                 >Expand caption ↓</button>

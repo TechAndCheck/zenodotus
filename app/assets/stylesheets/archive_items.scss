@@ -20,7 +20,7 @@ just to examine the template files unless/until we capture it better here.
 	<div
 		class="archive-item [archive-item--boxed]"
 		data-publishing-platform="{twitter|facebook|youtube|instagram|…}"
-		data-archive-caption-collapse-mode-value="{static|collapsed|expanded}"
+		data-media-vault--archive-caption-collapse-mode-value="{static|collapsed|expanded}"
 	>
 		<div class="archive-item__inner">
 			<a class="author">
@@ -130,7 +130,7 @@ just to examine the template files unless/until we capture it better here.
 	}
 }
 
-.archive-item[data-archive-caption-collapse-mode-value="collapsed"] .archive-item__body-caption-content {
+.archive-item[data-media-vault--archive-caption-collapse-mode-value="collapsed"] .archive-item__body-caption-content {
 	--collapsed-lines-of-text: 3;
 
 	overflow: hidden;
@@ -146,7 +146,7 @@ just to examine the template files unless/until we capture it better here.
 		display: -webkit-box;
 		-webkit-line-clamp: var(--collapsed-lines-of-text);
 		-webkit-box-orient: vertical;
-	}
+   }
 }
 
 .archive-item__body-caption-toggler {
