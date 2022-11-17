@@ -10,6 +10,6 @@
 	<% end %>
 
 	<%= turbo_frame_tag "archived_items_pagination", target: "_top" do %>
-		<%== pagy_nav(@pagy_archive_items) if @pagy_archive_items.pages > 1 %>
+		<% render partial: "paginator" %>
 	<% end %>
 </div>
