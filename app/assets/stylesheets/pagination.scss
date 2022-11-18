@@ -1,35 +1,59 @@
 /*
 Pagination
 
-Styling for the Pagy gem's pagination output.
+Styling for the Pagy gem's pagination output. Note that the `.pagy-info` and `.pagy-nav` elements
+are generated directly by Pagy, though we could override some aspects via config.
+
+Also, the paginator can be used outside of a `.paginator-bar` just fine.
 
 ```html
-<nav class="pagy-nav pagination" aria-label="pager">
-	<span class="page prev"><a rel="prev" aria-label="previous">‹&nbsp;Prev</a></span>
-	<span class="page"><a>1</a></span>
-	<span class="page"><a rel="prev">2</a></span>
-	<span class="page active">3</span>
-	<span class="page"><a rel="next">4</a></span>
-	<span class="page"><a>5</a></span>
-	<span class="page gap">…</span>
-	<span class="page"><a>10</a></span>
-	<span class="page next"><a rel="next" aria-label="next">Next&nbsp;›</a></span>
-</nav>
+<div class="paginator-bar">
+	<span class="pagy-info">Showing <b>1-15</b> of <b>126</b></span>
+	<nav class="pagy-nav pagination" aria-label="pager">
+		<span class="page prev"><a rel="prev" aria-label="previous">‹&nbsp;Prev</a></span>
+		<span class="page"><a>1</a></span>
+		<span class="page"><a rel="prev">2</a></span>
+		<span class="page active">3</span>
+		<span class="page"><a rel="next">4</a></span>
+		<span class="page"><a>5</a></span>
+		<span class="page gap">…</span>
+		<span class="page"><a>10</a></span>
+		<span class="page next"><a rel="next" aria-label="next">Next&nbsp;›</a></span>
+	</nav>
+</div>
 ```
 */
 @use "shared";
 @use "buttons";
 
-.pagination {
+:root {
 	--pagination--external-spacing: clamp(2rem, 5vw, 4rem);
 	--pagination--internal-spacing: 0.25rem;
+}
 
+.paginator-bar {
+	margin-top: var(--pagination--external-spacing);
+
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	gap: var(--pagination--internal-spacing);
+
+	@media screen and (min-width: shared.$screen-lg-floor) {
+		flex-direction: row;
+		border-top: 1px solid lightgray;
+		border-bottom: 1px solid lightgray;
+		padding: 1rem 0;
+	}
+}
+
+.pagination {
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
 	justify-content: center;
 	gap: var(--pagination--internal-spacing);
-	margin-top: var(--pagination--external-spacing);;
 
 	.page {
 		> a {
