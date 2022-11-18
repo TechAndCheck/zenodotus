@@ -1,17 +1,43 @@
-<h1>Search Results</h1>
+<% @page_id = "search" %>
 
-<% @user_results.each do |record| %>
-	<%= render partial: search_view_for_model_instance(record) , locals: { result: record } %>
-<% end unless @user_results.nil? %>
+<div class="search content content--lg content--center">
 
-<% @post_results.each do |record| %>
-	<%= render partial: search_view_for_model_instance(record) , locals: { result: record } %>
-<% end unless @post_results.nil? %>
+	<div class="search-input content content--xs content--center text--center">
+		<% if defined?(@media_search) %>
+			<div class="search-input-media">
+				<p>Your uploaded media:</p>
+				<%= render partial: "media_vault/search/search_input_media", locals: { media: @media_search } %>
+			</div>
+		<% end %>
 
-<%= turbo_frame_tag "search_item" do %>
-	<%= render partial: "media_vault/image_search/search_item", locals: { search: @media_search, results: @media_results } unless @media_results.nil? %>
-<% end %>
+		<% if defined?(@query) %>
+			<h3>“<%= @query %>”</h3>
+		<% end %>
+	</div>
 
-<%= turbo_frame_tag "search_results" do %>
-	<%= render partial: "media_vault/image_search/results", locals: { search: @media_search, results: @media_results } unless @media_results.nil? %>
-<% end %>
+	<% if (@results || []).any? %>
+
+		<% if @author_results.try(:any?) %>
+			<h2 class="search-results__title"><%= pluralize(@author_results.length, "matching author") %> found:</h2>
+			<div class="search-results search-results--authors">
+				<% @author_results.each do |author| %>
+					<%= link_to media_vault_author_path(author, platform: author.platform), class: "search-result" do %>
+						<%= render partial: "media_vault/authors/author_info/#{underscore_author_model(author)}", locals: { author: author } %>
+					<% end %>
+				<% end %>
+			</div>
+		<% end %>
+
+		<% if @post_results.any? %>
+			<h2 class="search-results__title"><%= pluralize(@post_results.length, "matching post") %> found:</h2>
+			<div class="search-results search-results--posts archive-items archive-items--boxed-items archive-items--masonry">
+				<% @post_results.each do |post| %>
+					<%= render partial: "media_vault/media/archive_item", locals: { **post.normalized_attrs_for_views } %>
+				<% end %>
+			</div>
+		<% end %>
+
+	<% else %>
+		<h1 class="text--center">No results found.</h1>
+	<% end %>
+</div>

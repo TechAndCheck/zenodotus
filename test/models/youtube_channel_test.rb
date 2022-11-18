@@ -50,4 +50,10 @@ class YoutubeChannelTest < ActiveSupport::TestCase
     assert_equal archive_entity.service_id, archive_entity2.service_id
     assert_equal @@youtube_archiver_channel["subscriber_count"].to_i, archive_entity2.youtube_channel.num_subscribers
   end
+
+  test "can get correct platform from author" do
+    author = sources_youtube_channels(:youtube_channel)
+
+    assert_equal "youtube", author.platform
+  end
 end

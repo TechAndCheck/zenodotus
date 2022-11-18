@@ -1,0 +1,23 @@
+<div class="box">
+	<% if media.try(:image) %>
+		<img src="<%= media.image.url %>" width="100%" height="auto">
+	<% elsif media.try(:video) %>
+			<figure>
+					<video
+							width="100%"
+							height="auto"
+							poster="<%= media.video_derivatives[:preview].url %>"
+							preload="none"
+							controls
+					>
+							<source src="<%= media.video.url %>" type="video/mp4">
+							Your browser does not support the video tag.
+					</video>
+					<% if media.try(:video_type) == "animated_gif" %>
+							<figcaption>
+									GIF
+							</figcaption>
+					<% end %>
+			</figure>
+	<% end %>
+</div>

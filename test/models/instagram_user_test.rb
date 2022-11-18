@@ -49,4 +49,10 @@ class InstagramUserTest < ActiveSupport::TestCase
     assert_equal archive_entity.service_id, archive_entity2.service_id
     assert_equal @@zorki_user["number_of_followers"], archive_entity2.followers_count
   end
+
+  test "can get correct platform from author" do
+    author = sources_instagram_users(:instagram_user)
+
+    assert_equal "instagram", author.platform
+  end
 end

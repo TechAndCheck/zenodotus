@@ -1,26 +1,26 @@
 <div class="author" data-controller="media-vault--author">
 	<img
 		class="author__image"
-		src="<%= @author.profile_image_url %>"
+		src="<%= author.profile_image_url %>"
 		width="300" height="300"
-		alt="Profile photo of <%= @author.display_name %>"
+		alt="Profile photo of <%= author.display_name %>"
 	>
 	<div class="author__profile">
 		<div class="author__name">
-			<span class="author__display-name"><%= @author.display_name %></span>
-			<span class="author__username">@<%= @author.handle %></span>
+			<span class="author__display-name"><%= author.display_name %></span>
+			<span class="author__username">@<%= author.handle %></span>
 		</div>
 		<div class="author__metadata">
-			<%= abbreviate_number(@author.followers_count) %>
-			<%= "follower".pluralize(@author.followers_count) %>
+			<%= abbreviate_number(author.followers_count) %>
+			<%= "follower".pluralize(author.followers_count) %>
 			•
-			<%= abbreviate_number(@author.following_count) %>
+			<%= abbreviate_number(author.following_count) %>
 			following
 			•
-			<%= @author.location %>
+			<%= author.location %>
 		</div>
 		<div class="author__description">
-			<%= @author.description %>
+			<%= author.description %>
 		</div>
 		<div class="author__metadata">
 			<span class="icon-prefixed">
@@ -28,10 +28,10 @@
 				<span>
 					Joined Twitter on
 					<time
-						datetime="<%= @author.sign_up_date.iso8601 %>"
+						datetime="<%= author.sign_up_date.iso8601 %>"
 						data-media-vault--author-target="timestamp"
 					>
-						<%= @author.sign_up_date %>
+						<%= author.sign_up_date %>
 					</time>
 				</span>
 		</div>

@@ -50,10 +50,13 @@ private
   sig { params(id: String).void }
   def search_by_media_search_id(id)
     @media_search = ImageSearch.find(id)
-    # TODO: This should be @post_results once we ensure it's the same return objects
-    @media_results = @media_search.run
-
-    rescue ActiveRecord::RecordNotFound
+    @results = @media_search.run
+    @post_results = @results.map { |result|
+      result.has_key?(:image) ? result[:image] : (
+        result.has_key?(:video) ? result[:video] : nil
+      )
+    }
+  rescue ActiveRecord::RecordNotFound
   end
 
   sig { params(query: String).void }
@@ -61,9 +64,9 @@ private
     @query = query
 
     search = TextSearch.create!(query: @query, user: current_user)
-    results = search.run
+    @results = search.run
 
-    # Split results into posts and users based on class.
+    # Split results into posts and authors based on class.
 
     post_models = [
       Sources::Tweet,
@@ -72,7 +75,7 @@ private
       Sources::YoutubePost
     ]
 
-    user_models = [
+    author_models = [
       Sources::FacebookUser,
       Sources::InstagramUser,
       Sources::TwitterUser,
@@ -80,16 +83,16 @@ private
     ]
 
     @post_results = []
-    @user_results = []
+    @author_results = []
 
-    results.each do |result|
+    @results.each do |result|
       if post_models.include?(result.class)
-        @post_results.append(result)
+        @post_results.append(result.archive_item)
         next
       end
 
-      if user_models.include?(result.class)
-        @user_results.append(result)
+      if author_models.include?(result.class)
+        @author_results.append(result)
       end
     end
   end
