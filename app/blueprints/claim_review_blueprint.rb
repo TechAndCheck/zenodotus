@@ -40,12 +40,13 @@ class ClaimReviewBlueprint < Blueprinter::Base
   end
 
   field :item_reviewed, name: :itemReviewed do |claim_review|
+    debugger
     {
       "@type": claim_review.item_reviewed.dig("@type"),
       "datePublished": claim_review.item_reviewed.dig("datePublished"),
-      "name": claim_review.item_reviewed.dig("name"),
+      "name": claim_review.item_reviewed.dig("name"), # BROKEN
       "appearance": claim_review.item_reviewed.dig("appearance"),
-      "firstAppearance": claim_review.item_reviewed.dig("appearance", 0),
+      "firstAppearance": "",
       "author": {
         "@type": claim_review.item_reviewed.dig("author", "@type"),
         "name": claim_review.item_reviewed.dig("author", "name"),

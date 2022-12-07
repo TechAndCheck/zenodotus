@@ -38,8 +38,10 @@ class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
         },
         "mediaItemAppearance": [{
           "@type": "ImageObject",
-           "description": "",
-           "contentUrl": "https://www.facebook.com/photo.php?fbid=10218894279041970&set=a.10202838682462090&type=3&theater"
+          "description": "",
+          "contentUrl": "https://www.facebook.com/photo.php?fbid=10218894279041970&set=a.10202838682462090&type=3&theater",
+          "startTime": "00:42",
+          "endTime": "00:43"
          }]
       },
       "url": "https://www.politifact.com/factchecks/2020/may/21/viral-image/flu-shots-arent-causing-false-positive-covid-19-te/"
@@ -192,7 +194,6 @@ class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
     # Ingest a MediaReview json
     common_uuid = SecureRandom.uuid
     post media_vault_ingest_api_raw_path, params: { review_json: @@media_review_json, external_unique_id: common_uuid, api_key: "123456789" }, as: :JSON
-
     # Attach the MediaReview to a dummy archive item
     dummy_archive_item = Sources::Tweet.create_from_url!("https://twitter.com/AmtrakNECAlerts/status/1397922363551870990")
     media_review_object = MediaReview.where(external_unique_id: common_uuid).first

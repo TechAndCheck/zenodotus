@@ -17,6 +17,10 @@ class MediaReviewBlueprint < Blueprinter::Base
     media_review.date_published.strftime("%Y-%m-%d")
   end
 
+  field :originalMediaLink do |media_review|
+    media_review.original_media_link
+  end
+
   field :author do |media_review|
     {
       "@type": media_review.author.dig("@type"),
@@ -28,18 +32,26 @@ class MediaReviewBlueprint < Blueprinter::Base
   end
 
   field :item_reviewed, name: :itemReviewed do |media_review|
+    mediaItemAppearances = media_review.item_reviewed["mediaItemAppearance"].map do |appearance|
       {
-        "@type": "MediaReviewItem",
-        "creator": {
-          "@type": media_review.item_reviewed.dig("creator", "@type"),
-          "name": media_review.item_reviewed.dig("creator", "name"),
-          "url": media_review.item_reviewed.dig("creator", "url"),
-        },
-        "interpretedAsClaim": {
-          "@type": media_review.item_reviewed.dig("interpretedAsClaim", "@type"),
-          "description": media_review.item_reviewed.dig("interpretedAsClaim", "description"),
-        },
-        "mediaItemAppearance": media_review.item_reviewed.fetch("mediaItemAppearance", [])
+        "@type": appearance["@type"],
+        "accessedOnUrl": media_review.media_link
       }
     end
+    {
+      "@type": "MediaReviewItem",
+      "creator": {
+        "@type": media_review.item_reviewed.dig("creator", "@type"),
+        "name": media_review.item_reviewed.dig("creator", "name"),
+        "url": media_review.item_reviewed.dig("creator", "url")
+      },
+      "startTime": media_review.item_reviewed.dig("startTime"),
+      "endTime": media_review.item_reviewed.dig("endTime"),
+      "interpretedAsClaim": {
+        "@type": media_review.item_reviewed.dig("interpretedAsClaim", "@type"),
+        "description": media_review.item_reviewed.dig("interpretedAsClaim", "description"),
+      },
+      "mediaItemAppearance": mediaItemAppearances
+    }
+  end
 end

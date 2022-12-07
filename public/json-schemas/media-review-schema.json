@@ -226,6 +226,12 @@
           "qt-uri-protocols": [
             "https"
           ]
+        },
+        "startTime": {
+          "type": "string"
+        },
+        "endTime": {
+          "type": "string"
         }
       },
       "required": [

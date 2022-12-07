@@ -112,7 +112,7 @@
           "type": "string"
         },
         "bestRating": {
-          "type": "string"
+          "type": ["string", "integer"]
         },
         "image": {
           "type": "string",
@@ -128,7 +128,7 @@
           "type": "string"
         },
         "worstRating": {
-          "type": "string"
+          "type": ["string", "integer"]
         }
       },
       "required": [

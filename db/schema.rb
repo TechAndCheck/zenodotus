@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_17_221856) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_21_180722) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -195,7 +195,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_17_221856) do
   create_table "media_reviews", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "original_media_link"
+    t.text "media_link"
     t.text "media_authenticity_category"
     t.text "original_media_context_description"
     t.uuid "archive_item_id"
@@ -208,6 +208,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_17_221856) do
     t.uuid "external_unique_id"
     t.string "start_time"
     t.string "end_time"
+    t.string "original_media_link"
     t.index ["archive_item_id"], name: "index_media_reviews_on_archive_item_id"
   end
 

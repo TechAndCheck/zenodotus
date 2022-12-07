@@ -233,6 +233,8 @@ class MediaVault::IngestController < MediaVaultController
       saved_object = media_review.archive_item
       response = ApiResponseCodes::Updated
     else
+      # Note: This actually calls `MediaReview.create_or_update_from_media_review_hash` eventually and could
+      # probably use a refactor, but it's not worth it at the moment
       saved_object = ArchiveItem.create_from_media_review(media_review_json, external_unique_id)
       response = ApiResponseCodes::Created
     end
@@ -273,7 +275,12 @@ private
   sig { params(media_review: Hash).returns(T::Boolean) }
   def validate_media_review(media_review)
     schema = File.open("public/json-schemas/media-review-schema.json").read
-    JSONSchemer.schema(schema).valid?(media_review)
+    if JSONSchemer.schema(schema).valid?(media_review)
+      true
+    else
+      debugger
+      JSONSchemer.schema(schema).validate(media_review).map { |error| error.slice("data", "data_pointer", "type") }
+    end
   rescue StandardError
     false
   end

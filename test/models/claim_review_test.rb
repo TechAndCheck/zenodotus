@@ -40,44 +40,61 @@ class ClaimReviewTest < ActiveSupport::TestCase
     )
 
     expected = {
-      "id" => claim_review.id,
-      "url" => "https://www.realfact.com/factchecks/2021/feb/03/starwars",
-      "datePublished" => "2021-02-01",
-      "claimReviewed" => "The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide.",
-      "@context" => "https://schema.org",
-      "@type" => "ClaimReview",
-      "author" => {
-        "@type" => "Organization",
-        "name" => "realfact",
-        "url" => "https://www.realfact.com/",
-        "image" => nil,
-        "sameAs" => nil,
+      "id": claim_review.id,
+      "url": "https://www.realfact.com/factchecks/2021/feb/03/starwars",
+      "datePublished": "2021-02-01",
+      "claimReviewed": "The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide.",
+      "@context": "https://schema.org",
+      "@type": "ClaimReview",
+      "author": {
+        "@type": "Organization",
+        "name": "realfact",
+        "url": "https://www.realfact.com/",
+        "image": nil,
+        "sameAs": nil,
       },
-      "reviewRating" => {
-        "@type" => "Rating",
-        "alternateName" => "False",
-        "bestRating" => "9",
-        "worstRating" => nil,
-        "ratingExplanation" => nil,
-        "ratingValue" => "4",
-        "image" => nil,
+      "reviewRating": {
+        "@type": "Rating",
+        "alternateName": "False",
+        "bestRating": "9",
+        "worstRating": nil,
+        "ratingExplanation": nil,
+        "ratingValue": "4",
+        "image": nil,
       },
-      "itemReviewed" => {
-        "@type" => "Claim",
-        "name" => "Claim name",
-        "appearance" => nil,
-        "firstAppearance" => nil,
-        "author" => {
-          "@type" => "Person",
-          "jobTitle" => "On the internet",
-          "name" => "Viral image",
-          "image" => nil,
-          "sameAs" => nil
+      "itemReviewed": {
+        "@type": "Claim",
+        "name": "Claim name",
+        "appearance": nil,
+        "firstAppearance": "",
+        "author": {
+          "@type": "Person",
+          "jobTitle": "On the internet",
+          "name": "Viral image",
+          "image": nil,
+          "sameAs": nil
         },
-        "datePublished" => "2021-01-30"
+        "datePublished": "2021-01-30"
       }
-    }
+    }.to_json
+
+    expected_json = JSON.parse(expected)
     claim_review_json = JSON.parse(claim_review.render_for_export) # call blueprinter
-    assert_equal expected, claim_review_json
+
+    assert_equal expected_json["id"], claim_review_json["id"]
+    assert_equal expected_json["url"], claim_review_json["url"]
+    assert_equal expected_json["datePublished"], claim_review_json["datePublished"]
+    assert_equal expected_json["claimReviewed"], claim_review_json["claimReviewed"]
+    assert_equal expected_json["@context"], claim_review_json["@context"]
+    assert_equal expected_json["@type"], claim_review_json["@type"]
+    assert_equal expected_json["author"], claim_review_json["author"]
+    assert_equal expected_json["reviewRating"], claim_review_json["reviewRating"]
+
+    assert_equal expected_json["itemReviewed"]["@type"], claim_review_json["itemReviewed"]["@type"]
+    assert_equal expected_json["itemReviewed"]["datePublished"], claim_review_json["itemReviewed"]["datePublished"]
+    assert_equal expected_json["itemReviewed"]["name"], claim_review_json["itemReviewed"]["name"]
+    assert_equal expected_json["itemReviewed"]["appearance"], claim_review_json["itemReviewed"]["appearance"]
+    assert_equal expected_json["itemReviewed"]["firstAppearance"], claim_review_json["itemReviewed"]["firstAppearance"]
+    assert_equal expected_json["itemReviewed"]["author"], claim_review_json["itemReviewed"]["author"]
   end
 end
