@@ -3,6 +3,7 @@ import { Controller } from '@hotwired/stimulus'
 export default class extends Controller {
   static targets = [
     'searchBox',
+    'searchBoxSpinner',
     'searchByTextForm',
     'searchByTextFieldset',
     'searchByTextField',
@@ -31,6 +32,8 @@ export default class extends Controller {
       element.style.opacity = 1
 
       if (event.dataTransfer.files.length > 0) {
+        this.searchBoxTarget.style.opacity = 0.5
+        this.searchBoxSpinnerTarget.style.visibility = 'visible'
         this.searchByMediaFileInputTarget.files = event.dataTransfer.files
         this.switchToMediaMode()
         this.searchByMediaFormTarget.requestSubmit()
@@ -50,10 +53,12 @@ export default class extends Controller {
 
   onMediaSearch(event) {
     if (this.searchByMediaFileInputTarget.files.length === 0) {
-      event.preventDefault()
       alert('You need to choose an image or video to search by.')
+      event.preventDefault()
     } else {
-      this.searchByTextFieldsetTarget.disabled = true
+      this.searchBoxTarget.style.opacity = 0.5
+      this.searchBoxSpinnerTarget.style.visibility = 'visible'
+      this.searchByMediaFormTarget.requestSubmit()
     }
   }
 
