@@ -12,9 +12,11 @@ class ApplicationController < ActionController::Base
   sig { void }
   def index
     if site_is_fact_check_insights?
-      # This is obviously just pretend for now.
       claim_review_count = ClaimReview.count
-      organization_count = 204
+      organization_count = ClaimReview.distinct.count(:author)
+
+      # This following number has to be manually updated since there's no data anywhere that
+      # represents the country of the fact checker.
       country_count = 71
       @stats = {
         fact_checks: claim_review_count,
