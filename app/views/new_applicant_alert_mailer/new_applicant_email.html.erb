@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p>A new user has requested access to <%= @site[:title] %>.</p>
+    <hr>
+    <p>Name: <%= @applicant.name %></p>
+    <p>Affiliation: <%= @applicant.affiliation %></p>
+    <p>Primary Role: <%= @applicant.primary_role %></p>
+    <p>Country: <%= @applicant.country %></p>
+    <p>Email: <%= @applicant.email %></p>
+    <p>Time of Request: <%= @applicant.created_at %></p>
+    <p>Use Case: <%= @applicant.use_case %></p>
+
+    <hr>
+
+    <p><%= link_to "Click here to review application in the administration panel", admin_applicant_url(id: @applicant.id) %>, or visit this URL in your browser:</p>
+    <pre><%= admin_applicant_url(id: @applicant.id) %></pre>
+
+    <p><%= link_to "See all pending applications", admin_applicants_url %>, or visit this URL in your browser:</p>
+    <pre><%= admin_applicants_url %></pre>
+
+    <p>QED</p>
+  </body>
+</html>

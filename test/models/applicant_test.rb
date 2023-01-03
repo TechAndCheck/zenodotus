@@ -1,6 +1,9 @@
 require "test_helper"
+require "action_mailer/test_helper"
 
 class ApplicantTest < ActiveSupport::TestCase
+  include ActionMailer::TestHelper
+
   def setup
     @applicant = Applicant.new
   end
@@ -188,5 +191,15 @@ class ApplicantTest < ActiveSupport::TestCase
     confirmed_applicant.reload
 
     assert_equal admin, confirmed_applicant.reviewer
+  end
+
+  test "sends email to admins when confirmed" do
+    ActionMailer::Base.deliveries.clear # clear all emails
+
+    new_applicant = applicants(:new)
+
+    assert_emails 1 do
+      assert new_applicant.confirm
+    end
   end
 end
