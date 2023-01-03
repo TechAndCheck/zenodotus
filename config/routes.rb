@@ -93,6 +93,8 @@ Rails.application.routes.draw do
 
   get "/account", to: "accounts#index", as: "account"
   post "/account/change_password", to: "accounts#change_password", as: "change_password"
+  get "/account/reset_password", to: "accounts#reset_password", as: "reset_password"
+  post "/account/reset_password", to: "accounts#perform_password_reset", as: "perform_password_reset"
   post "/account/change_email", to: "accounts#change_email", as: "change_email"
   delete "/account/users/", to: "accounts#destroy", as: "destroy_user"
   get "/account/setup/(:token)", to: "accounts#new", as: "new_account"

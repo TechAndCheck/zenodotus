@@ -12,11 +12,15 @@ class AccountsController < ApplicationController
   before_action :authenticate_user!, except: [
     :new,
     :create,
+    :reset_password,
+    :perform_password_reset,
   ]
 
   before_action :must_be_logged_out, only: [
     :new,
     :create,
+    :reset_password,
+    :perform_password_reset,
   ]
 
   sig { void }
@@ -43,6 +47,10 @@ class AccountsController < ApplicationController
     const :reset_password_token, String
     const :password, String
     const :password_confirmation, String
+  end
+
+  class ResetPasswordParams < T::Struct
+    const :email, String
   end
 
   sig { void }
@@ -91,6 +99,18 @@ class AccountsController < ApplicationController
 
     sign_in @user
     redirect_to after_sign_in_path_for(@user)
+  end
+
+  sig { void }
+  def perform_password_reset
+    # Validate email adddress
+    typed_params = TypedParams[ResetPasswordParams].new.extract!(params)
+    email = typed_params.email
+    email
+  end
+
+  sig { void }
+  def reset_password
   end
 
   sig { void }
