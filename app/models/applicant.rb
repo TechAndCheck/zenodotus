@@ -31,7 +31,12 @@ class Applicant < ApplicationRecord
   # Returns either the boolean result of the `update` or nil if the applicant is already confirmed.
   sig { returns(T.nilable(T::Boolean)) }
   def confirm
-    self.update(confirmed_at: Time.now) unless self.confirmed?
+    result = self.update(confirmed_at: Time.now) unless self.confirmed?
+    # Once we have it confirmed we send an email to the admins
+    self.send_admins_new_applicant_email_alert if result == true
+
+    # Return the result of the update, not the email
+    result
   end
 
   # Has the applicant confirmed their email address?
@@ -157,6 +162,16 @@ private
       self.accepted_terms_at = Time.now
       self.accepted_terms_version = TermsOfService::CURRENT_VERSION
     end
+  end
+
+  # Send a notification email to admins that someone is requesting review.
+  sig { void }
+  def send_admins_new_applicant_email_alert
+    @applicant = self
+
+    NewApplicantAlertMailer.with({
+      applicant: @applicant
+    }).new_applicant_email.deliver_later
   end
 end
 
