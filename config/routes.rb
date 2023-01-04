@@ -7,11 +7,11 @@ Rails.application.routes.draw do
 
   # This generates only the session and confirmation-related Devise URLs.
   devise_for :users,
-             skip: :all,
-             only: [
-               :sessions,
-               :confirmations,
-             ],
+             # skip: :all,
+             # only: [
+             #   :sessions,
+             #   :confirmations,
+             # ],
              controllers: {
                sessions: "users/sessions",
                confirmations: "users/confirmations",

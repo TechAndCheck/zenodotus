@@ -103,22 +103,15 @@ class AccountsController < ApplicationController
 
   sig { void }
   def send_password_reset_email
-    # Validate email adddress
     typed_params = TypedParams[ResetPasswordParams].new.extract!(params)
     email = typed_params.email
     @user = User.find_by(email: email)
-    unless @user.nil? 
-      PasswordMailer.with(user: @user).reset.deliver_later
-    end
-    redirect_to "/users/sign_in", notice: "Sent link to reset password"
+    @user.send_reset_password_instructions unless @user.nil?
+    redirect_to "/users/sign_in", notice: "A recovery email has been sent to the provided email addres "
   end
 
   sig { void }
   def reset_password
-  end
-
-  sig { void 
-  def confirm_reset_password
   end
 
   sig { void }
