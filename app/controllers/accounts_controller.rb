@@ -13,14 +13,14 @@ class AccountsController < ApplicationController
     :new,
     :create,
     :reset_password,
-    :perform_password_reset,
+    :send_password_reset_email,
   ]
 
   before_action :must_be_logged_out, only: [
     :new,
     :create,
     :reset_password,
-    :perform_password_reset,
+    :send_password_reset_email,
   ]
 
   sig { void }
@@ -102,15 +102,23 @@ class AccountsController < ApplicationController
   end
 
   sig { void }
-  def perform_password_reset
+  def send_password_reset_email
     # Validate email adddress
     typed_params = TypedParams[ResetPasswordParams].new.extract!(params)
     email = typed_params.email
-    email
+    @user = User.find_by(email: email)
+    unless @user.nil? 
+      PasswordMailer.with(user: @user).reset.deliver_later
+    end
+    redirect_to "/users/sign_in", notice: "Sent link to reset password"
   end
 
   sig { void }
   def reset_password
+  end
+
+  sig { void 
+  def confirm_reset_password
   end
 
   sig { void }
