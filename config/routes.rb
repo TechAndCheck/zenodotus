@@ -100,5 +100,4 @@ Rails.application.routes.draw do
 
   get "/account/reset_password", to: "accounts#reset_password", as: "reset_password"
   post "/account/reset_password", to: "accounts#send_password_reset_email", as: "send_password_reset_email"
-  get "/account/confirm_reset_password", to: "accounts#confirm_reset_password", as: "confirm_reset_password"
 end
