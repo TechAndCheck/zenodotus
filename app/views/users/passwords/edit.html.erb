@@ -1,14 +1,19 @@
 <% @title_tag = "Reset password" %>
-<div class="box box--sm box--miniform">
+<div class="box box--sm box--miniform" data-controller="reset-password">
 	<p>
 		Please enter and confirm a new password for your account.
       <% if @minimum_password_length %>
-        <em>(<%= @minimum_password_length %> characters minimum)</em>
+        <em data-reset-password-target="characterLengthText">(<%= @minimum_password_length %> characters minimum)</em>
       <% end %>
 	</p>
   <%= form_for(resource, 
                as: resource_name, 
                url: password_path(resource_name), 
+               data: {
+                 "reset-password-target": "passwordResetForm",
+                 action: "submit->onFormSubmit",
+                 turbo: false,
+               },
                html: { 
                  method: :put,
                  class: "form form--vertical"
@@ -19,6 +24,7 @@
     <div class="field">
       <%= f.password_field(
         :password, 
+        "data-reset-password-target": "passwordInput",
         autofocus: true, 
         autocomplete: "new-password", 
         placeholder: "New password",
@@ -28,6 +34,7 @@
     <div class="field">
       <%= f.password_field(
         :password_confirmation, 
+        "data-reset-password-target": "passwordConfirmationInput",
         placeholder: "Confirm new password",
         autocomplete: "new-password", 
         class: "input input--email") %>
