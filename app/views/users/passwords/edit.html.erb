@@ -1,9 +1,10 @@
 <% @title_tag = "Reset password" %>
 <div class="box box--sm box--miniform" data-controller="reset-password">
+  <%= render "users/shared/error_messages", resource: resource %>
 	<p>
 		Please enter and confirm a new password for your account.
       <% if @minimum_password_length %>
-        <em data-reset-password-target="characterLengthText">(<%= @minimum_password_length %> characters minimum)</em>
+        <em data-reset-password-target="passwordLengthText">(<%= @minimum_password_length %> characters minimum)</em>
       <% end %>
 	</p>
   <%= form_for(resource, 
@@ -18,7 +19,6 @@
                  method: :put,
                  class: "form form--vertical"
                }) do |f| %>
-    <%= render "users/shared/error_messages", resource: resource %>
     <%= f.hidden_field :reset_password_token %>
 
     <div class="field">

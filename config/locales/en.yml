@@ -31,3 +31,14 @@
 
 en:
   hello: "Hello world"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            password:
+              blank: "Please specify a password"
+              too_short: "Please use a minimum of 6 characters in your password"
+            password_confirmation:
+              blank: "Please fill in the password confirmation field"
+              confirmation: "Please make sure password fields match"
