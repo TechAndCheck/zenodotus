@@ -3,6 +3,7 @@
   "$ref": "#/definitions/claimReview",
   "definitions": {
     "claimReview": {
+      "$id": "claimReview",
       "type": "object",
       "additionalProperties": false,
       "properties": {

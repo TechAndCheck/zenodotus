@@ -21,7 +21,7 @@ class ArchiveItem < ApplicationRecord
   # @params media_review [Hash] A MediaReview JSON object
   # @return A MediaReview object that we'll attach to the soon-to-be-scraped ArchiveItem during Scrape fulfillment
   def self.create_from_media_review(media_review, external_unique_id)
-    url = MediaReview.get_content_url(media_review)
+    url = media_review["originalMediaLink"]
     object_model = model_for_url(url)
 
     # Stuff is going to come in that was misinputted, or that we don't have a scraper for.

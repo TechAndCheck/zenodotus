@@ -68,6 +68,8 @@ class MediaReview < ApplicationRecord
   end
 
   # Extract the content URL from a MediaReview hash
+  #
+  # #TODO: REMOVET HIS
   sig { params(media_review_hash: Hash).returns(String) }
   def self.get_content_url(media_review_hash)
     appearance = media_review_hash["itemReviewed"]["mediaItemAppearance"].select do |appearance|
@@ -83,12 +85,10 @@ class MediaReview < ApplicationRecord
                should_update: T::Boolean
               ).returns(MediaReview) }
   def self.create_or_update_from_media_review_hash(media_review_hash, external_unique_id, should_update)
-    url = MediaReview.get_content_url(media_review_hash)
-
     if should_update
       existing_media_review = MediaReview.where(external_unique_id: external_unique_id).first
       existing_media_review.update!(
-        original_media_link: url,
+        original_media_link: mediareview["originalMediaLink"],
         media_authenticity_category: media_review_hash["mediaAuthenticityCategory"],
         original_media_context_description: media_review_hash["originalMediaContextDescription"],
         date_published: media_review_hash["datePublished"],
@@ -99,9 +99,9 @@ class MediaReview < ApplicationRecord
       existing_media_review.reload
       existing_media_review
     else
-      MediaReview.create!(
+      mr = MediaReview.create!(
         external_unique_id: external_unique_id,
-        original_media_link: url,
+        original_media_link: media_review_hash["originalMediaLink"],
         media_authenticity_category: media_review_hash["mediaAuthenticityCategory"],
         original_media_context_description: media_review_hash["originalMediaContextDescription"],
         date_published: media_review_hash["datePublished"],
@@ -109,6 +109,8 @@ class MediaReview < ApplicationRecord
         author: media_review_hash["author"],
         item_reviewed: media_review_hash["itemReviewed"]
       )
+
+      mr
     end
   end
 

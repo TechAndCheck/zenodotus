@@ -14,35 +14,67 @@ class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
   setup do
     host! Figaro.env.MEDIA_VAULT_HOST
 
-    @@media_review_json = {
-      "@context": "https://schema.org",
+    @@media_review_json = { "@context": "https://schema.org",
       "@type": "MediaReview",
-      "datePublished": "2020-05-22",
-      "author": {
-        "@type": "Organization",
-        "name": "PolitiFact",
-        "url": "http://www.politifact.com"
-      },
-      "mediaAuthenticityCategory": "manipulated",
-      "originalMediaContextDescription": "",
+      "datePublished": "2020-04-22",
+      "author": { "@type": "Organization", "name": "FactCheck.org", "url": "http://www.factcheck.org/" },
+      "mediaAuthenticityCategory": "Original, Missing Context",
       "itemReviewed": {
         "@type": "MediaReviewItem",
         "creator": {
           "@type": "Person",
-          "name": "Viral image",
-          "url": "https://www.facebook.com/photo.php?fbid=10218894279041970&set=a.10202838682462090&type=3&theater"
+          "name": "Social media posts"
         },
         "interpretedAsClaim": {
           "@type": "Claim",
-          "description": "“If you have had a flu shot in the last 3-5 years, you will probably test positive” for COVID-19."
+          "description": "A viral image suggests a \"Canine Coronavirus Vaccine\" means a vaccine for the novel coronavirus already exists."
         },
         "mediaItemAppearance": [{
           "@type": "ImageObject",
-           "description": "",
-           "contentUrl": "https://www.facebook.com/photo.php?fbid=10218894279041970&set=a.10202838682462090&type=3&theater"
-         }]
+          "description": "The image shows a vaccine for canine coronavirus, which is not the same as the novel coronavirus.",
+          "contentUrl": "https://www.facebook.com/photo.php?fbid=3038249389564729&set=a.104631959593168&type=3",
+          "startTime": "",
+          "endTime": ""
+        }]
       },
-      "url": "https://www.politifact.com/factchecks/2020/may/21/viral-image/flu-shots-arent-causing-false-positive-covid-19-te/"
+      "associatedClaimReview": {
+        "@context": "https://schema.org",
+        "@type": "ClaimReview",
+        "datePublished": "2020-04-22T19:18:42Z",
+        "url": "https://www.factcheck.org/2020/04/facebook-users-wrongly-tie-dog-vaccine-to-novel-coronavirus/",
+        "author": {
+          "@type": "Organization",
+          "url": "http://www.factcheck.org/",
+          "image": "https://d10r9aj6omusou.cloudfront.net/factstream-logo-image-d669a00c-15d4-409e-811c-e82135db8000.png",
+          "name": "FactCheck.org"
+        },
+        "claimReviewed": "A viral image suggests a \"Canine Coronavirus Vaccine\" means a vaccine for the novel coronavirus already exists.",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": nil,
+          "ratingExplanation": "",
+          "bestRating": nil,
+          "worstRating": nil,
+          "image":
+           "https://factstream-20220822-exp-9kewha.herokuapp.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBb2luIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--5723bc776641ea50290c05f04ee4b63f42a5d494/https-3A-2F-2Fdhpikd1t89arn.cloudfront.net-2Frating_images-2Ffactcheck.org-2Ffalse.png?disposition=attachment",
+          "alternateName": "False"
+        },
+        "itemReviewed": {
+          "@type": "CreativeWork",
+          "author": {
+            "@type": "Person",
+            "name": "Social media posts",
+            "jobTitle": "-",
+            "image":
+             "https://factstream-20220822-exp-9kewha.herokuapp.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBb2VuIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--cac7e287720cc212f0e18fe1cc95ae75b702c5b6/https-3A-2F-2Fcdn.factcheck.org-2FUploadedFiles-2FViralDeceptionWidget-e1581539282571.png?disposition=attachment"
+           },
+          "datePublished": "2020-04-22",
+          "appearance": [],
+          "name": ""
+        }
+      },
+      "originalMediaLink": "",
+      "url": "https://www.factcheck.org/2020/04/facebook-users-wrongly-tie-dog-vaccine-to-novel-coronavirus/"
     }.to_json
 
     @@claim_review_json = {
