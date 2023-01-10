@@ -11,6 +11,7 @@ Rails.application.routes.draw do
              only: [
                :sessions,
                :confirmations,
+               :passwords
              ],
              controllers: {
                sessions: "users/sessions",
@@ -97,4 +98,7 @@ Rails.application.routes.draw do
   delete "/account/users/", to: "accounts#destroy", as: "destroy_user"
   get "/account/setup/(:token)", to: "accounts#new", as: "new_account"
   post "/account/setup", to: "accounts#create", as: "create_account"
+
+  get "/account/reset_password", to: "accounts#reset_password", as: "reset_password"
+  post "/account/reset_password", to: "accounts#send_password_reset_email", as: "send_password_reset_email"
 end

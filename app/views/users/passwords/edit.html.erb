@@ -1,25 +1,43 @@
-<h2>Change your password</h2>
-
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+<% @title_tag = "Reset password" %>
+<div class="box box--sm box--miniform">
   <%= render "users/shared/error_messages", resource: resource %>
-  <%= f.hidden_field :reset_password_token %>
+	<p>
+		Please enter and confirm a new password for your account.
+      <% if @minimum_password_length %>
+        <em>(<%= @minimum_password_length %> characters minimum)</em>
+      <% end %>
+	</p>
+  <%= form_for(resource, 
+               as: resource_name, 
+               url: password_path(resource_name), 
+               data: {
+                 turbo: false,
+               },
+               html: { 
+                 method: :put,
+                 class: "form form--vertical"
+               }) do |f| %>
+    <%= f.hidden_field :reset_password_token %>
 
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
-    <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
-  </div>
+    <div class="field">
+      <%= f.password_field(
+        :password, 
+        autofocus: true, 
+        autocomplete: "new-password", 
+        placeholder: "New password",
+        class: "input input--email") %>
+    </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+    <div class="field">
+      <%= f.password_field(
+        :password_confirmation, 
+        placeholder: "Confirm new password",
+        autocomplete: "new-password", 
+        class: "input input--email") %>
+    </div>
 
-  <div class="actions">
-    <%= f.submit "Change my password" %>
-  </div>
-<% end %>
-
-<%= render "users/shared/links" %>
+    <div class="actions">
+      <%= f.submit "Change my password", class: "btn btn--submit" %>
+    </div>
+  <% end %>
+</div>

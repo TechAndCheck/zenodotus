@@ -12,11 +12,15 @@ class AccountsController < ApplicationController
   before_action :authenticate_user!, except: [
     :new,
     :create,
+    :reset_password,
+    :send_password_reset_email,
   ]
 
   before_action :must_be_logged_out, only: [
     :new,
     :create,
+    :reset_password,
+    :send_password_reset_email,
   ]
 
   sig { void }
@@ -43,6 +47,10 @@ class AccountsController < ApplicationController
     const :reset_password_token, String
     const :password, String
     const :password_confirmation, String
+  end
+
+  class ResetPasswordParams < T::Struct
+    const :email, String
   end
 
   sig { void }
@@ -91,6 +99,19 @@ class AccountsController < ApplicationController
 
     sign_in @user
     redirect_to after_sign_in_path_for(@user)
+  end
+
+  sig { void }
+  def send_password_reset_email
+    typed_params = TypedParams[ResetPasswordParams].new.extract!(params)
+    email = typed_params.email
+    @user = User.find_by(email: email)
+    @user.send_reset_password_instructions unless @user.nil?
+    redirect_to "/users/sign_in", notice: "A recovery email has been sent to the provided email addres "
+  end
+
+  sig { void }
+  def reset_password
   end
 
   sig { void }
