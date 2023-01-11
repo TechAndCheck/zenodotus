@@ -24,7 +24,8 @@
           "type": "string",
           "format": "uri",
           "qt-uri-protocols": [
-            "https"
+            "https",
+            "http"
           ]
         },
         "author": {
@@ -40,14 +41,14 @@
         "mediaAuthenticityCategory": {
           "type": "string"
         },
-        "originalMediaContextDescription": {
-          "type": "string"
-        },
         "itemReviewed": {
           "$ref": "#/definitions/mediaReviewItemReviewed"
         },
         "associatedClaimReview": {
-          "$ref": "#/definitions/associatedClaimReview"
+          "$id": "#/definitions/associatedClaimReview"
+        },
+        "originalMediaLink": {
+          "type": "string"
         }
       },
       "required": [
@@ -57,9 +58,12 @@
         "datePublished",
         "itemReviewed",
         "mediaAuthenticityCategory",
-        "originalMediaContextDescription",
+        "originalMediaLink",
         "url"
       ]
+    },
+    "associatedClaimReview": {
+      "$ref" : "claim-review-schema.json"
     },
     "person": {
       "type": "object",
@@ -226,6 +230,12 @@
           "qt-uri-protocols": [
             "https"
           ]
+        },
+        "startTime": {
+          "type": "string"
+        },
+        "endTime": {
+          "type": "string"
         }
       },
       "required": [
@@ -268,48 +278,6 @@
         "alternateName"
       ],
       "title": "ReviewRating"
-    },
-    "associatedClaimReview": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "@context": {
-          "type": "string"
-        },
-        "@type": {
-          "type": "string"
-        },
-        "datePublished": {
-          "type": "string",
-          "format": "date"
-        },
-        "url": {
-          "type": "string",
-          "format": "uri",
-          "qt-uri-protocols": [
-            "https"
-          ]
-        },
-        "author": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/person"
-            },
-            {
-              "$ref": "#/definitions/organization"
-            }
-          ]
-        },
-        "claimReviewed": {
-          "type": "string"
-        },
-        "reviewRating": {
-          "$ref": "#/definitions/reviewRating"
-        },
-        "itemReviewed": {
-          "$ref": "#/definitions/claimReviewItemReviewed"
-        }
-      }
     }
   }
 }

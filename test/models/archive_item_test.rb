@@ -25,4 +25,44 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
     archive_item = Sources::FacebookPost.create_from_forki_hash(forki_post).first
     assert_not_nil archive_item.screenshot
   end
+
+  test "creating an archive item with partially invalid `mediaItemAppearance`s works still" do
+    json = {
+              "@context": "https://schema.org",
+              "@type": " MediaReview",
+              "datePublished": "2021-04-27",
+              "url": "https://www.politifact.com/factchecks/2021/apr/27/instagram-posts/mariah-carey-didnt-fake-getting-her-covid-19-vacci/",
+              "author": {
+                "@type": "Organization",
+                "name": "PolitiFact",
+                "url": "https://politifact.com"
+              },
+              "mediaAuthenticityCategory": "DecontexualizedContent",
+              "originalMediaContextDescription": "Singer Mariah Carey shared a video of herself receiving a COVID-19 vaccination.",
+              "itemReviewed": {
+                "@type": "MediaReviewItem",
+                "creator": {
+                  "@type": "Person",
+                  "name": "Instagram user",
+                  "url": "https://www.instagram.com/wrong_saloon_bear/?hl=en"
+                },
+                "interpretedAsClaim": {
+                  "@type": "Claim",
+                  "description": "Mariah Carey faked getting her COVID-19 vaccine because the needle can’t be seen coming out of her arm."
+                },
+                "mediaItemAppearance": [{
+                  "@type": "VideoObjectSnapshot",
+                  "description": "An Instagram user posted a zoomed-in version of a video of Mariah Carey receiving a COVID vaccination, writing ‘It’s all a scam, don’t celebrate celebrities.’"
+                }, {
+                  "@type": "VideoObjectSnapshot",
+                  "accessedOnUrl": "https://twitter.com/MariahCarey/status/1438419033267871746",
+                  "archivedAt": "https://archive.is/EXAMPLE"
+                }]
+              }
+            }
+
+    assert_nothing_raised do
+      ArchiveItem.create_from_media_review(json.deep_stringify_keys, nil)
+    end
+  end
 end

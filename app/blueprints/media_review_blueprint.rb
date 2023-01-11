@@ -4,6 +4,7 @@ class MediaReviewBlueprint < Blueprinter::Base
   fields :url
   field :media_authenticity_category, name: :mediaAuthenticityCategory
   field :original_media_context_description, name: :originalMediaContextDescription
+  field :original_media_link, name: :originalMediaLink
 
   field :@context do |media_review|
     "https://schema.org"
@@ -28,18 +29,28 @@ class MediaReviewBlueprint < Blueprinter::Base
   end
 
   field :item_reviewed, name: :itemReviewed do |media_review|
+    media_item_appearances = media_review.item_reviewed["mediaItemAppearance"]
+    rendered_media_item_apperances = media_item_appearances.map do |apperance|
       {
-        "@type": "MediaReviewItem",
-        "creator": {
-          "@type": media_review.item_reviewed.dig("creator", "@type"),
-          "name": media_review.item_reviewed.dig("creator", "name"),
-          "url": media_review.item_reviewed.dig("creator", "url"),
-        },
-        "interpretedAsClaim": {
-          "@type": media_review.item_reviewed.dig("interpretedAsClaim", "@type"),
-          "description": media_review.item_reviewed.dig("interpretedAsClaim", "description"),
-        },
-        "mediaItemAppearance": media_review.item_reviewed.fetch("mediaItemAppearance", [])
+        "@type": apperance["@type"],
+        "accessedOnUrl": apperance["accessedOnUrl"],
+        "startTime": apperance["startTime"],
+        "endTime": apperance["endTime"]
       }
     end
+
+    {
+      "@type": "MediaReviewItem",
+      "creator": {
+        "@type": media_review.item_reviewed.dig("creator", "@type"),
+        "name": media_review.item_reviewed.dig("creator", "name"),
+        "url": media_review.item_reviewed.dig("creator", "url"),
+      },
+      "interpretedAsClaim": {
+        "@type": media_review.item_reviewed.dig("interpretedAsClaim", "@type"),
+        "description": media_review.item_reviewed.dig("interpretedAsClaim", "description"),
+      },
+      "mediaItemAppearance": rendered_media_item_apperances
+    }
+  end
 end
