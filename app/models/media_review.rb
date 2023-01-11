@@ -88,7 +88,7 @@ class MediaReview < ApplicationRecord
     if should_update
       existing_media_review = MediaReview.where(external_unique_id: external_unique_id).first
       existing_media_review.update!(
-        original_media_link: mediareview["originalMediaLink"],
+        original_media_link: media_review_hash["originalMediaLink"],
         media_authenticity_category: media_review_hash["mediaAuthenticityCategory"],
         original_media_context_description: media_review_hash["originalMediaContextDescription"],
         date_published: media_review_hash["datePublished"],

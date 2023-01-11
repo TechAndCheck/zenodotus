@@ -141,6 +141,12 @@ class MediaVault::IngestController < MediaVaultController
     typed_params = TypedParams[SubmitReviewSourceParams].new.extract!(params)
     mediareview_array = find_media_review_in_page(typed_params.url)
 
+    # Some notes for when this is implemented (currently turning it off in testing until we build it)
+    # - This only works if it's a singled piece of MediaReview. If it's an array, this next check
+    #   will fail with nil
+    # - It's going to have to be very messy the "accept the messiest formats, provide the strict ones"
+    #   mentality.
+    # - For now, the code that tests this is commented out in `ingest_controller_test.rb`
     unless mediareview_array.length.positive?
       failure_response = {
         response_code: 40,

@@ -21,7 +21,21 @@ class ArchiveItem < ApplicationRecord
   # @params media_review [Hash] A MediaReview JSON object
   # @return A MediaReview object that we'll attach to the soon-to-be-scraped ArchiveItem during Scrape fulfillment
   def self.create_from_media_review(media_review, external_unique_id)
-    url = media_review["originalMediaLink"]
+    # TODO: There's a chance that instead of `accessedOnUrl` there will instead be a `contentUrl`
+    # which instead points directly to a file, such as a `.mpg` or or `.jpg`.
+    #
+    # We do not currently have downloaders to handle just straight files, and indeed, there's a concern
+    # that this would remove a lot of context, and, to be honest, as long as our primary scraping targets
+    # are social media we will not have direct links that aren't "discovered" by our specialized scraper.
+    url = nil
+    media_review["itemReviewed"]["mediaItemAppearance"].each do |appearance|
+      if appearance.has_key?("accessedOnUrl") && !appearance["accessedOnUrl"].blank?
+        url = appearance["accessedOnUrl"]
+        break
+      end
+    end
+
+    raise "No url found to archive" if url.nil?
     object_model = model_for_url(url)
 
     # Stuff is going to come in that was misinputted, or that we don't have a scraper for.
