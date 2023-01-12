@@ -42,6 +42,7 @@ just to examine the template files unless/until we capture it better here.
 					<div class="archive-item__metadatum__label"></div>
 					<div class="archive-item__metadatum__value"></div>
 				</div>
+        <div class="archive-item__download__link"></div>
 				…
 			</div>
 		</div>
@@ -227,6 +228,10 @@ just to examine the template files unless/until we capture it better here.
 			align-self: flex-start;
 		}
 	}
+}
+
+div.archive-item__download__link {
+  font-weight: 400
 }
 
 a.archive-item__metadatum {
