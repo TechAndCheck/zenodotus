@@ -50,7 +50,7 @@ class MediaVault::AuthorsController < MediaVaultController
     respond_to do |format|
       format.html do; end
       format.json do
-        send_data ArchiveItem.generate_pruned_json(@archive_items),
+        send_data ArchiveItem.generate_json_for_export(@archive_items),
           type: "application/json",
           filename: "#{@author.send(@platform[:author_name_method]).parameterize(separator: '_')}_#{typed_params.platform}_archive.json"
       end
