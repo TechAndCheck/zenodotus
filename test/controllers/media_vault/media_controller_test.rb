@@ -21,12 +21,12 @@ class MediaVault::MediaControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_path
   end
 
-  test "can export media item metadata" do 
+  test "can export media item metadata" do
     user = users(:user)
     sign_in user
 
     archive_item = Sources::Tweet.create_from_url!("https://twitter.com/AmtrakNECAlerts/status/1397922363551870990")
-   
+
     get media_vault_export_media_metadata_path(archive_item.id)
     assert_response :success
     assert_equal "application/json", response.content_type
