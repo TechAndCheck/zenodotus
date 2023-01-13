@@ -6,6 +6,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :trackable, :lockable, :confirmable
 
+  has_many :webauthn_credentials, dependent: :destroy
+
   has_many :api_keys, dependent: :delete_all
   has_many :archive_items, foreign_key: :submitter_id, dependent: :nullify
 
@@ -21,6 +23,7 @@ class User < ApplicationRecord
 
   validates :name, presence: true
   validates :email, presence: true
+  validates :webauthn_id, uniqueness: true, allow_nil: true
 
   # `Devise::Recoverable#set_reset_password_token` is a protected method, which prevents us from
   # calling it directly. Since we need to be able to do that for tests and for duck-punching other

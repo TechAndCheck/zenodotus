@@ -99,6 +99,12 @@ Rails.application.routes.draw do
   get "/account/setup/(:token)", to: "accounts#new", as: "new_account"
   post "/account/setup", to: "accounts#create", as: "create_account"
 
+  scope "setup_mfa" do
+    get "/", to: "accounts#setup_mfa", as: "account_setup_mfa"
+    get "/webauthn", to: "accounts#start_webauthn_setup", as: "account_start_webauthn_setup"
+    post "/webauthn", to: "accounts#finish_webauthn_setup", as: "account_finish_webauthn_setup"
+  end
+
   get "/account/reset_password", to: "accounts#reset_password", as: "reset_password"
   post "/account/reset_password", to: "accounts#send_password_reset_email", as: "send_password_reset_email"
 end

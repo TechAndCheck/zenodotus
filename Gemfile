@@ -186,3 +186,6 @@ gem "dartsass-rails", "~> 0.4.0"
 
 # Comma lets us generate CSV-formatted data from ActiveRecord models
 gem "comma", "~>4.7.0"
+
+# Webauthn Enabling
+gem "webauthn"

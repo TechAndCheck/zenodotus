@@ -53,6 +53,11 @@ class AccountsController < ApplicationController
     const :email, String
   end
 
+  class FinishWebauthnSetupParams < T::Struct
+    const :nickname, String
+    const :publicKeyCredential, Hash
+  end
+
   sig { void }
   def new
     begin
@@ -95,10 +100,87 @@ class AccountsController < ApplicationController
     raise InvalidTokenError if @user.new_record?
     raise InvalidUpdatePasswordError if typed_params.password.blank? || @user.invalid?
 
-    @user.remove_role :new_user
-
     sign_in @user
-    redirect_to after_sign_in_path_for(@user)
+    # From here branch to set up 2FA
+    redirect_to account_setup_mfa_path
+  end
+
+  sig { void }
+  def setup_mfa
+    ######
+    # TODO: Next steps:
+    # - Make sure the route above works to get to here
+    #   do this via the console after creating an applicant in the UI
+    #   Then `applicant.approve` and User.create_from_applicant(applicant)
+    # - From here refer to https://www.honeybadger.io/blog/multi-factor-2fa-authentication-rails-webauthn-devise/
+    #   and https://github.com/cedarcode/webauthn-ruby
+    #   This could be used later too https://github.com/github/webauthn-json
+    current_user.remove_role :new_user
+  end
+
+  sig { void }
+  def start_webauthn_setup
+    if !current_user.webauthn_id
+      current_user.update!(webauthn_id: WebAuthn.generate_user_id)
+    end
+
+    options = WebAuthn::Credential.options_for_create(
+      user: { id: current_user.webauthn_id, display_name: current_user.email, name: current_user.email },
+      rp: { name: current_user.email },
+      exclude: current_user.webauthn_credentials.pluck(:external_id)
+    )
+
+    # Store the newly generated challenge somewhere so you can have it
+    # for the verification phase.
+    session[:webauthn_credential_register_challenge] = options.challenge
+
+    # Send `options` back to the browser, so that they can be used
+    # to call `navigator.credentials.create({ "publicKey": options })`
+    #
+    # You can call `options.as_json` to get a ruby hash with a JSON representation if needed.
+
+    # If inside a Rails controller, `render json: options` will just work.
+    # I.e. it will encode and convert the options to JSON automatically.
+
+    # For your frontend code, you might find @github/webauthn-json npm package useful.
+    # Especially for handling the necessary decoding of the options, and sending the
+    # `PublicKeyCredential` object back to the server.
+
+    options = { publicKey: options }
+
+    # redirect_to after_sign_in_path_for(current_user)
+    respond_to do |format|
+      format.json { render json: options }
+    end
+  end
+
+  sig { void }
+  def finish_webauthn_setup
+    typed_params = TypedParams[FinishWebauthnSetupParams].new.extract!(params)
+
+    webauthn_credential = WebAuthn::Credential.from_create(typed_params.publicKeyCredential)
+
+    begin
+      webauthn_credential.verify(session[:webauthn_credential_register_challenge])
+
+      # The validation would raise WebAuthn::Error so if we are here, the credentials are valid, and we can save it
+      credential = current_user.webauthn_credentials.new(
+          external_id: webauthn_credential.id,
+          public_key: webauthn_credential.public_key,
+          nickname: typed_params.nickname,
+          sign_count: webauthn_credential.sign_count
+        )
+
+      if credential.save
+        render json: { registration_status: "success" }
+      else
+        render json: { registration_status: "error", error: "Unknown processing error" }
+      end
+    rescue WebAuthn::Error => e
+      render json: { registration_status: "error", error: e }
+    ensure
+      session.delete(:webauthn_credential_register_challenge)
+    end
   end
 
   sig { void }
