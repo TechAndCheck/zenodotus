@@ -6,6 +6,7 @@ class MediaVault::MediaController < MediaVaultController
     @archive_item = ArchiveItem.find(params[:id])
   end
 
+  # Exports JSON-formatted metadata about a piece of media
   sig { void }
   def export_metadata
     archive_item = ArchiveItem.includes(:media_review, archivable_item: [:author]).find(params[:id])
