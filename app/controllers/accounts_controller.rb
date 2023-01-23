@@ -32,7 +32,7 @@ class AccountsController < ApplicationController
   # A class representing the allowed params into the `change_password` endpoint
   class ChangePasswordParams < T::Struct
     const :password, String
-    const :confirmed_password, String
+    const :password_confirmation, String
   end
 
   class ChangeEmailParams < T::Struct
@@ -118,14 +118,16 @@ class AccountsController < ApplicationController
   def change_password
     typed_params = TypedParams[ChangePasswordParams].new.extract!(params)
 
-    current_user.reset_password(typed_params.password, typed_params.confirmed_password)
+    current_user.reset_password(typed_params.password, typed_params.password_confirmation)
     # For some reason, despite having the settings correct, changing the password logs the user out
     # This logs them straight back in
     bypass_sign_in(current_user)
 
     respond_to do |format|
-      if typed_params.password != typed_params.confirmed_password
+      if typed_params.password != typed_params.password_confirmation
         flash.now[:alert] = "Passwords did not match. Please try again."
+      elsif typed_params.password.length < 6
+        flash.now[:alert] = "Please use a minimum of 6 characters in your password"
       else
         flash.now[:alert] = "Password updated."
       end

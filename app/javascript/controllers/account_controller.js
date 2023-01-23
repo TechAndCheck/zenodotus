@@ -1,6 +1,11 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
+  static targets = [
+    'passwordInput',
+    'passwordConfirmationInput',
+  ]
+
   /**
     * Shows the view corresponding to the user's search if they've just loaded a new page
    */
@@ -29,12 +34,13 @@ export default class extends Controller {
   }
 
   /**
-   * Resets form input elements. Waits a short period to ensure that inputs are not wiped before being sent to the backend
+   * Resets password entry input elements. Waits a short period to ensure that inputs are not wiped before being sent to the backend
    */
-  resetForm({ params }) {
-    setTimeout(() => [...document.getElementsByClassName(params.form)].forEach((inputElement) => {
-      inputElement.value = ''
-    }), 100)
+  resetPasswordInputs() {
+    setTimeout(() => {
+      this.passwordInputTarget.value = ''
+      this.passwordConfirmationInputTarget.value = ''
+    }, 100)
   }
 
   deleteAccount(event) {

@@ -7,26 +7,7 @@
   <div id="settings" class="flex-grow relative left-5">
     <div id="accountSettings" class="settingsBlock relative w-9/12">
       <h1 class="text-2xl font-light py-3">Update account details</h1>
-      <div id="changePassword" style="background-color: rgb(245 254 250);" class="rounded border-2">
-        <div id="changePassword-inner" class="m-3 flex">
-          <div id="changePassword-left" class="w-1/3">
-            <h2 class="text-lg font-semibold">Change password</h2>
-          </div>
-          <div id="changePassword-right" class="grow">
-            <%= form_with url:change_password_path, html: { data: { action: "submit->modal#onPostSend ajax:success->modal#onPostSuccess" } }  do |form| %>
-              <div >
-                <span class="relative left-5 h-4"> <%= form.text_field :password, placeholder: "New password", type: "password", class: "bg-gray-100 rounded h-3 changePassword" %></span>
-              </div>
-              <div >
-                <span class="relative left-5"><%= form.text_field :confirmed_password, placeholder: "Confirm password", type: "password", class: "bg-gray-100 rounded h-3 changePassword" %></span>
-              </div>
-              <div class="relative left-5">
-                <%= form.submit "Update", class: "shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white  px-2 rounded", data: { action: "account#resetForm", "account-form-param": 'changePassword' } %>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      </div>
+			<%= render "change_password" %>
       <br>
       <div id="changeEmail" style="background-color: rgb(245 254 250);" class="rounded border-2">
         <div id="changeEmail-inner" class="m-3 flex">
