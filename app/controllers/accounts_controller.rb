@@ -37,6 +37,7 @@ class AccountsController < ApplicationController
 
   class ChangeEmailParams < T::Struct
     const :email, String
+    const :email_confirmation, String
   end
 
   class SetupAccountParams < T::Struct
@@ -140,10 +141,18 @@ class AccountsController < ApplicationController
   sig { void }
   def change_email
     typed_params = TypedParams[ChangeEmailParams].new.extract!(params)
-    current_user.email = typed_params.email
-    current_user.save
-    respond_to do |format|
+
+    if typed_params.email != typed_params.email_confirmation
+      flash.now[:alert] = "Email addresses did not match. Please try again."
+    elsif URI::MailTo::EMAIL_REGEXP.match(typed_params.email).nil?
+      flash.now[:alert] = "Email address was improperly formatted. Please try again."
+    else
+      current_user.email = typed_params.email
+      current_user.save
       flash.now[:alert] = "We just sent a confirmation message to the email address you provided. Please check your inbox and follow the confirmation link in the message."
+    end
+
+    respond_to do |format|
       format.turbo_stream { render turbo_stream: [
         turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
       ] }

@@ -1,0 +1,39 @@
+<div class="box box--sm box--miniform" data-controller="change-email">
+  <%= render "users/shared/error_messages", resource: current_user %>
+	<h3>Change email</h3>
+	<p>
+		To change your email, fill out the form below.
+	</p>
+	<%= form_with(url: change_email_path,
+								html: {
+									method: :post,
+									class: "form form--vertical",
+									data: {
+										action: "change-email#resetEmailInputs"
+									}
+								}) do |f| %>
+
+    <div class="field">
+      <%= f.text_field(
+        :email,
+				"data-change-email-target": "emailInput",
+        autofocus: true,
+        autocomplete: "new-email",
+        placeholder: "New email",
+        class: "input input--email") %>
+    </div>
+
+    <div class="field">
+      <%= f.text_field(
+        :email_confirmation,
+				"data-change-email-target": "emailConfirmationInput",
+        placeholder: "Confirm new email",
+        autocomplete: "new-email",
+        class: "input input--email") %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Change my password", class: "btn btn--submit" %>
+    </div>
+  <% end %>
+</div>

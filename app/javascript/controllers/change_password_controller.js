@@ -6,12 +6,8 @@ export default class extends Controller {
     'passwordConfirmationInput',
   ]
 
-  connect() {
-    console.log('change password partial controller')
-  }
-
   /**
-   * Resets password entry input elements. Waits a short period to ensure that inputs are not wiped before being sent to the backend
+   * Resets password input elements. Waits a short period to ensure that inputs are not wiped before being sent to the backend
    */
   resetPasswordInputs() {
     setTimeout(() => {
