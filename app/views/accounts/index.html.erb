@@ -9,19 +9,7 @@
       <h1 class="text-2xl font-light py-3">Update account details</h1>
 			<%= render "change_password" %>
 			<%= render "change_email" %>
-      <div id="deleteAccount" style="background-color: rgb(245 254 250);" class="rounded border-2">
-        <div id="deleteAccount-inner" class="m-3 flex">
-          <div id="deleteAccount-left" class="w-1/3">
-            <h2 class="text-lg font-semibold">Delete account</h2>
-          </div>
-          <div id="deleteAccount-right" class="w-1/3">
-            <div class="relative left-5">
-              <%= button_to "Delete my account", "/account/users/", params: { user: current_user }, class: "shadow bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white  px-2 rounded", method: :delete, data: { action: "account#deleteAccount" } %>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+			<%= render "delete_account" %>
     <div id="textSearchHistory" class="settingsBlock " hidden=true>
       <h1 class="text-2xl font-light py-2">Text Search History</h1>
       <div>

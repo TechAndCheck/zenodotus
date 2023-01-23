@@ -40,6 +40,10 @@ class AccountsController < ApplicationController
     const :email_confirmation, String
   end
 
+  class DestroyAccountParams < T::Struct
+    const :password_for_deletion, String
+  end
+
   class SetupAccountParams < T::Struct
     const :token, String
   end
@@ -160,10 +164,21 @@ class AccountsController < ApplicationController
   end
 
   sig { void }
-  def destroy
-    user = User.find(params[:user])
-    user.destroy
-    redirect_to "/users/sign_in"
+  def destroy_account
+    typed_params = TypedParams[DestroyAccountParams].new.extract!(params)
+
+    if current_user.valid_password?(typed_params.password_for_deletion)
+      current_user.destroy
+      redirect_to "/users/sign_in"
+      flash[:alert] = "Your account was deleted"
+    else
+      flash.now[:warning] = "Incorrect password. If you would like to delete your account, please enter the corect password."
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: [
+          turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
+        ] }
+      end
+    end
   end
 
   sig { void }
