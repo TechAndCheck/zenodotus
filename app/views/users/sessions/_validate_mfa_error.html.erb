@@ -1,0 +1,23 @@
+<div class="alert alert--error opacity-0" role="alert">
+  <div class="alert__message flex flex-col">
+    <div class="font-bold text-lg">
+      Error:
+    </div>
+    <div>
+      There was an error validating your two-factor auth. Please try again below
+    </div>
+    <div>
+      <br>If this continues to not work please contact us for assistance
+    </div>
+
+    <% if defined?(error) && !error.nil? %>
+    <br><hr><br>
+    <div class="font-bold text-lg">
+      Error Message:
+    </div>
+    <div>
+      <%= error %>
+    </div>
+    <% end %>
+  </div>
+</div>

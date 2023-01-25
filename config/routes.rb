@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   root "application#index"
 
+
   # This generates only the session and confirmation-related Devise URLs.
   devise_for :users,
              skip: :all,
@@ -16,7 +17,16 @@ Rails.application.routes.draw do
              controllers: {
                sessions: "users/sessions",
                confirmations: "users/confirmations",
-             }
+           }
+
+
+  scope "users/sign_in/mfa" do
+    devise_scope :user do
+      get "/", to: "users/sessions#mfa_validation", as: "mfa_validation"
+      get "/webauthn", to: "users/sessions#begin_mfa_webauthn_validation", as: "begin_mfa_webauthn_validation"
+      post "/webauthn", to: "users/sessions#finish_mfa_webauthn_validation", as: "finish_mfa_webauthn_validation"
+    end
+  end
 
   get "about", to: "application#about"
   get "contact", to: "application#contact"

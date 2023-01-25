@@ -15,3 +15,4 @@ pin "application", preload: true
 pin "utilities", preload: true
 pin_all_from "app/javascript/channels", under: "channels"
 pin_all_from "app/javascript/controllers", under: "controllers"
+pin "lottie-web", to: "https://ga.jspm.io/npm:lottie-web@5.10.2/build/player/lottie.js"

@@ -1,6 +1,31 @@
-<div data-controller="webauthn" data-webauthn-input-value="<%= { publicKey: @options }.to_json %>">
-  <div>For security purposes we require, in addition to a password, all accounts to use two-factor authentication.</div>
+<% @page_id = "mfa-setup" %>
 
-  <div>Filler for OTP app authentication option</div>
-  <div data-webauthn-target="output">Here's the stuff for webauthn</div>
+<div id="page--accounts--setup_mfa" class="content lg:flex lg:items-center lg:gap-20">
+  <div class="lg:basis-2/4 b2">
+    <h2>Setting up Two-Factor Authentication</h2>
+    <p>
+      For security purposes we require two-factor authentication on all accounts. This ensures that
+      even if your password is compromised your data is secure from attackers trying to log into your
+      account.
+    </p>
+    <p>
+      We support both Webauthn/hardware and app-based TOTP authentication. If possible, please use the Webauthn/hardware
+      key authentication. After setup you will be able to add multiple keys on the account settings page for multiple devices.
+    </p>
+    <p>
+      If you do not have the ability to use Webauthn you can also use app-based two-factor
+      authentication via a code generator such as <a href="https://googleauthenticator.net">Google
+      Authenticator</a> or <a href="https://authy.com/download/">Authy</a> though we discourage this unless there's no other option. We do not support SMS-based two-factor authentication as it is inherently unencrypted and insecure.
+    </p>
+  </div>
+  <div class="flex flex-col lg:basis-2/4 justify-center" data-controller="webauthn" data-webauthn-input-value="<%= { publicKey: @options }.to_json %>">
+    <div data-webauthn-target="lock" class="setup_mfa--lock"></div>
+    <div data-webauthn-target="webauthnSetup" class="flex justify-center">
+      <button data-action="click->webauthn#beginWebauthnSetup" class="btn btn--lg setup_mfa--webauthn_button">Webauthn Setup</button>
+    </div>
+    <!-- Commented out until we implement TOTP alternatives for Firefox (mostly)
+    <span data-webauthn-target="totpSetup">
+      <button data-action="click->webauthn#beginTotpSetup" class="btn btn--lg">TOTP Setup</button>
+    </span> -->
+  </div>
 </div>

@@ -1,7 +1,7 @@
 # typed: strict
 
 class MediaVaultController < ApplicationController
-  before_action :authenticate_user!, except: [
+  before_action :authenticate_user_and_setup!, except: [
     :terms,
     :privacy,
     :optout,

@@ -1,14 +1,11 @@
-import { Controller } from "@hotwired/stimulus"
-import {
-  create,
-  parseCreationOptionsFromJSON,
-} from "@github/webauthn-json/browser-ponyfill"
+import { Controller } from '@hotwired/stimulus'
+import { get as webauthnGet, parseRequestOptionsFromJSON } from '@github/webauthn-json/browser-ponyfill'
 import { get, post } from "@rails/request.js"
 import Lottie from "lottie-web"
 
 export default class extends Controller {
-  static values = { input: String }
-  static targets = [ "lock", "webauthnSetup", "totpSetup" ]
+  static values = {}
+  static targets = [ "output", "lock", "authenicateButton" ]
 
   async connect() {
     // Check if we're actually encrypting, if not, don't allow setup to continue.
@@ -27,13 +24,6 @@ export default class extends Controller {
       return
     }
 
-    if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
-      this.outputTarget.textContent =
-        'Unfortunately FireFox does not yet have full support for Webauthn, the technology we use for our two-factor authentication.\n' +
-        'If you have a hardware key please click the "Begin Hardware Key Setup" button below, otherwise please click "Begin App-Based Setup" to continue'
-      return
-    }
-
     this.lockAnimation = Lottie.loadAnimation({
       container: this.lockTarget, // the dom element that will contain the animation
       renderer: 'svg',
@@ -41,19 +31,17 @@ export default class extends Controller {
       loop: false,
       path: '/lock-cpu-cyber-security.json' // the path to the animation json
     });
-
-    // What we want to do here:
-    // Make sure there's a back button?
-    // Same with TOTP
+    this.lockAnimation.setDirection(-1)
+    this.lockAnimation.goToAndStop(83, true)
   }
 
-  async beginWebauthnSetup() {
+  async authenticateWebauthn() {
     if(navigator.credentials == undefined) {
       alert("Webauthn is not available. We only support modern browsers, please use Firefox, Safari, Chrome, or something similar")
       return
     }
 
-    const setup_response = await get("/setup_mfa/webauthn.json", {
+    const setup_response = await get("/users/sign_in/mfa/webauthn.json", {
       contentType: "application/json",
       responseKind: "json"
     })
@@ -65,12 +53,12 @@ export default class extends Controller {
 
     const setup_response_body = await setup_response.text
     const optionsJson = JSON.parse(setup_response_body)
+    const options = parseRequestOptionsFromJSON(optionsJson)
 
-    const options = parseCreationOptionsFromJSON(optionsJson)
-    const createResponse = await create(options);
+    const getResponse = await webauthnGet(options);
 
-    const finishWebauthnResponse = await post("/setup_mfa/webauthn.json", {
-      body: { publicKeyCredential: createResponse, nickname: "stuffthings" },
+    const finishWebauthnResponse = await post("/users/sign_in/mfa/webauthn.json", {
+      body: { publicKeyCredential: getResponse, nickname: "stuffthings" },
       contentType: "application/json",
       responseKind: "json"
     })
@@ -78,20 +66,16 @@ export default class extends Controller {
     const finishWebauthnResponseBody = await finishWebauthnResponse.text
     const finishedBodyJson = JSON.parse(finishWebauthnResponseBody)
 
-    this.webauthnSetupTarget.classList.add("transition-opacity", "duration-150", "ease-out", "opacity-0")
-    this.webauthnSetupTarget.remove()
-
-    if(finishedBodyJson["registration_status"] == "success") {
+    if(finishedBodyJson["authentication_status"] == "success") {
+      this.authenicateButtonTarget.textContent = "Logging In..."
       this.lockAnimation.play()
       await new Promise(r => setTimeout(r, 2000))
+
       window.location = "/"
     } else {
-      this.lockTarget.classList.add("transition-opacity", "duration-150", "ease-out", "opacity-0")
-      await new Promise(r => setTimeout(r, 500))
-
-      this.lockAnimation.destroy()
-      this.lockTarget.innerHTML = finishedBodyJson["errorPartial"]
-      this.lockTarget.classList.replace("opacity-0", "opacity-100")
+      this.lockTarget.innerHTML = finishedBodyJson["errorPartial"] + this.lockTarget.innerHTML
+      this.lockTarget.firstChild.classList.add("transition-opacity", "duration-500", "ease-out")
+      this.lockTarget.firstChild.classList.replace("opacity-0", "opacity-100")
     }
   }
 }

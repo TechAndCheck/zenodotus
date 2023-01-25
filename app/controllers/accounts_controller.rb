@@ -9,11 +9,20 @@ class AccountsController < ApplicationController
   rescue_from InvalidTokenError, with: :invalid_token_error
   rescue_from InvalidUpdatePasswordError, with: :invalid_update_password_error
 
-  before_action :authenticate_user!, except: [
+  before_action :authenticate_user!, only: [
+    :setup_mfa,
+    :start_webauthn_setup,
+    :finish_webauthn_setup,
+  ]
+
+  before_action :authenticate_user_and_setup!, except: [
     :new,
     :create,
     :reset_password,
     :send_password_reset_email,
+    :setup_mfa,
+    :start_webauthn_setup,
+    :finish_webauthn_setup,
   ]
 
   before_action :must_be_logged_out, only: [
@@ -107,14 +116,6 @@ class AccountsController < ApplicationController
 
   sig { void }
   def setup_mfa
-    ######
-    # TODO: Next steps:
-    # - Make sure the route above works to get to here
-    #   do this via the console after creating an applicant in the UI
-    #   Then `applicant.approve` and User.create_from_applicant(applicant)
-    # - From here refer to https://www.honeybadger.io/blog/multi-factor-2fa-authentication-rails-webauthn-devise/
-    #   and https://github.com/cedarcode/webauthn-ruby
-    #   This could be used later too https://github.com/github/webauthn-json
     current_user.remove_role :new_user
   end
 
@@ -124,28 +125,14 @@ class AccountsController < ApplicationController
       current_user.update!(webauthn_id: WebAuthn.generate_user_id)
     end
 
-    options = WebAuthn::Credential.options_for_create(
-      user: { id: current_user.webauthn_id, display_name: current_user.email, name: current_user.email },
-      rp: { name: current_user.email },
+    options = relying_party(request.referer).options_for_registration(
+      user: { id: current_user.webauthn_id, display_name: current_user.name, name: current_user.email },
       exclude: current_user.webauthn_credentials.pluck(:external_id)
     )
 
     # Store the newly generated challenge somewhere so you can have it
     # for the verification phase.
     session[:webauthn_credential_register_challenge] = options.challenge
-
-    # Send `options` back to the browser, so that they can be used
-    # to call `navigator.credentials.create({ "publicKey": options })`
-    #
-    # You can call `options.as_json` to get a ruby hash with a JSON representation if needed.
-
-    # If inside a Rails controller, `render json: options` will just work.
-    # I.e. it will encode and convert the options to JSON automatically.
-
-    # For your frontend code, you might find @github/webauthn-json npm package useful.
-    # Especially for handling the necessary decoding of the options, and sending the
-    # `PublicKeyCredential` object back to the server.
-
     options = { publicKey: options }
 
     # redirect_to after_sign_in_path_for(current_user)
@@ -158,26 +145,55 @@ class AccountsController < ApplicationController
   def finish_webauthn_setup
     typed_params = TypedParams[FinishWebauthnSetupParams].new.extract!(params)
 
-    webauthn_credential = WebAuthn::Credential.from_create(typed_params.publicKeyCredential)
-
     begin
-      webauthn_credential.verify(session[:webauthn_credential_register_challenge])
+      begin
+        webauthn_credential = relying_party(request.referer).verify_registration(typed_params.publicKeyCredential, session[:webauthn_credential_register_challenge])
+      rescue StandardError
+        render json: {
+          errorPartial:
+            render_to_string(
+              partial: "accounts/setup_mfa_error",
+              formats: :html,
+              layout: false,
+              locals: { error: "Error validating credentials, please contact us if you continue to have problems." }
+            )
+        }
+        return
+      end
 
       # The validation would raise WebAuthn::Error so if we are here, the credentials are valid, and we can save it
+      # TODO: Add "type" to this
       credential = current_user.webauthn_credentials.new(
           external_id: webauthn_credential.id,
           public_key: webauthn_credential.public_key,
           nickname: typed_params.nickname,
-          sign_count: webauthn_credential.sign_count
+          sign_count: webauthn_credential.sign_count,
+          key_type: webauthn_credential.type,
         )
 
       if credential.save
         render json: { registration_status: "success" }
       else
-        render json: { registration_status: "error", error: "Unknown processing error" }
+        render json: {
+          errorPartial:
+            render_to_string(
+              partial: "accounts/setup_mfa_error",
+              formats: :html,
+              layout: false,
+              locals: {}
+            )
+        }
       end
     rescue WebAuthn::Error => e
-      render json: { registration_status: "error", error: e }
+      render json: {
+          errorPartial:
+            render_to_string(
+              partial: "accounts/setup_mfa_error",
+              formats: :html,
+              layout: false,
+              locals: { error: e }
+            )
+        }
     ensure
       session.delete(:webauthn_credential_register_challenge)
     end
@@ -189,7 +205,7 @@ class AccountsController < ApplicationController
     email = typed_params.email
     @user = User.find_by(email: email)
     @user.send_reset_password_instructions unless @user.nil?
-    redirect_to "/users/sign_in", notice: "A recovery email has been sent to the provided email addres "
+    redirect_to "/users/sign_in", notice: "A recovery email has been sent to the provided email address"
   end
 
   sig { void }

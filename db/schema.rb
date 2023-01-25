@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_12_171823) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_23_223143) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -343,6 +343,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_12_171823) do
     t.integer "sign_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "key_type", null: false
     t.index ["external_id"], name: "index_webauthn_credentials_on_external_id", unique: true
     t.index ["nickname", "user_id"], name: "index_webauthn_credentials_on_nickname_and_user_id", unique: true
     t.index ["user_id"], name: "index_webauthn_credentials_on_user_id"
