@@ -1,0 +1,16 @@
+<div class="box box--sm box--miniform">
+	<h2><%= date %></h2>
+	<div style="display: grid; grid-template-columns: 1fr 2fr;">
+		<% searches.each do |search| %>
+			<div>
+				<span class="text-search-history-box__time__value">
+					<%= search.created_at.strftime("%-I:%M: %p") %>
+				</span>
+			</div>
+			<div style="text-align: start;">
+				<%= link_to(search.query, media_vault_search_path(q: search.query)) %>
+			</div>
+		<% end %>
+	</div>
+</div>
+
