@@ -115,6 +115,21 @@ protected
     must_have_mfa_setup
   end
 
+  # TODO: Implement the following before landing, the debugger is there to remind you
+  sig { void }
+  def authenticate_and_require_mfa!
+    # debugger
+
+    # Make sure a user is logged in, then redirect them to the MFA page to authenticate before moving on
+    # We'll have to remember which page they were trying to get to, the full request, basically intercept
+    # it and replay it after validation.
+
+    authenticate_user_and_setup! # run normal validation first
+
+    # Probably see if we can save/store a request? IDK this is going to get complicated. Maybe we just
+    # keep it for logging in only?
+  end
+
   sig { void }
   def authenticate_user_from_api_key!
     if params[:api_key].blank?
