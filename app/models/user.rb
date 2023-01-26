@@ -1,5 +1,7 @@
 # typed: strict
 
+require "bcrypt"
+
 class User < ApplicationRecord
   rolify
   devise :database_authenticatable, :registerable,
@@ -92,6 +94,52 @@ class User < ApplicationRecord
   sig { params(applicant: Applicant).void }
   def assign_applicant_roles(applicant)
     self.add_role :media_vault_user if applicant.source_site == SiteDefinitions::MEDIA_VAULT[:shortname]
+  end
+
+  sig { returns(T::Array[String]) }
+  def generate_recovery_codes
+    raise "Recovery codes already generated for user" unless self.hashed_recovery_codes.empty?
+    # For ease the format is a 24 hex. When we show it to the user we'll do it like XXXXX-XXXXXX-XXXXXX-XXXXXX
+    # This above still needs to happen
+    # We'll have to remember to remove the dashes before checking, but not bad.
+    #
+    # There are ten codes when generated
+    keys = 10.times.map { SecureRandom.hex(24) }
+
+    # Get the BCrypt (it's slow and long, that's good here, and included in Rails already) version of each
+    # which is what we actually save
+    hashed_keys = keys.map { |key| BCrypt::Password.create(key) }
+
+    # Save the hashed keys, and return the plaintext ones
+    self.update!(hashed_recovery_codes: hashed_keys)
+    keys
+  end
+
+  sig { params(recovery_code: String, invalidate_after_confirm: T::Boolean).returns(T::Boolean) }
+  def validate_recovery_code(recovery_code, invalidate_after_confirm: true)
+    timing_attack_key = BCrypt::Password.create(SecureRandom.hex(24))
+
+    self.hashed_recovery_codes.each do |hashed_recovery_code|
+      # If it works, we remove it if we're invalidating and return true
+      if BCrypt::Password.new(hashed_recovery_code) == recovery_code
+        if invalidate_after_confirm
+          self.hashed_recovery_codes.delete(hashed_recovery_code)
+          self.update!(
+            hashed_recovery_codes: self.hashed_recovery_codes
+          )
+        end
+
+        return true
+      end
+    end
+
+    # To prevent timing attacks we want to make sure we're always checking ten strings
+    (10 - self.hashed_recovery_codes.count).times do
+      # Just do a compare to kill time but ignore the results
+      recovery_code == timing_attack_key
+    end
+
+    false # Return false since if we're here there's no comparison
   end
 
   sig { returns(T::Boolean) }

@@ -1,6 +1,6 @@
 <% @page_id = "mfa-setup" %>
 
-<div id="page--accounts--setup_mfa" class="content lg:flex lg:items-center lg:gap-20">
+<div id="page--accounts--setup_mfa" class="content lg:flex lg:gap-20">
   <div class="lg:basis-2/4 b2">
     <h2>Setting up Two-Factor Authentication</h2>
     <p>
@@ -18,7 +18,7 @@
       Authenticator</a> or <a href="https://authy.com/download/">Authy</a> though we discourage this unless there's no other option. We do not support SMS-based two-factor authentication as it is inherently unencrypted and insecure.
     </p>
   </div>
-  <div class="flex flex-col lg:basis-2/4 justify-center" data-controller="webauthn" data-webauthn-input-value="<%= { publicKey: @options }.to_json %>">
+  <div class="lg:flex lg:flex-col lg:basis-2/4 mt-16 lg:mt-0" data-controller="webauthn" data-webauthn-input-value="<%= { publicKey: @options }.to_json %>">
     <div data-webauthn-target="lock" class="setup_mfa--lock"></div>
     <div data-webauthn-target="webauthnSetup" class="flex justify-center">
       <button data-action="click->webauthn#beginWebauthnSetup" class="btn btn--lg setup_mfa--webauthn_button">Webauthn Setup</button>

@@ -71,7 +71,7 @@ export default class extends Controller {
       this.lockAnimation.play()
       await new Promise(r => setTimeout(r, 2000))
 
-      window.location = "/"
+      Turbo.visit("/", { action: "replace" })
     } else {
       this.lockTarget.innerHTML = finishedBodyJson["errorPartial"] + this.lockTarget.innerHTML
       this.lockTarget.firstChild.classList.add("transition-opacity", "duration-500", "ease-out")

@@ -113,6 +113,7 @@ Rails.application.routes.draw do
     get "/", to: "accounts#setup_mfa", as: "account_setup_mfa"
     get "/webauthn", to: "accounts#start_webauthn_setup", as: "account_start_webauthn_setup"
     post "/webauthn", to: "accounts#finish_webauthn_setup", as: "account_finish_webauthn_setup"
+    get "/webauthn/setup_recovery_codes", to: "accounts#setup_recovery_codes", as: "account_setup_recovery_codes"
   end
 
   get "/account/reset_password", to: "accounts#reset_password", as: "reset_password"
