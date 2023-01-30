@@ -33,16 +33,6 @@ export default class extends Controller {
     newView.removeAttribute('hidden')
   }
 
-  /**
-   * Resets password entry input elements. Waits a short period to ensure that inputs are not wiped before being sent to the backend
-   */
-  resetPasswordInputs() {
-    setTimeout(() => {
-      this.passwordInputTarget.value = ''
-      this.passwordConfirmationInputTarget.value = ''
-    }, 100)
-  }
-
   deleteAccount(event) {
     const confirmed = window.confirm('Are you sure?')
 

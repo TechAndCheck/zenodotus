@@ -28,22 +28,11 @@
     <div id="imageSearchHistory" class="settingsBlock" hidden=true>
       <h1 class="text-2xl font-light py-2">Image Search History</h1>
       <div>
-          <div class="flex flex-wrap">
-        <% split_searches_by_date(@image_searches).each do |date, searches| %>
-            <div class="lg w-1/3 leading-relaxed text-gray-500 bg-green-50 border-gray-200 border-2 rounded-lg mr-5 mb-5">
-              <p class="font-bold p-3 bg-white"><%= date %></p>
-              <% searches.each_with_index do |search, index| %>
-                <div class="flex px-5 py-3 <%= index % 2 != 0 ? "bg-green-50" : "bg-gray-100" %>">
-                  <div class="w-5/12">
-                    <p class="relative inset-y-1/2 align-middle"><%= search.created_at.strftime("%H:%M:%S") %></p>
-                  </div>
-                  <div class="w-5/12">
-                    <img src="<%= search.image_url %>">
-                  </div>
-                </div>
-              <% end %>
+          <div style="column-count: 3; column-gap: 1em;">
+						<% @image_searches.each_with_index do |search, index| %>
+                <%= render partial: "image_search_history_box", locals: { search: search, index: index } %>
+						<% end %>
             </div>
-        <% end %>
           </div>
         </div>
       <%== pagy_nav(@pagy_image_searches) if @pagy_image_searches.pages > 1 %>

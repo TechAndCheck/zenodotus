@@ -1,0 +1,19 @@
+@use "shared";
+
+.image-search-history-box {
+	--box--external-spacing: 0;
+	--box--internal-spacing: 1rem;
+
+	padding: var(--box--internal-spacing);
+	background-color: white;
+	border: 1px solid lightgray;
+	box-shadow: shared.$shadow--3;
+
+	margin: var(--box--external-spacing) auto;
+
+	transition-property: margin, padding;
+}
+
+.image-search-history-box__searched-label {
+	font-weight: 600;
+}
