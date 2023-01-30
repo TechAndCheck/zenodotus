@@ -29,6 +29,10 @@ improvement would be to use SCSS mixins so this styling could be applied directl
 	transition-property: margin, padding;
 }
 
+.box--2xs-ceiling {
+	max-width: shared.$screen-2xs-ceiling;
+}
+
 .box--sm {
 	max-width: shared.$screen-sm-floor;
 }
@@ -53,6 +57,25 @@ improvement would be to use SCSS mixins so this styling could be applied directl
 	margin-bottom: var(--box--internal-spacing);
 
 	transition-property: margin, font-size;
+}
+
+/*
+For settings boxes, we don't want auto margins and can make use of flexbox's row-gap
+*/
+.box--settings {
+	--box--external-spacing: 1rem;
+	--box--internal-spacing: 1rem;
+
+	padding: var(--box--internal-spacing);
+	margin-right: var(--box--external-spacing);
+
+	max-width: shared.$screen-2xs-ceiling;
+	background-color: white;
+	border: 1px solid lightgray;
+	box-shadow: shared.$shadow--3;
+
+	transition-property: margin, padding;
+
 }
 
 /*
