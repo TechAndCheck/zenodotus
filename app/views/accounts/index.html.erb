@@ -5,18 +5,18 @@
     <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="imageSearchHistory">Image searches</a>
   </div>
   <div id="settings" class="flex-grow relative left-5">
-    <div id="accountSettings" class="settingsBlock relative w-9/12">
-      <h1 class="text-2xl font-light py-3">Update account details</h1>
-			<div class="flex flex-wrap">
+    <div id="accountSettings" class="settingsBlock relative">
+      <h2>Update account details</h2>
+			<div class="account--box-container">
 				<%= render "change_password" %>
 				<%= render "change_email" %>
 				<%= render "delete_account" %>
 			</div>
 		</div>
     <div id="textSearchHistory" class="settingsBlock" hidden=true>
-      <h1 class="text-2xl font-light py-2">Text Search History</h1>
+      <h2>Text Search History</h2>
       <div>
-        <div class="flex flex-wrap">
+				<div class="account--box-container">
           <% split_searches_by_date(@text_searches).each do |date, searches| %>
 						<%= render partial: "text_search_history_box", locals: { date: date, searches: searches } %>
           <% end %>
@@ -26,9 +26,9 @@
     </div>
 
     <div id="imageSearchHistory" class="settingsBlock" hidden=true>
-      <h1 class="text-2xl font-light py-2">Image Search History</h1>
+      <h2>Image Search History</h2>
       <div>
-          <div style="display: flex; flex-wrap: wrap; align-items: flex-start">
+				<div class="account--box-container">
 						<!--<div style="column-count: 3; column-gap: 1em;">-->
 						<% @image_searches.each_with_index do |search, index| %>
                 <%= render partial: "image_search_history_box", locals: { search: search, index: index } %>
