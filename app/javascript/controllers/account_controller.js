@@ -24,7 +24,7 @@ export default class extends Controller {
    * Toggles the section visible on the accounts page
    */
   toggleView({ params: { id } }) {
-    const currentView = [...document.getElementsByClassName('settingsBlock')].filter((i) => i.getAttribute('hidden') == null)[0]
+    const currentView = [...document.getElementsByClassName('account-page__section')].filter((i) => i.getAttribute('hidden') == null)[0]
     const newView = document.getElementById(id)
     if (newView === currentView) {
       return

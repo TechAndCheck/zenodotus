@@ -1,11 +1,10 @@
-<div class="box--settings image-search-history-box" >
+<div class="account-page__box image-search-history-box" >
 	<img src="<%= search.image.url %>">
-
-	<div class="archive-item__metadata" style="justify-content: flex-start">
+	<div class="archive-item__metadata image-search-history-box__metadata">
 		<div class="icon-prefixed">
 			<%= use_svg "magnifying-glass", svg_attrs: { class: "icon", aria: { hidden: true } } %>
 			<div class="archive-item__metadatum">
-					<div class="image-search-history-box__searched-label">Search date</div>
+					<div class="image-search-history-box__metadatum__title">Search date</div>
 					<time
 							class="archive-item__metadatum__value"
 							datetime="<%= search.created_at.iso8601 %>"

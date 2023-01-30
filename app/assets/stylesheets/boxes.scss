@@ -60,25 +60,6 @@ improvement would be to use SCSS mixins so this styling could be applied directl
 }
 
 /*
-For settings boxes, we don't want auto margins and can make use of flexbox's row-gap
-*/
-.box--settings {
-	--box--external-spacing: 1rem;
-	--box--internal-spacing: 1rem;
-
-	padding: var(--box--internal-spacing);
-	margin-right: var(--box--external-spacing);
-
-	max-width: shared.$screen-2xs-ceiling;
-	background-color: white;
-	border: 1px solid lightgray;
-	box-shadow: shared.$shadow--3;
-
-	transition-property: margin, padding;
-
-}
-
-/*
 Miniform boxes are tweaked for small, standlone forms such as log in or forgot password.
 */
 

@@ -1,22 +1,22 @@
 <div class="flex" data-controller="account">
-  <div id="nav" class="h-full overflow-visible w-fit pt-60px shrink-0" >
+  <div id="nav" class="account-page__sidebar">
     <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="accountSettings">Settings</a>
     <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="textSearchHistory">Text searches</a>
     <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="imageSearchHistory">Image searches</a>
   </div>
-  <div id="settings" class="flex-grow relative left-5">
-    <div id="accountSettings" class="settingsBlock relative">
+  <div id="settings" class="account-page__main-content">
+    <div data-account-target="updateAccountSection" id="accountSettings" class="account-page__section">
       <h2>Update account details</h2>
-			<div class="account--box-container">
+			<div class="account-page__box-container account-page__box-container--update-account-container">
 				<%= render "change_password" %>
 				<%= render "change_email" %>
 				<%= render "delete_account" %>
 			</div>
 		</div>
-    <div id="textSearchHistory" class="settingsBlock" hidden=true>
+    <div data-account-target="textSearchHistorySection" id="textSearchHistory" class="account-page__section" hidden=true>
       <h2>Text Search History</h2>
       <div>
-				<div class="account--box-container">
+				<div class="account-page__box-container">
           <% split_searches_by_date(@text_searches).each do |date, searches| %>
 						<%= render partial: "text_search_history_box", locals: { date: date, searches: searches } %>
           <% end %>
@@ -25,11 +25,10 @@
       <%== pagy_nav(@pagy_text_searches) if @pagy_text_searches.pages > 1 %>
     </div>
 
-    <div id="imageSearchHistory" class="settingsBlock" hidden=true>
+    <div data-account-target="imageSearchHistorySection" id="imageSearchHistory" class="account-page__section" hidden=true>
       <h2>Image Search History</h2>
       <div>
-				<div class="account--box-container">
-						<!--<div style="column-count: 3; column-gap: 1em;">-->
+				<div class="account-page__box-container">
 						<% @image_searches.each_with_index do |search, index| %>
                 <%= render partial: "image_search_history_box", locals: { search: search, index: index } %>
 						<% end %>

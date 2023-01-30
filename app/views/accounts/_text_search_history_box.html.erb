@@ -1,14 +1,14 @@
-<div class="box--settings">
+<div class="account-page__box">
 	<% records_date = searches.first.created_at.strftime("%-B %-d, %Y") %>
 	<h2><%= records_date %></h2>
-	<div style="display: grid; grid-template-columns: 1fr 2fr;">
+	<div class="text-search-history-box__data-div">
 		<% searches.each do |search| %>
 			<div>
-				<span class="text-search-history-box__time__value">
+				<span class="text-search-history-box__data-div__time">
 					<%= search.created_at.strftime("%-I:%M %p") %>
 				</span>
 			</div>
-			<div style="text-align: start;">
+			<div>
 				<%= link_to(search.query, media_vault_search_path(q: search.query)) %>
 			</div>
 		<% end %>
