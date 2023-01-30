@@ -10,6 +10,7 @@ Used for boxes on the account page. Similar to .box in boxes.scss, but has only 
 
 	padding: var(--box--internal-spacing);
 	margin-right: var(--box--external-spacing);
+	margin-bottom: var(--box--external-spacing);
 
 	max-width: shared.$screen-2xs-ceiling;
 	background-color: white;
@@ -25,7 +26,6 @@ A flexbox class for divs holding settings boxes
 .account-page__box-container {
 	display: flex;
 	flex-wrap: wrap;
-	row-gap: 1rem;
 	align-items: flex-start;
 }
 
@@ -63,4 +63,8 @@ Remove/reconfigure in https://github.com/TechAndCheck/zenodotus/issues/506
 .account-page__main-content {
 	flex-grow: 1;
 	margin-left: 1rem;
+}
+
+.pagy-nav {
+	margin-bottom: 1rem;
 }

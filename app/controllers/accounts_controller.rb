@@ -25,23 +25,9 @@ class AccountsController < ApplicationController
 
   sig { void }
   def index
-    @pagy_text_searches, @text_searches = pagy(TextSearch.where(user: current_user).order("created_at DESC"), page_param: :text_search_page, items: 25)
-    # @calendar, @pagy, @records = pagy_calendar(ImageSearch.where(user: current_user).order("created_at DESC"),
-    #                                            year: { size: [1, 1, 1, 1] },
-    #                                            month: { size: [0, 12, 12, 0], format: "%b" },
-    #                                            pagy: { items: 25})
-    @pagy_image_searches, @image_searches = pagy(ImageSearch.where(user: current_user).order("created_at DESC"), page_param: :image_search_page, items: 25)
+    @pagy_text_searches, @text_searches = pagy(TextSearch.where(user: current_user).order("created_at DESC"), page_param: :text_search_page, items: 50)
+    @pagy_image_searches, @image_searches = pagy(ImageSearch.where(user: current_user).order("created_at DESC"), page_param: :image_search_page, items: 5)
   end
-
-  # def pagy_calendar_period(collection)
-  #   starting = collection.minimum("created_at")
-  #   ending = collection.maximum("created_at")
-  #   [starting.utc, ending.utc]
-  # end
-  #
-  # def pagy_calendar_filter(collection, from, to)
-  #   collection.where(created_at: from...to)
-  # end
 
   # A class representing the allowed params into the `change_password` endpoint
   class ChangePasswordParams < T::Struct
