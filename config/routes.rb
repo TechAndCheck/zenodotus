@@ -73,6 +73,7 @@ Rails.application.routes.draw do
 
       get "authors/:platform/:id", to: "authors#show", as: "author"
       resources :media, only: [:show]
+      get "media/download_metadata/:id", to: "media#export_metadata", as: "export_media_metadata"
     end
   end
 
