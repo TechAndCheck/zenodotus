@@ -1,5 +1,6 @@
 <div class="box box--sm box--miniform">
-	<h2><%= date %></h2>
+	<% records_date = searches.first.created_at.strftime("%-B %-d, %Y") %>
+	<h2><%= records_date %></h2>
 	<div style="display: grid; grid-template-columns: 1fr 2fr;">
 		<% searches.each do |search| %>
 			<div>
