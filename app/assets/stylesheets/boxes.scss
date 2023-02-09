@@ -29,6 +29,10 @@ improvement would be to use SCSS mixins so this styling could be applied directl
 	transition-property: margin, padding;
 }
 
+.box--2xs-ceiling {
+	max-width: shared.$screen-2xs-ceiling;
+}
+
 .box--sm {
 	max-width: shared.$screen-sm-floor;
 }

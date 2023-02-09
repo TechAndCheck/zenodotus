@@ -1,0 +1,70 @@
+@use "shared";
+@use "buttons";
+
+/*
+Used for boxes on the account page. Similar to .box in boxes.scss, but has only one margin (on the right side)
+*/
+.account-page__box {
+	--box--external-spacing: 1rem;
+	--box--internal-spacing: 1rem;
+
+	padding: var(--box--internal-spacing);
+	margin-right: var(--box--external-spacing);
+	margin-bottom: var(--box--external-spacing);
+
+	max-width: shared.$screen-2xs-ceiling;
+	background-color: white;
+	border: 1px solid lightgray;
+	box-shadow: shared.$shadow--3;
+
+	transition-property: margin, padding;
+}
+
+/*
+A flexbox class for divs holding settings boxes
+*/
+.account-page__box-container {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+}
+
+/*
+On the update account subpage, items should have uniform dimensions on the vertical axis
+*/
+.account-page__box-container--update-account-container {
+	align-items: revert
+}
+
+/*
+Account page settings boxes are segmented 50/50 between headings and forms
+*/
+.account-page__box--settings__header {
+	height: 50%
+}
+
+.account-page__box--settings__form {
+	height: 50%
+}
+
+/* Account page navigation sidebar
+To be restyled in https://github.com/TechAndCheck/zenodotus/issues/506
+*/
+.account-page__sidebar {
+	height: 100%;
+	overflow: visible;
+	width: fit-content;
+	flex-shrink: 0
+}
+
+/*
+Remove/reconfigure in https://github.com/TechAndCheck/zenodotus/issues/506
+*/
+.account-page__main-content {
+	flex-grow: 1;
+	margin-left: 1rem;
+}
+
+.pagy-nav {
+	margin-bottom: 1rem;
+}

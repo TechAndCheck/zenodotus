@@ -1,106 +1,48 @@
 <div class="flex" data-controller="account">
-  <div id="nav" class="h-full overflow-visible w-fit pt-60px shrink-0" >
+  <div id="nav" class="account-page__sidebar">
     <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="accountSettings">Settings</a>
     <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="textSearchHistory">Text searches</a>
     <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="imageSearchHistory">Image searches</a>
   </div>
-  <div id="settings" class="flex-grow relative left-5">
-    <div id="accountSettings" class="settingsBlock relative w-9/12">
-      <h1 class="text-2xl font-light py-3">Update account details</h1>
-      <div id="changePassword" style="background-color: rgb(245 254 250);" class="rounded border-2">
-        <div id="changePassword-inner" class="m-3 flex">
-          <div id="changePassword-left" class="w-1/3">
-            <h2 class="text-lg font-semibold">Change password</h2>
-          </div>
-          <div id="changePassword-right" class="grow">
-            <%= form_with url:change_password_path, html: { data: { action: "submit->modal#onPostSend ajax:success->modal#onPostSuccess" } }  do |form| %>
-              <div >
-                <span class="relative left-5 h-4"> <%= form.text_field :password, placeholder: "New password", type: "password", class: "bg-gray-100 rounded h-3 changePassword" %></span>
-              </div>
-              <div >
-                <span class="relative left-5"><%= form.text_field :confirmed_password, placeholder: "Confirm password", type: "password", class: "bg-gray-100 rounded h-3 changePassword" %></span>
-              </div>
-              <div class="relative left-5">
-                <%= form.submit "Update", class: "shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white  px-2 rounded", data: { action: "account#resetForm", "account-form-param": 'changePassword' } %>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      </div>
-      <br>
-      <div id="changeEmail" style="background-color: rgb(245 254 250);" class="rounded border-2">
-        <div id="changeEmail-inner" class="m-3 flex">
-          <div id="changeEmail-left" class="w-1/3">
-            <h2 class="text-lg font-semibold">Change email</h2>
-          </div>
-          <div id="changeEmail-right" class="w-1/3">
-            <%= form_with url:change_email_path, html: { data: { action: "submit->modal#onPostSend ajax:success->modal#onPostSuccess" } }  do |form| %>
-              <div class="relative left-5">
-                <%= form.text_field :email, placeholder: current_user.email, class: "bg-gray-100 rounded h-3 changeEmail"%>
-              </div>
-              <div class="relative left-5">
-                <%= form.submit "Update", class: "shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white  px-2 rounded", data: { action: "account#resetForm", "account-form-param": 'changeEmail' } %>
-              </div>
-              </div>
-            <% end %>
-            </div>
-      </div>
-      <br>
-      <div id="deleteAccount" style="background-color: rgb(245 254 250);" class="rounded border-2">
-        <div id="deleteAccount-inner" class="m-3 flex">
-          <div id="deleteAccount-left" class="w-1/3">
-            <h2 class="text-lg font-semibold">Delete account</h2>
-          </div>
-          <div id="deleteAccount-right" class="w-1/3">
-            <div class="relative left-5">
-              <%= button_to "Delete my account", "/account/users/", params: { user: current_user }, class: "shadow bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white  px-2 rounded", method: :delete, data: { action: "account#deleteAccount" } %>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="textSearchHistory" class="settingsBlock " hidden=true>
-      <h1 class="text-2xl font-light py-2">Text Search History</h1>
+  <div id="settings" class="account-page__main-content">
+    <div data-account-target="updateAccountSection" id="accountSettings" class="account-page__section">
+      <h2>Update account details</h2>
+			<div class="account-page__box-container account-page__box-container--update-account-container">
+				<%= render "change_password" %>
+				<%= render "change_email" %>
+				<%= render "delete_account" %>
+			</div>
+		</div>
+    <div data-account-target="textSearchHistorySection" id="textSearchHistory" class="account-page__section" hidden=true>
+      <h2>Text Search History:</h2>
       <div>
-        <div class="flex flex-wrap">
-          <% split_searches_by_date(@text_searches).each do |date, searches| %>
-            <div class="lg w-1/3 leading-relaxed text-gray-500 bg-green-50 border-gray-200 border-2 rounded-lg mr-5 mb-5">
-              <p class="font-bold p-3 bg-white"><%= date %></p>
-              <% searches.each_with_index do |search, index| %>
-                <div class="<%= index % 2 != 0 ? "bg-green-50" : "bg-gray-100" %>">
-                  <span class="pl-3"><%= search.created_at.strftime("%H:%M:%S") %></span>
-                  <span class="pl-3"><%= search.query %></span>
-                </div>
-              <% end %>
-            </div>
+				<div class="account-page__box-container">
+					<% if @text_searches.empty? %>
+						<h3>No results found</h3>
+					<% else %>
+						<% split_searches_by_date(@text_searches).each do |date, searches| %>
+							<%= render partial: "text_search_history_box", locals: { date: date, searches: searches } %>
+						<% end %>
           <% end %>
         </div>
       </div>
       <%== pagy_nav(@pagy_text_searches) if @pagy_text_searches.pages > 1 %>
     </div>
 
-    <div id="imageSearchHistory" class="settingsBlock" hidden=true>
-      <h1 class="text-2xl font-light py-2">Image Search History</h1>
+    <div data-account-target="imageSearchHistorySection" id="imageSearchHistory" class="account-page__section" hidden=true>
+      <h2>Image Search History:</h2>
       <div>
-          <div class="flex flex-wrap">
-        <% split_searches_by_date(@image_searches).each do |date, searches| %>
-            <div class="lg w-1/3 leading-relaxed text-gray-500 bg-green-50 border-gray-200 border-2 rounded-lg mr-5 mb-5">
-              <p class="font-bold p-3 bg-white"><%= date %></p>
-              <% searches.each_with_index do |search, index| %>
-                <div class="flex px-5 py-3 <%= index % 2 != 0 ? "bg-green-50" : "bg-gray-100" %>">
-                  <div class="w-5/12">
-                    <p class="relative inset-y-1/2 align-middle"><%= search.created_at.strftime("%H:%M:%S") %></p>
-                  </div>
-                  <div class="w-5/12">
-                    <img src="<%= search.image_url %>">
-                  </div>
-                </div>
-              <% end %>
-            </div>
-        <% end %>
-          </div>
+				<div class="account-page__box-container">
+					<% if @image_searches.empty? %>
+						<h3>No results found</h3>
+					<% else %>
+						<% @image_searches.each_with_index do |search, index| %>
+							<%= render partial: "image_search_history_box", locals: { search: search, index: index } %>
+						<% end %>
+					<% end %>
         </div>
-      <%== pagy_nav(@pagy_image_searches) if @pagy_image_searches.pages > 1 %>
+      </div>
+			<%== pagy_nav(@pagy_image_searches) if @pagy_image_searches.pages > 1 %>
     </div>
   </div>
 </div>
