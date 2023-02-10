@@ -12,6 +12,9 @@
                  locals: { label: "Media Authenticity Category",
                  value: archive_item.media_review.media_authenticity_category } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
+                 locals: { label: "Original Media Context Description",
+                 value: archive_item.media_review.original_media_context_description } %>
+      <%= render partial: "media_vault/media/archive_item_metadata_item",
                  locals: { label: "Taken Down?",
                  value: archive_item.media_review.taken_down ? "True" : "False" } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
