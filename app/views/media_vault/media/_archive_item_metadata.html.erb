@@ -1,0 +1,58 @@
+<div class="archive-item archive-item--boxed">
+  <div class="archive-item__inner">
+    <div class="author__display-name">
+      Additional MediaReview:
+    </div>
+    <br />
+    <div class="grid grid-cols-2 grid-flow-row gap-4">
+      <%= render partial: "media_vault/media/archive_item_metadata_item",
+                 locals: { label: "Original Media Link",
+                 url: archive_item.media_review.original_media_link } %>
+      <%= render partial: "media_vault/media/archive_item_metadata_item",
+                 locals: { label: "Media Authenticity Category",
+                 value: archive_item.media_review.media_authenticity_category } %>
+      <%= render partial: "media_vault/media/archive_item_metadata_item",
+                 locals: { label: "Taken Down?",
+                 value: archive_item.media_review.taken_down ? "True" : "False" } %>
+      <%= render partial: "media_vault/media/archive_item_metadata_item",
+                 locals: { label: "Date Published",
+                 time: archive_item.media_review.date_published } %>
+      <%= render partial: "media_vault/media/archive_item_metadata_item",
+                 locals: { label: "Fact Check URL",
+                 url: archive_item.media_review.url } %>
+    </div>
+  </div>
+</div>
+
+<% if archive_item.media_review.claim_reviews.count > 0 %>
+<% archive_item.media_review.claim_reviews.each do |claim_review| %>
+<div class="archive-item archive-item--boxed">
+  <div class="archive-item__inner">
+    <div class="author__display-name">
+      Claim Review:
+    </div>
+    <br />
+    <div class="grid grid-cols-2 grid-flow-row gap-4">
+      <%= render partial: "media_vault/media/archive_item_metadata_item",
+                 locals: { label: "Claim Reviewed",
+                 value: claim_review.claim_reviewed } %>
+      <%= render partial: "media_vault/media/archive_item_metadata_item",
+                 locals: { label: "URL",
+                 url: claim_review.url } %>
+      <%= render partial: "media_vault/media/archive_item_metadata_item",
+                 locals: { label: "Author",
+                 json: claim_review.author } %>
+      <%= render partial: "media_vault/media/archive_item_metadata_item",
+                 locals: { label: "Date Published",
+                 time: claim_review.date_published } %>
+      <%= render partial: "media_vault/media/archive_item_metadata_item",
+                 locals: { label: "Item Reviewed",
+                 json: claim_review.item_reviewed } %>
+      <%= render partial: "media_vault/media/archive_item_metadata_item",
+                 locals: { label: "Fact Check URL",
+                 json: claim_review.review_rating } %>
+    </div>
+  </div>
+</div>
+<% end %>
+<% end %>

@@ -1,0 +1,25 @@
+<div>
+  <div class="archive-item__metadatum__label"><%= label %></div>
+  <div class="archive-item__metadatum__value">
+    <% if defined?(url) %>
+      <%= link_to url %>
+    <% elsif defined?(value) %>
+      <%= value %>
+    <% elsif defined?(time) %>
+      <%= time %>
+    <% elsif defined?(json) %>
+      <% json.keys.each do |key| %>
+        <% if json[key].class == Hash %>
+          <div><%= "#{key}:" %></div>
+          <% json[key].keys.each do |nested_key| %>
+            <div>&nbsp;&nbsp;&nbsp;<%= nested_key %>: <%= json[key][nested_key] %></div>
+          <% end %>
+        <% else %>
+          <%= render partial: "media_vault/media/archive_item_metadata_item",
+                 locals: { label: key,
+                 value: json[key] } %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
