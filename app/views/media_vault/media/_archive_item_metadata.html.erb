@@ -40,17 +40,17 @@
                  locals: { label: "URL",
                  url: claim_review.url } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Author",
-                 json: claim_review.author } %>
-      <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Date Published",
-                 time: claim_review.date_published } %>
-      <%= render partial: "media_vault/media/archive_item_metadata_item",
                  locals: { label: "Item Reviewed",
                  json: claim_review.item_reviewed } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
                  locals: { label: "Fact Check URL",
                  json: claim_review.review_rating } %>
+      <%= render partial: "media_vault/media/archive_item_metadata_item",
+                 locals: { label: "Author",
+                 json: claim_review.author } %>
+      <%= render partial: "media_vault/media/archive_item_metadata_item",
+                 locals: { label: "Date Published",
+                 time: claim_review.date_published } %>
     </div>
   </div>
 </div>
