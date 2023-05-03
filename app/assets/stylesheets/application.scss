@@ -20,6 +20,11 @@
 @use "search_results";
 @use "tables";
 @use "typography";
+@use "account";
+@use "text_search_history_box";
+@use "image_search_history_box";
+@use "account_update_box";
+
 
 // Entity components
 @use "archive_items";

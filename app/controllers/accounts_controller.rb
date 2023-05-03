@@ -34,18 +34,23 @@ class AccountsController < ApplicationController
 
   sig { void }
   def index
-    @pagy_text_searches, @text_searches = pagy(TextSearch.where(user: current_user).order("created_at DESC"), page_param: :text_search_page, items: 10)
-    @pagy_image_searches, @image_searches = pagy(ImageSearch.where(user: current_user).order("created_at DESC"), page_param: :image_search_page, items: 7)
+    @pagy_text_searches, @text_searches = pagy(TextSearch.where(user: current_user).order("created_at DESC"), page_param: :text_search_page, items: 50)
+    @pagy_image_searches, @image_searches = pagy(ImageSearch.where(user: current_user).order("created_at DESC"), page_param: :image_search_page, items: 20)
   end
 
   # A class representing the allowed params into the `change_password` endpoint
   class ChangePasswordParams < T::Struct
     const :password, String
-    const :confirmed_password, String
+    const :password_confirmation, String
   end
 
   class ChangeEmailParams < T::Struct
     const :email, String
+    const :email_confirmation, String
+  end
+
+  class DestroyAccountParams < T::Struct
+    const :password_for_deletion, String
   end
 
   class SetupAccountParams < T::Struct
@@ -148,7 +153,33 @@ class AccountsController < ApplicationController
     begin
       begin
         webauthn_credential = relying_party(request.referer).verify_registration(typed_params.publicKeyCredential, session[:webauthn_credential_register_challenge])
-      rescue StandardError
+      rescue WebAuthn::OriginVerificationError
+        logger.warn("***********************************")
+        logger.warn("Error setting up webauthn: Origin verification failed")
+        logger.warn("Requested origin: #{request.referrer}")
+        logger.warn("Allowed origin: #{ENV["AUTH_BASE_HOST"]}")
+        logger.warn("User: #{current_user.email}")
+        logger.warn("Time: #{Time.now}")
+        logger.warn("***********************************")
+
+        render json: {
+          errorPartial:
+            render_to_string(
+              partial: "accounts/setup_mfa_error",
+              formats: :html,
+              layout: false,
+              locals: { error: "Error validating credentials: Origin mismatch. Please contact us when you receive this message with timestamp #{Time.now}." }
+            )
+        }
+        return
+
+      rescue StandardError => e
+        logger.warn("***********************************")
+        logger.warn("Error setting up webauthn: #{e}")
+        logger.warn("User: #{current_user.email}")
+        logger.warn("Time: #{Time.now}")
+        logger.warn("***********************************")
+
         render json: {
           errorPartial:
             render_to_string(
@@ -186,6 +217,12 @@ class AccountsController < ApplicationController
         }
       end
     rescue WebAuthn::Error => e
+      logger.warn("***********************************")
+      logger.warn("Error setting up webauthn: #{e}")
+      logger.warn("User: #{current_user.email}")
+      logger.warn("Time: #{Time.now}")
+      logger.warn("***********************************")
+
       render json: {
           errorPartial:
             render_to_string(
@@ -233,14 +270,16 @@ class AccountsController < ApplicationController
   def change_password
     typed_params = TypedParams[ChangePasswordParams].new.extract!(params)
 
-    current_user.reset_password(typed_params.password, typed_params.confirmed_password)
+    current_user.reset_password(typed_params.password, typed_params.password_confirmation)
     # For some reason, despite having the settings correct, changing the password logs the user out
     # This logs them straight back in
     bypass_sign_in(current_user)
 
     respond_to do |format|
-      if typed_params.password != typed_params.confirmed_password
+      if typed_params.password != typed_params.password_confirmation
         flash.now[:alert] = "Passwords did not match. Please try again."
+      elsif typed_params.password.length < 6
+        flash.now[:alert] = "Please use a minimum of 6 characters in your password"
       else
         flash.now[:alert] = "Password updated."
       end
@@ -253,10 +292,18 @@ class AccountsController < ApplicationController
   sig { void }
   def change_email
     typed_params = TypedParams[ChangeEmailParams].new.extract!(params)
-    current_user.email = typed_params.email
-    current_user.save
-    respond_to do |format|
+
+    if typed_params.email != typed_params.email_confirmation
+      flash.now[:alert] = "Email addresses did not match. Please try again."
+    elsif URI::MailTo::EMAIL_REGEXP.match(typed_params.email).nil?
+      flash.now[:alert] = "Email address was improperly formatted. Please try again."
+    else
+      current_user.email = typed_params.email
+      current_user.save
       flash.now[:alert] = "We just sent a confirmation message to the email address you provided. Please check your inbox and follow the confirmation link in the message."
+    end
+
+    respond_to do |format|
       format.turbo_stream { render turbo_stream: [
         turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
       ] }
@@ -264,10 +311,21 @@ class AccountsController < ApplicationController
   end
 
   sig { void }
-  def destroy
-    user = User.find(params[:user])
-    user.destroy
-    redirect_to "/users/sign_in"
+  def destroy_account
+    typed_params = TypedParams[DestroyAccountParams].new.extract!(params)
+
+    if current_user.valid_password?(typed_params.password_for_deletion)
+      current_user.destroy
+      redirect_to "/users/sign_in"
+      flash[:alert] = "Your account was deleted"
+    else
+      flash.now[:warning] = "Incorrect password. If you would like to delete your account, please enter the corect password."
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: [
+          turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
+        ] }
+      end
+    end
   end
 
   sig { void }

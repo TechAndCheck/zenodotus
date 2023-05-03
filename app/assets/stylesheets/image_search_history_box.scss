@@ -1,0 +1,14 @@
+@use "shared";
+
+.image-search-history-box {
+	text-align: left;
+}
+
+.image-search-history-box__metadata {
+	justify-content: flex-start;
+
+}
+
+.image-search-history-box__metadatum__title {
+	font-weight: 600;
+}

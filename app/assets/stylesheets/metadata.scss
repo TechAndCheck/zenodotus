@@ -1,0 +1,16 @@
+@use "shared";
+
+.metadata {
+  --metadata--external-spacing: 5rem;
+  --metadata--internal-spacing: 1rem;
+  --metadata--title-size: 1rem;
+  --metadata--header-size: 5rem;
+  --metadata--detail-size: 1.4rem;
+
+  margin: var(--metadata--external-spacing) 0;
+  display: flex;
+  align-items: center;
+
+  transition-property: gap;
+
+}
