@@ -153,7 +153,33 @@ class AccountsController < ApplicationController
     begin
       begin
         webauthn_credential = relying_party(request.referer).verify_registration(typed_params.publicKeyCredential, session[:webauthn_credential_register_challenge])
-      rescue StandardError
+      rescue WebAuthn::OriginVerificationError
+        logger.warn("***********************************")
+        logger.warn("Error setting up webauthn: Origin verification failed")
+        logger.warn("Requested origin: #{request.referrer}")
+        logger.warn("Allowed origin: #{ENV["AUTH_BASE_HOST"]}")
+        logger.warn("User: #{current_user.email}")
+        logger.warn("Time: #{Time.now}")
+        logger.warn("***********************************")
+
+        render json: {
+          errorPartial:
+            render_to_string(
+              partial: "accounts/setup_mfa_error",
+              formats: :html,
+              layout: false,
+              locals: { error: "Error validating credentials: Origin mismatch. Please contact us when you receive this message with timestamp #{Time.now}." }
+            )
+        }
+        return
+
+      rescue StandardError => e
+        logger.warn("***********************************")
+        logger.warn("Error setting up webauthn: #{e}")
+        logger.warn("User: #{current_user.email}")
+        logger.warn("Time: #{Time.now}")
+        logger.warn("***********************************")
+
         render json: {
           errorPartial:
             render_to_string(
@@ -190,6 +216,12 @@ class AccountsController < ApplicationController
         }
       end
     rescue WebAuthn::Error => e
+      logger.warn("***********************************")
+      logger.warn("Error setting up webauthn: #{e}")
+      logger.warn("User: #{current_user.email}")
+      logger.warn("Time: #{Time.now}")
+      logger.warn("***********************************")
+
       render json: {
           errorPartial:
             render_to_string(

@@ -25,6 +25,17 @@ class Users::SessionsController < Devise::SessionsController
     # This will redirect back to the login page and handle flashes and such if it's invalid
     warden.authenticate!(auth_options) if user.nil? || !user.valid_password?(params["user"][:password])
 
+    # If the user doesn't have MFA setup we flush them over to the setup
+    if user.webauthn_credentials.empty?
+      flash[:notice] = "You must setup MFA before you can login"
+
+      # We have to log the user in before they set up MFA
+      # I'm hoping that this doesn't open up any security issues, but this shouldn't appear unless
+      # it's authenticated in the lines above anyways
+      sign_in(user)
+      redirect_to(account_setup_mfa_path) && return
+    end
+
     # Set the user to the session for just the next step
     session[:mfa_validate_user] = user.id
 
