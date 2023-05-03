@@ -65,30 +65,40 @@
             <% end %>
         </div>
     </div>
-    <div class="archive-item__metadata">
-        <div class="icon-prefixed">
-          <%= use_svg publishing_platform_shortname, svg_attrs: { class: "icon", aria: { hidden: true } } %>
-          <div class="archive-item__metadatum">
-              <div class="archive-item__metadatum__label">Published on <%= publishing_platform_display_name %></div>
-              <time
-                  class="archive-item__metadatum__value"
-                  datetime="<%= published_at.iso8601 %>"
-                  data-media-vault--archive-target="timestamp"
-              >
-                  <%= published_at %>
-              </time>
-          </div>
+    <div class="archive-item__metadata justify-between">
+        <div class="flex justify-start space-x-4">
+            <div class="icon-prefixed">
+              <%= use_svg publishing_platform_shortname, svg_attrs: { class: "icon", aria: { hidden: true } } %>
+              <div class="archive-item__metadatum">
+                  <div class="archive-item__metadatum__label">Published on <%= publishing_platform_display_name %></div>
+                  <time
+                      class="archive-item__metadatum__value"
+                      datetime="<%= published_at.iso8601 %>"
+                      data-media-vault--archive-target="timestamp"
+                  >
+                      <%= published_at %>
+                  </time>
+              </div>
+            </div>
+            <%= link_to media_vault_medium_path(archive_item_self.archive_item), class: "archive-item__metadatum" do %>
+                <div class="archive-item__metadatum__label">Archived</div>
+                <time
+                    class="archive-item__metadatum__value"
+                    datetime="<%= archived_at.iso8601 %>"
+                    data-media-vault--archive-target="timestamp"
+                >
+                    <%= archived_at %>
+                </time>
+            <% end %>
         </div>
-        <%= link_to media_vault_medium_path(archive_item_self.archive_item), class: "archive-item__metadatum" do %>
-            <div class="archive-item__metadatum__label">Archived</div>
-            <time
-                class="archive-item__metadatum__value"
-                datetime="<%= archived_at.iso8601 %>"
-                data-media-vault--archive-target="timestamp"
-            >
-                <%= archived_at %>
-            </time>
-        <% end %>
+        <div class="flex items-center flex-col">
+            <%= link_to media_vault_medium_path(archive_item_self.archive_item) do %>
+              <div class="archive-item__download__link">View media detail</div>
+            <% end %>
+            <%= link_to media_vault_export_media_metadata_path(archive_item_self.archive_item.id) do %>
+              <div class="archive-item__download__link">Download media metadata</div>
+            <% end %>
+        </div>
     </div>
   </div>
 </div>

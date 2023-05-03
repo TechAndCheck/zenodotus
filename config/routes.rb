@@ -12,7 +12,7 @@ Rails.application.routes.draw do
              only: [
                :sessions,
                :confirmations,
-               :passwords
+               :registrations
              ],
              controllers: {
                sessions: "users/sessions",
@@ -83,6 +83,7 @@ Rails.application.routes.draw do
 
       get "authors/:platform/:id", to: "authors#show", as: "author"
       resources :media, only: [:show]
+      get "media/download_metadata/:id", to: "media#export_metadata", as: "export_media_metadata"
     end
   end
 
@@ -105,7 +106,7 @@ Rails.application.routes.draw do
   get "/account", to: "accounts#index", as: "account"
   post "/account/change_password", to: "accounts#change_password", as: "change_password"
   post "/account/change_email", to: "accounts#change_email", as: "change_email"
-  delete "/account/users/", to: "accounts#destroy", as: "destroy_user"
+  post "/account/destroy_account", to: "accounts#destroy_account", as: "destroy_account"
   get "/account/setup/(:token)", to: "accounts#new", as: "new_account"
   post "/account/setup", to: "accounts#create", as: "create_account"
 

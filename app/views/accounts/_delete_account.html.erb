@@ -1,0 +1,34 @@
+<div class="account-page__box account-update-box" data-controller="delete-account">
+	<div class="account-page__box--settings__header">
+		<h3>Delete account</h3>
+		<p>
+			To delete your account, enter your password below, then accept the browser alert.
+		</p>
+	</div>
+	<div class="account-page__box--settings__form">
+		<%= form_with(url: destroy_account_path,
+									html: {
+										method: :post,
+										class: "form form--vertical",
+										data: {
+											action: "delete-account#confirmDeletion"
+										}
+									}) do |f| %>
+
+			<div class="field">
+				<%= f.password_field(
+					:password_for_deletion,
+					"data-delete-account-target": "passwordInput",
+					autofocus: true,
+					autocomplete: "new-password",
+					placeholder: "Password",
+					class: "input input--email") %>
+			</div>
+
+			<div class="actions">
+				<%= f.submit "Delete my account", class: "btn btn--submit" %>
+			</div>
+		<% end %>
+	</div>
+</div>
+

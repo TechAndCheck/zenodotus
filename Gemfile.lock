@@ -430,6 +430,7 @@ GEM
     sorbet-runtime (0.5.10549)
     sorbet-static (0.5.10460-universal-darwin-19)
     sorbet-static (0.5.10460-universal-darwin-21)
+    sorbet-static (0.5.10460-universal-darwin-22)
     sorbet-static (0.5.10460-x86_64-linux)
     sorted_set (1.0.3)
       rbtree
@@ -509,6 +510,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  arm64-darwin-22
   x86_64-darwin-19
   x86_64-linux
 
@@ -581,7 +583,7 @@ DEPENDENCIES
   zelkova
 
 RUBY VERSION
-   ruby 3.1.2p20
+   ruby 3.1.4p223
 
 BUNDLED WITH
    2.3.9

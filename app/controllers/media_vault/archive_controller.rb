@@ -90,7 +90,7 @@ class MediaVault::ArchiveController < MediaVaultController
   # Export entire archive of reviewed media to a JSON File
   sig { void }
   def export_archive_data
-    send_data ArchiveItem.generate_pruned_json,
+    send_data ArchiveItem.generate_json_for_export,
       type: "application/json",
       filename: "media_vault_archive.json"
   end
