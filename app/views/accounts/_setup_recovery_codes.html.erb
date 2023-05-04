@@ -1,0 +1,24 @@
+<div class="flex flex-col lg:basis-2/4 justify-center mb-8">
+  <div class="lg:basis-2/4 b2">
+    <h3>Account Recovery Codes</h3>
+    <p>
+      These codes can each be used to recover your account should you lose your two-factor device.
+      Save these in a secure place, preferably offline. You will not be able to access them again
+      after leaving this page.
+    </p>
+  </div>
+</div>
+
+<div class="flex flex-col lg:basis-2/4 items-center mb-8">
+  <% recovery_codes.each do |code| %>
+  <div class="h-8 setup_mfa--recovery_code">
+    <%= code %>
+  </div>
+  <% end %>
+</div>
+
+<div class="flex flex-col lg:basis-2/4 justify-center">
+  <div class="flex justify-center">
+    <button data-action="click->webauthn#finishSetup" class="btn btn--lg">Complete Setup</button>
+  </div>
+</div>

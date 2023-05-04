@@ -11,4 +11,8 @@
     top: -75px;
     position: relative;
   }
+
+  .setup_mfa--recovery_code {
+    font-family: shared.$font-family--monospace;
+  }
 }

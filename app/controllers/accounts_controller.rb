@@ -204,6 +204,7 @@ class AccountsController < ApplicationController
 
       if credential.save
         render json: { registration_status: "success" }
+
       else
         render json: {
           errorPartial:
@@ -234,6 +235,22 @@ class AccountsController < ApplicationController
     ensure
       session.delete(:webauthn_credential_register_challenge)
     end
+  end
+
+  sig { void }
+  def setup_recovery_codes
+    raise "Recovery codes already enabled for user." unless current_user.hashed_recovery_codes.empty?
+
+    recovery_codes = current_user.generate_recovery_codes
+    render json: {
+        recoveryCodePartial:
+          render_to_string(
+            partial: "accounts/setup_recovery_codes",
+            formats: :html,
+            layout: false,
+            locals: { recovery_codes: recovery_codes }
+          )
+      }
   end
 
   sig { void }

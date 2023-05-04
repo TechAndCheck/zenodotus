@@ -25,6 +25,8 @@ Rails.application.routes.draw do
       get "/", to: "users/sessions#mfa_validation", as: "mfa_validation"
       get "/webauthn", to: "users/sessions#begin_mfa_webauthn_validation", as: "begin_mfa_webauthn_validation"
       post "/webauthn", to: "users/sessions#finish_mfa_webauthn_validation", as: "finish_mfa_webauthn_validation"
+      get "/webauthn/use_recovery_code", to: "users/sessions#mfa_use_recovery_code", as: "mfa_use_recovery_code"
+      post "/webauthn/use_recovery_code", to: "users/sessions#mfa_validate_recovery_code", as: "mfa_validate_recovery_code"
     end
   end
 
@@ -114,6 +116,7 @@ Rails.application.routes.draw do
     get "/", to: "accounts#setup_mfa", as: "account_setup_mfa"
     get "/webauthn", to: "accounts#start_webauthn_setup", as: "account_start_webauthn_setup"
     post "/webauthn", to: "accounts#finish_webauthn_setup", as: "account_finish_webauthn_setup"
+    get "/webauthn/setup_recovery_codes", to: "accounts#setup_recovery_codes", as: "account_setup_recovery_codes"
   end
 
   get "/account/reset_password", to: "accounts#reset_password", as: "reset_password"

@@ -117,4 +117,54 @@ class UserTest < ActiveSupport::TestCase
       user.send_setup_instructions
     end
   end
+
+  test "can generate recovery codes" do
+    user = users(:fact_check_insights_user)
+
+    assert user.hashed_recovery_codes.empty?
+    recovery_codes = user.generate_recovery_codes
+    assert_not user.hashed_recovery_codes.empty?
+
+    assert_equal 10, recovery_codes.count
+    assert_equal 10, user.hashed_recovery_codes.count
+  end
+
+  test "can validate a recovery code" do
+    user = users(:fact_check_insights_user)
+    recovery_codes = user.generate_recovery_codes
+
+    assert user.validate_recovery_code(recovery_codes.first)
+    assert_equal 9, user.hashed_recovery_codes.count
+  end
+
+  test "fails on a invalid recovery code" do
+    user = users(:fact_check_insights_user)
+    user.generate_recovery_codes
+
+    assert_not user.validate_recovery_code("sldfkjsoifnwonwonwf")
+    assert_equal 10, user.hashed_recovery_codes.count
+  end
+
+  test "asserting an invalid code runs in the same time no matter how many have been removed" do
+    user = users(:fact_check_insights_user)
+    recovery_codes = user.generate_recovery_codes
+
+    start_time = Time.now
+    user.validate_recovery_code("llkfjoifjwoiknwoifnwffosnfosifnsoifns")
+    first_validate_time = Time.now - start_time
+
+    user.validate_recovery_code(recovery_codes.first)
+    user.validate_recovery_code(recovery_codes.first)
+    user.validate_recovery_code(recovery_codes.first)
+    user.validate_recovery_code(recovery_codes.first)
+    user.validate_recovery_code(recovery_codes.first)
+    user.validate_recovery_code(recovery_codes.first)
+
+    start_time = Time.now
+    user.validate_recovery_code("llkfjoifjwoiknwoifnwffosnfosifnsoifns")
+    second_validate_time = Time.now - start_time
+
+    # Should run similarly
+    assert second_validate_time - first_validate_time < 0.4
+  end
 end
