@@ -10,6 +10,11 @@ class Users::SessionsController < Devise::SessionsController
   class FinishWebauthnValidationParams < T::Struct
     const :publicKeyCredential, Hash
   end
+
+  class FinishRecoverCodeValidationParams < T::Struct
+    const :recoveryCode, String
+  end
+
   # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
@@ -142,6 +147,53 @@ class Users::SessionsController < Devise::SessionsController
             )
         }
       end
+    end
+  end
+
+  def mfa_use_recovery_code
+    # Get the user from the session or go bye bye
+    user_id = session[:mfa_validate_user]
+    raise MFAValidationError if user_id.nil?
+
+    user = User.find(user_id)
+    raise MFAValidationError if user.nil?
+  rescue MFAValidationError
+    flash[:notice] = "You do not have access to the previous page"
+    redirect_to new_user_session_path
+  end
+
+  def mfa_validate_recovery_code
+    typed_params = TypedParams[FinishRecoverCodeValidationParams].new.extract!(params)
+
+    # Get the user from the session or go bye bye
+    user_id = session[:mfa_validate_user]
+    raise MFAValidationError if user_id.nil?
+
+    user = User.find(user_id)
+    raise MFAValidationError if user.nil?
+
+    # Validate the recovery code
+    raise MFAValidationError unless user.validate_recovery_code(typed_params.recoveryCode)
+
+    sign_in(user)
+
+    flash[:notice] = "You have successfully logged in with a recovery code, if you have lost your device please setup a new one in settings"
+    respond_to do |format|
+      format.json { render json: { authentication_status: "success" } }
+    end
+  rescue MFAValidationError
+    flash[:notice] = "Invalid recovery code."
+    respond_to do |format|
+      format.json {
+        render json: {
+          errorPartial:
+            render_to_string(
+              partial: "accounts/use_recovery_code_error",
+              formats: :html,
+              layout: false,
+            )
+        }
+      }
     end
   end
 

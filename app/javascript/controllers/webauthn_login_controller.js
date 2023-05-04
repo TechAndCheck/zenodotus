@@ -5,7 +5,7 @@ import Lottie from "lottie-web"
 
 export default class extends Controller {
   static values = {}
-  static targets = [ "output", "lock", "authenicateButton" ]
+  static targets = [ "output", "lock", "authenicateButton", "recoveryCode" ]
 
   async connect() {
     // Check if we're actually encrypting, if not, don't allow setup to continue.
@@ -74,6 +74,37 @@ export default class extends Controller {
       Turbo.visit("/", { action: "replace" })
     } else {
       this.lockTarget.innerHTML = finishedBodyJson["errorPartial"] + this.lockTarget.innerHTML
+      this.lockTarget.firstChild.classList.add("transition-opacity", "duration-500", "ease-out")
+      this.lockTarget.firstChild.classList.replace("opacity-0", "opacity-100")
+    }
+  }
+
+  async authenticateRecoveryCode() {
+    // Login with recovery code
+    // and then do the same animation as above
+    // and then redirect to the homepage
+    // or show an alert if it fails
+    //
+    // Are the recovery codes hashed in the database when saved?
+    // Yes
+    // hashed_keys = keys.map { |key| BCrypt::Password.create(key) }
+
+    const response = await post("/users/sign_in/mfa/webauthn/use_recovery_code.json", {
+      body: { recoveryCode: this.recoveryCodeTarget.value },
+      contentType: "application/json",
+      responseKind: "json"
+    })
+
+    const responseBody = await response.text
+    const bodyJson = JSON.parse(responseBody)
+
+    if(bodyJson["authentication_status"] == "success") {
+      this.authenicateButtonTarget.textContent = "Logging In..."
+      this.lockAnimation.play()
+      await new Promise(r => setTimeout(r, 2000))
+      Turbo.visit("/", { action: "replace" })
+    } else {
+      this.lockTarget.innerHTML = bodyJson["errorPartial"] + this.lockTarget.innerHTML
       this.lockTarget.firstChild.classList.add("transition-opacity", "duration-500", "ease-out")
       this.lockTarget.firstChild.classList.replace("opacity-0", "opacity-100")
     }

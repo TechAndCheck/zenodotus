@@ -1,17 +1,22 @@
-<% @title_tag = "Log in" %>
+<% @title_tag = "Log in - Recovery Code" %>
 
 <div class="box box--sm box--miniform">
   <!-- TODO: customize depending on the insights/vault split -->
   <p>
-    To continue your log in, authenticate with a previously registered two factor authentication key.
+    To continue your log in, authenticate with a previously unused recovery code.
   </p>
   <div data-controller="webauthn-login" class="mb-5">
     <div data-webauthn-login-target="lock" class="setup_mfa--lock"></div>
+    <input
+      type="text"
+      placeholder="Recovery code"
+      class="mb-5"
+      data-webauthn-login-target="recoveryCode">
     <button
-      data-action="click->webauthn-login#authenticateWebauthn"
+      data-action="click->webauthn-login#authenticateRecoveryCode"
       data-webauthn-login-target="authenicateButton"
       class="btn btn--lg">
-      Click Here To Authenticate
+      Click Here To Login
     </button>
   </div>
   <p>
