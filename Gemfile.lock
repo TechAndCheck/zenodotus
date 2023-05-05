@@ -351,6 +351,7 @@ GEM
       netrc (~> 0.8)
     rexml (3.2.5)
     rolify (6.0.0)
+    rotp (6.2.2)
     rubocop (1.36.0)
       json (~> 2.3)
       parallel (~> 1.10)
@@ -549,6 +550,7 @@ DEPENDENCIES
   rake
   redis (~> 4.0)
   rolify (~> 6.0)
+  rotp (~> 6.2)
   rubocop
   rubocop-minitest
   rubocop-performance
