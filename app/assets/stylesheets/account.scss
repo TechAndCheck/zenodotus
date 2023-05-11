@@ -13,11 +13,16 @@ Used for boxes on the account page. Similar to .box in boxes.scss, but has only 
 	margin-bottom: var(--box--external-spacing);
 
 	max-width: shared.$screen-2xs-ceiling;
+	height: fit-content;
 	background-color: white;
 	border: 1px solid lightgray;
 	box-shadow: shared.$shadow--3;
 
 	transition-property: margin, padding;
+}
+
+.account-page__box--double-width {
+	max-width: shared.$screen-sm-ceiling;
 }
 
 /*
@@ -45,6 +50,14 @@ Account page settings boxes are segmented 50/50 between headings and forms
 
 .account-page__box--settings__form {
 	height: 50%
+}
+
+.account-page__box--settings__list {
+	// height: 50%
+}
+
+.account-page__box--settings__list--section {
+	margin-bottom: 20px;
 }
 
 /* Account page navigation sidebar

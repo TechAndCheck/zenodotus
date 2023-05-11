@@ -1,10 +1,14 @@
 # typed: strict
 
+require "bcrypt"
+
 class User < ApplicationRecord
   rolify
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :trackable, :lockable, :confirmable
+
+  has_many :webauthn_credentials, dependent: :destroy
 
   has_many :api_keys, dependent: :delete_all
   has_many :archive_items, foreign_key: :submitter_id, dependent: :nullify
@@ -21,6 +25,7 @@ class User < ApplicationRecord
 
   validates :name, presence: true
   validates :email, presence: true
+  validates :webauthn_id, uniqueness: true, allow_nil: true
 
   # `Devise::Recoverable#set_reset_password_token` is a protected method, which prevents us from
   # calling it directly. Since we need to be able to do that for tests and for duck-punching other
@@ -89,6 +94,87 @@ class User < ApplicationRecord
   sig { params(applicant: Applicant).void }
   def assign_applicant_roles(applicant)
     self.add_role :media_vault_user if applicant.source_site == SiteDefinitions::MEDIA_VAULT[:shortname]
+  end
+
+  sig { returns(T::Array[String]) }
+  def generate_recovery_codes
+    raise "Recovery codes already generated for user" unless self.hashed_recovery_codes.empty?
+    # For ease the format is a 24 hex. When we show it to the user we'll do it like XXXXX-XXXXXX-XXXXXX-XXXXXX
+    # This above still needs to happen
+    # We'll have to remember to remove the dashes before checking, but not bad.
+    #
+    # There are ten codes when generated
+    keys = 10.times.map { SecureRandom.hex(24) }
+
+    # Get the BCrypt (it's slow and long, that's good here, and included in Rails already) version of each
+    # which is what we actually save
+    hashed_keys = keys.map { |key| BCrypt::Password.create(key) }
+
+    # Save the hashed keys, and return the plaintext ones
+    self.update!(hashed_recovery_codes: hashed_keys)
+    keys
+  end
+
+  sig { params(recovery_code: String, invalidate_after_confirm: T::Boolean).returns(T::Boolean) }
+  def validate_recovery_code(recovery_code, invalidate_after_confirm: true)
+    timing_attack_key = BCrypt::Password.create(SecureRandom.hex(24))
+
+    self.hashed_recovery_codes.each do |hashed_recovery_code|
+      # If it works, we remove it if we're invalidating and return true
+      if BCrypt::Password.new(hashed_recovery_code) == recovery_code
+        if invalidate_after_confirm
+          self.hashed_recovery_codes.delete(hashed_recovery_code)
+          self.update!(
+            hashed_recovery_codes: self.hashed_recovery_codes
+          )
+        end
+
+        return true
+      end
+    end
+
+    # To prevent timing attacks we want to make sure we're always checking ten strings
+    (10 - self.hashed_recovery_codes.count).times do
+      # Just do a compare to kill time but ignore the results
+      recovery_code == timing_attack_key
+    end
+
+    false # Return false since if we're here there's no comparison
+  end
+
+  # Check if Webauthn or TOTP is enabled
+  sig { returns(T::Boolean) }
+  def mfa_enabled?
+    self.webauthn_credentials.count.positive? || self.totp_confirmed
+  end
+
+  # Generate a TOTP provisioning uri, overwriting the old one if it's not empty
+  # This is generally implemented to support Firefox, though anyone can use it
+  # The returned URI should be rendered as a QRCode and scanned by the user's authenticator app
+  sig { returns(String) }
+  def generate_totp_provisioning_uri
+    # Prevent an attacker from overwriting a confirmed TOTP code
+    raise "TOTP already setup" if self.totp_confirmed == true
+
+    self.update!({ totp_secret: ROTP::Base32.random_base32 })
+
+    totp = ROTP::TOTP.new(self.totp_secret, issuer: "Fact Check Insights\\Media Vault")
+    totp.provisioning_uri(self.email)
+  end
+
+  def clear_totp_secret
+    self.update!({ totp_secret: nil, totp_confirmed: false })
+  end
+
+  # Validate a TOTP code, returning true or false
+  sig { params(totp_code: String).returns(T::Boolean) }
+  def validate_totp_login_code(totp_code)
+    return false if self.totp_secret.nil? # If we're not set up just always reject it all
+
+    totp = ROTP::TOTP.new(self.totp_secret)
+    verify_result = totp.verify(totp_code, drift_behind: 15, at: Time.now)
+
+    !verify_result.nil?
   end
 
   sig { returns(T::Boolean) }

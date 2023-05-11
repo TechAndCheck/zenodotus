@@ -70,6 +70,8 @@ Rails.application.configure do
   # Prefix job queues names to avoid collisions
   config.active_job.queue_name_prefix = "zenodotus_development"
 
+  config.importmap.sweep_cache = true
+
   config.hosts << Figaro.env.FACT_CHECK_INSIGHTS_HOST
   config.hosts << Figaro.env.MEDIA_VAULT_HOST
 end

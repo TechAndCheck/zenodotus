@@ -9,11 +9,26 @@ class AccountsController < ApplicationController
   rescue_from InvalidTokenError, with: :invalid_token_error
   rescue_from InvalidUpdatePasswordError, with: :invalid_update_password_error
 
-  before_action :authenticate_user!, except: [
+  before_action :authenticate_user!, only: [
+    :setup_mfa,
+    :start_webauthn_setup,
+    :finish_webauthn_setup,
+    :start_totp_setup,
+    :finish_totp_setup,
+    :clear_mfa,
+  ]
+
+  before_action :authenticate_user_and_setup!, except: [
     :new,
     :create,
     :reset_password,
     :send_password_reset_email,
+    :setup_mfa,
+    :start_webauthn_setup,
+    :finish_webauthn_setup,
+    :start_totp_setup,
+    :finish_totp_setup,
+    :clear_mfa
   ]
 
   before_action :must_be_logged_out, only: [
@@ -40,6 +55,10 @@ class AccountsController < ApplicationController
     const :email_confirmation, String
   end
 
+  class DeleteMFADeviceParams < T::Struct
+    const :device_id, String
+  end
+
   class DestroyAccountParams < T::Struct
     const :password_for_deletion, String
   end
@@ -56,6 +75,11 @@ class AccountsController < ApplicationController
 
   class ResetPasswordParams < T::Struct
     const :email, String
+  end
+
+  class FinishWebauthnSetupParams < T::Struct
+    const :nickname, String
+    const :publicKeyCredential, Hash
   end
 
   sig { void }
@@ -100,10 +124,189 @@ class AccountsController < ApplicationController
     raise InvalidTokenError if @user.new_record?
     raise InvalidUpdatePasswordError if typed_params.password.blank? || @user.invalid?
 
-    @user.remove_role :new_user
-
     sign_in @user
-    redirect_to after_sign_in_path_for(@user)
+    # From here branch to set up 2FA
+    redirect_to account_setup_mfa_path
+  end
+
+  sig { void }
+  def setup_mfa
+    current_user.remove_role :new_user
+  end
+
+  sig { void }
+  def start_totp_setup
+    totp_provisioning_uri = current_user.generate_totp_provisioning_uri
+    totp_qr = RQRCode::QRCode.new(totp_provisioning_uri)
+
+    totp_qr_png = Base64.encode64(totp_qr.as_png(size: 400).to_blob)
+
+    render json: {
+          partial:
+            render_to_string(
+              partial: "accounts/start_totp_setup",
+              formats: :html,
+              layout: false,
+              locals: { totp_qr_png: totp_qr_png }
+            )
+        }
+  end
+
+  sig { void }
+  def finish_totp_setup
+    if current_user.validate_totp_login_code(params[:totp_setup_code])
+      current_user.update!({ totp_confirmed: true })
+      render json: { registration_status: "success" } && return
+    end
+
+    render json: {
+      errorPartial:
+        render_to_string(
+          partial: "accounts/setup_mfa_error",
+          formats: :html,
+          layout: false,
+          locals: { error: "Invalid TOTP authentication code. Please try again" }
+        )
+    }
+  end
+
+  sig { void }
+  def start_webauthn_setup
+    if !current_user.webauthn_id
+      current_user.update!(webauthn_id: WebAuthn.generate_user_id)
+    end
+
+    options = relying_party(request.referer).options_for_registration(
+      user: { id: current_user.webauthn_id, display_name: current_user.name, name: current_user.email },
+      exclude: current_user.webauthn_credentials.pluck(:external_id)
+    )
+
+    # Store the newly generated challenge somewhere so you can have it
+    # for the verification phase.
+    session[:webauthn_credential_register_challenge] = options.challenge
+    options = { publicKey: options }
+
+    # redirect_to after_sign_in_path_for(current_user)
+    respond_to do |format|
+      format.json { render json: options }
+    end
+  end
+
+  sig { void }
+  def finish_webauthn_setup
+    typed_params = TypedParams[FinishWebauthnSetupParams].new.extract!(params)
+
+    begin
+      begin
+        webauthn_credential = relying_party(request.referer).verify_registration(typed_params.publicKeyCredential, session[:webauthn_credential_register_challenge])
+      rescue WebAuthn::OriginVerificationError
+        logger.warn("***********************************")
+        logger.warn("Error setting up webauthn: Origin verification failed")
+        logger.warn("Requested origin: #{request.referrer}")
+        logger.warn("Allowed origin: #{ENV["AUTH_BASE_HOST"]}")
+        logger.warn("User: #{current_user.email}")
+        logger.warn("Time: #{Time.now}")
+        logger.warn("***********************************")
+
+        render json: {
+          errorPartial:
+            render_to_string(
+              partial: "accounts/setup_mfa_error",
+              formats: :html,
+              layout: false,
+              locals: { error: "Error validating credentials: Origin mismatch. Please contact us when you receive this message with timestamp #{Time.now}." }
+            )
+        }
+        return
+
+      rescue StandardError => e
+        logger.warn("***********************************")
+        logger.warn("Error setting up webauthn: #{e}")
+        logger.warn("User: #{current_user.email}")
+        logger.warn("Time: #{Time.now}")
+        logger.warn("***********************************")
+
+        render json: {
+          errorPartial:
+            render_to_string(
+              partial: "accounts/setup_mfa_error",
+              formats: :html,
+              layout: false,
+              locals: { error: "Error validating credentials, please contact us if you continue to have problems." }
+            )
+        }
+        return
+      end
+
+      # The validation would raise WebAuthn::Error so if we are here, the credentials are valid, and we can save it
+      # TODO: Add "type" to this
+      credential = current_user.webauthn_credentials.new(
+          external_id: webauthn_credential.id,
+          public_key: webauthn_credential.public_key,
+          nickname: typed_params.nickname,
+          sign_count: webauthn_credential.sign_count,
+          key_type: webauthn_credential.type,
+        )
+
+      if credential.save
+        render json: { registration_status: "success" }
+
+      else
+        render json: {
+          errorPartial:
+            render_to_string(
+              partial: "accounts/setup_mfa_error",
+              formats: :html,
+              layout: false,
+              locals: {}
+            )
+        }
+      end
+    rescue WebAuthn::Error => e
+      logger.warn("***********************************")
+      logger.warn("Error setting up webauthn: #{e}")
+      logger.warn("User: #{current_user.email}")
+      logger.warn("Time: #{Time.now}")
+      logger.warn("***********************************")
+
+      render json: {
+          errorPartial:
+            render_to_string(
+              partial: "accounts/setup_mfa_error",
+              formats: :html,
+              layout: false,
+              locals: { error: e }
+            )
+        }
+    ensure
+      session.delete(:webauthn_credential_register_challenge)
+    end
+  end
+
+  sig { void }
+  def setup_recovery_codes
+    raise "Recovery codes already enabled for user." unless current_user.hashed_recovery_codes.empty?
+
+    recovery_codes = current_user.generate_recovery_codes
+    render json: {
+        recoveryCodePartial:
+          render_to_string(
+            partial: "accounts/setup_recovery_codes",
+            formats: :html,
+            layout: false,
+            locals: { recovery_codes: recovery_codes }
+          )
+      }
+  rescue StandardError => e
+    render json: {
+        errorPartial:
+          render_to_string(
+            partial: "accounts/setup_mfa_error",
+            formats: :html,
+            layout: false,
+            locals: { error: e }
+          )
+      }
   end
 
   sig { void }
@@ -112,7 +315,7 @@ class AccountsController < ApplicationController
     email = typed_params.email
     @user = User.find_by(email: email)
     @user.send_reset_password_instructions unless @user.nil?
-    redirect_to "/users/sign_in", notice: "A recovery email has been sent to the provided email addres "
+    redirect_to "/users/sign_in", notice: "A recovery email has been sent to the provided email address"
   end
 
   sig { void }
@@ -164,6 +367,57 @@ class AccountsController < ApplicationController
   end
 
   sig { void }
+  def destroy_mfa_device
+    typed_params = TypedParams[DeleteMFADeviceParams].new.extract!(params)
+
+    # Verify that they're not deleting the last device
+    if current_user.webauthn_credentials.count == 1 && current_user.totp_confirmed == false
+      flash[:error] = "You cannot delete your last MFA device. Please add another before deleting this one."
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: [
+          turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash })
+        ]}
+      end
+      return
+    end
+
+    current_user.webauthn_credentials.find_by(id: typed_params.device_id).destroy
+    flash[:alert] = "MFA device deleted."
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: [
+        turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
+        turbo_stream.replace("manage_mfa", partial: "accounts/manage_mfa")
+      ] }
+    end
+  end
+
+  sig { void }
+  def destroy_totp_device
+    # Verify that they're not deleting the last device
+    if current_user.webauthn_credentials.count.zero? && current_user.totp_confirmed == true
+      flash[:error] = "You cannot delete your last MFA device. Please add another before deleting this one."
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: [
+          turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash })
+        ]}
+      end
+      return
+    end
+
+    current_user.clear_totp_secret
+    flash[:alert] = "MFA device deleted."
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: [
+        turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
+        turbo_stream.replace("manage_mfa", partial: "accounts/manage_mfa")
+      ] }
+    end
+  end
+
+
+  sig { void }
   def destroy_account
     typed_params = TypedParams[DestroyAccountParams].new.extract!(params)
 
@@ -176,7 +430,7 @@ class AccountsController < ApplicationController
       respond_to do |format|
         format.turbo_stream { render turbo_stream: [
           turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
-        ] }
+        ]}
       end
     end
   end

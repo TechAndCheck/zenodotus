@@ -1,0 +1,18 @@
+@use "shared";
+
+#page--accounts--setup_mfa {
+  background-color: shared.$color--brand--fact_check_insights;
+
+  .setup_mfa--lock {
+    height: 400px;
+  }
+
+  .setup_mfa--webauthn_button {
+    top: -75px;
+    position: relative;
+  }
+
+  .setup_mfa--recovery_code {
+    font-family: shared.$font-family--monospace;
+  }
+}

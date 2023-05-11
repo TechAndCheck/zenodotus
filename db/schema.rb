@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_09_152113) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_10_155606) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -319,10 +319,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_09_152113) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name", null: false
+    t.string "webauthn_id"
+    t.string "hashed_recovery_codes", default: [], null: false, array: true
+    t.string "totp_secret"
+    t.boolean "totp_confirmed", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
+    t.index ["webauthn_id"], name: "index_users_on_webauthn_id", unique: true
   end
 
   create_table "users_roles", id: false, force: :cascade do |t|
@@ -331,6 +336,20 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_09_152113) do
     t.index ["role_id"], name: "index_users_roles_on_role_id"
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
     t.index ["user_id"], name: "index_users_roles_on_user_id"
+  end
+
+  create_table "webauthn_credentials", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "external_id", null: false
+    t.string "public_key", null: false
+    t.string "nickname", null: false
+    t.integer "sign_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "key_type", null: false
+    t.index ["external_id"], name: "index_webauthn_credentials_on_external_id", unique: true
+    t.index ["nickname", "user_id"], name: "index_webauthn_credentials_on_nickname_and_user_id", unique: true
+    t.index ["user_id"], name: "index_webauthn_credentials_on_user_id"
   end
 
   create_table "youtube_channels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -383,5 +402,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_09_152113) do
   add_foreign_key "text_searches", "users"
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"
+  add_foreign_key "webauthn_credentials", "users"
   add_foreign_key "youtube_videos", "youtube_posts"
 end

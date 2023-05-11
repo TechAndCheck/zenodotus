@@ -34,5 +34,7 @@ module Zenodotus
       api_key: Figaro.env.MAILGUN_API_KEY,
       domain: Figaro.env.MAIL_DOMAIN,
     }
+
+    config.force_ssl = true
   end
 end

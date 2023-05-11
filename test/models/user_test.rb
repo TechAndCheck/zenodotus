@@ -117,4 +117,76 @@ class UserTest < ActiveSupport::TestCase
       user.send_setup_instructions
     end
   end
+
+  test "can generate recovery codes" do
+    user = users(:fact_check_insights_user)
+
+    assert user.hashed_recovery_codes.empty?
+    recovery_codes = user.generate_recovery_codes
+    assert_not user.hashed_recovery_codes.empty?
+
+    assert_equal 10, recovery_codes.count
+    assert_equal 10, user.hashed_recovery_codes.count
+  end
+
+  test "can validate a recovery code" do
+    user = users(:fact_check_insights_user)
+    recovery_codes = user.generate_recovery_codes
+
+    assert user.validate_recovery_code(recovery_codes.first)
+    assert_equal 9, user.hashed_recovery_codes.count
+  end
+
+  test "fails on a invalid recovery code" do
+    user = users(:fact_check_insights_user)
+    user.generate_recovery_codes
+
+    assert_not user.validate_recovery_code("sldfkjsoifnwonwonwf")
+    assert_equal 10, user.hashed_recovery_codes.count
+  end
+
+  test "asserting an invalid code runs in the same time no matter how many have been removed" do
+    user = users(:fact_check_insights_user)
+    recovery_codes = user.generate_recovery_codes
+
+    start_time = Time.now
+    user.validate_recovery_code("llkfjoifjwoiknwoifnwffosnfosifnsoifns")
+    first_validate_time = Time.now - start_time
+
+    user.validate_recovery_code(recovery_codes.first)
+    user.validate_recovery_code(recovery_codes.first)
+    user.validate_recovery_code(recovery_codes.first)
+    user.validate_recovery_code(recovery_codes.first)
+    user.validate_recovery_code(recovery_codes.first)
+    user.validate_recovery_code(recovery_codes.first)
+
+    start_time = Time.now
+    user.validate_recovery_code("llkfjoifjwoiknwoifnwffosnfosifnsoifns")
+    second_validate_time = Time.now - start_time
+
+    # Should run similarly
+    assert second_validate_time - first_validate_time < 0.4
+  end
+
+  test "can generate a provisioning code for a mobile device for a user" do
+    user = users(:fact_check_insights_user)
+    uri = user.generate_totp_provisioning_uri
+
+    assert_not_nil user.totp_secret
+    assert_not_nil uri
+  end
+
+  test "can validate a totp login code for a user" do
+    user = users(:fact_check_insights_user)
+    user.generate_totp_provisioning_uri
+
+    assert user.validate_totp_login_code("123456") # TODO: Make this a real code somehow
+  end
+
+  test "can de-validate a wrong totp login code for a user" do
+    user = users(:fact_check_insights_user)
+    user.generate_totp_provisioning_uri
+
+    assert_equal false, user.validate_totp_login_code("123456")
+  end
 end

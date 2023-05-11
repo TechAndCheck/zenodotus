@@ -103,6 +103,34 @@ protected
   end
 
   sig { void }
+  def must_have_mfa_setup
+    return if current_user.nil? || current_user.mfa_enabled?
+    redirect_to account_setup_mfa_path, allow_other_host: false, flash: { error: "You must setup two-factor authentication before continuing." }
+  end
+
+  # We require users to have MFA enabled, so this stops them from accessing the site unless they do
+  sig { void }
+  def authenticate_user_and_setup!
+    return false unless authenticate_user!
+    must_have_mfa_setup
+  end
+
+  # TODO: Implement the following before landing, the debugger is there to remind you
+  sig { void }
+  def authenticate_and_require_mfa!
+    # debugger
+
+    # Make sure a user is logged in, then redirect them to the MFA page to authenticate before moving on
+    # We'll have to remember which page they were trying to get to, the full request, basically intercept
+    # it and replay it after validation.
+
+    authenticate_user_and_setup! # run normal validation first
+
+    # Probably see if we can save/store a request? IDK this is going to get complicated. Maybe we just
+    # keep it for logging in only?
+  end
+
+  sig { void }
   def authenticate_user_from_api_key!
     if params[:api_key].blank?
       render json: {
@@ -139,7 +167,7 @@ protected
   sig { void }
   def authenticate_super_user!
     # First we make sure they're logged in at all, this also sets the current user so we can check it
-    authenticate_user!
+    authenticate_user_and_setup!
 
     unless current_user.is_admin?
       redirect_back_or_to "/", allow_other_host: false, flash: { error: "You don’t have permission to access that page." }
@@ -152,5 +180,19 @@ protected
       layout: false,
       content_type: "text/html",
       status: :unauthorized
+  end
+
+  sig { params(origin: String).returns(WebAuthn::RelyingParty) }
+  def relying_party(origin)
+    uri = URI(origin)
+    unless uri.host == Figaro.env.FACT_CHECK_INSIGHTS_HOST || uri.host == Figaro.env.MEDIA_VAULT_HOST
+      raise "Invalid origin host #{uri.scheme}://#{uri.host}"
+    end
+
+    WebAuthn::RelyingParty.new(
+      id: Figaro.env.AUTH_BASE_HOST, # This lets us use the same creds for subdomains
+      origin: "#{uri.scheme}://#{uri.host}", # Make sure that the url is the url we're on
+      name: "FactCheck Insights/MediaVault"
+    )
   end
 end
