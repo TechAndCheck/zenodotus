@@ -21,11 +21,17 @@
   <div class="lg:flex lg:flex-col lg:basis-2/4 mt-16 lg:mt-0" data-controller="webauthn"  data-webauthn-input-value="<%= { publicKey: @options }.to_json %>">
     <div data-webauthn-target="webauthnContainer">
       <div data-webauthn-target="lock" class="setup_mfa--lock"></div>
+      <div class="flex justify-center text-center mb-5">
+        Give an optional nickname for this authentication device<br>("Main Yubikey", "Personal Phone", etc.)
+      </div>
+      <div class="flex justify-center">
+        <input type="text" data-webauthn-target="nickname" placeholder="Device nickname">
+      </div>
       <div data-webauthn-target="webauthnSetup" class="flex justify-center">
-        <button data-action="click->webauthn#beginWebauthnSetup" class="btn btn--lg setup_mfa--webauthn_button">Webauthn Setup</button>
+        <button data-action="click->webauthn#beginWebauthnSetup" class="btn btn--lg mt-4">Start Webauthn Setup</button>
       </div>
       <div data-webauthn-target="totpSetup" class="flex justify-center mt-8">
-        <button data-action="click->webauthn#beginTotpSetup" class="btn btn--lg">TOTP Setup</button>
+        <button data-action="click->webauthn#beginTotpSetup" class="btn btn--lg">Begin App-Based TOTP Setup Instead <i class="fas fa-arrow-right"></i></button>
       </div>
     </div>
   </div>

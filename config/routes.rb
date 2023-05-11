@@ -106,12 +106,19 @@ Rails.application.routes.draw do
     end
   end
 
-  get "/account", to: "accounts#index", as: "account"
-  post "/account/change_password", to: "accounts#change_password", as: "change_password"
-  post "/account/change_email", to: "accounts#change_email", as: "change_email"
-  post "/account/destroy_account", to: "accounts#destroy_account", as: "destroy_account"
-  get "/account/setup/(:token)", to: "accounts#new", as: "new_account"
-  post "/account/setup", to: "accounts#create", as: "create_account"
+  scope "/account" do
+    get "/", to: "accounts#index", as: "account"
+    post "/change_password", to: "accounts#change_password", as: "change_password"
+    post "/change_email", to: "accounts#change_email", as: "change_email"
+    post "/destroy_account", to: "accounts#destroy_account", as: "destroy_account"
+    get "/setup/(:token)", to: "accounts#new", as: "new_account"
+    post "/setup", to: "accounts#create", as: "create_account"
+
+    scope "/mfa" do
+      delete "/totp", to: "accounts#destroy_totp_device", as: "destroy_totp_device"
+      delete "/:device_id", to: "accounts#destroy_mfa_device", as: "destroy_mfa_device"
+    end
+  end
 
   scope "setup_mfa" do
     get "/", to: "accounts#setup_mfa", as: "account_setup_mfa"

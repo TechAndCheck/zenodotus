@@ -1,0 +1,73 @@
+<div class="account-page__box account-update-box account-page__box--double-width" data-controller="manage-mfa">
+	<div class="account-page__box--settings__list">
+		<h3>Manage MFA</h3>
+		<p>
+			Manage your multi-factor authentication keys and methods below
+		</p>
+	</div>
+	<div class="account-page__box--settings__list">
+		<div class="account-page__box--settings__list--section">
+			<b>Webauthn/Hardware Keys</b>
+			<% if current_user.webauthn_id.nil? %>
+				<div>Enable Webauthn/Hardware Key</div>
+			<% else %>
+				<div>
+					<table class="table-fixed border w-full">
+						<thead class="bg-slate-100">
+							<th>Credential Name</th>
+							<th>Created At</th>
+							<th></th>
+						</thead>
+						<tbody>
+							<% current_user.webauthn_credentials.each do |credential| %>
+							<tr>
+								<td><%= credential.nickname %></td>
+								<td><%= credential.created_at.strftime("%Y-%m-%d %H:%M %Z") %></td>
+								<td><%= link_to "Delete Device",
+																destroy_mfa_device_path(credential.id),
+																data: {
+																	"turbo-confirm": "Delete authentication device named '#{credential.nickname}'?",
+																	"turbo-method": :delete
+																} %></td>
+							</tr>
+							<% end %>
+						</tbody>
+					</table>
+					<!-- key name - key added date - delete -->
+				</div>
+			<% end %>
+			<div class="mt-5">
+				<%= link_to "Add Webauthn/Hardware Key", account_setup_mfa_path %>
+			</div>
+		</div>
+		<div class="account-page__box--settings__list--section">
+			<b>App-Based TOTP Authentication</b>
+			<% if current_user.totp_confirmed %>
+				<div class="mt-5">
+					TOTP Enabled<br>
+					<%= link_to "Remove TOTP Authentication",
+											destroy_totp_device_path,
+											data: {
+												"turbo-confirm": "Remove your app-based TOTP account?",
+												"turbo-method": :delete
+											} %>
+				</div>
+			<% else %>
+				<div class="mt-5">
+					<%= link_to "Add App TOTP Authentication", account_setup_mfa_path %>
+				</div>
+			<% end %>
+
+			<%= form_with(url: destroy_account_path,
+										html: {
+											method: :post,
+											class: "form form--vertical",
+											data: {
+												action: "delete-account#confirmDeletion"
+											}
+										}) do |f| %>
+			<% end %>
+		</div>
+	</div>
+</div>
+

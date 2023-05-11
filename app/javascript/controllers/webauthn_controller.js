@@ -8,7 +8,7 @@ import Lottie from "lottie-web"
 
 export default class extends Controller {
   static values = { input: String }
-  static targets = [ "lock", "webauthnContainer", "webauthnSetup", "totpSetup", "totpSetupCode" ]
+  static targets = [ "lock", "webauthnContainer", "webauthnSetup", "nickname", "totpSetup", "totpSetupCode" ]
 
   async connect() {
     // Check if we're actually encrypting, if not, don't allow setup to continue.
@@ -69,9 +69,15 @@ export default class extends Controller {
       console.log(error)
     }
 
+    // Get nickname, giving a random one if blank
+    let nickname = this.nicknameTarget.value
+    if(nickname.length == 0){
+      nickname = "webauthn_" + Math.floor(Math.random() * 500)
+    }
+
     // NOTE FIX THIS NICKNAME
     const finishWebauthnResponse = await post("/setup_mfa/webauthn.json", {
-      body: { publicKeyCredential: createResponse, nickname: "stuffthings" },
+      body: { publicKeyCredential: createResponse, nickname: nickname },
       contentType: "application/json",
       responseKind: "json"
     })
@@ -155,6 +161,12 @@ export default class extends Controller {
       await new Promise(r => setTimeout(r, 500))
 
       this.lockAnimation.destroy()
+    }
+
+    // If there's an error returned we just skipped past the recovery section and move on
+    if(setupResponseJson["errorPartial"] != undefined) {
+      this.finishSetup()
+      return
     }
 
     this.webauthnContainerTarget.innerHTML = setupResponseJson["recoveryCodePartial"]

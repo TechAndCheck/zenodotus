@@ -55,6 +55,10 @@ class AccountsController < ApplicationController
     const :email_confirmation, String
   end
 
+  class DeleteMFADeviceParams < T::Struct
+    const :device_id, String
+  end
+
   class DestroyAccountParams < T::Struct
     const :password_for_deletion, String
   end
@@ -293,6 +297,16 @@ class AccountsController < ApplicationController
             locals: { recovery_codes: recovery_codes }
           )
       }
+  rescue StandardError => e
+    render json: {
+        errorPartial:
+          render_to_string(
+            partial: "accounts/setup_mfa_error",
+            formats: :html,
+            layout: false,
+            locals: { error: e }
+          )
+      }
   end
 
   sig { void }
@@ -353,6 +367,57 @@ class AccountsController < ApplicationController
   end
 
   sig { void }
+  def destroy_mfa_device
+    typed_params = TypedParams[DeleteMFADeviceParams].new.extract!(params)
+
+    # Verify that they're not deleting the last device
+    if current_user.webauthn_credentials.count == 1 && current_user.totp_confirmed == false
+      flash[:error] = "You cannot delete your last MFA device. Please add another before deleting this one."
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: [
+          turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash })
+        ]}
+      end
+      return
+    end
+
+    current_user.webauthn_credentials.find_by(id: typed_params.device_id).destroy
+    flash[:alert] = "MFA device deleted."
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: [
+        turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
+        turbo_stream.replace("manage_mfa", partial: "accounts/manage_mfa")
+      ] }
+    end
+  end
+
+  sig { void }
+  def destroy_totp_device
+    # Verify that they're not deleting the last device
+    if current_user.webauthn_credentials.count.zero? && current_user.totp_confirmed == true
+      flash[:error] = "You cannot delete your last MFA device. Please add another before deleting this one."
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: [
+          turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash })
+        ]}
+      end
+      return
+    end
+
+    current_user.clear_totp_secret
+    flash[:alert] = "MFA device deleted."
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: [
+        turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
+        turbo_stream.replace("manage_mfa", partial: "accounts/manage_mfa")
+      ] }
+    end
+  end
+
+
+  sig { void }
   def destroy_account
     typed_params = TypedParams[DestroyAccountParams].new.extract!(params)
 
@@ -365,7 +430,7 @@ class AccountsController < ApplicationController
       respond_to do |format|
         format.turbo_stream { render turbo_stream: [
           turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
-        ] }
+        ]}
       end
     end
   end
