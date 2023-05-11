@@ -142,6 +142,41 @@ class User < ApplicationRecord
     false # Return false since if we're here there's no comparison
   end
 
+  # Check if Webauthn or TOTP is enabled
+  sig { returns(T::Boolean) }
+  def mfa_enabled?
+    self.webauthn_credentials.count.positive? || self.totp_confirmed
+  end
+
+  # Generate a TOTP provisioning uri, overwriting the old one if it's not empty
+  # This is generally implemented to support Firefox, though anyone can use it
+  # The returned URI should be rendered as a QRCode and scanned by the user's authenticator app
+  sig { returns(String) }
+  def generate_totp_provisioning_uri
+    # Prevent an attacker from overwriting a confirmed TOTP code
+    raise "TOTP already setup" if self.totp_confirmed == true
+
+    self.update!({ totp_secret: ROTP::Base32.random_base32 })
+
+    totp = ROTP::TOTP.new(self.totp_secret, issuer: "Fact Check Insights\\Media Vault")
+    totp.provisioning_uri(self.email)
+  end
+
+  def clear_totp_secret
+    self.update!({ totp_secret: nil, totp_confirmed: false })
+  end
+
+  # Validate a TOTP code, returning true or false
+  sig { params(totp_code: String).returns(T::Boolean) }
+  def validate_totp_login_code(totp_code)
+    return false if self.totp_secret.nil? # If we're not set up just always reject it all
+
+    totp = ROTP::TOTP.new(self.totp_secret)
+    verify_result = totp.verify(totp_code, drift_behind: 15, at: Time.now)
+
+    !verify_result.nil?
+  end
+
   sig { returns(T::Boolean) }
   def can_access_fact_check_insights?
     self.is_admin? || self.is_fact_check_insights_user?

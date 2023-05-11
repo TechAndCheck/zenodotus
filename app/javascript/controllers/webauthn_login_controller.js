@@ -5,7 +5,7 @@ import Lottie from "lottie-web"
 
 export default class extends Controller {
   static values = {}
-  static targets = [ "output", "lock", "authenicateButton", "recoveryCode" ]
+  static targets = [ "output", "lock", "authenicateButton", "recoveryCode", "totpCode", "error" ]
 
   async connect() {
     // Check if we're actually encrypting, if not, don't allow setup to continue.
@@ -24,15 +24,40 @@ export default class extends Controller {
       return
     }
 
-    this.lockAnimation = Lottie.loadAnimation({
-      container: this.lockTarget, // the dom element that will contain the animation
-      renderer: 'svg',
-      autoplay: false,
-      loop: false,
-      path: '/lock-cpu-cyber-security.json' // the path to the animation json
-    });
-    this.lockAnimation.setDirection(-1)
-    this.lockAnimation.goToAndStop(83, true)
+    if(this.hasLockTarget){
+      this.lockAnimation = Lottie.loadAnimation({
+        container: this.lockTarget, // the dom element that will contain the animation
+        renderer: 'svg',
+        autoplay: false,
+        loop: false,
+        path: '/lock-cpu-cyber-security.json' // the path to the animation json
+      });
+      this.lockAnimation.setDirection(-1)
+      this.lockAnimation.goToAndStop(83, true)
+    }
+  }
+
+  async authenticateTotp() {
+    const totpCode = this.totpCodeTarget.value
+
+    if(!totpCode.match(/^\d{6}$/)) {
+      alert("The TOTP code must be a six digit number only.")
+    }
+    const finishWebauthnResponse = await post("/users/sign_in/mfa/totp.json", {
+      body: { totpCode: totpCode },
+      contentType: "application/json",
+      responseKind: "json"
+    })
+
+    const finishWebauthnResponseBody = await finishWebauthnResponse.text
+    const finishedBodyJson = JSON.parse(finishWebauthnResponseBody)
+
+    if(finishedBodyJson["authentication_status"] == "success") {
+      this.authenicateButtonTarget.textContent = "Logging In..."
+      Turbo.visit("/", { action: "replace" })
+    } else {
+      this.errorTarget.innerHTML = finishedBodyJson["errorPartial"] + this.errorTarget.innerHTML
+    }
   }
 
   async authenticateWebauthn() {

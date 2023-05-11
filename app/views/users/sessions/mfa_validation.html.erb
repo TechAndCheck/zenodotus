@@ -3,19 +3,12 @@
 <div class="box box--sm box--miniform">
   <!-- TODO: customize depending on the insights/vault split -->
   <p>
-    To continue your log in, authenticate with a previously registered two factor authentication key.
+    To continue your log in, authenticate with your previously registered two factor authentication method.
   </p>
-  <div data-controller="webauthn-login" class="mb-5">
-    <div data-webauthn-login-target="lock" class="setup_mfa--lock"></div>
-    <button
-      data-action="click->webauthn-login#authenticateWebauthn"
-      data-webauthn-login-target="authenicateButton"
-      class="btn btn--lg">
-      Click Here To Authenticate
-    </button>
-  </div>
+  <%= render "validate_mfa_webauthn" if @user.webauthn_credentials.count.positive? %>
+  <%= render "validate_mfa_totp" if @user.totp_confirmed %>
   <p>
-    If you've lost your key or are on a different device, you can
+    If you've lost your key or your device is unavailable, you can
     <%= link_to "use a backup code here", mfa_use_recovery_code_path %>
   </p>
 </div>

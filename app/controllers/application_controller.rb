@@ -104,7 +104,7 @@ protected
 
   sig { void }
   def must_have_mfa_setup
-    return if current_user.nil? || current_user.webauthn_credentials.count.positive?
+    return if current_user.nil? || current_user.mfa_enabled?
     redirect_to account_setup_mfa_path, allow_other_host: false, flash: { error: "You must setup two-factor authentication before continuing." }
   end
 

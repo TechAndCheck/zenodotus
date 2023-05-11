@@ -8,7 +8,7 @@ import Lottie from "lottie-web"
 
 export default class extends Controller {
   static values = { input: String }
-  static targets = [ "lock", "webauthnSetup", "totpSetup" ]
+  static targets = [ "lock", "webauthnContainer", "webauthnSetup", "totpSetup", "totpSetupCode" ]
 
   async connect() {
     // Check if we're actually encrypting, if not, don't allow setup to continue.
@@ -48,18 +48,18 @@ export default class extends Controller {
       return
     }
 
-    const setup_response = await get("/setup_mfa/webauthn.json", {
+    const setupResponse = await get("/setup_mfa/webauthn.json", {
       contentType: "application/json",
       responseKind: "json"
     })
 
-    if (!setup_response.ok) {
+    if (!setupResponse.ok) {
       alert("500 Error, please reload the page and try again")
       return
     }
 
-    const setup_response_body = await setup_response.text
-    const optionsJson = JSON.parse(setup_response_body)
+    const setupResponseBody = await setupResponse.text
+    const optionsJson = JSON.parse(setupResponseBody)
 
     const options = parseCreationOptionsFromJSON(optionsJson)
     let createResponse
@@ -69,6 +69,7 @@ export default class extends Controller {
       console.log(error)
     }
 
+    // NOTE FIX THIS NICKNAME
     const finishWebauthnResponse = await post("/setup_mfa/webauthn.json", {
       body: { publicKeyCredential: createResponse, nickname: "stuffthings" },
       contentType: "application/json",
@@ -96,36 +97,75 @@ export default class extends Controller {
     }
   }
 
-  async loadRecoveryCodes() {
-    const setup_response = await get("/setup_mfa/webauthn/setup_recovery_codes.json", {
+  async beginTotpSetup() {
+    const setupResponse = await get("/setup_mfa/totp.json", {
       contentType: "application/json",
       responseKind: "json"
     })
 
-    if (!setup_response.ok) {
+    if (!setupResponse.ok) {
       alert("500 Error, please reload the page and try again")
       return
     }
 
-    const setup_response_body = await setup_response.text
-    const setup_response_json = JSON.parse(setup_response_body)
+    const setupResponseBody = await setupResponse.text
+    const setupResponseJson = JSON.parse(setupResponseBody)
 
-    this.lockTarget.classList.add("transition-opacity", "duration-150", "ease-out", "opacity-0")
-    await new Promise(r => setTimeout(r, 500))
 
-    this.lockAnimation.destroy()
+    this.webauthnContainerTarget.innerHTML = setupResponseJson["partial"]
+  }
 
-    this.lockTarget.innerHTML = setup_response_json["recoveryCodePartial"]
-    this.lockTarget.classList.remove("setup_mfa--lock")
-    this.lockTarget.classList.replace("opacity-0", "opacity-100")
+  async finishTotpSetup() {
+    const totpSetupCode = this.totpSetupCodeTarget.value
+
+    if(!totpSetupCode.match(/^\d{6}$/)) {
+      alert("The TOTP code must be a six digit number only.")
+    }
+
+    const setupResponse = await post("/setup_mfa/totp.json", {
+      body: { totp_setup_code: totpSetupCode },
+      contentType: "application/json",
+      responseKind: "json"
+    })
+
+    if (!setupResponse.ok) {
+      alert("500 Error, please reload the page and try again")
+      return
+    }
+
+    this.loadRecoveryCodes()
+  }
+
+  async loadRecoveryCodes() {
+    const setupResponse = await get("/setup_mfa/webauthn/setup_recovery_codes.json", {
+      contentType: "application/json",
+      responseKind: "json"
+    })
+
+    if (!setupResponse.ok) {
+      alert("500 Error, please reload the page and try again")
+      return
+    }
+
+    const setupResponseBody = await setupResponse.text
+    const setupResponseJson = JSON.parse(setupResponseBody)
+
+    if(this.hasLockTarget){
+      this.lockTarget.classList.add("transition-opacity", "duration-150", "ease-out", "opacity-0")
+      await new Promise(r => setTimeout(r, 500))
+
+      this.lockAnimation.destroy()
+    }
+
+    this.webauthnContainerTarget.innerHTML = setupResponseJson["recoveryCodePartial"]
   }
 
   finishSetup() {
     // We need to remove the codes from the DOM so the back button doesn't allow the codes to be
     // retrieved later on
-    this.lockTarget.classList.remove("opacity-100")
-    this.lockTarget.classList.add("transition-opacity", "duration-150", "ease-out", "opacity-0")
-    this.lockTarget.destroy
+    this.webauthnContainerTarget.classList.remove("opacity-100")
+    this.webauthnContainerTarget.classList.add("transition-opacity", "duration-150", "ease-out", "opacity-0")
+    this.webauthnContainerTarget.destroy
     Turbo.visit("/")
   }
 }

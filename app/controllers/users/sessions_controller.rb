@@ -11,6 +11,10 @@ class Users::SessionsController < Devise::SessionsController
     const :publicKeyCredential, Hash
   end
 
+  class FinishTotpValidationParams < T::Struct
+    const :totpCode, String
+  end
+
   class FinishRecoverCodeValidationParams < T::Struct
     const :recoveryCode, String
   end
@@ -31,7 +35,7 @@ class Users::SessionsController < Devise::SessionsController
     warden.authenticate!(auth_options) if user.nil? || !user.valid_password?(params["user"][:password])
 
     # If the user doesn't have MFA setup we flush them over to the setup
-    if user.webauthn_credentials.empty?
+    unless user.mfa_enabled?
       flash[:notice] = "You must setup MFA before you can login"
 
       # We have to log the user in before they set up MFA
@@ -54,11 +58,44 @@ class Users::SessionsController < Devise::SessionsController
     user_id = session[:mfa_validate_user]
     raise MFAValidationError if user_id.nil?
 
-    user = User.find(user_id)
-    raise MFAValidationError if user.nil?
+    @user = User.find(user_id)
+    raise MFAValidationError if @user.nil?
   rescue MFAValidationError
     flash[:notice] = "You do not have access to the previous page"
     redirect_to new_user_session_path
+  end
+
+  # POST /resource/sign_in/mfa/totp
+  def finish_mfa_totp_validation
+    # Get the user from the session or go bye bye
+    user_id = session[:mfa_validate_user]
+    raise MFAValidationError if user_id.nil?
+
+    user = User.find(user_id)
+    raise MFAValidationError if user.nil?
+
+    typed_params = TypedParams[FinishTotpValidationParams].new.extract!(params)
+
+    raise MFAValidationError unless user.validate_totp_login_code(typed_params.totpCode)
+    sign_in(user)
+    respond_to do |format|
+      format.json { render json: { authentication_status: "success" } }
+    end
+  rescue MFAValidationError
+    # If validation failed
+    respond_to do |format|
+      format.json {
+        render json: {
+          errorPartial:
+            render_to_string(
+              partial: "accounts/setup_mfa_error",
+              formats: :html,
+              layout: false,
+              locals: { error: "Invalid or expired TOTP code, check your app and try again" }
+            )
+        }
+      }
+    end
   end
 
   # GET /resource/sign_in/mfa/webauthn
@@ -74,7 +111,6 @@ class Users::SessionsController < Devise::SessionsController
     options = relying_party(request.referer).options_for_authentication(
       allow: user.webauthn_credentials.map { |c| c.external_id }
     )
-    # options = { publicKey: options } # Something broken, but the JS side requires this key
 
     session[:authentication_challenge] = options.challenge
 
