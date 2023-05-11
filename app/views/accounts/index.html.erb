@@ -10,8 +10,13 @@
 			<div class="account-page__box-container account-page__box-container--update-account-container">
 				<%= render "change_password" %>
 				<%= render "change_email" %>
-				<%= render "delete_account" %>
+        <%= render "delete_account" %>
 			</div>
+      <div class="account-page__box-container account-page__box-container--update-account-container">
+        <%= turbo_frame_tag "manage_mfa" do %>
+          <%= render "manage_mfa" %>
+        <% end %>
+      </div>
 		</div>
     <div data-account-target="textSearchHistorySection" id="textSearchHistory" class="account-page__section" hidden=true>
       <h2>Text Search History:</h2>
