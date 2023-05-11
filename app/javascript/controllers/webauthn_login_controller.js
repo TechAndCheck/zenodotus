@@ -83,7 +83,7 @@ export default class extends Controller {
     const getResponse = await webauthnGet(options);
 
     const finishWebauthnResponse = await post("/users/sign_in/mfa/webauthn.json", {
-      body: { publicKeyCredential: getResponse, nickname: "stuffthings" },
+      body: { publicKeyCredential: getResponse },
       contentType: "application/json",
       responseKind: "json"
     })
