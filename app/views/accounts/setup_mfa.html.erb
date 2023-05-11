@@ -18,14 +18,15 @@
       Authenticator</a> or <a href="https://authy.com/download/">Authy</a> though we discourage this unless there's no other option. We do not support SMS-based two-factor authentication as it is inherently unencrypted and insecure.
     </p>
   </div>
-  <div class="lg:flex lg:flex-col lg:basis-2/4 mt-16 lg:mt-0" data-controller="webauthn" data-webauthn-input-value="<%= { publicKey: @options }.to_json %>">
-    <div data-webauthn-target="lock" class="setup_mfa--lock"></div>
-    <div data-webauthn-target="webauthnSetup" class="flex justify-center">
-      <button data-action="click->webauthn#beginWebauthnSetup" class="btn btn--lg setup_mfa--webauthn_button">Webauthn Setup</button>
+  <div class="lg:flex lg:flex-col lg:basis-2/4 mt-16 lg:mt-0" data-controller="webauthn"  data-webauthn-input-value="<%= { publicKey: @options }.to_json %>">
+    <div data-webauthn-target="webauthnContainer">
+      <div data-webauthn-target="lock" class="setup_mfa--lock"></div>
+      <div data-webauthn-target="webauthnSetup" class="flex justify-center">
+        <button data-action="click->webauthn#beginWebauthnSetup" class="btn btn--lg setup_mfa--webauthn_button">Webauthn Setup</button>
+      </div>
+      <div data-webauthn-target="totpSetup" class="flex justify-center mt-8">
+        <button data-action="click->webauthn#beginTotpSetup" class="btn btn--lg">TOTP Setup</button>
+      </div>
     </div>
-    <!-- Commented out until we implement TOTP alternatives for Firefox (mostly)
-    <span data-webauthn-target="totpSetup">
-      <button data-action="click->webauthn#beginTotpSetup" class="btn btn--lg">TOTP Setup</button>
-    </span> -->
   </div>
 </div>

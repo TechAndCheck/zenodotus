@@ -13,6 +13,9 @@ class AccountsController < ApplicationController
     :setup_mfa,
     :start_webauthn_setup,
     :finish_webauthn_setup,
+    :start_totp_setup,
+    :finish_totp_setup,
+    :clear_mfa,
   ]
 
   before_action :authenticate_user_and_setup!, except: [
@@ -23,6 +26,9 @@ class AccountsController < ApplicationController
     :setup_mfa,
     :start_webauthn_setup,
     :finish_webauthn_setup,
+    :start_totp_setup,
+    :finish_totp_setup,
+    :clear_mfa
   ]
 
   before_action :must_be_logged_out, only: [
@@ -122,6 +128,42 @@ class AccountsController < ApplicationController
   sig { void }
   def setup_mfa
     current_user.remove_role :new_user
+  end
+
+  sig { void }
+  def start_totp_setup
+    totp_provisioning_uri = current_user.generate_totp_provisioning_uri
+    totp_qr = RQRCode::QRCode.new(totp_provisioning_uri)
+
+    totp_qr_png = Base64.encode64(totp_qr.as_png(size: 400).to_blob)
+
+    render json: {
+          partial:
+            render_to_string(
+              partial: "accounts/start_totp_setup",
+              formats: :html,
+              layout: false,
+              locals: { totp_qr_png: totp_qr_png }
+            )
+        }
+  end
+
+  sig { void }
+  def finish_totp_setup
+    if current_user.validate_totp_login_code(params[:totp_setup_code])
+      current_user.update!({ totp_confirmed: true })
+      render json: { registration_status: "success" } && return
+    end
+
+    render json: {
+      errorPartial:
+        render_to_string(
+          partial: "accounts/setup_mfa_error",
+          formats: :html,
+          layout: false,
+          locals: { error: "Invalid TOTP authentication code. Please try again" }
+        )
+    }
   end
 
   sig { void }
