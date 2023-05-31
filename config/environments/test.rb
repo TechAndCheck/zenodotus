@@ -60,4 +60,7 @@ Rails.application.configure do
 
   # Prefix job queues names to avoid collisions
   config.active_job.queue_name_prefix = "zenodotus_test"
+
+  # For testing we don't care about ssl
+  config.force_ssl = false
 end

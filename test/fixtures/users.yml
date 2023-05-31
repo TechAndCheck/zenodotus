@@ -15,6 +15,7 @@ user:
   email: "user@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
+  totp_confirmed: true
   roles:
     - fact_check_insights_user
     - media_vault_user
@@ -24,6 +25,7 @@ new_user:
   email: "new-user@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
+  totp_confirmed: true
   roles:
     - new_user
     - fact_check_insights_user
@@ -33,6 +35,7 @@ fact_check_insights_user:
   email: "insights-only-user@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
+  totp_confirmed: true
   roles:
     - fact_check_insights_user
 
@@ -41,13 +44,22 @@ media_vault_user:
   email: "media-vault-user@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
+  totp_confirmed: true
   roles:
     - fact_check_insights_user
     - media_vault_user
+
+user_no_totp:
+  name: "Admin's Name"
+  email: "nototp@example.com"
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  confirmed_at: <%= Time.now %>
+  roles: admin
 
 admin:
   name: "Admin's Name"
   email: "admin@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
+  totp_confirmed: true
   roles: admin
