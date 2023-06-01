@@ -18,7 +18,10 @@ namespace :data do
     end
 
     request.on_complete do |response|
+      debugger
       downloaded_file.close
+
+
     end
 
     request.run
