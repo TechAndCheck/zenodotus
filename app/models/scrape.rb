@@ -35,33 +35,14 @@ class Scrape < ApplicationRecord
                                             archive_item_id: nil,
                                             taken_down: nil)
 
-    if removed
-      # Mark removed if we're informed it no longer exists
-      media_review_item.update!({ taken_down: true }) unless media_review_item.nil?
-      self.update!({ fulfilled: true, removed: true })
-
-      send_notification
-      return
-    end
-
-    if media_review_item.nil?
-      self.update!({ fulfilled: true })
-
-      send_notification
-      return
-    end
-
-    # Create the final ArchiveItem
     archive_item = ArchiveItem.model_for_url(self.url).create_from_hash(response)
+    archive_item = archive_item.empty? ? nil : archive_item.first
 
-    # Update the previously created MediaReview item with the now archived stuff
-    if archive_item.empty?
-      media_review_item.update!({ taken_down: true })
-      self.update!({ fulfilled: true })
-    else
-      media_review_item.update({ archive_item_id: archive_item.first.id, taken_down: false })
-      self.update!({ fulfilled: true, archive_item: archive_item.first })
+    if !media_review_item.nil?
+      media_review_item.update!({ taken_down: removed, archive_item_id: archive_item&.id })
     end
+
+    self.update!({ fulfilled: true, removed: removed, archive_item: archive_item })
 
     # Update any channels listening to the scrape count
     send_notification
