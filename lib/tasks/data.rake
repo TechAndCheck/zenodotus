@@ -1,4 +1,31 @@
-# namespace :data do
+namespace :data do
+  desc "load google's feed"
+  task load_google_feed: :environment do |t, args|
+    file_name = "google-feed-#{Time.new.strftime("%Y%m%d-%k:%M:%S")}"
+    downloaded_file = File.open file_name, "wb"
+    request = Typhoeus::Request.new(
+      "https://storage.googleapis.com/datacommons-feeds/factcheck/latest/data.json"
+    )
+
+    request.on_headers do |response|
+      if response.code != 200
+        raise "Request failed"
+      end
+    end
+
+    request.on_body do |chunk|
+      downloaded_file.write(chunk)
+    end
+
+    request.on_complete do |response|
+      downloaded_file.close
+    end
+
+    request.run
+  ensure
+    downloaded_file.close unless downloaded_file.nil? || downloaded_file.closed?
+    File.delete(file_name) if File.exist?(file_name)
+  end
 #   desc "load sample data"
 #   task load_samples: :environment do |t, args|
 #     number_of_lines = `wc -l test_urls.txt`.to_i
@@ -28,4 +55,4 @@
 #       progressbar.increment
 #     end
 #   end
-# end
+end
