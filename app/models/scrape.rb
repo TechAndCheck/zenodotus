@@ -26,16 +26,32 @@ class Scrape < ApplicationRecord
 
   sig { params(response: Array).void }
   def fulfill(response)
-    media_review_item = MediaReview.find_by(original_media_link: self.url, archive_item_id: nil, taken_down: nil)
-    raise MediaReviewItemNotFoundError.new(self.url) if media_review_item.nil?
+    removed = false
+    removed = true if response.empty? == false &&
+                        response.first.key?("status") &&
+                        response.first["status"] == "removed"
 
-    # Mark removed if we're informed it no longer exists
-    if response.empty? == false && response.first.key?("status") && response.first["status"] == "removed"
+    media_review_item = MediaReview.find_by(original_media_link: self.url,
+                                            archive_item_id: nil,
+                                            taken_down: nil)
+
+    if removed
+      # Mark removed if we're informed it no longer exists
+      media_review_item.update!({ taken_down: true }) unless media_review_item.nil?
       self.update!({ fulfilled: true, removed: true })
-      media_review_item.update!({ taken_down: true })
+
+      send_notification
       return
     end
 
+    if media_review_item.nil?
+      self.update!({ fulfilled: true })
+
+      send_notification
+      return
+    end
+
+    # Create the final ArchiveItem
     archive_item = ArchiveItem.model_for_url(self.url).create_from_hash(response)
 
     # Update the previously created MediaReview item with the now archived stuff
