@@ -44,7 +44,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
       password_confirmation: "password1"
     })
 
-    assert_redirected_to @controller.after_sign_in_path_for(user)
+    assert_redirected_to account_setup_mfa_path
   end
 
   test "cannot setup an account without a valid token" do
@@ -66,7 +66,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     }
 
     post create_account_path(create_params)
-    assert_redirected_to @controller.after_sign_in_path_for(user)
+    assert_redirected_to account_setup_mfa_path
 
     # Necessary because `post create_account_path()` signs in the user.
     sign_out user

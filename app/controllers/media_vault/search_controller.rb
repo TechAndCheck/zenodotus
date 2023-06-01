@@ -51,7 +51,7 @@ private
   def search_by_media_search_id(id)
     @media_search = ImageSearch.find(id)
     @results = @media_search.run
-    @post_results = @results.map { |result|
+    @post_results = @results.filter_map { |result|
       result.has_key?(:image) ? result[:image] : (
         result.has_key?(:video) ? result[:video] : nil
       )
@@ -87,12 +87,12 @@ private
 
     @results.each do |result|
       if post_models.include?(result.class)
-        @post_results.append(result.archive_item)
+        @post_results.append(result.archive_item) unless result.archive_item.nil?
         next
       end
 
       if author_models.include?(result.class)
-        @author_results.append(result)
+        @author_results.append(result) unless result.nil?
       end
     end
   end

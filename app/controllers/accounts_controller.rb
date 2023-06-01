@@ -125,14 +125,13 @@ class AccountsController < ApplicationController
     raise InvalidUpdatePasswordError if typed_params.password.blank? || @user.invalid?
 
     sign_in @user
+    current_user.remove_role :new_user
     # From here branch to set up 2FA
     redirect_to account_setup_mfa_path
   end
 
   sig { void }
-  def setup_mfa
-    current_user.remove_role :new_user
-  end
+  def setup_mfa; end
 
   sig { void }
   def start_totp_setup
