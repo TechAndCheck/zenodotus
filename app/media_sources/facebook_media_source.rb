@@ -9,7 +9,7 @@ class FacebookMediaSource < MediaSource
   # @return [String] or [Array] of [String] of valid host names
   sig { override.returns(T::Array[String]) }
   def self.valid_host_name
-    ["www.facebook.com"]
+    ["www.facebook.com", "m.facebook.com", "web.facebook.com"]
   end
 
   # Extracts the post at the input URL by forwarding a scraping request to Hypatia

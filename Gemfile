@@ -196,3 +196,6 @@ gem "webauthn", git: "https://github.com/cedarcode/webauthn-ruby", tag: "v3.0.0.
 gem "rotp", "~> 6.2"
 # For generating the QRCode from the TOTP setup string
 gem "rqrcode", "~> 2.0"
+
+# One-off settings that are easy to manage and persistent
+gem "rails-settings-cached", "~> 2.9"
