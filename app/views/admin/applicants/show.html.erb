@@ -1,0 +1,57 @@
+<% @title_tag = "Applicant - #{@applicant.name}" %>
+<% @page_id = "applicants" %>
+
+<div class="content" data-controller="admin--applicants">
+  <h1>Applicant</h1>
+  <div class="applicants applicants--reviewed">
+    <div class="applicant box">
+      <dl class="applicant__details">
+        <div class="applicant__detail">
+          <dt>Name</dt>
+          <dd><%= @applicant.name  %></dd>
+        </div>
+        <div class="applicant__detail">
+          <dt>Email</dt>
+          <dd><%= mail_to @applicant.email %></dd>
+        </div>
+        <div class="applicant__detail">
+          <dt>Affiliation</dt>
+          <dd><%= or_na(@applicant.affiliation) %></dd>
+        </div>
+        <div class="applicant__detail">
+          <dt>Primary role</dt>
+          <dd><%= or_na(@applicant.primary_role) %></dd>
+        </div>
+        <div class="applicant__detail">
+          <dt>Applied for</dt>
+          <dd><%= SiteDefinitions::BY_SHORTNAME[@applicant.source_site][:title] %></dd>
+        </div>
+        <div class="applicant__detail">
+          <dt>Applied at</dt>
+          <dd>
+              <time
+                datetime="<%= @applicant.created_at.iso8601 %>"
+                data-admin--applicants-target="timestamp"
+                ><%= @applicant.created_at %></time>
+          </dd>
+        </div>
+        <div class="applicant__detail">
+          <dt>Use case</dt>
+          <dd><%= @applicant.use_case %></dd>
+        </div>
+        <div class="applicant__detail">
+          <dt>Country</dt>
+          <dd><%= or_na(@applicant.country) %></dd>
+        </div>
+        <div class="applicant__detail">
+          <dt>🔒 Internal review note</dt>
+          <dd><%= @applicant.review_note_internal %></dd>
+        </div>
+        <div class="applicant__detail">
+          <dt>External review note</dt>
+          <dd><%= @applicant.review_note %></dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</div>
