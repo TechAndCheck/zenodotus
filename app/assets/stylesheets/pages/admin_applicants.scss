@@ -15,6 +15,12 @@
 		@media screen and (min-width: shared.$screen-xl-floor) {
 			grid-template-columns: 1fr 1fr;
 		}
+
+		.applicants--reviewed {
+			@media screen and (min-width: shared.$screen-lg-floor) {
+				width: 60%;
+			}
+		}
 	}
 
 	.applicant {
