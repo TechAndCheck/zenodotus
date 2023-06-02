@@ -28,10 +28,16 @@ class ArchiveItem < ApplicationRecord
     # that this would remove a lot of context, and, to be honest, as long as our primary scraping targets
     # are social media we will not have direct links that aren't "discovered" by our specialized scraper.
     url = nil
-    media_review["itemReviewed"]["mediaItemAppearance"].each do |appearance|
-      if appearance.has_key?("accessedOnUrl") && !appearance["accessedOnUrl"].blank?
-        url = appearance["accessedOnUrl"]
-        break
+    if media_review["itemReviewed"].has_key?("contentUrl") &&
+        (!media_review["itemReviewed"].has_key?("mediaItemAppearance") ||
+          media_review["itemReviewed"]["mediaItemAppearance"].empty?)
+      url = media_review["itemReviewed"]["contentUrl"]
+    else
+      media_review["itemReviewed"]["mediaItemAppearance"].each do |appearance|
+        if appearance.has_key?("accessedOnUrl") && !appearance["accessedOnUrl"].blank?
+          url = appearance["accessedOnUrl"]
+          break
+        end
       end
     end
 
