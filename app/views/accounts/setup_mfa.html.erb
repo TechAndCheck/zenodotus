@@ -9,13 +9,13 @@
       account.
     </p>
     <p>
-      We support both Webauthn/hardware and app-based TOTP authentication. If possible, please use the Webauthn/hardware
-      key authentication. After setup you will be able to add multiple keys on the account settings page for multiple devices.
+      We use a method of authentication known as Webauthn that will use your device/browser to create a passkey to identify you. Once you begin the process, your system will guide you through the necessary steps. After setup, you can return to the Settings page from your Fact-Check Insights account to add keys for additional devices.
     </p>
     <p>
-      If you do not have the ability to use Webauthn you can also use app-based two-factor
-      authentication via a code generator such as <a href="https://googleauthenticator.net">Google
-      Authenticator</a> or <a href="https://authy.com/download/">Authy</a> though we discourage this unless there's no other option. We do not support SMS-based two-factor authentication as it is inherently unencrypted and insecure.
+      If you do not have the ability to use a Webauthn key, we also support app-based two-factor authentication via a code generator such as <a href="https://googleauthenticator.net">Google Authenticator</a> or <a href="https://authy.com/download/">Authy</a>.
+    </p>
+    <p>
+      We do not support SMS-based two-factor authentication as it does not meet our standards for security.
     </p>
   </div>
   <div class="lg:flex lg:flex-col lg:basis-2/4 mt-16 lg:mt-0" data-controller="webauthn"  data-webauthn-input-value="<%= { publicKey: @options }.to_json %>">
@@ -28,10 +28,10 @@
         <input type="text" data-webauthn-target="nickname" placeholder="Device nickname">
       </div>
       <div data-webauthn-target="webauthnSetup" class="flex justify-center">
-        <button data-action="click->webauthn#beginWebauthnSetup" class="btn btn--lg mt-4">Start Webauthn Setup</button>
+        <button data-action="click->webauthn#beginWebauthnSetup" class="btn btn--lg mt-4">Start Passkey Setup</button>
       </div>
       <div data-webauthn-target="totpSetup" class="flex justify-center mt-8">
-        <button data-action="click->webauthn#beginTotpSetup" class="btn btn--lg">Begin App-Based TOTP Setup Instead <i class="fas fa-arrow-right"></i></button>
+        <button data-action="click->webauthn#beginTotpSetup" class="btn btn--lg">Begin App-Based Setup Instead <i class="fas fa-arrow-right"></i></button>
       </div>
     </div>
   </div>
