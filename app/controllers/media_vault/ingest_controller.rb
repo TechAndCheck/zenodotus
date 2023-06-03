@@ -42,14 +42,22 @@ class MediaVault::IngestController < MediaVaultController
     end
 
     class JSONParseException < StandardError
+      def initialize(json)
+        @json = json
+      end
+
       def message
-        JSONParseError.message
+        "JSON Parser exception. Json: #{@json}"
       end
     end
 
     class JSONValidationException < StandardError
+      def initialize(json)
+        @json = json
+      end
+
       def message
-        JSONValidationError.message
+        "JSON Validation exception. Json: #{@json}"
       end
     end
 

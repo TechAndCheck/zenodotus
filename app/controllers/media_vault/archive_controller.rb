@@ -128,7 +128,7 @@ class MediaVault::ArchiveController < MediaVaultController
       parsed_result = [parsed_result]
     end
 
-    scrape.fulfill(parsed_result)
+    ScrapeCallbackJob.perform_later(scrape, parsed_result)
 
     render plain: "OK", status: 200
   end
