@@ -65,4 +65,9 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
       ArchiveItem.create_from_media_review(json.deep_stringify_keys, nil)
     end
   end
+
+  test "Submitting various URLs returns the correct model type" do
+    url = "https://web.facebook.com/shalikarukshan.senadheera/posts/pfbid0287di3uHqt6s8ARUcuY7fNyyP86xEsvg7yjmn9v4eG1QLMrikwAPKvNoDy4Pynjtjl?_rdc=1&_rdr"
+    assert_equal Sources::FacebookPost, ArchiveItem.model_for_url(url)
+  end
 end
