@@ -28,7 +28,9 @@ class ArchiveItem < ApplicationRecord
     # that this would remove a lot of context, and, to be honest, as long as our primary scraping targets
     # are social media we will not have direct links that aren't "discovered" by our specialized scraper.
     url = nil
-    if media_review["itemReviewed"].has_key?("contentUrl") &&
+    if media_review["originalMediaLink"].blank? == false
+      url = media_review["originalMediaLink"]
+    elsif media_review["itemReviewed"].has_key?("contentUrl") &&
         (!media_review["itemReviewed"].has_key?("mediaItemAppearance") ||
           media_review["itemReviewed"]["mediaItemAppearance"].empty?)
       url = media_review["itemReviewed"]["contentUrl"]
@@ -44,6 +46,9 @@ class ArchiveItem < ApplicationRecord
     raise "No url found to archive" if url.nil?
     object_model = model_for_url(url)
 
+    # Media review may not have this, especially if it comes from Google
+    media_review["originalMediaLink"] = url if media_review["originalMediaLink"].nil?
+
     # Stuff is going to come in that was misinputted, or that we don't have a scraper for.
     # If so, skip the scrape, create the MediaReview and mark as `orphaned`.
     object_model.create_from_url(url) unless object_model.nil? # Start scraping
@@ -52,6 +57,7 @@ class ArchiveItem < ApplicationRecord
     # The ArchiveItem will be created after Zenodotus receives a callback from Hypatia
     # That callback will trigger the Scrape fulfillment process which
     # which will attach this MediaReview to the ArchiveItem
+
     media_review_object = MediaReview.create_or_update_from_media_review_hash(media_review, external_unique_id, false)
 
     if media_review.include?("associatedClaimReview")
