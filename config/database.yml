@@ -85,6 +85,4 @@ test:
 #
 production:
   <<: *default
-  database: zenodotus_production
-
-  # url: <%= ENV["DATABASE_URL"] %>
+  url: <%= ENV['DATABASE_URL'] %>
