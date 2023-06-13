@@ -90,4 +90,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.hosts << Figaro.env.FACT_CHECK_INSIGHTS_HOST
+  config.hosts << Figaro.env.MEDIA_VAULT_HOST
 end

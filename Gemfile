@@ -110,7 +110,7 @@ gem "ferrum", "~> 0.11"
 gem "os"
 
 # Shrine is a better alternative to ActiveStorage for handling file attachments and the like
-gem "shrine", "~> 3.0"
+gem "shrine", git: "https://github.com/shrinerb/shrine", branch: "master"
 
 # A differential-hash library for image perceptual hashing. Surprisingly maintained.
 # We don't have it versioned locked because it's been almost a year since one was released, but

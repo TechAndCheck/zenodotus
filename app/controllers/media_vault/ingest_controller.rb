@@ -295,6 +295,8 @@ private
     end
   rescue StandardError
     false
+  ensure
+    schema.close unless schema&.closed?
   end
 
   # Validate MediaReview that was passed in
@@ -308,5 +310,7 @@ private
     end
   rescue StandardError
     false
+  ensure
+    schema.close unless schema&.closed?
   end
 end
