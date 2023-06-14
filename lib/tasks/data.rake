@@ -123,6 +123,19 @@ namespace :data do
     downloaded_file.close unless downloaded_file.nil? || downloaded_file.closed?
     File.delete(file_name) if File.exist?(file_name)
   end
+
+  desc "Rescrape MediaReview that isn't populated yet"
+  task scrape_orphans: :environment do |t, args|
+    orphaned_media_review = MediaReview.where(archive_item_id: nil)
+    puts "Found #{orphaned_media_review.count} orphaned MediaReview"
+
+    progress_bar = ProgressBar.create(title: "MediaReview Orphans", total: orphaned_media_review.count)
+    orphaned_media_review.each do |media_review|
+      media_review.scrape
+      progress_bar.increment
+    end
+  end
+
   #   desc "load sample data"
   #   task load_samples: :environment do |t, args|
   #     number_of_lines = `wc -l test_urls.txt`.to_i

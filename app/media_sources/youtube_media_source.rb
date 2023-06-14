@@ -8,7 +8,7 @@ class YoutubeMediaSource < MediaSource
   # @return [String] or [Array] of [String] of valid host names
   sig { override.returns(T::Array[String]) }
   def self.valid_host_name
-    ["www.youtube.com", "youtube.com"]
+    ["www.youtube.com", "youtube.com", "youtu.be"]
   end
 
   # Extracts the video at the input URL by forwarding a scraping request to Hypatia
@@ -38,7 +38,9 @@ class YoutubeMediaSource < MediaSource
   # @return [Boolean] if the string validates or not
   sig { params(url: String).returns(T::Boolean) }
   def self.validate_youtube_post_url(url)
-    return true if /youtube.com\//.match?(url)
+    self.valid_host_name.each do |host_name|
+      return true if /#{host_name}\//.match?(url)
+    end
     raise InvalidYoutubePostUrlError, "Youtube url #{url} does not have the standard url format"
   end
 

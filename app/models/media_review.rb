@@ -115,6 +115,15 @@ class MediaReview < ApplicationRecord
   end
 
   sig { returns(T::Boolean) }
+  def scrape
+    object_model = ArchiveItem.model_for_url(self.original_media_link)
+    return false if object_model.nil?
+
+    object_model.create_from_url(self.original_media_link) # Start scraping
+    true
+  end
+
+  sig { returns(T::Boolean) }
   def orphaned?
     archive_item.nil?
   end

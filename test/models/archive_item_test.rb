@@ -65,7 +65,7 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
     assert_nothing_raised do
       archive_item = ArchiveItem.create_from_media_review(json.deep_stringify_keys, nil)
     end
-    assert_equal "MediaReview", archive_item.item_reviewed["@type"]
+    assert_equal "MediaReviewItem", archive_item.item_reviewed["@type"]
   end
 
   test "Submitting various URLs returns the correct model type" do
