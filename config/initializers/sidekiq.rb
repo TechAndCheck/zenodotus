@@ -1,4 +1,4 @@
-unless ENV.has_key?("REDIS_URL")
+if ENV.has_key?("REDIS_URL")
   Sidekiq.configure_server do |config|
     config.redis = {
       url: ENV["REDIS_URL"],
