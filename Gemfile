@@ -19,6 +19,8 @@ gem "puma", "~> 5.0"
 gem "jbuilder", "~> 2.7"
 # Use Redis adapter to run Action Cable in production
 gem "redis", "~> 4.0"
+gem "hiredis" # a more effective comms
+
 # Use PgSearch for Postgres multi-table search
 gem "pg_search", "~> 2.3.5"
 # Use pagy to paginate ActiveRecord relations

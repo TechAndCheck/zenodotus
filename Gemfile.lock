@@ -220,6 +220,7 @@ GEM
       activesupport (>= 5.0)
     hana (1.3.7)
     highline (2.0.3)
+    hiredis (0.6.3)
     hotwire-livereload (1.2.3)
       listen (>= 3.0.0)
       rails (>= 6.0.0)
@@ -546,6 +547,7 @@ DEPENDENCIES
   ferrum (~> 0.11)
   figaro
   forki!
+  hiredis
   hotwire-livereload
   importmap-rails
   jbuilder (~> 2.7)
