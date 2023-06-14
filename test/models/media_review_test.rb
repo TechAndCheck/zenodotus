@@ -128,4 +128,11 @@ class MediaReviewTest < ActiveSupport::TestCase
     media_review.render_for_export
     media_review.to_comma
   end
+
+  test "can check if orphaned" do
+    kwargs_copy = @@media_review_kwargs.deep_dup
+
+    media_review = MediaReview.create!(**kwargs_copy)
+    assert media_review.orphaned?
+  end
 end

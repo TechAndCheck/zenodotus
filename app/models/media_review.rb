@@ -114,7 +114,7 @@ class MediaReview < ApplicationRecord
     end
   end
 
-  sig { returns(Boolean) }
+  sig { returns(T::Boolean) }
   def orphaned?
     archive_item.nil?
   end
