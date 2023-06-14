@@ -107,7 +107,9 @@ private
   # @return [Boolean] if the string validates or not
   sig { params(url: String).returns(T::Boolean) }
   def self.validate_tweet_url(url)
-    return true if /twitter.com\/[\w]+\/[\w]+\/[0-9]+/.match?(url)
+    self.valid_host_name.each do |host_name|
+      return true if /#{host_name}\/[\w]+\/[\w]+\/[0-9]+/.match?(url)
+    end
     raise InvalidTweetUrlError, "Tweet url #{url} does not have the standard url format"
   end
 

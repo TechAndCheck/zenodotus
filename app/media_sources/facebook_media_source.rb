@@ -39,7 +39,10 @@ class FacebookMediaSource < MediaSource
   # @return [Boolean] if the string validates or not
   sig { params(url: String).returns(T::Boolean) }
   def self.validate_facebook_post_url(url)
-    return true if /facebook.com\//.match?(url)
+    self.valid_host_name.each do |host_name|
+      return true if /#{host_name}\//.match?(url)
+    end
+
     raise InvalidFacebookPostUrlError, "Facebook url #{url} does not have the standard url format"
   end
 
