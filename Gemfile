@@ -201,3 +201,5 @@ gem "rqrcode", "~> 2.0"
 
 # One-off settings that are easy to manage and persistent
 gem "rails-settings-cached", "~> 2.9"
+
+gem "honeybadger", "~> 5.2"
