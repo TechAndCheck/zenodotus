@@ -135,4 +135,23 @@ class MediaReviewTest < ActiveSupport::TestCase
     media_review = MediaReview.create!(**kwargs_copy)
     assert media_review.orphaned?
   end
+
+  test "can get humanized media authenticity categories" do
+    media_review = MediaReview.create!(**@@media_review_kwargs)
+    assert_equal "Transformed", media_review.media_authenticity_category_humanized
+
+    media_review_kwargs = @@media_review_kwargs
+    media_review_kwargs[:media_authenticity_category] = [
+      "DecontextualizedContent",
+      "EditedOrCroppedContent",
+      "OriginalMediaContent",
+      "SatireOrParodyContent",
+      "StagedContent",
+      "TransformedContent",
+    ]
+
+    media_review = MediaReview.create!(**@@media_review_kwargs)
+
+    assert_equal("Missing Context, Edited or Cropped, Original, Satire or Parody, Staged, Transformed", media_review.media_authenticity_category_humanized)
+  end
 end

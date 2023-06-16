@@ -6,17 +6,17 @@
     <br />
     <div class="grid grid-cols-2 grid-flow-row gap-4">
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Original Media Link",
+                 locals: { label: "Media Link",
                  url: archive_item.media_review.original_media_link } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
                  locals: { label: "Media Authenticity Category",
-                 value: archive_item.media_review.media_authenticity_category } %>
+                 value: archive_item.media_review.media_authenticity_category_humanized } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
                  locals: { label: "Original Media Context Description",
                  value: archive_item.media_review.original_media_context_description } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
                  locals: { label: "Taken Down?",
-                 value: archive_item.media_review.taken_down ? "True" : "False" } %>
+                 value: archive_item.media_review.taken_down ? "Yes" : "No" } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
                  locals: { label: "Date Published",
                  time: archive_item.media_review.date_published } %>
@@ -37,20 +37,34 @@
     <br />
     <div class="grid grid-cols-2 grid-flow-row gap-4">
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Claim Reviewed",
+                 locals: { label: "Claim",
                  value: claim_review.claim_reviewed } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "URL",
-                 url: claim_review.url } %>
+                 locals: { label: "Rating",
+                 value: claim_review.review_rating["alternateName"] } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Item Reviewed",
-                 json: claim_review.item_reviewed } %>
+                 locals: { label: "Claimed by",
+                 value: claim_review.item_reviewed["author"]["name"] } %>
+      <% rating_explanation = claim_review.review_rating["ratingExplanation"].nil? ? "" : claim_review.review_rating["ratingExplanation"] %>
+      <%= render partial: "media_vault/media/archive_item_metadata_item",
+                 locals: { label: "Rating Explanation",
+                 value: rating_explanation } %>
+
       <%= render partial: "media_vault/media/archive_item_metadata_item",
                  locals: { label: "Fact Check URL",
-                 json: claim_review.review_rating } %>
+                 url: claim_review.url } %>
+
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Author",
-                 json: claim_review.author } %>
+                 locals: { label: "Claim appearance(s)",
+                 locals: claim_review.url } %>
+
+      <%= render partial: "media_vault/media/archive_item_metadata_item",
+                 locals: { label: "Claim Date",
+                 time: claim_review.item_reviewed["datePublished"] } %>
+
+      <%= render partial: "media_vault/media/archive_item_metadata_item",
+                 locals: { label: "Fact-checked by",
+                 value: "#{claim_review.author["name"]} | #{claim_review.author["url"]}"} %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
                  locals: { label: "Date Published",
                  time: claim_review.date_published } %>
