@@ -132,4 +132,34 @@ class MediaReview < ApplicationRecord
   def render_for_export
     MediaReviewBlueprint.render(self)
   end
+
+  sig { returns(String) }
+  def media_authenticity_category_humanized
+    begin
+      media_authenticity_categories = JSON.parse(self.media_authenticity_category)
+    rescue JSON::ParserError
+      media_authenticity_categories = [self.media_authenticity_category]
+    end
+
+    humanized_media_authenticity_categories = media_authenticity_categories.map do |media_authenticity_category|
+      case media_authenticity_category
+      when "DecontextualizedContent"
+        "Missing Context"
+      when "EditedOrCroppedContent"
+        "Edited or Cropped"
+      when "OriginalMediaContent"
+        "Original"
+      when "SatireOrParodyContent"
+        "Satire or Parody"
+      when "StagedContent"
+        "Staged"
+      when "TransformedContent"
+        "Transformed"
+      else
+        media_authenticity_category # Return as is if we don't know it
+      end
+    end
+
+    humanized_media_authenticity_categories.join(", ")
+  end
 end
