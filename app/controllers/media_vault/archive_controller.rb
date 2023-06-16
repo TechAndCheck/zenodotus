@@ -9,7 +9,7 @@ class MediaVault::ArchiveController < MediaVaultController
   skip_before_action :authenticate_user_and_setup!, only: :scrape_result_callback
   skip_before_action :must_be_media_vault_user, only: :scrape_result_callback
 
-  ARCHIVE_ITEMS_PER_PAGE = 15
+  ARCHIVE_ITEMS_PER_PAGE = 16
 
   # It's the index, list all the archived items
   sig { void }
