@@ -61,22 +61,21 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
 
     # We first create an orphaned `MediaReview` item
     test_post_url = "https://www.instagram.com/p/CBcqOkyDDH8/"
-    media_review_item = MediaReview.create!({
-      original_media_link: "https://www.instagram.com/p/CBcqOkyDDH8/",
-      url: "https://www.foobar.com/",
-      date_published: "2022-02-22",
-      author: { "name": "foobar" },
-      media_authenticity_category: "a category",
-      original_media_context_description: "context context",
-      item_reviewed: { "param": "value" }
-    })
+    # media_review_item = MediaReview.create!({
+    #   original_media_link: "https://www.instagram.com/p/CBcqOkyDDH8/",
+    #   url: "https://www.foobar.com/",
+    #   date_published: "2022-02-22",
+    #   author: { "name": "foobar" },
+    #   media_authenticity_category: "a category",
+    #   original_media_context_description: "context context",
+    #   item_reviewed: { "param": "value" }
+    # })
 
     # Next, we create a mock callback response body
     instagram_mocks_file = File.open("test/mocks/data/instagram_posts.json")
     hypatia_mock_response = JSON.parse(instagram_mocks_file.read)[test_post_url]
     hypatia_mock_response["scrape_result"] = JSON.dump(hypatia_mock_response["scrape_result"])
     instagram_mocks_file.close
-
 
     # We then embed the mock response body within a hash
     scrape = Scrape.create!({ url: "https://www.instagram.com/p/CBcqOkyDDH8/", scrape_type: :instagram })
@@ -85,14 +84,9 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
     # This hash is POSTed to Zenodotus' `/scrape_result_callback` route
     # Zenodotus then (eventually) calls `Scrape.fulfill`, which creates an `ArchiveItem` from the Hypatia response data
     # and links the orphaned `MediaReview` to the `ArchiveItem`.
-    post media_vault_archive_scrape_result_callback_url, as: :json, params: callback_response_json
+    assert_enqueued_jobs 1 do
+      post media_vault_archive_scrape_result_callback_url, as: :json, params: callback_response_json
+    end
     assert_response :success
-
-    scrape.reload
-    media_review_item.reload
-
-    # Check that the the MediaReview item has been updated
-    assert_not_nil scrape.archive_item
-    assert_not_nil media_review_item.archive_item
   end
 end

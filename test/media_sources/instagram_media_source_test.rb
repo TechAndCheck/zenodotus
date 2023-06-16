@@ -16,15 +16,13 @@ class InstagramMediaSourceTest < ActiveSupport::TestCase
   end
 
   test "a non instagram_url raises an error" do
-    assert_raises(MediaSource::HostError) do
-      InstagramMediaSource.new("https://www.example.com")
-    end
+    ims = InstagramMediaSource.new("https://www.example.com")
+    assert ims.invalid_url
   end
 
   test "an invalid instagram post url raises error" do
-    assert_raises(InstagramMediaSource::InvalidInstagramPostUrlError) do
-      InstagramMediaSource.new("https://www.instagram.com/CBcqOkyDDH8/")
-    end
+    ims = InstagramMediaSource.new("https://www.instagram.com/CBcqOkyDDH8/")
+    assert ims.invalid_url
   end
 
   test "extract_instagram_post_id_from_url_works" do

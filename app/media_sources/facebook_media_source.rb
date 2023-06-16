@@ -2,7 +2,7 @@
 
 class FacebookMediaSource < MediaSource
   include Forki
-  attr_reader(:url)
+  attr_reader(:url, :invalid_url)
 
   # Limit all urls to the host below
   #
@@ -54,7 +54,13 @@ class FacebookMediaSource < MediaSource
   def initialize(url)
     # Verify that the url has the proper host for this source. (@valid_host is set at the top of
     # this class)
-    FacebookMediaSource.check_url(url)
+    begin
+      FacebookMediaSource.check_url(url)
+      FacebookMediaSource.validate_facebook_post_url(url)
+    rescue MediaSource::HostError, InvalidFacebookPostUrlError
+      @invalid_url = true
+    end
+
     @url = url
   end
 

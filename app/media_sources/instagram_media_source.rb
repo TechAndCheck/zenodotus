@@ -1,7 +1,7 @@
 # typed: true
 
 class InstagramMediaSource < MediaSource
-  attr_reader(:url)
+  attr_reader(:url, :invalid_url)
 
   # Limit all urls to the host below
   #
@@ -37,8 +37,12 @@ class InstagramMediaSource < MediaSource
   def initialize(url)
     # Verify that the url has the proper host for this source. (@valid_host is set at the top of
     # this class)
-    InstagramMediaSource.check_url(url)
-    InstagramMediaSource.validate_instagram_post_url(url)
+    begin
+      InstagramMediaSource.check_url(url)
+      InstagramMediaSource.validate_instagram_post_url(url)
+    rescue MediaSource::HostError, InvalidInstagramPostUrlError
+      @invalid_url = true
+    end
 
     @url = url
   end

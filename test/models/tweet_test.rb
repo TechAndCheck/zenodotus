@@ -57,6 +57,12 @@ class TweetTest < ActiveSupport::TestCase
     assert_not_nil tweet_2
   end
 
+  test "archiving invalid url raises error" do
+    assert_raises RuntimeError do
+      Sources::Tweet.create_from_url!("https://twitter.co/AmtrakNECAlerts/status/1397922363551870990")
+    end
+  end
+
   test "can create two tweets from same author" do
     archive_item = Sources::Tweet.create_from_birdsong_hash(@@birdsong_tweet).first.tweet
     archive_item2 = Sources::Tweet.create_from_birdsong_hash(@@birdsong_tweet_2).first.tweet

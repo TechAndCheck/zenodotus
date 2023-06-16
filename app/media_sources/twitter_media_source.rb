@@ -1,7 +1,7 @@
 # typed: ignore
 
 class TwitterMediaSource < MediaSource
-  attr_reader(:url)
+  attr_reader(:url, :invalid_url)
 
   # Limit all urls to the host below
   #
@@ -18,11 +18,12 @@ class TwitterMediaSource < MediaSource
   # @params force [Boolean] force Hypatia to not queue a request but to scrape immediately.
   #   Default: false
   # @returns [String or nil] the path of the screenshot if the screenshot was saved
-  sig { override.params(url: String, force: T::Boolean).returns(T.any(T::Boolean, T::Hash[String, String])) }
+  sig { override.params(url: String, force: T::Boolean).returns(T.nilable(T.any(T::Boolean, T::Hash[String, String]))) }
   def self.extract(url, force = false)
     url = MediaSource.extract_post_url_if_needed(url)
     object = self.new(url)
 
+    return nil if object.invalid_url
     return object.retrieve_tweet! if force
 
     object.retrieve_tweet
@@ -36,8 +37,12 @@ class TwitterMediaSource < MediaSource
   def initialize(url)
     # Verify that the url has the proper host for this source. (@valid_host is set at the top of
     # this class)
-    TwitterMediaSource.check_url(url)
-    TwitterMediaSource.validate_tweet_url(url)
+    begin
+      TwitterMediaSource.check_url(url)
+      TwitterMediaSource.validate_tweet_url(url)
+    rescue MediaSource::HostError, InvalidTweetUrlError
+      @invalid_url = true
+    end
 
     @url = url
   end

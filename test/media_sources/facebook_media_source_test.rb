@@ -29,4 +29,9 @@ class FacebookMediaSourceTest < ActiveSupport::TestCase
     result = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/460964425465155")
     assert result
   end
+
+  test "a non facebook_url raises an error" do
+    fms = FacebookMediaSource.new("https://www.example.com")
+    assert fms.invalid_url
+  end
 end

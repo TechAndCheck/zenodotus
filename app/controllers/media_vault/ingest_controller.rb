@@ -79,11 +79,11 @@ class MediaVault::IngestController < MediaVaultController
       end
     end
 
-    sig { returns(StandardError) }
-    def error
+    sig { params(payload: T.untyped).returns(StandardError) }
+    def error(payload = nil)
       case self
       when JSONParseError then JSONParseException.new
-      when JSONValidationError then JSONValidationException.new
+      when JSONValidationError then JSONValidationException.new(payload)
       else T.absurd(self)
       end
     end
@@ -111,7 +111,7 @@ class MediaVault::IngestController < MediaVaultController
     review_json = JSON.parse(typed_params.review_json)
     external_unique_id = typed_params.external_unique_id
 
-    raise ApiErrors::JSONValidationError.error unless review_json.key?("@type")
+    raise ApiErrors::JSONValidationError.error(review_json) unless review_json.key?("@type")
 
     case review_json["@type"]
     when "ClaimReview"
@@ -287,7 +287,9 @@ private
   # Validate MediaReview that was passed in
   sig { params(media_review: Hash).returns(T.any(T::Boolean, Array)) }
   def validate_media_review(media_review)
-    schema = File.open("public/json-schemas/media-review-schema.json").read
+    schema = nil
+    File.open("public/json-schemas/media-review-schema.json") { |file| schema = file.read }
+
     if JSONSchemer.schema(schema).valid?(media_review)
       true
     else
@@ -295,14 +297,14 @@ private
     end
   rescue StandardError
     false
-  ensure
-    schema.close unless schema&.closed?
   end
 
   # Validate MediaReview that was passed in
   sig { params(claim_review: Hash).returns(T.any(T::Boolean, Array)) }
   def validate_claim_review(claim_review)
-    schema = File.open("public/json-schemas/claim-review-schema.json").read
+    schema = nil
+    File.open("public/json-schemas/claim-review-schema.json") { |file| schema = file.read }
+
     if JSONSchemer.schema(schema).valid?(claim_review)
       true
     else
@@ -310,7 +312,5 @@ private
     end
   rescue StandardError
     false
-  ensure
-    schema.close unless schema&.closed?
   end
 end

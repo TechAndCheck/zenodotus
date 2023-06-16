@@ -16,10 +16,9 @@ class YoutubeMediaSourceTest < ActiveSupport::TestCase
     end
   end
 
-  test "a non YouTube url raises an error" do
-    assert_raises(MediaSource::HostError) do
-      YoutubeMediaSource.new("https://www.example.com")
-    end
+  test "a non YouTube url sets invalid url" do
+    yms = YoutubeMediaSource.new("https://www.example.com")
+    assert yms.invalid_url
   end
 
   test "initializing returns an object" do

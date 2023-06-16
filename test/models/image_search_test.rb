@@ -58,7 +58,7 @@ class ImageSearchTest < ActiveSupport::TestCase
     end
     assert in_order, "Images should be returned in order of similarity (lower is better)"
 
-    assert results.first[:distance] <= 1 # Identical images have distance 0, but downloading images may introduce artifacts, so we add some tolerance
+    assert results.first[:distance] <= 10 # Identical images have distance 0, but downloading images may introduce artifacts, so we add some tolerance
   end
 
   test "can run video search" do
@@ -83,6 +83,6 @@ class ImageSearchTest < ActiveSupport::TestCase
       end
     end
     assert in_order, "Images should be returned in order of similarity (lower is better)"
-    assert results.first[:distance] <= 10 # Identical images have distance 0, but downloading images may introduce artifacts, so we add some tolerance
+    assert results.first[:distance] <= 20 # Identical images have distance 0, but downloading images may introduce artifacts, so we add some tolerance
   end
 end

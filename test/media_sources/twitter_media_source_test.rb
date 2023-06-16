@@ -17,16 +17,14 @@ class TwitterMediaSourceTest < ActiveSupport::TestCase
     end
   end
 
-  def test_non_twitter_url_raise_error
-    assert_raises(MediaSource::HostError) do
-      TwitterMediaSource.new("https://www.example.com")
-    end
+  def test_non_twitter_url_set_invalid_url
+    tms = TwitterMediaSource.new("https://www.example.com")
+    assert tms.invalid_url
   end
 
-  def test_invalid_tweet_url_raises_error
-    assert_raises(TwitterMediaSource::InvalidTweetUrlError) do
-      TwitterMediaSource.new("https://twitter.com/20")
-    end
+  def test_invalid_tweet_url_sets_invalid_url
+    tms = TwitterMediaSource.new("https://twitter.com/20")
+    assert tms.invalid_url
   end
 
   def test_initializing_returns_object

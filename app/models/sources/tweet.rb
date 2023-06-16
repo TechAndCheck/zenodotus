@@ -44,7 +44,9 @@ class Sources::Tweet < ApplicationRecord
   # returns ArchiveItem with type Tweet that has been saved to the database
   sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
   def self.create_from_url!(url, user = nil)
-    tweet_response = TwitterMediaSource.extract(url, true)["scrape_result"]
+    tweet_response = TwitterMediaSource.extract(url, true)
+    tweet_response = tweet_response["scrape_result"] unless tweet_response.nil?
+    raise "Invalid Twitter url #{url}" if tweet_response.nil?
     raise "Error sending job to Hypatia" unless tweet_response.respond_to?(:first) && tweet_response.first.has_key?("id")
     Sources::Tweet.create_from_birdsong_hash(tweet_response, user).first
   end

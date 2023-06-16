@@ -31,21 +31,17 @@ class Scrape < ApplicationRecord
                         response.first.key?("status") &&
                         response.first["status"] == "removed"
 
-    # If it's removed we just bail now, clears up the logic for a bit of repetition
-    if removed
-      self.update!({ fulfilled: true, removed: true, archive_item: nil })
-      send_notification && return
-    end
-
     # Process everything correctly now that we know it's not removed
     media_review_item = MediaReview.find_by(original_media_link: self.url,
                                             archive_item_id: nil,
                                             taken_down: nil)
 
-    archive_item = ArchiveItem.model_for_url(self.url).create_from_hash(response)
-    archive_item = archive_item.empty? ? nil : archive_item.first
+    unless removed
+      archive_item = ArchiveItem.model_for_url(self.url).create_from_hash(response)
+      archive_item = archive_item.empty? ? nil : archive_item.first
+    end
 
-    if !media_review_item.nil?
+    unless media_review_item.nil?
       media_review_item.update!({ taken_down: removed, archive_item_id: archive_item&.id })
     end
 

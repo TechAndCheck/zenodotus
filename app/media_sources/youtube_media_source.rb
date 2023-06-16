@@ -1,7 +1,7 @@
 # typed: true
 
 class YoutubeMediaSource < MediaSource
-  attr_reader(:url)
+  attr_reader(:url, :invalid_url)
 
   # Limit all urls to the host below
   #
@@ -52,7 +52,13 @@ class YoutubeMediaSource < MediaSource
   def initialize(url)
     # Verify that the url has the proper host for this source. (@valid_host is set at the top of
     # this class)
-    YoutubeMediaSource.check_url(url)
+    begin
+      YoutubeMediaSource.check_url(url)
+      YoutubeMediaSource.validate_youtube_post_url(url)
+    rescue MediaSource::HostError, InvalidYoutubePostUrlError
+      @invalid_url = true
+    end
+
     @url = url
   end
 
