@@ -24,9 +24,6 @@ class MediaVaultController < ApplicationController
   def terms; end
 
   sig { void }
-  def privacy; end
-
-  sig { void }
   def optout; end
 
 protected

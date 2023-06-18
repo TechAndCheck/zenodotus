@@ -33,6 +33,7 @@ Rails.application.routes.draw do
 
   get "about", to: "application#about"
   get "contact", to: "application#contact"
+  get "privacy", to: "application#privacy", as: "privacy"
 
   scope "/apply" do
     get "/", to: "applicants#new", as: "new_applicant"
@@ -66,7 +67,6 @@ Rails.application.routes.draw do
       get "guide"
       get "highlights"
       get "terms"
-      get "privacy"
       get "optout"
     end
   end
@@ -78,7 +78,6 @@ Rails.application.routes.draw do
       get "dashboard", to: "archive#index"
       get "guide"
       get "terms"
-      get "privacy"
       get "optout"
 
       get "search", to: "search#index", as: "search"

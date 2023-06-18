@@ -34,6 +34,9 @@ class ApplicationController < ActionController::Base
   sig { void }
   def contact; end
 
+  sig { void }
+  def privacy; end
+
   sig { params(user: User).returns(String) }
   def after_sign_in_path_for(user)
     if site_is_media_vault?
