@@ -21,9 +21,6 @@ class MediaVaultController < ApplicationController
   def guide; end
 
   sig { void }
-  def terms; end
-
-  sig { void }
   def optout; end
 
 protected

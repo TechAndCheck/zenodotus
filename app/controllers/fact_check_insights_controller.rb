@@ -41,9 +41,6 @@ class FactCheckInsightsController < ApplicationController
   def highlights; end
 
   sig { void }
-  def terms; end
-
-  sig { void }
   def optout; end
 
 private
