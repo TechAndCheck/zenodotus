@@ -8,26 +8,30 @@ class FactCheckInsightsController < ApplicationController
 
   sig { void }
   def download
-    respond_to do |format|
-      format.html do; end
-      format.json do
-        unless user_signed_in? && current_user.can_access_fact_check_insights?
-          render json: {
-            error: "You do not have permission to view that resource."
+    render json: {
+            error: "Downloads are current disabled."
           }, status: :unauthorized
-          return
-        end
-        send_data(FactCheckInsightsController.generate_json, type: "application/json", filename: "fact_check_insights.json")
-      end
 
-      format.zip do
-        unless user_signed_in? && current_user.can_access_fact_check_insights?
-          render_unauthorized
-          return
-        end
-        send_data(FactCheckInsightsController.generate_csv_zip, type: "application/zip", filename: "fact_check_insights.zip")
-      end
-    end
+    # respond_to do |format|
+    #   format.html do; end
+    #   format.json do
+    #     unless user_signed_in? && current_user.can_access_fact_check_insights?
+    #       render json: {
+    #         error: "You do not have permission to view that resource."
+    #       }, status: :unauthorized
+    #       return
+    #     end
+    #     send_data(FactCheckInsightsController.generate_json, type: "application/json", filename: "fact_check_insights.json")
+    #   end
+
+    #   format.zip do
+    #     unless user_signed_in? && current_user.can_access_fact_check_insights?
+    #       render_unauthorized
+    #       return
+    #     end
+    #     send_data(FactCheckInsightsController.generate_csv_zip, type: "application/zip", filename: "fact_check_insights.zip")
+    #   end
+    # end
   end
 
   sig { void }

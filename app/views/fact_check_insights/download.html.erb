@@ -11,8 +11,14 @@
 		<% if user_signed_in? %>
 			<h2>Ready to go!</h2>
 			<div class="btn-container">
-				<%= link_to "Download JSON", fact_check_insights_download_path(format: :json), class: "btn btn--orange btn--lg" %>
-				<%= link_to "Download CSV", fact_check_insights_download_path(format: :zip), class: "btn btn--orange btn--lg" %>
+				<div class="alert alert--error" role="alert">
+					<div class="alert__message">
+						Currently we have disabled downloading the data while we finish up some loose ends. Please bear with us and contact <a href="mailto:hello@factcheckinsights.org">hello@factcheckinsights.org</a> with any questions.
+					</div>
+				</div>
+
+				<%# link_to "Download JSON", fact_check_insights_download_path(format: :json), class: "btn btn--orange btn--lg" %>
+				<%# link_to "Download CSV", fact_check_insights_download_path(format: :zip), class: "btn btn--orange btn--lg" %>
 			</div>
 			<p>The compilation of this data is licensed under <%= link_to "CC BY", "https://creativecommons.org/licenses/by/4.0/" %>. <%= render partial: "optout_instructions" %></p>
 		<% else %>
