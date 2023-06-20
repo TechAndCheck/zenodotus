@@ -19,11 +19,15 @@ class Scrape < ApplicationRecord
 
   after_create :send_notification
 
+  # Enqueue the scraping callout to Hypatia into the ActiveJob queue
+  # TODO: Eventually this should be the main interface to kicking it off, but for now... no
   sig { void }
   def enqueue
     ScrapeJob.perform_later(self)
   end
 
+  # Make the call to Hypatia, the return should be { success: "true" } after parsing
+  # This does it synchronously. If you're calling this you probably mean to call `enqueue`
   sig { returns(Hash) }
   def perform
     params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: self.url, callback_id: self.id }

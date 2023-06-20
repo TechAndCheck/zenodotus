@@ -17,10 +17,10 @@ class ScrapeJob < ApplicationJob
   end
 
   def perform(scrape)
-    puts "Beginning to scrape #{url} @ #{Time.now}"
+    puts "Beginning to scrape #{scrape.url} @ #{Time.now}"
     response = scrape.perform
     raise "Cannot connect to Hypatia" unless response.has_key?("success") && response["success"] == true
-    puts "Done scraping #{url} @ #{Time.now}"
+    puts "Done scraping #{scrape.url} @ #{Time.now}"
   end
 
   def get_sidekiq_queue
