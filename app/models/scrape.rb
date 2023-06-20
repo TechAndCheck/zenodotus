@@ -19,6 +19,11 @@ class Scrape < ApplicationRecord
 
   after_create :send_notification
 
+  sig { void }
+  def enqueue
+    ScrapeJob.perform_later(self)
+  end
+
   sig { returns(Hash) }
   def perform
     params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: self.url, callback_id: self.id }

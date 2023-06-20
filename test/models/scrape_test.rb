@@ -24,6 +24,17 @@ class ScrapeTest < ActiveSupport::TestCase
     })
   end
 
+  test "Can enqueue scrape" do
+    scrape = Scrape.create!({
+      url: "https://www.instagram.com/p/CBcqOkyDDH8/",
+      scrape_type: :instagram
+    })
+
+    assert_enqueued_jobs 1 do
+      scrape.enqueue
+    end
+  end
+
   test "can perform scrape" do
     scrape = Scrape.create!({
       url: "https://www.instagram.com/p/CBcqOkyDDH8/",

@@ -1,6 +1,7 @@
-# Legacy purposes still here. Not probably what we want to sue in the log run
+# Moving from ScraperJob to this for better coherence, so that the Scrape model
+# is the only thing that encodes this
 
-class ScraperJob < ApplicationJob
+class ScrapeJob < ApplicationJob
   require "sidekiq/api"
 
   queue_as :default
@@ -15,10 +16,10 @@ class ScraperJob < ApplicationJob
     ActionCable.server.broadcast("jobs_channel", { jobs_count: Sidekiq::Queue.new.size })
   end
 
-  def perform(media_source_class, media_model, url, user)
+  def perform(scrape)
     puts "Beginning to scrape #{url} @ #{Time.now}"
-    response = media_source_class.extract(url)
-    raise "Invalid url #{url}" if response.nil?
+    response = scrape.perform
+    raise "Cannot connect to Hypatia" unless response.has_key?("success") && response["success"] == true
     puts "Done scraping #{url} @ #{Time.now}"
   end
 
