@@ -19,6 +19,25 @@ class Scrape < ApplicationRecord
 
   after_create :send_notification
 
+  sig { returns(Hash) }
+  def perform
+    params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: self.url, callback_id: self.id }
+
+    # Move this to the Scrape model so they're easily resubmittable
+    response = Typhoeus.get(
+      Figaro.env.HYPATIA_SERVER_URL,
+      followlocation: true,
+      params: params
+    )
+
+    unless response.code == 200
+      self.error
+      raise ExternalServerError, "Error: #{response.code} returned from Hypatia server"
+    end
+
+    JSON.parse(response.body)
+  end
+
   sig { void }
   def send_notification
     ActionCable.server.broadcast("scrapes_channel", { scrapes_count: Scrape.where(fulfilled: false, error: nil).count })
