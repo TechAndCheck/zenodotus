@@ -14,7 +14,7 @@
       <%= render partial: "media_vault/media/archive_item_metadata_item",
                  locals: { label: "Original Media Context Description",
                  value: archive_item.media_review.original_media_context_description } %>
-      <%= render partial: "media_vault/media/archive_item_metadata_item",
+      <%# render partial: "media_vault/media/archive_item_metadata_item",
                  locals: { label: "Taken Down?",
                  value: archive_item.media_review.taken_down ? "Yes" : "No" } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
@@ -54,9 +54,10 @@
                  locals: { label: "Fact Check URL",
                  url: claim_review.url } %>
 
+      <% appearances = claim_review.item_reviewed["appearance"].map { |appearance| appearance["url"] } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
                  locals: { label: "Claim appearance(s)",
-                 locals: claim_review.url } %>
+                 urls: appearances } %>
 
       <%= render partial: "media_vault/media/archive_item_metadata_item",
                  locals: { label: "Claim Date",
