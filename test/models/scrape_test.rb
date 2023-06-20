@@ -24,6 +24,17 @@ class ScrapeTest < ActiveSupport::TestCase
     })
   end
 
+  test "can perform scrape" do
+    scrape = Scrape.create!({
+      url: "https://www.instagram.com/p/CBcqOkyDDH8/",
+      scrape_type: :instagram
+    })
+
+    result = scrape.perform
+    assert result.has_key?("success")
+    assert result["success"]
+  end
+
   test "can fulfill scrape" do
     scrape = Scrape.create!({
       url: "https://www.instagram.com/p/CBcqOkyDDH8/",

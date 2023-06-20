@@ -55,21 +55,8 @@ class InstagramMediaSource < MediaSource
   def retrieve_instagram_post
     scrape = Scrape.create!({ url: @url, scrape_type: :instagram })
 
-    params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: @url, callback_id: scrape.id }
+    response_body = scrape.perform
 
-    response = Typhoeus.get(
-      Figaro.env.HYPATIA_SERVER_URL,
-      followlocation: true,
-      params: params
-    )
-
-    unless response.code == 200
-      scrape.error
-      raise ExternalServerError, "Error: #{response.code} returned from Hypatia server"
-    end
-
-    response_body = JSON.parse(response.body)
-    # _ = JSON.parse(response.body)
     # TODO:  Parse response body properly and check for errors
     raise InstagramMediaSource::ExternalServerError if response_body["success"] == false
     true

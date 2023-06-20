@@ -69,20 +69,8 @@ class YoutubeMediaSource < MediaSource
   def retrieve_youtube_post
     scrape = Scrape.create!({ url: @url, scrape_type: :youtube })
 
-    params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: @url, callback_id: scrape.id }
+    response_body = scrape.perform
 
-    response = Typhoeus.get(
-      Figaro.env.HYPATIA_SERVER_URL,
-      followlocation: true,
-      params: params
-    )
-
-    unless response.code == 200
-      scrape.error
-      raise ExternalServerError, "Error: #{response.code} returned from Hypatia server"
-    end
-
-    response_body = JSON.parse(response.body)
     raise YoutubeMediaSource::ExternalServerError if response_body["success"] == false
 
     true

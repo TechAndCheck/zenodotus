@@ -56,20 +56,8 @@ class TwitterMediaSource < MediaSource
   def retrieve_tweet
     scrape = Scrape.create!({ url: @url, scrape_type: :twitter })
 
-    params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: @url, callback_id: scrape.id }
+    response_body = scrape.perform
 
-    response = Typhoeus.get(
-      Figaro.env.HYPATIA_SERVER_URL,
-      followlocation: true,
-      params: params
-    )
-
-    unless response.code == 200
-      scrape.error
-      raise TwitterMediaSource::ExternalServerError, "Error: #{response.code} returned from Hypatia server"
-    end
-
-    response_body = JSON.parse(response.body)
     raise TwitterMediaSource::ExternalServerError if response_body["success"] == false
 
     true
