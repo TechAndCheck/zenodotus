@@ -1,6 +1,11 @@
 namespace :data do
   desc "load google's feed"
   task load_google_feed: :environment do |t, args|
+    if ENV["RAILS_ENV"] == "production" && ENV["HONEYBADGER_API_KEY_GOOGLE_CHECK_IN_ADDRESS"].blank? == false
+      # Check in with Honeybadger
+      `curl #{ENV["HONEYBADGER_API_KEY_GOOGLE_CHECK_IN_ADDRESS"]} &> /dev/null`
+    end
+
     file_name = "google-feed-#{Time.new.strftime("%Y%m%d-%k:%M:%S")}"
     downloaded_file = File.open file_name, "wb"
     request = Typhoeus::Request.new(
