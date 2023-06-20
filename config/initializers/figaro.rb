@@ -25,5 +25,5 @@ if Figaro.env.USE_S3_DEV_TEST == "true" || Rails.env == "production"
 end
 
 if Figaro.env.HONEYBADGER_API_KEY.blank? == false
-  Figaro.require_key(HONEYBADGER_API_KEY_GOOGLE_CHECK_IN_ADDRESS)
+  Figaro.require_keys("HONEYBADGER_API_KEY_GOOGLE_CHECK_IN_ADDRESS")
 end
