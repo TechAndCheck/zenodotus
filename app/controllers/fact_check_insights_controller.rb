@@ -9,7 +9,7 @@ class FactCheckInsightsController < ApplicationController
   sig { void }
   def download
     render json: {
-            error: "Downloads are current disabled."
+            error: "Downloads are currently disabled."
           }, status: :unauthorized
 
     # respond_to do |format|
