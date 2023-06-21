@@ -93,7 +93,11 @@ private
 
       if author_models.include?(result.class)
         @author_results.append(result) unless result.nil?
+        next
       end
+
+      # At this point it's in MediaReview but we'll only return it if we have something in the archive
+      @post_results.append(result.archive_item) unless result.archive_item.nil?
     end
   end
 end
