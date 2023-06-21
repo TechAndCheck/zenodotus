@@ -41,7 +41,7 @@ class Scrape < ApplicationRecord
 
     unless response.code == 200
       self.error
-      raise ExternalServerError, "Error: #{response.code} returned from Hypatia server"
+      raise Scrape::ExternalServerError, "Error: #{response.code} returned from Hypatia server"
     end
 
     JSON.parse(response.body)
