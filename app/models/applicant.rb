@@ -137,6 +137,17 @@ class Applicant < ApplicationRecord
     Applicant.where.not(status: nil).where.not(confirmed_at: nil)
   end
 
+  sig { params(site: T.untyped).void }
+  def send_confirmation_email(site)
+    ApplicantsMailer.with({
+      applicant: self,
+      site: site,
+    }).confirmation_email.deliver_later
+
+    # This shouldn't fail but we don't particularly care if it does.
+    self.update(confirmation_sent_at: Time.now)
+  end
+
 private
 
   sig { void }

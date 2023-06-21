@@ -49,6 +49,21 @@ class ApplicantTest < ActiveSupport::TestCase
     end
   end
 
+  test "can send an applicant confirmation email" do
+    a = Applicant.create!({
+      name: "Jane Doe",
+      email: "JANE@EXAMPLE.COM",
+      use_case: "Use case",
+      accepted_terms_at: Time.now,
+      accepted_terms_version: TermsOfService::CURRENT_VERSION,
+      confirmation_token: Devise.friendly_token,
+    })
+
+    assert_emails 1 do
+      a.send_confirmation_email(SiteDefinitions::FACT_CHECK_INSIGHTS)
+    end
+  end
+
   # This test ensures that if the model has its terms-acceptance database attributes populated
   # properly, that the model itself sets the `accepted_terms` attribute accordingly during init.
   test "can convert terms-acceptance attributes from database" do
