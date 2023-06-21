@@ -41,7 +41,12 @@ class Scrape < ApplicationRecord
 
     unless response.code == 200
       self.error
-      raise Scrape::ExternalServerError, "Error: #{response.code} returned from Hypatia server"
+      exception = Scrape::ExternalServerError.new("Error: #{response.code} returned from Hypatia server.")
+      Honeybadger.notify(exception, context: {
+        response_body: response.body
+      }) unless Figaro.env.HONEYBADGER_API_KEY.blank?
+
+      raise exception
     end
 
     JSON.parse(response.body)
