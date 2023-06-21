@@ -48,7 +48,7 @@ class User < ApplicationRecord
       user: self,
       token: token,
       site: self.site_for_setup,
-    }).setup_email.deliver_later
+    }).setup_email.deliver_now
 
     token
   end

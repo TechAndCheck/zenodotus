@@ -142,7 +142,7 @@ class Applicant < ApplicationRecord
     ApplicantsMailer.with({
       applicant: self,
       site: site,
-    }).confirmation_email.deliver_later
+    }).confirmation_email.deliver_now
 
     # This shouldn't fail but we don't particularly care if it does.
     self.update(confirmation_sent_at: Time.now)
@@ -182,7 +182,7 @@ private
 
     NewApplicantAlertMailer.with({
       applicant: @applicant
-    }).new_applicant_email.deliver_later
+    }).new_applicant_email.deliver_now
   end
 end
 
