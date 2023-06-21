@@ -84,7 +84,7 @@
 								:accepted_terms,
 								required: true ) %>
 							<%= f.label :accepted_terms do %>
-								Accept the <%= link_to "terms and conditions", fact_check_insights_terms_path, target: :_blank %> *
+								Accept the <%= link_to "terms and conditions", terms_path, target: :_blank %> *
 								<%= errors_for_field(
 									@applicant,
 									:accepted_terms,
