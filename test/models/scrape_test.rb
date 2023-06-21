@@ -46,6 +46,18 @@ class ScrapeTest < ActiveSupport::TestCase
     assert result["success"]
   end
 
+  # OK, there's no way to test this with the mocks right now
+  # test "scrape that failed throws error" do
+  #   scrape = Scrape.create!({
+  #     url: "https://www.instagram.com/p/CBcqOkyDDH8/",
+  #     scrape_type: :instagram
+  #   })
+
+  #   result = scrape.perform
+  #   assert result.has_key?("success")
+  #   assert result["success"]
+  # end
+
   test "can fulfill scrape" do
     scrape = Scrape.create!({
       url: "https://www.instagram.com/p/CBcqOkyDDH8/",

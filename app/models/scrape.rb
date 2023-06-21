@@ -84,4 +84,6 @@ class Scrape < ApplicationRecord
     self.update!({ error: true })
     self.send_notification
   end
+
+  class Scrape::ExternalServerError < StandardError; end
 end
