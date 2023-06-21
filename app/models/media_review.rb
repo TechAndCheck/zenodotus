@@ -1,6 +1,9 @@
 # typed: strict
 
 class MediaReview < ApplicationRecord
+  include PgSearch::Model
+  multisearchable against: :original_media_context_description
+
   belongs_to :archive_item, optional: true, class_name: "ArchiveItem"
   has_many :claim_reviews, foreign_key: :media_review_id, class_name: "ClaimReview", dependent: :destroy
 
