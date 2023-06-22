@@ -43,6 +43,16 @@ class Admin::ApplicantsController < AdminController
     redirect_to admin_applicants_path
   end
 
+  sig { void }
+  def delete
+    @applicant = Applicant.find(review_params[:id])
+
+    @applicant.delete
+
+    flash[:success] = "Applicant has been deleted."
+    redirect_to admin_applicants_path
+  end
+
 private
 
   def review_params

@@ -82,6 +82,7 @@
 								"Reject",
 								formaction: admin_applicant_reject_path(applicant),
 								class: "btn btn--danger") %>
+							<%= link_to "Delete", admin_applicant_path(applicant), data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this applicant? You probably want to reject them instead. This should only be used for duplicates." } %>
 						</div>
 					<% end %>
 				</div>

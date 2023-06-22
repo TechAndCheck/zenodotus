@@ -58,6 +58,7 @@ Rails.application.routes.draw do
     resources :applicants, only: [:index, :show]
     post "applicants/:id/approve", to: "applicants#approve", as: "applicant_approve"
     post "applicants/:id/reject", to: "applicants#reject", as: "applicant_reject"
+    delete "applicants/:id", to: "applicants#delete", as: "applicant_delete"
   end
 
   constraints host: Figaro.env.FACT_CHECK_INSIGHTS_HOST do

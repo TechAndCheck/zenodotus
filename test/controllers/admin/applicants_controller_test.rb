@@ -25,6 +25,14 @@ class Admin::ApplicantsControllerTest < ActionDispatch::IntegrationTest
     assert applicant.rejected?
   end
 
+  test "can delete applicant" do
+    applicant = applicants(:confirmed)
+
+    delete admin_applicant_delete_path(id: applicant[:id])
+
+    assert_not Applicant.exists?(applicant[:id])
+  end
+
   test "cannot review an applicant with an unconfirmed email" do
     applicant = applicants(:new)
 
