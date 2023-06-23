@@ -1,6 +1,9 @@
 class ClaimReview < ApplicationRecord
   belongs_to :media_review, optional: true, class_name: "MediaReview"
 
+  include PgSearch::Model
+  multisearchable against: [:claim_reviewed, :item_reviewed]
+
   # CSV export formatting
   comma do
     url "url"

@@ -97,7 +97,14 @@ private
       end
 
       # At this point it's in MediaReview but we'll only return it if we have something in the archive
-      @post_results.append(result.archive_item) unless result.archive_item.nil?
+      # Check if it's a MediaReview or ClaimReview
+      #
+      # A switch statement doesn't work here, thus the if/else tree
+      if result.class == MediaReview
+        @post_results.append(result.archive_item) unless result.archive_item.nil?
+      elsif result.class == ClaimReview
+        @post_results.append(result.media_review.archive_item) if result.media_review&.archive_item
+      end
     end
   end
 end
