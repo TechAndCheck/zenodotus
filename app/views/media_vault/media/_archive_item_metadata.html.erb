@@ -54,7 +54,8 @@
                  locals: { label: "Fact Check URL",
                  url: claim_review.url } %>
 
-      <% appearances = claim_review.item_reviewed["appearance"].map { |appearance| appearance["url"] } %>
+      <% appearances = claim_review.item_reviewed["appearance"]&.map { |appearance| appearance["url"] } %>
+      <% appearances = [] if appearances.nil?
       <%= render partial: "media_vault/media/archive_item_metadata_item",
                  locals: { label: "Claim appearance(s)",
                  urls: appearances } %>
