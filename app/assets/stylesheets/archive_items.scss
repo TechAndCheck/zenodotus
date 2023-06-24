@@ -155,6 +155,11 @@ just to examine the template files unless/until we capture it better here.
 	font-size: 0.9em;
 
 	@include shared.underline-on;
+
+	.preview {
+		height: 315px;
+		object-fit: contain;
+	}
 }
 
 .archive-item__body-media__image {
@@ -162,6 +167,11 @@ just to examine the template files unless/until we capture it better here.
 	width: 100%;
 	height: auto;
 	border-radius: var(--archive-item--image-border-radius);
+
+	.preview {
+		height: 315px;
+		object-fit: contain;
+	}
 }
 
 .archive-item__body-media__video {
@@ -170,6 +180,8 @@ just to examine the template files unless/until we capture it better here.
 	height: auto;
 	position: relative;
 }
+
+
 
 .archive-item__body-media__video-caption {
 	position: absolute;
