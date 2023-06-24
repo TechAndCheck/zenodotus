@@ -32,7 +32,7 @@
 			<h2 class="search-results__title"><%= pluralize(@post_results.length, "matching post") %> found:</h2>
 			<div class="search-results search-results--posts archive-items archive-items--boxed-items archive-items--masonry">
 				<% @post_results.each do |post| %>
-					<%= render partial: "media_vault/media/archive_item", locals: { **post.normalized_attrs_for_views } %>
+					<%= render partial: "media_vault/media/archive_item", locals: { preview: true, **post.normalized_attrs_for_views } %>
 				<% end %>
 			</div>
 		<% end %>
