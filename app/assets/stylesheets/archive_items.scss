@@ -116,11 +116,6 @@ just to examine the template files unless/until we capture it better here.
 	.archive-item[data-publishing-platform="youtube"] & {
 		flex-direction: column-reverse;
 	}
-
-	&.preview {
-		height: 315px;
-		object-fit: contain;
-	}
 }
 
 .archive-item__body-caption {
@@ -167,6 +162,11 @@ just to examine the template files unless/until we capture it better here.
 	width: 100%;
 	height: auto;
 	border-radius: var(--archive-item--image-border-radius);
+
+	&.preview {
+		height: 315px;
+		object-fit: contain;
+	}
 }
 
 .archive-item__body-media__video {
@@ -174,9 +174,16 @@ just to examine the template files unless/until we capture it better here.
 	width: 100%;
 	height: auto;
 	position: relative;
+
+	&.preview {
+		height: 315px;
+		object-fit: contain;
+	}
+
+	video {
+		height: 315px;
+	}
 }
-
-
 
 .archive-item__body-media__video-caption {
 	position: absolute;
