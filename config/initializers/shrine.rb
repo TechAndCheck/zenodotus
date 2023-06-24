@@ -7,12 +7,13 @@ require "shrine/storage/memory"
 require "shrine/storage/s3"
 
 # Available buckets are `zenodotus-testing` (24-hour expiration) and `zenodotus-production` (permanant)
-def make_s3_bucket(bucket_name)
+def make_s3_bucket(bucket_name, cdn_name = nil)
   Shrine::Storage::S3.new(
     bucket: bucket_name, # required
     region: "us-east-1", # required
     access_key_id: Figaro.env.AWS_ACCESS_KEY_ID,
     secret_access_key: Figaro.env.AWS_SECRET_ACCESS_KEY,
+    host: cdn_name,
   )
 end
 
@@ -35,7 +36,7 @@ def make_shrine_storage
   when "test"
     Figaro.env.USE_S3_DEV_TEST == "true" ? make_s3_bucket(bucket_name) : Shrine::Storage::Memory.new
   when "production"
-    make_s3_bucket(bucket_name)
+    make_s3_bucket(bucket_name, ENV["CLOUDFRONT_HOST"])
   end
 end
 
@@ -49,3 +50,4 @@ Shrine.plugin :cached_attachment_data # for retaining the cached file across for
 Shrine.plugin :restore_cached_data # re-extract metadata when attaching a cached file
 Shrine.plugin :tempfile
 Shrine.plugin :derivatives
+Shrine.plugin :keep_files if ENV["STAGING"]
