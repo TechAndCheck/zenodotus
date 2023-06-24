@@ -39,7 +39,7 @@
     <% end %>
     <div class="archive-item__body">
         <% if archive_item_self.has_displayable_media? %>
-            <div class="archive-item__body-media">
+            <div class="archive-item__body-media private">
                 <% if archive_item_self.combined_media.length == 1 %>
                     <%= render partial: "media_vault/media/archive_item_medium", locals: { media: archive_item_self.combined_media.first } %>
                 <% else %>
