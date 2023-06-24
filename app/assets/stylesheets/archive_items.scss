@@ -156,7 +156,7 @@ just to examine the template files unless/until we capture it better here.
 
 	@include shared.underline-on;
 
-	.preview {
+	&.preview {
 		height: 315px;
 		object-fit: contain;
 	}
@@ -168,7 +168,7 @@ just to examine the template files unless/until we capture it better here.
 	height: auto;
 	border-radius: var(--archive-item--image-border-radius);
 
-	.preview {
+	&.preview {
 		height: 315px;
 		object-fit: contain;
 	}
