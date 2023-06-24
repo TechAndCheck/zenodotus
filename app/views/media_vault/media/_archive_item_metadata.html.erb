@@ -44,7 +44,7 @@
                  value: claim_review.review_rating["alternateName"] } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
                  locals: { label: "Claimed by",
-                 value: claim_review.item_reviewed["author"]["name"] } %>
+                 value: claim_review.item_reviewed.dig("author", "name") } %>
       <% rating_explanation = claim_review.review_rating["ratingExplanation"].nil? ? "" : claim_review.review_rating["ratingExplanation"] %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
                  locals: { label: "Rating Explanation",
