@@ -28,9 +28,11 @@ class Applicant < ApplicationRecord
 
   # Records the time that the we were able to successful confirm the applicant's email address.
   #
-  # Returns either the boolean result of the `update` or nil if the applicant is already confirmed.
+  # Returns either the boolean result of the `update` or if the applicant is already confirmed.
   sig { returns(T.nilable(T::Boolean)) }
   def confirm
+    return true if self.confirmed? # If we've been here before just go back.
+
     result = self.update(confirmed_at: Time.now) unless self.confirmed?
     # Once we have it confirmed we send an email to the admins
     self.send_admins_new_applicant_email_alert if result == true

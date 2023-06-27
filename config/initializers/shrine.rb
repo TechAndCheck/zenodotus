@@ -13,7 +13,6 @@ def make_s3_bucket(bucket_name, cdn_name = nil)
     region: "us-east-1", # required
     access_key_id: Figaro.env.AWS_ACCESS_KEY_ID,
     secret_access_key: Figaro.env.AWS_SECRET_ACCESS_KEY,
-    host: cdn_name,
   )
 end
 
