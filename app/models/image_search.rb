@@ -18,7 +18,7 @@ class ImageSearch < ApplicationRecord
   # when searching
   sig { returns(Integer) }
   def limit_video_frames_hashed
-    4
+    8
   end
 
   sig { params(media_item: ActionDispatch::Http::UploadedFile, current_user: User).returns(ImageSearch) }
