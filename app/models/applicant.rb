@@ -56,11 +56,10 @@ class Applicant < ApplicationRecord
     email: String,
     token: String
   ).returns(T.nilable(T.self_type)) }
-  def self.find_unconfirmed_by_email_and_token(email:, token:)
+  def self.find_by_email_and_token(email:, token:)
     self.find_by({
       email: email,
-      confirmation_token: token,
-      confirmed_at: nil
+      confirmation_token: token
     })
   end
 

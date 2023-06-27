@@ -75,16 +75,16 @@ class ApplicantsController < ApplicationController
       render(:confirmation_not_found, status: :bad_request) && return
     end
 
-    @applicant = Applicant.find_unconfirmed_by_email_and_token(
+    @applicant = Applicant.find_by_email_and_token(
       email: confirm_params[:email],
       token: confirm_params[:token]
     )
     (render(:confirmation_not_found, status: :not_found) && return) unless @applicant.present?
 
-    @applicant.confirm
-    (render(:confirmation_error, status: :internal_server_error) && return) unless @applicant.confirmed?
-
-    # TODO: Notify admins of a pending application here (#273).
+    unless @applicant.confirmed?
+      @applicant.confirm
+      (render(:confirmation_error, status: :internal_server_error) && return) unless @applicant.confirmed?
+    end
 
     redirect_to applicant_confirmed_path
   end

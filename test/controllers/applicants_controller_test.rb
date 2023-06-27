@@ -117,4 +117,26 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal SiteDefinitions::MEDIA_VAULT[:shortname], applicant[:source_site]
   end
+
+  test "can confirm an applicant" do
+    applicant = applicants(:new)
+
+    assert_not applicant.confirmed?
+
+    get applicant_confirm_path(email: applicant[:email], token: applicant[:confirmation_token])
+
+    applicant.reload
+    assert applicant.confirmed?
+  end
+
+  test "can reconfirm an applicant" do
+    applicant = applicants(:confirmed)
+
+    assert applicant.confirmed?
+
+    get applicant_confirm_path(email: applicant[:email], token: applicant[:confirmation_token])
+
+    applicant.reload
+    assert applicant.confirmed?
+  end
 end
