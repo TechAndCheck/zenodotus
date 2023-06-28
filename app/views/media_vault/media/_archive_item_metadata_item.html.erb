@@ -4,7 +4,7 @@
     <% if defined?(url) %>
       <%= link_to url, url %>
     <% elsif defined?(value) %>
-      <%= value %>
+      <span style="word-break: normal;"><%= value %></span>
     <% elsif defined?(time) %>
       <%= time %>
     <% elsif defined?(urls) %>
