@@ -68,4 +68,13 @@ class ClaimReview < ApplicationRecord
   def render_for_export
     ClaimReviewBlueprint.render(self)
   end
+
+  sig { returns T::Array[String] }
+  def appearances
+    return [] if self.item_reviewed["appearance"].nil?
+
+    self.item_reviewed["appearance"]&.map do |appearance|
+      appearance.is_a?(Hash) ? appearance["url"] : appearance
+    end
+  end
 end

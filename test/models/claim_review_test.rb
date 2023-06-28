@@ -4,6 +4,55 @@ class ClaimReviewTest < ActiveSupport::TestCase
   include Minitest::Hooks
   include ActiveJob::TestHelper
 
+  test "claim review properly can turn appearances into an array" do
+    claim_review = ClaimReview.create!(
+      author: {
+        "@type": "Organization",
+        "name": "realfact",
+        "url": "https://www.realfact.com/"
+      },
+      claim_reviewed: "The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide.",
+      date_published: "2021-02-01",
+      item_reviewed: {
+        "@type": "Claim",
+        "name": "Claim name",
+        "author": {
+          "@type": "Person",
+          "jobTitle": "On the internet",
+          "name": "Viral image"
+        },
+        "datePublished": "2021-01-30",
+        "appearance": ["https://www.facebook.com/1314047423/videos/475912420875607/"]
+      },
+      review_rating: {
+        "@type": "Rating",
+        "alternateName": "False",
+        "bestRating": "9",
+        "ratingValue": "4",
+      },
+      url: "https://www.realfact.com/factchecks/2021/feb/03/starwars"
+    )
+
+    assert claim_review.appearances.is_a?(Array)
+    assert_equal ["https://www.facebook.com/1314047423/videos/475912420875607/"], claim_review.appearances
+
+    claim_review.update!({
+      item_reviewed: {
+        "@type": "Claim",
+        "name": "Claim name",
+        "author": {
+          "@type": "Person",
+          "jobTitle": "On the internet",
+          "name": "Viral image"
+        },
+        "datePublished": "2021-01-30",
+        "appearance": [{ url: "https://www.facebook.com/1314047423/videos/475912420875607/" }]
+      },
+    })
+    assert claim_review.appearances.is_a?(Array)
+    assert_equal ["https://www.facebook.com/1314047423/videos/475912420875607/"], claim_review.appearances
+  end
+
   test "claim review blueprinter output has required characteristics" do
     media_review = MediaReview.create!(media_authenticity_category: "fake",
                                        author: { "name": "a_name" },
