@@ -16,7 +16,7 @@
 	<nav id="site-nav--full" class="site-nav">
 		<%= link_to use_svg("fact-check-insights-logo", title: "Fact-Check Insights", svg_attrs: { width: 264, height: 74, role: "img" }), root_path, class: "site-nav__logo" %>
 		<ol id="site-nav__primary" class="site-nav__links">
-			<li><%# link_to fact_check_insights_download_path, class: "btn btn--naked" do %><a href="#" class="btn btn--naked"><span>Download (disabled) <span class="hideable">Download the Data (Disabled)</span></span></a><%# end %></li>
+			<li><%= link_to new_applicant_path, class: "btn btn--naked" do %><span>Download <span class="hideable">the Data</span></span><% end %></li>
 			<li><%= link_to fact_check_insights_guide_path, class: "btn btn--naked" do %><span>Guide<span class="hideable"> to the Data</span></span><% end %></li>
 			<li><%= link_to fact_check_insights_highlights_path, class: "btn btn--naked" do %><span>Highlights</span><% end %></li>
 			<li><%= link_to about_path, class: "btn btn--naked" do %><span>About</span><% end %></li>
