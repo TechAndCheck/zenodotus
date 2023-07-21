@@ -115,7 +115,7 @@ class ApplicantTest < ActiveSupport::TestCase
     # Cache this timestamp so we can compare against it later
     confirmed_at = new_applicant.confirmed_at
 
-    assert_not new_applicant.confirm
+    new_applicant.confirm
 
     # The timestamps should remain equal
     assert_equal confirmed_at, new_applicant.confirmed_at

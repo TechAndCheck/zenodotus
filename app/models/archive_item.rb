@@ -21,31 +21,22 @@ class ArchiveItem < ApplicationRecord
   # @params media_review [Hash] A MediaReview JSON object
   # @return A MediaReview object that we'll attach to the soon-to-be-scraped ArchiveItem during Scrape fulfillment
   def self.create_from_media_review(media_review, external_unique_id)
-    # TODO: There's a chance that instead of `accessedOnUrl` there will instead be a `contentUrl`
-    # which instead points directly to a file, such as a `.mpg` or or `.jpg`.
-    #
-    # We do not currently have downloaders to handle just straight files, and indeed, there's a concern
-    # that this would remove a lot of context, and, to be honest, as long as our primary scraping targets
-    # are social media we will not have direct links that aren't "discovered" by our specialized scraper.
+    # We want to make sure that we have an actual link to archive first just in case
     url = nil
-    if media_review["originalMediaLink"].blank? == false
-      url = media_review["originalMediaLink"]
-    elsif media_review["itemReviewed"].has_key?("contentUrl") &&
-        (!media_review["itemReviewed"].has_key?("mediaItemAppearance") ||
-          media_review["itemReviewed"]["mediaItemAppearance"].empty?)
+    if media_review["itemReviewed"].has_key?("contentUrl")
       url = media_review["itemReviewed"]["contentUrl"]
-    else
-      media_review["itemReviewed"]["mediaItemAppearance"].each do |appearance|
-        if appearance.has_key?("accessedOnUrl") && !appearance["accessedOnUrl"].blank?
-          url = appearance["accessedOnUrl"]
+    elsif media_review["itemReviewed"].has_key?("mediaItemAppearance")
+      media_review["itemReviewed"]["mediaItemAppearance"].each do |media_item_appearance|
+        if media_item_appearance.has_key?("accessedOnUrl")
+          url = media_item_appearance["accessedOnUrl"]
           break
         end
       end
+
+      media_review["itemReviewed"]["contentUrl"] = url unless url.nil?
     end
 
     raise "No url found to archive" if url.nil?
-    # Media review may not have this, especially if it comes from Google
-    media_review["originalMediaLink"] = url if media_review["originalMediaLink"].nil?
 
     # For the moment we create an "orphan" MediaReview without a parent ArchiveItem
     # The ArchiveItem will be created after Zenodotus receives a callback from Hypatia
@@ -75,12 +66,8 @@ class ArchiveItem < ApplicationRecord
   # @return a stringified representation of ArchiveItems for export
   sig { params(relation: T.nilable(T::Array[ArchiveItem])).returns(String) }
   def self.generate_json_for_export(relation = nil)
-    relation ||= ArchiveItem.includes(:media_review, archivable_item: [:author])
-    relation.to_json(only: [:id, :created_at],
-                     include: [ { media_review: { except: [:id, :created_at, :updated_at, :archive_item_id] } },
-                                { archivable_item: { include: { author: { only: [:handle, :display_name, :twitter_id] } },
-                                                     except: [:language, :author_id, :id] }
-                                }])
+    media_reviews = relation.map { |item| item.media_review }
+    MediaReviewBlueprint.render_as_json(media_reviews).to_json
   end
 
   # Return a class that can handle a given +url+

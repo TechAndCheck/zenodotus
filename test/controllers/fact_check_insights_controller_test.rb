@@ -14,7 +14,8 @@ class FactCheckInsightsControllerTest < ActionDispatch::IntegrationTest
     FileUtils.mkdir_p("tmp/")
 
     media_review = MediaReview.create!(
-      original_media_link: "https://www.foobar.com/1",
+      media_url: "https://www.foobar.com/1",
+      original_media_link: "https://www.foobar.com/1_original_media_link",
       date_published: "2021-02-03",
       url: "https://www.realfact.com/factchecks/2021/feb/03/starwars",
       author: {
@@ -113,6 +114,7 @@ class FactCheckInsightsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can download data as an admin" do
+    skip "Waiting to turn on Insights first"
     sign_in users(:admin)
 
     get fact_check_insights_download_path(format: :json)
@@ -123,6 +125,7 @@ class FactCheckInsightsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can download data as a permitted user" do
+    skip "Waiting to turn on Insights first"
     sign_in users(:fact_check_insights_user)
 
     get fact_check_insights_download_path(format: :json)

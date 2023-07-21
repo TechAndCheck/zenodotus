@@ -6,7 +6,8 @@ class MediaReviewTest < ActiveSupport::TestCase
 
   def before_all
     @@media_review_kwargs = {
-      original_media_link: "https://www.foobar.com/1",
+      media_url: "https://www.foobar.com/1",
+      original_media_link: "https://www.foobar.com/1_original_media_link",
       date_published: "2021-02-03",
       url: "https://www.realfact.com/factchecks/2021/feb/03/starwars",
       author: {
@@ -58,6 +59,7 @@ class MediaReviewTest < ActiveSupport::TestCase
                     "datePublished": "2021-02-03",
                     "itemReviewed": {
                       "@type": "MediaReviewItem",
+                      "contentUrl": "https://www.foobar.com/1",
                       "creator": {
                         "@type": "Person",
                         "name": "Old Ben Kenobi",
@@ -82,7 +84,7 @@ class MediaReviewTest < ActiveSupport::TestCase
                     },
                     "mediaAuthenticityCategory": "TransformedContent",
                     "originalMediaContextDescription": "Star Wars Ipsum",
-                    "originalMediaLink": "https://www.foobar.com/1",
+                    "originalMediaLink": "https://www.foobar.com/1_original_media_link",
                     "url": "https://www.realfact.com/factchecks/2021/feb/03/starwars"
                   }
   end

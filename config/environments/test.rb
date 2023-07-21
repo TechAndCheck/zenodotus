@@ -63,4 +63,8 @@ Rails.application.configure do
 
   # For testing we don't care about ssl
   config.force_ssl = false
+
+  config.hosts << "www.example.com"
+  config.hosts << Figaro.env.FACT_CHECK_INSIGHTS_HOST
+  config.hosts << Figaro.env.MEDIA_VAULT_HOST
 end

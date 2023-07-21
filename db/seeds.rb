@@ -136,7 +136,8 @@ Sources::Tweet.create_from_url! "https://twitter.com/NASA/status/157990280897064
 archive_items = ArchiveItem.all
 
 media_review = MediaReview.create(
-  original_media_link: "https://www.foobar.com/1",
+  media_url: "https://www.foobar.com/1",
+  original_media_link: "https://www.foobar.com/1_original_media_link",
   date_published: "2021-02-03",
   url: "https://www.realfact.com/factchecks/2021/feb/03/starwars",
   author: {
@@ -179,7 +180,8 @@ media_review = MediaReview.create(
 )
 
 MediaReview.create(
-  original_media_link: "https://www.foobar.com/2",
+  media_url: "https://www.foobar.com/2",
+  original_media_link: "https://www.foobar.com/2_original_media_link",
   date_published: "2021-02-03",
   url: "https://www.realfact.com/factchecks/2021/feb/05/batman",
   author: {
@@ -217,7 +219,8 @@ MediaReview.create(
 )
 
 MediaReview.create(
-  original_media_link: "https://www.foobar.com/1",
+  media_url: "https://www.foobar.com/1",
+  original_media_link: "https://www.foobar.com/1_original_media_link",
   date_published: "2021-02-03",
   url: "https://www.realfact.com/factchecks/2021/feb/06/back_to_the_future",
   author: {

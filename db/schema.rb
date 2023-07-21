@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_16_021944) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_21_154304) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -207,6 +207,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_16_021944) do
     t.jsonb "media_item_appearance"
     t.uuid "external_unique_id"
     t.boolean "invalid_url", default: false
+    t.string "media_url"
+    t.string "original_media_review"
     t.index ["archive_item_id"], name: "index_media_reviews_on_archive_item_id"
   end
 
@@ -271,6 +273,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_16_021944) do
     t.string "language", null: false
     t.uuid "author_id", null: false
     t.datetime "posted_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_tweets_on_author_id"
   end
 
