@@ -65,7 +65,7 @@ class Scrape < ApplicationRecord
                         response.first["status"] == "removed"
 
     # Process everything correctly now that we know it's not removed
-    media_review_item = MediaReview.find_by(original_media_link: self.url,
+    media_review_item = MediaReview.find_by(media_url: self.url,
                                             archive_item_id: nil,
                                             taken_down: nil)
 

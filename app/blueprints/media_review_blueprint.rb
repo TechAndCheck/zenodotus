@@ -30,17 +30,18 @@ class MediaReviewBlueprint < Blueprinter::Base
 
   field :item_reviewed, name: :itemReviewed do |media_review|
     media_item_appearances = media_review.item_reviewed["mediaItemAppearance"]
-    rendered_media_item_apperances = media_item_appearances.map do |apperance|
+    rendered_media_item_apperances = media_item_appearances&.map do |apperance|
       {
         "@type": apperance["@type"],
         "accessedOnUrl": apperance["accessedOnUrl"],
         "startTime": apperance["startTime"],
-        "endTime": apperance["endTime"]
+        "endTime": apperance["endTime"],
       }
     end
 
     {
       "@type": "MediaReviewItem",
+      "contentUrl": media_review.media_url,
       "creator": {
         "@type": media_review.item_reviewed.dig("creator", "@type"),
         "name": media_review.item_reviewed.dig("creator", "name"),

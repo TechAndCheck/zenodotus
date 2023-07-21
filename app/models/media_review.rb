@@ -88,10 +88,13 @@ class MediaReview < ApplicationRecord
                should_update: T::Boolean
               ).returns(MediaReview) }
   def self.create_or_update_from_media_review_hash(media_review_hash, external_unique_id, should_update)
+    original_media_link = media_review_hash.has_key?("originalMediaLink") ? media_review_hash["originalMediaLink"] : nil
+
     if should_update
       existing_media_review = MediaReview.where(external_unique_id: external_unique_id).first
       existing_media_review.update!(
-        original_media_link: media_review_hash["originalMediaLink"],
+        media_url: media_review_hash["itemReviewed"]["contentUrl"],
+        original_media_link: original_media_link,
         media_authenticity_category: media_review_hash["mediaAuthenticityCategory"],
         original_media_context_description: media_review_hash["originalMediaContextDescription"],
         date_published: media_review_hash["datePublished"],
@@ -103,8 +106,9 @@ class MediaReview < ApplicationRecord
       existing_media_review
     else
       mr = MediaReview.create!(
+        media_url: media_review_hash["itemReviewed"]["contentUrl"],
         external_unique_id: external_unique_id,
-        original_media_link: media_review_hash["originalMediaLink"],
+        original_media_link: original_media_link,
         media_authenticity_category: media_review_hash["mediaAuthenticityCategory"],
         original_media_context_description: media_review_hash["originalMediaContextDescription"],
         date_published: media_review_hash["datePublished"],
@@ -119,10 +123,10 @@ class MediaReview < ApplicationRecord
 
   sig { returns(T::Boolean) }
   def scrape
-    object_model = ArchiveItem.model_for_url(self.original_media_link)
+    object_model = ArchiveItem.model_for_url(self.media_url)
     return false if object_model.nil?
 
-    object_model.create_from_url(self.original_media_link) # Start scraping
+    object_model.create_from_url(self.media_url) # Start scraping
     true
   end
 

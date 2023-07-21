@@ -26,6 +26,40 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
     assert_not_nil archive_item.screenshot
   end
 
+  test "creating an archive item with a contentUrl works" do
+    json = {
+            "@context": "http://schema.org",
+            "@type": "MediaReview",
+            "author": {
+              "@type": "Organization",
+              "name": "Fact Crescendo",
+              "url": "https://cambodia.factcrescendo.com/"
+            },
+            "datePublished": "2023-05-26",
+            "itemReviewed": {
+              "@type": "ImageObject",
+              "contentUrl": "https://www.facebook.com/Cambodiatruenews/posts/pfbid0LsS4mwCSiafVsUjhmSdMRNufyJxmuVpX5nnsLprVxuBSpctmvxrshNXRa3d9jCWMl"
+            },
+            "mediaAuthenticityCategory": [
+              "TransformedContent"
+            ],
+            "originalMediaContextDescription": "The original photo depicts Cambodian Army Chief Hun Manet \u2013 Prime Minister Hun Sen\u2019s oldest son \u2013 carrying the Cambodian flag and walking in a military parade in early 2019.",
+            "originalMediaLink": "https://royalcambodiaarmy.blogspot.com/2019/01/blog-post_23.html",
+            "sdPublisher": {
+              "@type": "Organization",
+              "name": "Google Fact Check Tools",
+              "url": "https://g.co/factchecktools"
+            },
+            "url": "https://cambodia.factcrescendo.com/english/a-photo-of-hun-manet-carrying-the-vietnamese-flag-digitally-edited/"
+          }
+
+    archive_item = nil
+    assert_nothing_raised do
+      archive_item = ArchiveItem.create_from_media_review(json.deep_stringify_keys, nil)
+    end
+    assert_equal "ImageObject", archive_item.item_reviewed["@type"]
+  end
+
   test "creating an archive item with partially invalid `mediaItemAppearance`s works still" do
     json = {
               "@context": "https://schema.org",

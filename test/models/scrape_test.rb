@@ -103,6 +103,7 @@ class ScrapeTest < ActiveSupport::TestCase
     })
 
     media_review = MediaReview.create(
+      media_url: "https://www.instagram.com/p/not_found/",
       original_media_link: "https://www.instagram.com/p/not_found/",
       date_published: "2021-02-03",
       url: "https://www.realfact.com/factchecks/2021/feb/03/starwars",
@@ -122,7 +123,8 @@ class ScrapeTest < ActiveSupport::TestCase
           "sha256sum": ["8bb6caeb301b85cddc7b67745a635bcda939d17044d9bcf31158ef5e9f8ff072"],
           "accessedOnUrl": "https://www.facebook.com/photo.php?fbid=10217541425752089&set=a.1391489831857&type=3",
           "archivedAt": "https://archive.is/dfype"
-        }
+        },
+        "contentUrl": "https://www.instagram.com/p/not_found/"
       },
       archive_item: archive_items[0]
     )

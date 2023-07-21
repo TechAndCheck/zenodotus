@@ -137,6 +137,6 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
     get applicant_confirm_path(email: applicant[:email], token: applicant[:confirmation_token])
 
     applicant.reload
-    assert resonse.successful?
+    assert_redirected_to("http://www.example.com/apply/confirm/done")
   end
 end
