@@ -123,10 +123,10 @@ class MediaReview < ApplicationRecord
 
   sig { returns(T::Boolean) }
   def scrape
-    object_model = ArchiveItem.model_for_url(self.media_url)
+    object_model = ArchiveItem.model_for_url(self.item_reviewed["contentUrl"])
     return false if object_model.nil?
 
-    object_model.create_from_url(self.media_url) # Start scraping
+    object_model.create_from_url(self.item_reviewed["contentUrl"]) # Start scraping
     true
   end
 
