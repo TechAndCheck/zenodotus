@@ -50,8 +50,14 @@ class MediaSource
   # @return [String] A direct URL to the page/object to be archived
   sig { params(url: String).returns(String) }
   def self.extract_post_url_from_archive_org_url(url)
+    fix_post_url_in_archive_org_url!(url)
     split_url = url.rpartition(/https?:\/\//) # partition string based on last occurence of "http(s)://" to get original url
     split_url[1] + split_url[2] # return original URL scheme + rest of original URL
+  end
+
+  sig { params(url: String).returns(String) }
+  def self.fix_post_url_in_archive_org_url!(url)
+    url.gsub!(/:(\/)[^\/]/) { |s|s.gsub("/", "//") }
   end
 
   # Check if +url+ has a host name the same as indicated by the +@@valid_host+ variable in a
