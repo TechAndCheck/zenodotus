@@ -105,9 +105,9 @@ class Sources::YoutubePost < ApplicationRecord
       hash = {
         youtube_id:        youtube_archiver_video["id"],
         title:             youtube_archiver_video["title"],
-        num_views:         youtube_archiver_video["num_views"],
-        num_likes:         youtube_archiver_video["num_likes"],
-        num_comments:      youtube_archiver_video["num_comments"],
+        num_views:         youtube_archiver_video["num_views"] || 0,
+        num_likes:         youtube_archiver_video["num_likes"] || 0,
+        num_comments:      youtube_archiver_video["num_comments"] || 0,
         posted_at:         youtube_archiver_video["created_at"],
         language:          youtube_archiver_video["language"],
         duration:          youtube_archiver_video["duration"],

@@ -50,6 +50,11 @@ class YoutubePostTest < ActiveSupport::TestCase
     assert_not_nil youtube_post
   end
 
+  test "can archive youtube video with no comments, likes or views" do
+    youtube_post = Sources::YoutubePost.create_from_url!("https://youtube.com/shorts/777777777")
+    assert_not_nil youtube_post
+  end
+
   test "can archive youtube post from url using ActiveJob" do
     assert_enqueued_jobs 0
     assert_performed_jobs 0
