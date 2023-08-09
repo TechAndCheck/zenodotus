@@ -55,7 +55,7 @@ class MediaSource
     split_url[1] + split_url[2] # return original URL scheme + rest of original URL
   end
 
-  sig { params(url: String).returns(String) }
+  sig { params(url: String).void }
   def self.fix_post_url_in_archive_org_url!(url)
     url.gsub!(/:(\/)[^\/]/) { |s|s.gsub("/", "//") }
   end

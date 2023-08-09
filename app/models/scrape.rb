@@ -39,14 +39,23 @@ class Scrape < ApplicationRecord
       params: params
     )
 
-    unless response.code == 200
-      self.error
+    json_error_response = JSON.parse(response.body)
+    if response.code != 200
       exception = Scrape::ExternalServerError.new("Error: #{response.code} returned from Hypatia server.")
       Honeybadger.notify(exception, context: {
-        response_body: response.body
+        url: self.url,
+        scrape_id: self.id,
+        response: response
       }) unless Figaro.env.HONEYBADGER_API_KEY.blank?
 
-      raise exception
+      if response.code == 400 && json_error_response.nil? == false && json_error_response["code"] == 10
+        # The url is not valid, so we should mark it as removed
+        self.fulfill([{ status: "removed" }])
+        # We don't raise because we don't want it to retry.
+      elsif response.code != 200
+        self.error
+        raise exception
+      end
     end
 
     JSON.parse(response.body)
