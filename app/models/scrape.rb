@@ -72,7 +72,7 @@ class Scrape < ApplicationRecord
     removed = false
     errored = false
 
-    if response.empty? == false && response.first.key?("status") # `status` isn't returned if it's successful, should consider fixing that at some point
+    if response.empty? == false && response.first.has_key?("status") # `status` isn't returned if it's successful, should consider fixing that at some point
       case response.first["status"]
       when "removed"
         removed = true
@@ -101,6 +101,10 @@ class Scrape < ApplicationRecord
 
     # Update any channels listening to the scrape count
     self.send_notification
+  rescue StandardError => e
+    Honeybadger.notify(e, context: {
+      response: response
+    })
   end
 
   # sig { void }
