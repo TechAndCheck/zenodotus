@@ -143,7 +143,7 @@ class MediaReviewTest < ActiveSupport::TestCase
     media_review = MediaReview.create!(**@media_review_kwargs)
     assert_equal "Transformed", media_review.media_authenticity_category_humanized
 
-    media_review_kwargs = @media_review_kwargs
+    media_review_kwargs = @media_review_kwargs.deep_dup
     media_review_kwargs[:media_authenticity_category] = [
       "DecontextualizedContent",
       "EditedOrCroppedContent",
@@ -153,7 +153,7 @@ class MediaReviewTest < ActiveSupport::TestCase
       "TransformedContent",
     ]
 
-    media_review = MediaReview.create!(**@media_review_kwargs)
+    media_review = MediaReview.create!(**media_review_kwargs)
 
     assert_equal("Missing Context, Edited or Cropped, Original, Satire or Parody, Staged, Transformed", media_review.media_authenticity_category_humanized)
   end

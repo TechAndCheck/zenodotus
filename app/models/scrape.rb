@@ -49,10 +49,11 @@ class Scrape < ApplicationRecord
       }) unless Figaro.env.HONEYBADGER_API_KEY.blank?
 
       if response.code == 400 && json_error_response.nil? == false && json_error_response["code"] == 10
+        logger.debug("Marking: #{self.url} as removed. 🦕")
         # The url is not valid, so we should mark it as removed
         self.fulfill([{ status: "removed" }])
         # We don't raise because we don't want it to retry.
-      elsif response.code != 200
+      else
         self.error
         raise exception
       end
@@ -69,16 +70,25 @@ class Scrape < ApplicationRecord
   sig { params(response: Array).void }
   def fulfill(response)
     removed = false
-    removed = true if response.empty? == false &&
-                        response.first.key?("status") &&
-                        response.first["status"] == "removed"
+    errored = false
+
+    if response.empty? == false && response.first.key?("status") # `status` isn't returned if it's successful, should consider fixing that at some point
+      case response.first["status"]
+      when "removed"
+        removed = true
+      when "error"
+        errored = true
+      else
+        errored = true # For later in case the option for `status` could be something else
+      end
+    end
 
     # Process everything correctly now that we know it's not removed
     media_review_item = MediaReview.find_by(media_url: self.url,
                                             archive_item_id: nil,
                                             taken_down: nil)
 
-    unless removed
+    unless removed || errored
       archive_item = ArchiveItem.model_for_url(self.url).create_from_hash(response)
       archive_item = archive_item.empty? ? nil : archive_item.first
     end
@@ -87,17 +97,17 @@ class Scrape < ApplicationRecord
       media_review_item.update!({ taken_down: removed, archive_item_id: archive_item&.id })
     end
 
-    self.update!({ fulfilled: true, removed: removed, archive_item: archive_item })
+    self.update!({ fulfilled: true, removed: removed, archive_item: archive_item, error: errored })
 
     # Update any channels listening to the scrape count
-    send_notification
-  end
-
-  sig { void }
-  def error
-    self.update!({ error: true })
     self.send_notification
   end
+
+  # sig { void }
+  # def error
+  #   self.update!({ error: true })
+  #   self.send_notification
+  # end
 
   class Scrape::ExternalServerError < StandardError; end
 end
