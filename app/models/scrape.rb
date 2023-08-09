@@ -69,6 +69,13 @@ class Scrape < ApplicationRecord
 
   sig { params(response: Array).void }
   def fulfill(response)
+    logger.debug "\n*******************************"
+    logger.debug "Processing Fulfill Response"
+    logger.debug "---------------------------"
+    logger.debug "URL: #{self.url}"
+    logger.debug "Response: #{response}"
+    logger.debug "*******************************\n"
+
     removed = false
     errored = false
 
