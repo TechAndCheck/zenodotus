@@ -19,7 +19,7 @@ class ScrapeJob < ApplicationJob
   def perform(scrape)
     puts "Beginning to scrape #{scrape.url} @ #{Time.now}"
     response = scrape.perform
-    raise "Cannot connect to Hypatia" unless response.has_key?("success") && response["success"] == true
+    raise "Error scraping from Hypatia #{response}" unless response.has_key?("success") && response["success"] == true
     puts "Done scraping #{scrape.url} @ #{Time.now}"
   end
 
