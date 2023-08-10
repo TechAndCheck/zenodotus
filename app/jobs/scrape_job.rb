@@ -18,9 +18,11 @@ class ScrapeJob < ApplicationJob
 
   def perform(scrape)
     puts "Beginning to scrape #{scrape.url} @ #{Time.now}"
-    response = scrape.perform
-    raise "Error scraping from Hypatia #{response}" unless response.has_key?("success") && response["success"] == true
-    puts "Done scraping #{scrape.url} @ #{Time.now}"
+    scrape.perform
+
+    # We don't throw errors here anymore, they're handled in the Scrape model so that the scrape
+    # can be properly marked
+    puts "Done submitting scrape for #{scrape.url} @ #{Time.now}"
   end
 
   def get_sidekiq_queue
