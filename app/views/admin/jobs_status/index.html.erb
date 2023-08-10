@@ -1,3 +1,23 @@
+<div class="text-3xl font-bold mt-5">Scrapes</div>
+<div class="flex flex-row justify-between">
+  <div class="w-fit">
+    <span class="font-bold">Total Unfilled Scrapes:</span>
+    <span class="font-semibold" data-jobs-status-target="jobsCount"><%= @total_unfilled_scrapes_count %></span>
+  </div>
+  <div class="w-fit">
+    <span class="font-bold">Total Filled Scrapes:</span>
+    <span class="font-semibold" data-jobs-status-target="jobsCount"><%= @total_filled_scrapes_count %></span>
+  </div>
+  <div class="w-fit">
+    <span class="font-bold">Total Errored Scrapes:</span>
+    <span class="font-semibold" data-jobs-status-target="jobsCount"><%= @total_errored_scrapes_count %></span>
+  </div>
+  <div class="w-fit">
+    <span class="font-bold">Total Removed Scrapes:</span>
+    <span class="font-semibold" data-jobs-status-target="jobsCount"><%= @total_removed_scrapes_count %></span>
+  </div>
+</div>
+
 <div data-controller="jobs-status" data-loaded-scrapes-count="<%= @total_scrapes_count %>" data-loaded-jobs-count="<%= @total_jobs_count %>">
   <div class="text-3xl font-bold mt-5">Active Queued Jobs in Sidekiq</div>
   <div class="flex flex-row justify-between">

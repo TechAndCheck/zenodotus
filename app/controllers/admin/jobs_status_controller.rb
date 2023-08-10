@@ -104,5 +104,9 @@ private
 
   def jobs_count
     @total_jobs_count = Sidekiq::Queue.new.count
+    @total_unfilled_scrapes_count = Scrape.where(fulfilled: false).count
+    @total_filled_scrapes_count = Scrape.where(fulfilled: true).count
+    @total_errored_scrapes_count = Scrape.where(error: true).count
+    @total_removed_scrapes_count = Scrape.where(removed: true).count
   end
 end
