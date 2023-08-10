@@ -54,12 +54,7 @@ class InstagramMediaSource < MediaSource
   sig { returns(T::Boolean) }
   def retrieve_instagram_post
     scrape = Scrape.create!({ url: @url, scrape_type: :instagram })
-
-    response_body = scrape.perform
-
-    # TODO:  Parse response body properly and check for errors
-    raise InstagramMediaSource::ExternalServerError if response_body["success"] == false
-    true
+    true unless scrape.nil?
   end
 
   # Forces a Hypatia instance to run immediately. This should only be used for testing purposes.

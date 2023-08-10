@@ -55,10 +55,11 @@ class Sources::InstagramPost < ApplicationRecord
   # @!scope class
   # @params url String a string of a url
   # @params user User: the user creating an ArchiveItem
-  # returns ScraperJob
-  sig { params(url: String, user: T.nilable(User)).returns(ScraperJob) }
+  # returns ScrapeJob
+  sig { params(url: String, user: T.nilable(User)).returns(ScrapeJob) }
   def self.create_from_url(url, user = nil)
-    ScraperJob.perform_later(InstagramMediaSource, Sources::InstagramPost, url, user)
+    scrape = Scrape.create!({ url: url, scrape_type: :instagram })
+    scrape.enqueue
   end
 
   # An alias for create_from_zorki_hash painted with a generic name so it can be called in a model agnostic fashion

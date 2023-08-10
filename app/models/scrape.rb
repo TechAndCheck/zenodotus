@@ -21,7 +21,7 @@ class Scrape < ApplicationRecord
 
   # Enqueue the scraping callout to Hypatia into the ActiveJob queue
   # TODO: Eventually this should be the main interface to kicking it off, but for now... no
-  sig { void }
+  sig { returns(ScrapeJob) }
   def enqueue
     ScrapeJob.perform_later(self)
   end

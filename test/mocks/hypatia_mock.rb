@@ -72,7 +72,7 @@ module HypatiaMock
   # @return nil
   def self.ensure_media_url_is_mocked(mock_data, media_url)
     unless mock_data.has_key?(media_url)
-      raise URLNotMockedError, "URL #{media_url}, was not caught by the Typhoeus testing mock. Please use an already mocked URL in your test or update the mock with this URL."
+      raise RuntimeError, "URL #{media_url}, was not caught by the Typhoeus testing mock. Please use an already mocked URL in your test or update the mock with this URL."
     end
   end
 

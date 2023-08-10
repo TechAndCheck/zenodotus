@@ -72,12 +72,7 @@ class FacebookMediaSource < MediaSource
   sig { returns(T::Boolean) }
   def retrieve_facebook_post
     scrape = Scrape.create!({ url: @url, scrape_type: :facebook })
-
-    response_body = scrape.perform
-
-    raise ExternalServerError if response_body["success"] == false
-
-    true
+    true unless scrape.nil?
   end
 
   # Scrape the page by sending it to Hypatia and forcing the server to process the job immediately. Should only be used for tests

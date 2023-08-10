@@ -9,4 +9,14 @@ class ScrapeJobTest < ActiveJob::TestCase
 
     ScrapeJob.perform_now(scrape)
   end
+
+  test "invalid url raises error" do
+    assert_raises(RuntimeError) do
+      scrape = Scrape.create!({
+        url: "https://www.example.com",
+        scrape_type: :twitter
+      })
+      ScrapeJob.perform_now(scrape)
+    end
+  end
 end

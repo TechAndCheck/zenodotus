@@ -38,10 +38,11 @@ class Sources::YoutubePost < ApplicationRecord
   # @!scope class
   # @params url String a string of a url
   # @params user the user adding the ArchiveItem
-  # returns ScraperJob
-  sig { params(url: String, user: T.nilable(User)).returns(ScraperJob) }
+  # returns ScrapeJob
+  sig { params(url: String, user: T.nilable(User)).returns(ScrapeJob) }
   def self.create_from_url(url, user = nil)
-    ScraperJob.perform_later(YoutubeMediaSource, Sources::YoutubePost, url, user)
+    scrape = Scrape.create!({ url: url, scrape_type: :youtube })
+    scrape.enqueue
   end
 
   # Create a +ArchiveItem+ from a +url+ as a string. Skips Hypatia's queue.
