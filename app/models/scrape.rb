@@ -47,7 +47,7 @@ class Scrape < ApplicationRecord
         self.fulfill([{ status: "removed" }])
         # We don't raise because we don't want it to retry.
       else
-        self.error
+        self.mark_error
         raise Scrape::ExternalServerError.new("Error: #{response.code} returned from Hypatia server.")
       end
     end
@@ -103,15 +103,17 @@ class Scrape < ApplicationRecord
     self.send_notification
   rescue StandardError => e
     Honeybadger.notify(e, context: {
+      id: self.id,
+      url: self.url,
       response: response
     })
   end
 
-  # sig { void }
-  # def error
-  #   self.update!({ error: true })
-  #   self.send_notification
-  # end
+  sig { void }
+  def mark_error
+    self.update!({ error: true })
+    self.send_notification
+  end
 
   class Scrape::ExternalServerError < StandardError; end
 end
