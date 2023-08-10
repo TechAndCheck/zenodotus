@@ -51,6 +51,8 @@ Rails.application.routes.draw do
       root action: "index"
       get "scrapes"
       get "active_jobs"
+      post "clear_all_jobs", as: "clear_all_jobs"
+      post "resubmit_all_unfulfilled_scrape", as: "resubmit_all_unfulfilled_scrape"
       delete ":id", action: "delete_scrape", as: "delete"
       post "resubmit/:id", action: "resubmit_scrape", as: "resubmit"
     end

@@ -17,9 +17,13 @@
     <span class="font-semibold" data-jobs-status-target="jobsCount"><%= @total_removed_scrapes_count %></span>
   </div>
 </div>
+<div class="w-fit">
+  <%= button_to "Reenqueue All Scrapes", admin_jobs_status_resubmit_all_unfulfilled_scrape_path, method: :post, form: { data: { turbo_confirm: 'Are you sure?' }} %>
+</div>
 
 <div data-controller="jobs-status" data-loaded-scrapes-count="<%= @total_scrapes_count %>" data-loaded-jobs-count="<%= @total_jobs_count %>">
   <div class="text-3xl font-bold mt-5">Active Queued Jobs in Sidekiq</div>
+
   <div class="flex flex-row justify-between">
     <div class="w-fit">
       <span class="font-bold">Total Queued Jobs in Sidekiq:</span>
@@ -28,6 +32,9 @@
   </div>
 
   <div class="text-3xl font-bold mt-10">Jobs Submitted to Hypatia</div>
+  <div class="w-fit">
+    <%= button_to "Clear All Jobs", admin_jobs_status_clear_all_jobs_path, method: :post, form: { data: { turbo_confirm: 'Are you sure?' }} %>
+  </div>
   <div class="flex flex-row justify-between">
     <div class="w-fit">
       <span class="font-bold">Total Jobs Submitted to Hypatia:</span>

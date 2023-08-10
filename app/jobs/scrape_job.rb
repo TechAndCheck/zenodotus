@@ -4,7 +4,7 @@
 class ScrapeJob < ApplicationJob
   require "sidekiq/api"
 
-  queue_as :default
+  queue_as :scrapes
 
   # When a job is placed on the queue, broadcast to update the jobs status page
   after_enqueue do |job|

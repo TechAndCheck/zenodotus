@@ -3,14 +3,17 @@ development:
   :queues:
     - [zenodotus_development_urgent, 2]
     - zenodotus_development_default
+    - zenodotus_test_scrapes
 test:
   :queues:
     - [zenodotus_test_urgent, 2]
     - zenodotus_test_default
+    - zenodotus_test_scrapes
 production:
   :concurrency: 6
   :queues:
     - [zenodotus_production_urgent, 2]
     - zenodotus_production_default
+    - zenodotus_production_scrapes
 :verbose: true
 :timeout: 8

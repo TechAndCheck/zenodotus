@@ -65,6 +65,19 @@ class Admin::JobsStatusController < AdminController
     end
   end
 
+  # Resubmits a scrape to Hypatia
+  sig { void }
+  def resubmit_all_unfulfilled_scrape
+    # Cancel all jobs
+    clear_jobs
+    Scrape.where(fulfilled: false).each(&:enqueue)
+    flash[:success] = "Successfully resubmitted scrapes"
+
+    respond_to do |format|
+      format.html { redirect_back fallback_location: :admin_jobs_status_root }
+    end
+  end
+
   sig { void }
   def delete_scrape
     typed_params = TypedParams[ResubmitScrapeParams].new.extract!(params)
@@ -89,6 +102,16 @@ class Admin::JobsStatusController < AdminController
     end
   end
 
+  sig { void }
+  def clear_all_jobs
+    clear_jobs
+    flash[:success] = "Successfully cleared all jobs"
+
+    respond_to do |format|
+      format.html { redirect_back fallback_location: :admin_jobs_status_root }
+    end
+  end
+
 private
 
   def scrapes_for_page_number(page_number)
@@ -108,5 +131,13 @@ private
     @total_filled_scrapes_count = Scrape.where(fulfilled: true).count
     @total_errored_scrapes_count = Scrape.where(error: true).count
     @total_removed_scrapes_count = Scrape.where(removed: true).count
+  end
+
+  def clear_jobs
+    queue = Sidekiq::Queue.new("zenodotus_#{Rails.env}_scrapes")
+    logger.debug("***************************************")
+    logger.debug "Clearing #{queue.count} scrape(s)..."
+    logger.debug("***************************************")
+    queue.each(&:delete)
   end
 end
