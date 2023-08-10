@@ -135,9 +135,9 @@ private
 
   def clear_jobs
     queue = Sidekiq::Queue.new("zenodotus_#{Rails.env}_scrapes")
-    logger.debug("***************************************")
-    logger.debug "Clearing #{queue.count} scrape(s)..."
-    logger.debug("***************************************")
+    logger.info("***************************************")
+    logger.info "Clearing #{queue.count} scrape(s)..."
+    logger.info("***************************************")
     queue.each(&:delete)
   end
 end
