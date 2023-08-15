@@ -64,9 +64,9 @@ class ClaimReview < ApplicationRecord
     end
   end
 
-  sig { returns(String) }
+  sig { returns(Hash) }
   def render_for_export
-    ClaimReviewBlueprint.render(self)
+    ClaimReviewBlueprint.render_as_hash(self)
   end
 
   sig { returns T::Array[String] }

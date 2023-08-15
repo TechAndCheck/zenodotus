@@ -101,7 +101,7 @@ class MediaReviewTest < ActiveSupport::TestCase
     expected_copy = @expected.deep_dup
     expected_copy["id"] = media_review.id
 
-    media_review_json = JSON.parse(media_review.render_for_export) # call blueprinter
+    media_review_json = JSON.parse(media_review.render_for_export.to_json) # call blueprinter
 
     # Because of some weirdness in MiniTest sometimes the keys will be strings, some symbols.
     # When exporting to JSON in the end this won't matter, but here for comparison we need 'em all the same

@@ -135,9 +135,9 @@ class MediaReview < ApplicationRecord
     archive_item.nil?
   end
 
-  sig { returns(String) }
+  sig { returns(Hash) }
   def render_for_export
-    MediaReviewBlueprint.render(self)
+    MediaReviewBlueprint.render_as_hash(self)
   end
 
   sig { returns(String) }
