@@ -13,7 +13,7 @@ class ClaimReviewBlueprint < Blueprinter::Base
   end
 
   field :date_published, name: :datePublished do |claim_review|
-    claim_review.date_published.strftime("%Y-%m-%d")
+    claim_review.date_published.nil? ? "" : claim_review.date_published.strftime("%Y-%m-%d")
   end
 
   field :author do |claim_review|
