@@ -202,4 +202,8 @@ gem "rqrcode", "~> 2.0"
 # One-off settings that are easy to manage and persistent
 gem "rails-settings-cached", "~> 2.9"
 
+# Error reporting
 gem "honeybadger", "~> 5.2"
+
+# Add the ability to flatten a JSON object to a CSV
+gem "decombobulate"
