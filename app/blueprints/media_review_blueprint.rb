@@ -19,13 +19,23 @@ class MediaReviewBlueprint < Blueprinter::Base
   end
 
   field :author do |media_review|
-    {
-      "@type": media_review.author.dig("@type"),
-      "name": media_review.author.dig("name"),
-      "url": media_review.author.dig("url"),
-      "image": media_review.author.dig("image"),
-      "sameAs": media_review.author.dig("sameAs"),
-    }
+    if media_review.author.nil?
+      {
+        "@type": "",
+        "name": "",
+        "url": "",
+        "image": "",
+        "sameAs": ""
+      }
+    else
+      {
+        "@type": media_review.author.dig("@type"),
+        "name": media_review.author.dig("name"),
+        "url": media_review.author.dig("url"),
+        "image": media_review.author.dig("image"),
+        "sameAs": media_review.author.dig("sameAs"),
+      }
+    end
   end
 
   field :item_reviewed, name: :itemReviewed do |media_review|
