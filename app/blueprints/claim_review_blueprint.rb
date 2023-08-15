@@ -17,7 +17,7 @@ class ClaimReviewBlueprint < Blueprinter::Base
   end
 
   field :author do |claim_review|
-    if author.nil?
+    if claim_review.author.nil?
       {
         "@type": "",
         "name": "",
