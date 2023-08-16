@@ -7,6 +7,9 @@ class FactCheckInsightsController < ApplicationController
   def index; end
 
   sig { void }
+  def download; end
+
+  sig { void }
   def guide; end
 
   sig { void }

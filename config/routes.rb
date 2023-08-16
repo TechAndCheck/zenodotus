@@ -66,7 +66,7 @@ Rails.application.routes.draw do
   constraints host: Figaro.env.FACT_CHECK_INSIGHTS_HOST do
     scope module: "fact_check_insights", as: "fact_check_insights" do
       root "application#index"
-
+      get "download"
       get "guide"
       get "highlights"
       get "optout"
