@@ -65,16 +65,11 @@ namespace :render_exports do
     end
 
     puts "Rendered JSON successfully"
-    # Save file and upload to AWS
-    temp_json_file = Tempfile.open("temp-json-output")
     begin
-      temp_json_file.write(output_json)
-
-      temp_json_file.rewind
       # Upload to AWS
       puts "Uploading to AWS S3"
       response = Net::HTTP.start(presigned_url.host) do |http|
-        http.send_request("PUT", presigned_url.request_uri, temp_json_file.read, content_type: "application/json")
+        http.send_request("PUT", presigned_url.request_uri, output_json, content_type: "application/json")
       end
 
       case response
@@ -96,9 +91,6 @@ namespace :render_exports do
       puts "Success"
       puts "Created presigned url: #{Setting.fact_check_insights_json_url}"
       puts "************************************"
-    ensure
-      temp_json_file.close
-      temp_json_file.unlink
     end
   end
 end
