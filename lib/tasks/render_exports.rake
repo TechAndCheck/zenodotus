@@ -8,6 +8,17 @@ namespace :render_exports do
       `curl #{ENV["HONEYBADGER_API_KEY_CSV_JSON_GENERATION_ADDRESS"]} &> /dev/null`
     end
 
+    # First we set up a presigned AWS url so that if we can't access it we don't waste all the time
+    begin
+      object_key = "exports/fact_check_insights.json"
+      bucket = Aws::S3::Bucket.new(Figaro.env.AWS_S3_BUCKET_NAME)
+      url = bucket.object(object_key).presigned_url(:put)
+      puts "Created presigned URL: #{url}"
+      presigned_url = URI(url)
+    rescue Aws::Errors::ServiceError => e
+      puts "Couldn't create presigned URL for #{bucket.name}:#{object_key}. Here's why: #{e.message}"
+    end
+
     # Render JSON
     rendered_claim_reviews = []
     claim_review_count = ClaimReview.count
@@ -46,18 +57,28 @@ namespace :render_exports do
     begin
       temp_json_file.write(output_json)
 
-      # Zip file
-      Zip::File.open("fact_check_insights.zip", Zip::File::CREATE) do |zipfile|
-        zipfile.add("fact_check_insights.json", "fact_check_insights.json")
+      temp_json_file.rewind
+      # Upload to AWS
+      puts "Uploading to AWS S3"
+      response = Net::HTTP.start(presigned_url.host) do |http|
+        http.send_request("PUT", presigned_url.request_uri, temp_json_file.read, content_type: "application/json")
       end
 
-      debugger
-      # Upload to AWS
-      # s3 = Aws::S3::Resource.new(region: ENV["AWS_REGION"])
-      # obj = s3.bucket(ENV["AWS_S3_BUCKET"]).object("exports/fact_check_insights.zip")
-      # obj.upload_file("fact_check_insights.zip")
+      case response
+      when Net::HTTPSuccess
+        puts "Content uploaded!"
+      else
+        puts response.value
+      end
+
+      # Set the presigned url to settings
+      get_presigned_url = bucket.object(object_key).presigned_url(:get, expires_in: 604800)
+      Setting.fact_check_insights_json_url = get_presigned_url
+
+      puts "Created presigned url: #{Setting.fact_check_insights_json_url}"
     ensure
       temp_json_file.close
+      temp_json_file.unlink
     end
   end
 end
