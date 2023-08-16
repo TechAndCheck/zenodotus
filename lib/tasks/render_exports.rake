@@ -51,10 +51,11 @@ namespace :render_exports do
         zipfile.add("fact_check_insights.json", "fact_check_insights.json")
       end
 
+      debugger
       # Upload to AWS
-      s3 = Aws::S3::Resource.new(region: ENV["AWS_REGION"])
-      obj = s3.bucket(ENV["AWS_S3_BUCKET"]).object("exports/fact_check_insights.zip")
-      obj.upload_file("fact_check_insights.zip")
+      # s3 = Aws::S3::Resource.new(region: ENV["AWS_REGION"])
+      # obj = s3.bucket(ENV["AWS_S3_BUCKET"]).object("exports/fact_check_insights.zip")
+      # obj.upload_file("fact_check_insights.zip")
     ensure
       temp_json_file.close
     end
