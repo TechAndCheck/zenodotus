@@ -91,6 +91,12 @@ namespace :render_exports do
       puts "Success"
       puts "Created presigned url: #{Setting.fact_check_insights_json_url}"
       puts "************************************"
+    rescue StandardError => e
+      puts "************************************"
+      puts "Error uploading content!"
+      puts response.inspect
+      puts response.value
+      puts "************************************"
     end
   end
 end
