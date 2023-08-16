@@ -581,6 +581,7 @@ DEPENDENCIES
   rubocop-sorbet
   ruby-progressbar
   ruby_jard
+  rubyzip
   selenium-webdriver
   shrine!
   sidekiq (~> 6.5)

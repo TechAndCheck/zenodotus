@@ -10,13 +10,16 @@ namespace :render_exports do
 
     # First we set up a presigned AWS url so that if we can't access it we don't waste all the time
     begin
-      object_key = "exports/fact_check_insights.json"
+      json_object_key = "exports/fact_check_insights.json"
       bucket = Aws::S3::Bucket.new(Figaro.env.AWS_S3_BUCKET_NAME)
-      url = bucket.object(object_key).presigned_url(:put)
-      puts "Created presigned URL: #{url}"
-      presigned_url = URI(url)
+      json_url = bucket.object(json_object_key).presigned_url(:put)
+      json_presigned_url = URI(json_url)
+
+      csv_object_key = "exports/fact_check_insights.zip"
+      csv_url = bucket.object(csv_object_key).presigned_url(:put)
+      csv_presigned_url = URI(csv_url)
     rescue Aws::Errors::ServiceError => e
-      puts "Couldn't create presigned URL for #{bucket.name}:#{object_key}. Here's why: #{e.message}"
+      puts "Couldn't create presigned URL for #{bucket.name}:#{json_url} . Here's why: #{e.message}"
     end
 
     # Render JSON
@@ -58,45 +61,82 @@ namespace :render_exports do
       "mediaReviewCount": rendered_media_reviews.length
     }
     puts "Rendering JSON"
+
     begin
       output_json = JSON.pretty_generate({ "claimReviews": rendered_claim_reviews, "mediaReviews": rendered_media_reviews, "meta": metadata })
+      puts "Rendered JSON successfully"
     rescue StandardError => e
       puts "Error rendering JSON: #{e.message}"
+      raise e
     end
 
-    puts "Rendered JSON successfully"
+    # Convert to CSV
+    puts "Converting to CSV"
+
+    claim_review_csv = Decombobulate.new(rendered_claim_reviews).to_csv
+    media_review_csv = Decombobulate.new(rendered_media_reviews).to_csv
+
+    zipfile_name = "tmp/fact_check_insights.zip"
+
+    Zip::File.open(zipfile_name, create: true) do |zipfile|
+      zipfile.get_output_stream("claim_review.csv") { |f| f.write claim_review_csv }
+      zipfile.get_output_stream("media_review.csv") { |f| f.write media_review_csv }
+    end
+
     begin
       # Upload to AWS
-      puts "Uploading to AWS S3"
-      response = Net::HTTP.start(presigned_url.host) do |http|
-        http.send_request("PUT", presigned_url.request_uri, output_json, content_type: "application/json")
+      puts "Uploading JSON to AWS S3"
+      response = Net::HTTP.start(json_presigned_url.host) do |http|
+        http.send_request("PUT", json_presigned_url.request_uri, output_json, content_type: "application/json")
       end
 
       case response
       when Net::HTTPSuccess
-        puts "Content uploaded!"
+        puts "JSON Content uploaded!"
       else
         puts "************************************"
-        puts "Error uploading content!"
+        puts "Error uploading JSON content!"
+        puts response.inspect
+        puts response.value
+        puts "************************************"
+      end
+
+      puts "Uploading CSV to AWS S3"
+      response = Net::HTTP.start(csv_presigned_url.host) do |http|
+        http.send_request("PUT", csv_presigned_url.request_uri, File.read(zipfile_name), content_type: "application/zip")
+      end
+
+      case response
+      when Net::HTTPSuccess
+        puts "CSV Content uploaded!"
+      else
+        puts "************************************"
+        puts "Error uploading CSV content!"
         puts response.inspect
         puts response.value
         puts "************************************"
       end
 
       # Set the presigned url to settings
-      get_presigned_url = bucket.object(object_key).presigned_url(:get, expires_in: 604800)
-      Setting.fact_check_insights_json_url = get_presigned_url
+      get_json_presigned_url = bucket.object(json_object_key).presigned_url(:get, expires_in: 604800)
+      Setting.fact_check_insights_json_url = get_json_presigned_url
+
+      get_csv_presigned_url = bucket.object(csv_object_key).presigned_url(:get, expires_in: 604800)
+      Setting.fact_check_insights_csv_url = get_csv_presigned_url
 
       puts "************************************"
       puts "Success"
-      puts "Created presigned url: #{Setting.fact_check_insights_json_url}"
+      puts "Created presigned json url: #{Setting.fact_check_insights_json_url}"
+      puts "Created presigned csv url: #{Setting.fact_check_insights_csv_url}"
       puts "************************************"
     rescue StandardError => e
       puts "************************************"
       puts "Error uploading content!"
-      puts response.inspect
-      puts response.value
+      puts e.message
+      raise e
       puts "************************************"
     end
+  ensure
+    File.delete(zipfile_name) if File.exist? zipfile_name
   end
 end

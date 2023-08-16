@@ -207,3 +207,6 @@ gem "honeybadger", "~> 5.2"
 
 # Add the ability to flatten a JSON object to a CSV
 gem "decombobulate"
+
+# To zip files easily for export upload
+gem "rubyzip"
