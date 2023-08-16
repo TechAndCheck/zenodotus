@@ -1,5 +1,4 @@
 namespace :render_exports do
-
   GROUP_SIZE = 4000
 
   desc "Render JSON and CSV exports and upload to AWS"
@@ -40,6 +39,24 @@ namespace :render_exports do
       "mediaReviewCount": all_media_reviews.length
     }
     puts "Rendering JSON"
-    JSON.pretty_generate({ "claimReviews": all_claim_reviews, "mediaReviews": all_media_reviews, "meta": metadata })
+    output_json = JSON.pretty_generate({ "claimReviews": all_claim_reviews, "mediaReviews": all_media_reviews, "meta": metadata })
+
+    # Save file and upload to AWS
+    temp_json_file = Tempfile.open("temp-json-output")
+    begin
+      temp_json_file.write(output_json)
+
+      # Zip file
+      Zip::File.open("fact_check_insights.zip", Zip::File::CREATE) do |zipfile|
+        zipfile.add("fact_check_insights.json", "fact_check_insights.json")
+      end
+
+      # Upload to AWS
+      s3 = Aws::S3::Resource.new(region: ENV["AWS_REGION"])
+      obj = s3.bucket(ENV["AWS_S3_BUCKET"]).object("exports/fact_check_insights.zip")
+      obj.upload_file("fact_check_insights.zip")
+    ensure
+      temp_json_file.close
+    end
   end
 end
