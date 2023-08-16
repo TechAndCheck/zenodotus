@@ -129,4 +129,36 @@ class ClaimReviewTest < ActiveSupport::TestCase
     claim_review_json = Json.parse(claim_review.render_for_export.to_json) # call blueprinter
     assert_equal expected, claim_review_json
   end
+
+  test "can find duplicates" do
+    ClaimReview.create!(
+      author: {
+        "@type": "Organization",
+        "name": "realfact",
+        "url": "https://www.realfact.com/"
+      },
+      claim_reviewed: "The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide.",
+      date_published: "2021-02-01",
+      item_reviewed: {
+        "@type": "Claim",
+        "name": "Claim name",
+        "author": {
+          "@type": "Person",
+          "jobTitle": "On the internet",
+          "name": "Viral image"
+        },
+        "datePublished": "2021-01-30",
+        "appearance": ["https://www.facebook.com/1314047423/videos/475912420875607/"]
+      },
+      review_rating: {
+        "@type": "Rating",
+        "alternateName": "False",
+        "bestRating": "9",
+        "ratingValue": "4",
+      },
+      url: "https://www.realfact.com/factchecks/2021/feb/03/starwars"
+    )
+
+    assert_not ClaimReview.find_duplicates("The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide.", "https://www.realfact.com/factchecks/2021/feb/03/starwars", "realfact").empty?
+  end
 end

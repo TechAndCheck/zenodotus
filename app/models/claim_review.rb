@@ -64,6 +64,15 @@ class ClaimReview < ApplicationRecord
     end
   end
 
+  sig { params(claim_reviewed: String, url: String, author_name: String).returns(T::Array[ClaimReview]) }
+  def self.find_duplicates(claim_reviewed, url, author_name)
+    # We'll compare based on claim_reviewed, url, and author
+    possible_duplicates = ClaimReview.where(url: url, claim_reviewed: claim_reviewed)
+    possible_duplicates.select do |possible_duplicate|
+      possible_duplicate.author["name"] == author_name
+    end
+  end
+
   sig { returns(Hash) }
   def render_for_export
     ClaimReviewBlueprint.render_as_hash(self)

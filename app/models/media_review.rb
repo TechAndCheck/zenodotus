@@ -121,6 +121,15 @@ class MediaReview < ApplicationRecord
     end
   end
 
+  sig { params(url: String, author_name: String).returns(T::Array[MediaReview]) }
+  def self.find_duplicates(url, author_name)
+    # We'll compare based on url, and author
+    possible_duplicates = MediaReview.where(url: url)
+    possible_duplicates.select do |possible_duplicate|
+      possible_duplicate.author["name"] == author_name
+    end
+  end
+
   sig { returns(T::Boolean) }
   def scrape
     object_model = ArchiveItem.model_for_url(self.item_reviewed["contentUrl"])

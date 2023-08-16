@@ -157,4 +157,9 @@ class MediaReviewTest < ActiveSupport::TestCase
 
     assert_equal("Missing Context, Edited or Cropped, Original, Satire or Parody, Staged, Transformed", media_review.media_authenticity_category_humanized)
   end
+
+  test "can find duplicates" do
+    media_review = MediaReview.create!(**@media_review_kwargs)
+    assert_not MediaReview.find_duplicates(media_review.url, media_review.author["name"]).empty?
+  end
 end
