@@ -67,7 +67,6 @@ Rails.application.routes.draw do
     scope module: "fact_check_insights", as: "fact_check_insights" do
       root "application#index"
 
-      get "download"
       get "guide"
       get "highlights"
       get "optout"
