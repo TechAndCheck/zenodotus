@@ -58,8 +58,13 @@ namespace :render_exports do
       "mediaReviewCount": rendered_media_reviews.length
     }
     puts "Rendering JSON"
-    output_json = JSON.pretty_generate({ "claimReviews": rendered_claim_reviews, "mediaReviews": rendered_media_reviews, "meta": metadata })
+    begin
+      output_json = JSON.pretty_generate({ "claimReviews": rendered_claim_reviews, "mediaReviews": rendered_media_reviews, "meta": metadata })
+    rescue StandardError => e
+      puts "Error rendering JSON: #{e.message}"
+    end
 
+    puts "Rendered JSON successfully"
     # Save file and upload to AWS
     temp_json_file = Tempfile.open("temp-json-output")
     begin
