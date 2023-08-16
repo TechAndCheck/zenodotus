@@ -76,14 +76,21 @@ namespace :render_exports do
       when Net::HTTPSuccess
         puts "Content uploaded!"
       else
+        puts "************************************"
+        puts "Error uploading content!"
+        puts response.inspect
         puts response.value
+        puts "************************************"
       end
 
       # Set the presigned url to settings
       get_presigned_url = bucket.object(object_key).presigned_url(:get, expires_in: 604800)
       Setting.fact_check_insights_json_url = get_presigned_url
 
+      puts "************************************"
+      puts "Success"
       puts "Created presigned url: #{Setting.fact_check_insights_json_url}"
+      puts "************************************"
     ensure
       temp_json_file.close
       temp_json_file.unlink
