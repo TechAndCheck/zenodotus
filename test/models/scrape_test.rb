@@ -83,10 +83,10 @@ class ScrapeTest < ActiveSupport::TestCase
     MediaReview.create(
       original_media_link: "https://www.instagram.com/p/CBcqOkyDDH8/",
       date_published: "2021-02-03",
-      url: "https://www.realfact.com/factchecks/2021/feb/03/starwars",
+      url: "https://www.realfact.com/factchecks/2021/feb/03/starwars_7",
       author: {
         "@type": "Organization",
-        "name": "realfact",
+        "name": "realfact_7",
         "url": "https://realfact.com"
       },
       media_authenticity_category: "TransformedContent",
@@ -122,10 +122,10 @@ class ScrapeTest < ActiveSupport::TestCase
       media_url: "https://www.instagram.com/p/not_found/",
       original_media_link: "https://www.instagram.com/p/not_found/",
       date_published: "2021-02-03",
-      url: "https://www.realfact.com/factchecks/2021/feb/03/starwars",
+      url: "https://www.realfact.com/factchecks/2021/feb/03/starwars_57",
       author: {
         "@type": "Organization",
-        "name": "realfact",
+        "name": "realfact_57",
         "url": "https://realfact.com"
       },
       media_authenticity_category: "TransformedContent",

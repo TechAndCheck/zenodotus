@@ -13,14 +13,15 @@ class FactCheckInsightsControllerTest < ActionDispatch::IntegrationTest
     return if File.exist?("tmp/") && File.directory?("tmp/")
     FileUtils.mkdir_p("tmp/")
 
+    random_number = rand(100000)
     media_review = MediaReview.create!(
       media_url: "https://www.foobar.com/1",
       original_media_link: "https://www.foobar.com/1_original_media_link",
       date_published: "2021-02-03",
-      url: "https://www.realfact.com/factchecks/2021/feb/03/starwars",
+      url: "https://www.realfact.com/factchecks/2021/feb/03/starwars_#{random_number}",
       author: {
         "@type": "Organization",
-        "name": "realfact",
+        "name": "realfact_#{random_number}",
         "url": "https://realfact.com",
         "image": "https://i.kym-cdn.com/photos/images/newsfeed/001/207/210/b22.jpg",
         "sameAs": "https://twitter.com/realfact"
@@ -59,7 +60,7 @@ class FactCheckInsightsControllerTest < ActionDispatch::IntegrationTest
     ClaimReview.create!(
       author: {
         "@type": "Organization",
-        "name": "realfact",
+        "name": "realfact_#{random_number}",
         "url": "https://www.realfact.com/"
       },
       claim_reviewed: "The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide.",
@@ -89,7 +90,7 @@ class FactCheckInsightsControllerTest < ActionDispatch::IntegrationTest
         "image": "https://static.politifact.com/politifact/rulings/meter-false.jpg",
         "alternateName": "False"
       },
-      url: "https://www.realfact.com/factchecks/2021/feb/03/starwars",
+      url: "https://www.realfact.com/factchecks/2021/feb/03/starwars_#{random_number}",
       media_review: media_review
     )
   end

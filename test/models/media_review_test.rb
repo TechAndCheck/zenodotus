@@ -9,10 +9,10 @@ class MediaReviewTest < ActiveSupport::TestCase
       media_url: "https://www.foobar.com/1",
       original_media_link: "https://www.foobar.com/1_original_media_link",
       date_published: "2021-02-03",
-      url: "https://www.realfact.com/factchecks/2021/feb/03/starwars",
+      url: "https://www.realfact.com/factchecks/2021/feb/03/starwars_5",
       author: {
         "@type": "Organization",
-        "name": "realfact",
+        "name": "realfact_5",
         "url": "https://realfact.com"
       },
       media_authenticity_category: "TransformedContent",
@@ -51,7 +51,7 @@ class MediaReviewTest < ActiveSupport::TestCase
                     "@type": "MediaReview",
                     "author": {
                       "@type": "Organization",
-                      "name": "realfact",
+                      "name": "realfact_5",
                       "url": "https://realfact.com",
                       "image": nil,
                       "sameAs": nil
@@ -85,7 +85,7 @@ class MediaReviewTest < ActiveSupport::TestCase
                     "mediaAuthenticityCategory": "TransformedContent",
                     "originalMediaContextDescription": "Star Wars Ipsum",
                     "originalMediaLink": "https://www.foobar.com/1_original_media_link",
-                    "url": "https://www.realfact.com/factchecks/2021/feb/03/starwars"
+                    "url": "https://www.realfact.com/factchecks/2021/feb/03/starwars_5"
                   }
   end
 
@@ -129,12 +129,10 @@ class MediaReviewTest < ActiveSupport::TestCase
 
     # should generate without raising an exception
     media_review.render_for_export
-    media_review.to_comma
   end
 
   test "can check if orphaned" do
     kwargs_copy = @media_review_kwargs.deep_dup
-
     media_review = MediaReview.create!(**kwargs_copy)
     assert media_review.orphaned?
   end
@@ -143,6 +141,7 @@ class MediaReviewTest < ActiveSupport::TestCase
     media_review = MediaReview.create!(**@media_review_kwargs)
     assert_equal "Transformed", media_review.media_authenticity_category_humanized
 
+    media_review.destroy! # We can't have duplicates, so this is easier
     media_review_kwargs = @media_review_kwargs.deep_dup
     media_review_kwargs[:media_authenticity_category] = [
       "DecontextualizedContent",
@@ -161,5 +160,13 @@ class MediaReviewTest < ActiveSupport::TestCase
   test "can find duplicates" do
     media_review = MediaReview.create!(**@media_review_kwargs)
     assert_not MediaReview.find_duplicates(media_review.url, media_review.author["name"]).empty?
+  end
+
+  test "duplicate raises error" do
+    MediaReview.create!(**@media_review_kwargs)
+
+    assert_raises do
+      MediaReview.create!(**@media_review_kwargs)
+    end
   end
 end
