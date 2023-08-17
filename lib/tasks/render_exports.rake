@@ -76,6 +76,11 @@ namespace :render_exports do
     claim_review_csv = Decombobulate.new(rendered_claim_reviews).to_csv
     media_review_csv = Decombobulate.new(rendered_media_reviews).to_csv
 
+    # Excel doesn't like to assume files are UTF8 (unlike everyone else for the last 20 years)
+    # so we have to add a byte string to the start of the files.
+    claim_review_csv.prepend("\uFEFF")
+    media_review_csv.prepend("\uFEFF")
+
     zipfile_name = "tmp/fact_check_insights.zip"
 
     Zip::File.open(zipfile_name, create: true) do |zipfile|
