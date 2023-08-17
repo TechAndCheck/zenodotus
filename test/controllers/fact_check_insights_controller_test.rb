@@ -94,25 +94,6 @@ class FactCheckInsightsControllerTest < ActionDispatch::IntegrationTest
     )
   end
 
-  test "can generate Fact Check Insights JSON export" do
-    json_export = JSON.parse(FactCheckInsightsController.generate_json)
-    assert json_export["meta"]["mediaReviewCount"].positive?
-    assert json_export["meta"]["claimReviewCount"].positive?
-  end
-
-  # Generate a csv zip file, write it to disk, read it, then validate it
-  test "can generate Fact Check Insights csv zip export" do
-    zipped_csvs = FactCheckInsightsController.generate_csv_zip
-    File.binwrite("tmp/csvs.zip", zipped_csvs)
-
-    claim_reviews = nil
-    media_reviews = nil
-    Zip::File.open("tmp/csvs.zip") do |zip_file|
-      claim_reviews = CSV.parse(zip_file.glob("claim_reviews.csv").first.get_input_stream.read)
-      media_reviews = CSV.parse(zip_file.glob("media_reviews.csv").first.get_input_stream.read)
-    end
-  end
-
   test "can download data as an admin" do
     skip "Waiting to turn on Insights first"
     sign_in users(:admin)

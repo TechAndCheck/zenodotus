@@ -117,17 +117,8 @@ namespace :render_exports do
         puts "************************************"
       end
 
-      # Set the presigned url to settings
-      get_json_presigned_url = bucket.object(json_object_key).presigned_url(:get, expires_in: 604800)
-      Setting.fact_check_insights_json_url = get_json_presigned_url
-
-      get_csv_presigned_url = bucket.object(csv_object_key).presigned_url(:get, expires_in: 604800)
-      Setting.fact_check_insights_csv_url = get_csv_presigned_url
-
       puts "************************************"
       puts "Success"
-      puts "Created presigned json url: #{Setting.fact_check_insights_json_url}"
-      puts "Created presigned csv url: #{Setting.fact_check_insights_csv_url}"
       puts "************************************"
     rescue StandardError => e
       puts "************************************"

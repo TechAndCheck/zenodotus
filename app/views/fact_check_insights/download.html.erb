@@ -17,8 +17,8 @@
 					</div>
 				</div -->
 
-				<%= link_to "Download JSON", Setting.fact_check_insights_json_url, class: "btn btn--orange btn--lg" %>
-				<%= link_to "Download CSV", Setting.fact_check_insights_csv_url, class: "btn btn--orange btn--lg" %>
+				<%= link_to "Download JSON", fact_check_insights_download_path(format: :json), class: "btn btn--orange btn--lg" %>
+				<%= link_to "Download CSV", fact_check_insights_download_path(format: :zip), class: "btn btn--orange btn--lg" %>
 			</div>
 			<p>The compilation of this data is licensed under <%= link_to "CC BY", "https://creativecommons.org/licenses/by/4.0/" %>. <%= render partial: "optout_instructions" %></p>
 		<% else %>

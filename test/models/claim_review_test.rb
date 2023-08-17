@@ -126,7 +126,7 @@ class ClaimReviewTest < ActiveSupport::TestCase
         "datePublished" => "2021-01-30"
       }
     }
-    claim_review_json = Json.parse(claim_review.render_for_export.to_json) # call blueprinter
+    claim_review_json = JSON.parse(claim_review.render_for_export.to_json) # call blueprinter
     assert_equal expected, claim_review_json
   end
 
