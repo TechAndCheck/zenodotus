@@ -206,7 +206,7 @@ gem "rails-settings-cached", "~> 2.9"
 gem "honeybadger", "~> 5.2"
 
 # Add the ability to flatten a JSON object to a CSV
-gem "decombobulate"
+gem "decombobulate", git: "https://github.com/cguess/discombobulate"
 
 # To zip files easily for export upload
 gem "rubyzip"
