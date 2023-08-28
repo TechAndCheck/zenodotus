@@ -88,7 +88,7 @@ class ClaimReviewBlueprint < Blueprinter::Base
           "name": claim_review.item_reviewed.dig("author", "name"),
           "jobTitle": claim_review.item_reviewed.dig("author", "jobTitle"),
           "image": claim_review.item_reviewed.dig("author", "image"),
-          "sameAs": claim_review.item_reviewed.dig("sameAs")
+          "sameAs": claim_review.item_reviewed.dig("author", "sameAs")
         }
       }
     end
