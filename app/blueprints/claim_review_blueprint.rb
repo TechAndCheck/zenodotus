@@ -82,7 +82,7 @@ class ClaimReviewBlueprint < Blueprinter::Base
         "datePublished": claim_review.item_reviewed.dig("datePublished"),
         "name": claim_review.item_reviewed.dig("name"),
         "appearance": claim_review.item_reviewed.dig("appearance"),
-        "firstAppearance": claim_review.item_reviewed.dig("appearance", 0),
+        "firstAppearance": claim_review.item_reviewed.dig("firstAppearance"),
         "author": {
           "@type": claim_review.item_reviewed.dig("author", "@type"),
           "name": claim_review.item_reviewed.dig("author", "name"),
