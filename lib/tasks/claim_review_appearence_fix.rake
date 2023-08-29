@@ -7,7 +7,8 @@ namespace :claim_review_appearance_fix do
     gazette = ClaimReview.where("author->>'name' = 'Cedar Rapids Gazette'")
     cnn = ClaimReview.where("author->>'name' = 'CNN'")
 
-    partners_claim_reviews = [post, factcheckorg, politifact, gazette, cnn]
+    partners_claim_reviews = [post, factcheckorg, politifact, gazette, cnn].flatten
+    debugger
 
     count = 0
     partners_claim_reviews.each do |claim_review|
