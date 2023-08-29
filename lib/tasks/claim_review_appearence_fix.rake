@@ -8,7 +8,6 @@ namespace :claim_review_appearance_fix do
     cnn = ClaimReview.where("author->>'name' = 'CNN'")
 
     partners_claim_reviews = [post, factcheckorg, politifact, gazette, cnn].flatten
-    debugger
 
     count = 0
     partners_claim_reviews.each do |claim_review|
@@ -18,6 +17,7 @@ namespace :claim_review_appearance_fix do
         claim_review.item_reviewed["firstAppearance"] = nil
         # claim_review.save!
         count += 1
+        debugger
       end
     end
 
