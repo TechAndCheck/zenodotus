@@ -10,12 +10,25 @@ namespace :claim_review_appearance_fix do
     partners_claim_reviews = [post, factcheckorg, politifact, gazette, cnn].flatten
 
     count = 0
+    fixed = 0
     appearance_nil = 0
     both_nil = 0
+    errors = 0
     partners_claim_reviews.each_with_index do |claim_review, index|
-      if claim_review.item_reviewed["appearance"].nil?
+      if claim_review.item_reviewed["appearance"].nil? || claim_review.item_reviewed["appearance"].empty?
         appearance_nil += 1
         next
+      end
+
+      unless claim_review.item_reviewed["appearance"].first.is_a?(Hash)
+        claim_review.item_reviewed["appearance"] = claim_review.item_reviewed["appearance"].map do |appearance|
+          {
+            "@type": "CreativeWork",
+            "url": appearance,
+          }
+        end
+        # claim_review.save!
+        fixed += 1
       end
 
       if claim_review.item_reviewed.dig("firstAppearance", "url").nil? && claim_review.item_reviewed["appearance"]&.first&.dig("url").nil?
@@ -29,11 +42,14 @@ namespace :claim_review_appearance_fix do
         count += 1
       end
     rescue StandardError => e
-      debugger
+      errors += 1
+      # debugger
     end
 
     puts "Skipped #{appearance_nil} ClaimReviews with nil appearances"
     puts "Skipped #{both_nil} ClaimReviews with nil firstAppearance and nil appearances"
+    puts "#{fixed} needed Fixing"
+    puts "Skipped #{errors} ClaimReviews with errors"
     puts "Fixed #{count} ClaimReviews"
 
   end
