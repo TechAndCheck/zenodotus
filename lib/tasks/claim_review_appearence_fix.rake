@@ -65,8 +65,10 @@ namespace :claim_review_appearance_fix do
       cr.item_reviewed["firstAppearance"].nil? == false && (cr.item_reviewed["appearance"].nil? || cr.item_reviewed["appearance"].empty?)
     end
 
+    count = 0
     filtered.each do |cr|
       if cr.author["image"].include?("factstream")
+        count += 1
         cr.item_reviewed["appearance"] = cr.item_reviewed["firstAppearance"]
         cr.item_reviewed["firstAppearance"] = nil
         cr.save!
