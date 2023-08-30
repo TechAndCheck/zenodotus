@@ -12,7 +12,7 @@ namespace :claim_review_appearance_fix do
     count = 0
     appearance_nil = 0
     both_nil = 0
-    partners_claim_reviews.each do |claim_review|
+    partners_claim_reviews.each_with_index do |claim_review, index|
       if claim_review.item_reviewed["appearance"].nil?
         appearance_nil += 1
         next
