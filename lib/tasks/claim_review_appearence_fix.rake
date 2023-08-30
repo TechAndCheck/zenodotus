@@ -33,5 +33,7 @@ namespace :claim_review_appearance_fix do
     puts "Skipped #{appearance_nil} ClaimReviews with nil appearances"
     puts "Skipped #{both_nil} ClaimReviews with nil firstAppearance and nil appearances"
     puts "Fixed #{count} ClaimReviews"
+  rescue StandardError => e
+    debugger
   end
 end
