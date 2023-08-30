@@ -28,12 +28,13 @@ namespace :claim_review_appearance_fix do
         # claim_review.save!
         count += 1
       end
+    rescue StandardError => e
+      debugger
     end
 
     puts "Skipped #{appearance_nil} ClaimReviews with nil appearances"
     puts "Skipped #{both_nil} ClaimReviews with nil firstAppearance and nil appearances"
     puts "Fixed #{count} ClaimReviews"
-  rescue StandardError => e
-    debugger
+
   end
 end
