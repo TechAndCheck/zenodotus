@@ -50,6 +50,27 @@ namespace :claim_review_appearance_fix do
     puts "#{fixed} needed Fixing"
     puts "Skipped #{errors} ClaimReviews with errors"
     puts "Fixed #{count} ClaimReviews"
+  end
 
+  desc "swap fistAppearance issue to appearance"
+  task swap: :environment do |t, args|
+    post = ClaimReview.where("author->>'name' = 'Washington Post'")
+    factcheckorg = ClaimReview.where("author->>'name' = 'FactCheck.org'")
+    politifact = ClaimReview.where("author->>'name' = 'PolitiFact'")
+    gazette = ClaimReview.where("author->>'name' = 'Cedar Rapids Gazette'")
+    cnn = ClaimReview.where("author->>'name' = 'CNN'")
+
+    partners_claim_reviews = [post, factcheckorg, politifact, gazette, cnn].flatten
+    filtered = partners_claim_reviews.filter do |cr|
+      cr.item_reviewed["firstAppearance"].nil? == false && (cr.item_reviewed["appearance"].nil? || cr.item_reviewed["appearance"].empty?)
+    end
+
+    filtered.each do |cr|
+      if cr.author["image"].include?("factstream")
+        cr.item_reviewed["appearance"] = cr.item_reviewed["firstAppearance"]
+        cr.item_reviewed["firstAppearance"] = nil
+        cr.save!
+      end
+    end
   end
 end
