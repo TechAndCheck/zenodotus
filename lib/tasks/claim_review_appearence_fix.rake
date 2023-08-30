@@ -74,5 +74,6 @@ namespace :claim_review_appearance_fix do
         cr.save!
       end
     end
+    puts "Did #{count}"
   end
 end
