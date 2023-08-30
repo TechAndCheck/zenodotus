@@ -27,7 +27,7 @@ namespace :claim_review_appearance_fix do
             "url": appearance,
           }
         end
-        # claim_review.save!
+        claim_review.save!
         fixed += 1
       end
 
@@ -38,12 +38,11 @@ namespace :claim_review_appearance_fix do
 
       if claim_review.item_reviewed.dig("firstAppearance", "url") == claim_review.item_reviewed["appearance"]&.first&.dig("url")
         claim_review.item_reviewed["firstAppearance"] = nil
-        # claim_review.save!
+        claim_review.save!
         count += 1
       end
     rescue StandardError => e
       errors += 1
-      # debugger
     end
 
     puts "Skipped #{appearance_nil} ClaimReviews with nil appearances"
