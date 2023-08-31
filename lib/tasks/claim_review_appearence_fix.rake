@@ -90,7 +90,7 @@ namespace :claim_review_appearance_fix do
     partners_claim_reviews.each do |cr|
       if cr.item_reviewed["appearance"].is_a?(Hash)
         count += 1
-        cr.item_reviewed["appearance"] = [cr.appearances]
+        cr.item_reviewed["appearance"] = [cr.item_reviewed["appearance"]]
         cr.save!
       end
     end

@@ -24,16 +24,12 @@ class MediaReviewBlueprint < Blueprinter::Base
         "@type": "",
         "name": "",
         "url": "",
-        "image": "",
-        "sameAs": ""
       }
     else
       {
         "@type": media_review.author.dig("@type"),
         "name": media_review.author.dig("name"),
         "url": media_review.author.dig("url"),
-        "image": media_review.author.dig("image"),
-        "sameAs": media_review.author.dig("sameAs"),
       }
     end
   end
@@ -43,24 +39,16 @@ class MediaReviewBlueprint < Blueprinter::Base
     rendered_media_item_apperances = media_item_appearances&.map do |apperance|
       {
         "@type": apperance["@type"],
-        "accessedOnUrl": apperance["accessedOnUrl"],
         "startTime": apperance["startTime"],
         "endTime": apperance["endTime"],
       }
     end
 
+    rendered_media_item_apperances ||= [] # So it's not nil
+
     {
       "@type": "MediaReviewItem",
       "contentUrl": media_review.media_url,
-      "creator": {
-        "@type": media_review.item_reviewed.dig("creator", "@type"),
-        "name": media_review.item_reviewed.dig("creator", "name"),
-        "url": media_review.item_reviewed.dig("creator", "url"),
-      },
-      "interpretedAsClaim": {
-        "@type": media_review.item_reviewed.dig("interpretedAsClaim", "@type"),
-        "description": media_review.item_reviewed.dig("interpretedAsClaim", "description"),
-      },
       "mediaItemAppearance": rendered_media_item_apperances
     }
   end
