@@ -88,9 +88,9 @@ namespace :claim_review_appearance_fix do
     partners_claim_reviews = [post, factcheckorg, politifact, gazette, cnn].flatten
     count = 0
     partners_claim_reviews.each do |cr|
-      if cr.appearance.is_a?(Hash)
+      if cr.item_reviewed["appearances"].is_a?(Hash)
         count += 1
-        cr.item_reviewed["appearance"] = [cr.appearance]
+        cr.item_reviewed["appearances"] = [cr.appearances]
         cr.save!
       end
     end
