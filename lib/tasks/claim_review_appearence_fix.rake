@@ -76,4 +76,24 @@ namespace :claim_review_appearance_fix do
     end
     puts "Did #{count}"
   end
+
+  desc "swap fistAppearance issue to appearance"
+  task array_fix: :environment do |t, args|
+    post = ClaimReview.where("author->>'name' = 'Washington Post'")
+    factcheckorg = ClaimReview.where("author->>'name' = 'FactCheck.org'")
+    politifact = ClaimReview.where("author->>'name' = 'PolitiFact'")
+    gazette = ClaimReview.where("author->>'name' = 'Cedar Rapids Gazette'")
+    cnn = ClaimReview.where("author->>'name' = 'CNN'")
+
+    partners_claim_reviews = [post, factcheckorg, politifact, gazette, cnn].flatten
+    count = 0
+    partners_claim_reviews.each do |cr|
+      if cr.appearance.is_a?(Hash)
+        count += 1
+        cr.item_reviewed["appearance"] = [cr.appearance]
+        cr.save!
+      end
+    end
+    puts "Did #{count}"
+  end
 end
