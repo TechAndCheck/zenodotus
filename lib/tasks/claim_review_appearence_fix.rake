@@ -41,7 +41,7 @@ namespace :claim_review_appearance_fix do
         claim_review.save!
         count += 1
       end
-    rescue StandardError => e
+    rescue StandardError
       errors += 1
     end
 
