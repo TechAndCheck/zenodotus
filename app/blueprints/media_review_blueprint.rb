@@ -47,7 +47,7 @@ class MediaReviewBlueprint < Blueprinter::Base
     rendered_media_item_apperances ||= [] # So it's not nil
 
     {
-      "@type": "MediaReviewItem",
+      "@type": media_review.item_reviewed["@type"],
       "contentUrl": media_review.media_url,
       "mediaItemAppearance": rendered_media_item_apperances
     }
