@@ -53,31 +53,18 @@ class MediaReviewTest < ActiveSupport::TestCase
                       "@type": "Organization",
                       "name": "realfact_5",
                       "url": "https://realfact.com",
-                      "image": nil,
-                      "sameAs": nil
                     },
                     "datePublished": "2021-02-03",
                     "itemReviewed": {
                       "@type": "MediaReviewItem",
                       "contentUrl": "https://www.foobar.com/1",
-                      "creator": {
-                        "@type": "Person",
-                        "name": "Old Ben Kenobi",
-                        "url": "https://www.foobar.com/x/1"
-                      },
-                      "interpretedAsClaim": {
-                        "@type": "Claim",
-                        "description": "Two droids on the imperial watchlist entered a hovercraft"
-                      },
                       "mediaItemAppearance": [{
                         "@type": "ImageObjectSnapshot",
-                        "accessedOnUrl": "https://www.facebook.com/photo.php?fbid=10217541425752089&set=a.1391489831857&type=3",
                         "startTime": nil,
                         "endTime": nil
                       },
                       {
                         "@type": "ImageObjectSnapshot",
-                        "accessedOnUrl": "https://www.foobar.com/1",
                         "startTime": nil,
                         "endTime": nil
                       }]
