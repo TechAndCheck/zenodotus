@@ -66,7 +66,7 @@ class ClaimReviewBlueprint < Blueprinter::Base
         "@type": "",
         "datePublished": "",
         "name": "",
-        "appearance": "",
+        "appearance": [],
         "firstAppearance": "",
         "author": {
           "@type": "",
@@ -77,11 +77,15 @@ class ClaimReviewBlueprint < Blueprinter::Base
         }
       }
     else
+      massaged_appearance = claim_review.item_reviewed.dig("appearance")&.map do |appearance|
+        { "url": appearance, "@type": "CreativeWork" }
+      end
+
       {
         "@type": claim_review.item_reviewed.dig("@type"),
         "datePublished": claim_review.item_reviewed.dig("datePublished"),
         "name": claim_review.item_reviewed.dig("name"),
-        "appearance": claim_review.item_reviewed.dig("appearance"),
+        "appearance": massaged_appearance,
         "firstAppearance": claim_review.item_reviewed.dig("firstAppearance"),
         "author": {
           "@type": claim_review.item_reviewed.dig("author", "@type"),
