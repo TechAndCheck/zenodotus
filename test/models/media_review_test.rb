@@ -58,16 +58,8 @@ class MediaReviewTest < ActiveSupport::TestCase
                     "itemReviewed": {
                       "@type": "MediaReviewItem",
                       "contentUrl": "https://www.foobar.com/1",
-                      "mediaItemAppearance": [{
-                        "@type": "ImageObjectSnapshot",
-                        "startTime": nil,
-                        "endTime": nil
-                      },
-                      {
-                        "@type": "ImageObjectSnapshot",
-                        "startTime": nil,
-                        "endTime": nil
-                      }]
+                      "startTime": nil,
+                      "endTime": nil,
                     },
                     "mediaAuthenticityCategory": "TransformedContent",
                     "originalMediaContextDescription": "Star Wars Ipsum",

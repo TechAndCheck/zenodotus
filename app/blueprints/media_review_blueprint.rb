@@ -35,21 +35,17 @@ class MediaReviewBlueprint < Blueprinter::Base
   end
 
   field :item_reviewed, name: :itemReviewed do |media_review|
-    media_item_appearances = media_review.item_reviewed["mediaItemAppearance"]
-    rendered_media_item_apperances = media_item_appearances&.map do |apperance|
-      {
-        "@type": apperance["@type"],
-        "startTime": apperance["startTime"],
-        "endTime": apperance["endTime"],
-      }
+    to_return = {
+      "@type": media_review.item_reviewed["@type"],
+      "contentUrl": media_review.media_url
+    }
+
+    mediaItemAppearance = media_review.item_reviewed["mediaItemAppearance"]
+    unless mediaItemAppearance.blank?
+      to_return["startTime"] = mediaItemAppearance.first["startTime"]
+      to_return["endTime"] = mediaItemAppearance.first["endTime"]
     end
 
-    rendered_media_item_apperances ||= [] # So it's not nil
-
-    {
-      "@type": media_review.item_reviewed["@type"],
-      "contentUrl": media_review.media_url,
-      "mediaItemAppearance": rendered_media_item_apperances
-    }
+    to_return
   end
 end
