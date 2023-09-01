@@ -2,7 +2,10 @@ class MediaReviewBlueprint < Blueprinter::Base
   identifier :id
 
   fields :url
-  field :media_authenticity_category, name: :mediaAuthenticityCategory
+  field :media_authenticity_category, name: :mediaAuthenticityCategory do |media_review|
+    media_review.media_authenticity_category_humanized
+  end
+
   field :original_media_context_description, name: :originalMediaContextDescription
   field :original_media_link, name: :originalMediaLink
 

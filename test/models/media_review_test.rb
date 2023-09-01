@@ -61,7 +61,7 @@ class MediaReviewTest < ActiveSupport::TestCase
                       "startTime": nil,
                       "endTime": nil,
                     },
-                    "mediaAuthenticityCategory": "TransformedContent",
+                    "mediaAuthenticityCategory": "Transformed",
                     "originalMediaContextDescription": "Star Wars Ipsum",
                     "originalMediaLink": "https://www.foobar.com/1_original_media_link",
                     "url": "https://www.realfact.com/factchecks/2021/feb/03/starwars_5"
