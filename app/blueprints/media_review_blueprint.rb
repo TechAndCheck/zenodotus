@@ -39,11 +39,13 @@ class MediaReviewBlueprint < Blueprinter::Base
       "contentUrl": media_review.media_url
     }
 
+    to_return["startTime"] = media_review.item_reviewed["startTime"] unless media_review.item_reviewed["startTime"].blank?
+    to_return["endTime"] = media_review.item_reviewed["endTime"] unless media_review.item_reviewed["endTime"].blank?
+    to_return["@type"] = media_review.item_reviewed["@type"] unless media_review.item_reviewed["@type"].blank?
+
     mediaItemAppearance = media_review.item_reviewed["mediaItemAppearance"]
     unless mediaItemAppearance.blank?
       to_return["@type"] = mediaItemAppearance.first["@type"]
-      to_return["startTime"] = media_review.item_reviewed["startTime"]
-      to_return["endTime"] = media_review.item_reviewed["endTime"]
     end
 
     to_return
