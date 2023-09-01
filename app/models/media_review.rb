@@ -129,6 +129,7 @@ class MediaReview < ApplicationRecord
       end
     end
 
+    humanized_media_authenticity_categories.sort_by! { |e| e.downcase }
     humanized_media_authenticity_categories.join(", ")
   end
 end
