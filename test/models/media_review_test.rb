@@ -56,7 +56,7 @@ class MediaReviewTest < ActiveSupport::TestCase
                     },
                     "datePublished": "2021-02-03",
                     "itemReviewed": {
-                      "@type": "MediaReviewItem",
+                      "@type": "ImageObjectSnapshot",
                       "contentUrl": "https://www.foobar.com/1",
                       "startTime": nil,
                       "endTime": nil,
