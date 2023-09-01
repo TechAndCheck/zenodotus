@@ -42,8 +42,8 @@ class MediaReviewBlueprint < Blueprinter::Base
     mediaItemAppearance = media_review.item_reviewed["mediaItemAppearance"]
     unless mediaItemAppearance.blank?
       to_return["@type"] = mediaItemAppearance.first["@type"]
-      to_return["startTime"] = mediaItemAppearance.first["startTime"]
-      to_return["endTime"] = mediaItemAppearance.first["endTime"]
+      to_return["startTime"] = media_review.item_reviewed["startTime"]
+      to_return["endTime"] = media_review.item_reviewed["endTime"]
     end
 
     to_return
