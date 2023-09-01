@@ -36,7 +36,6 @@ class MediaReviewBlueprint < Blueprinter::Base
 
   field :item_reviewed, name: :itemReviewed do |media_review|
     to_return = {
-      "@type": media_review.item_reviewed["@type"],
       "contentUrl": media_review.media_url
     }
 
