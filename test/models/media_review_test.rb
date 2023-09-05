@@ -133,7 +133,7 @@ class MediaReviewTest < ActiveSupport::TestCase
 
     media_review = MediaReview.create!(**media_review_kwargs)
 
-    assert_equal("Missing Context, Edited or Cropped, Original, Satire or Parody, Staged, Transformed", media_review.media_authenticity_category_humanized)
+    assert_equal("Edited or Cropped, Missing Context, Original, Satire or Parody, Staged, Transformed", media_review.media_authenticity_category_humanized)
   end
 
   test "can find duplicates" do
