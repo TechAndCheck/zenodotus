@@ -18,7 +18,7 @@ class ClaimReviewBlueprint < Blueprinter::Base
 
   field :author do |claim_review|
     if claim_review.author.nil?
-      {
+      to_return = {
         "@type": "",
         "name": "",
         "url": "",
@@ -26,7 +26,7 @@ class ClaimReviewBlueprint < Blueprinter::Base
         "sameAs": ""
       }
     else
-      {
+      to_return = {
         "@type": claim_review.author.dig("@type"),
         "name": claim_review.author.dig("name"),
         "url": claim_review.author.dig("url"),
@@ -34,11 +34,13 @@ class ClaimReviewBlueprint < Blueprinter::Base
         "sameAs": claim_review.author.dig("sameAs"),
       }
     end
+
+    to_return.delete_if { |key, value| value.nil? }
   end
 
   field :review_rating, name: :reviewRating do |claim_review|
     if claim_review.review_rating.nil?
-      {
+      to_return = {
         "@type": "",
         "ratingValue": "",
         "bestRating": "",
@@ -48,7 +50,7 @@ class ClaimReviewBlueprint < Blueprinter::Base
         "alternateName": "",
       }
     else
-      {
+      to_return = {
         "@type": claim_review.review_rating.dig("@type"),
         "ratingValue": claim_review.review_rating.dig("ratingValue"),
         "bestRating": claim_review.review_rating.dig("bestRating"),
@@ -58,6 +60,8 @@ class ClaimReviewBlueprint < Blueprinter::Base
         "alternateName": claim_review.review_rating.dig("alternateName"),
       }
     end
+
+    to_return.delete_if { |key, value| value.nil? }
   end
 
   field :item_reviewed, name: :itemReviewed do |claim_review|
@@ -88,7 +92,7 @@ class ClaimReviewBlueprint < Blueprinter::Base
         end
       end
 
-      {
+      to_return = {
         "@type": claim_review.item_reviewed.dig("@type"),
         "datePublished": claim_review.item_reviewed.dig("datePublished"),
         "name": claim_review.item_reviewed.dig("name"),
@@ -102,6 +106,14 @@ class ClaimReviewBlueprint < Blueprinter::Base
           "sameAs": claim_review.item_reviewed.dig("author", "sameAs")
         }
       }
+
+      to_return.delete_if { |key, value| value.nil? }
+
+      unless to_return[:author].blank?
+        to_return[:author] = to_return[:author].delete_if { |key, value| value.nil? }
+      end
+
+      to_return
     end
   end
 end

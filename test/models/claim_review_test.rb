@@ -100,29 +100,20 @@ class ClaimReviewTest < ActiveSupport::TestCase
         "@type" => "Organization",
         "name" => "realfact_#{random_number}",
         "url" => "https://www.realfact.com/",
-        "image" => nil,
-        "sameAs" => nil,
       },
       "reviewRating" => {
         "@type" => "Rating",
         "alternateName" => "False",
         "bestRating" => "9",
-        "worstRating" => nil,
-        "ratingExplanation" => nil,
         "ratingValue" => "4",
-        "image" => nil,
       },
       "itemReviewed" => {
         "@type" => "Claim",
         "name" => "Claim name",
-        "appearance" => nil,
-        "firstAppearance" => nil,
         "author" => {
           "@type" => "Person",
           "jobTitle" => "On the internet",
           "name" => "Viral image",
-          "image" => nil,
-          "sameAs" => nil
         },
         "datePublished" => "2021-01-30"
       }
