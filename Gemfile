@@ -210,3 +210,6 @@ gem "decombobulate", git: "https://github.com/cguess/discombobulate"
 
 # To zip files easily for export upload
 gem "rubyzip"
+
+# No fucking clue why this is necessary :-)
+gem "curb"
