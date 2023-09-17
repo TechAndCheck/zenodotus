@@ -113,7 +113,7 @@ namespace :data do
           puts "Error archiving"
           puts e.message
           puts "--------------------------------------"
-          puts media_review_json
+          puts claim_review_json
           puts "--------------------------------------"
         end
         puts "Successfully imported #{success_count} ClaimReview items"
