@@ -127,6 +127,45 @@ class ClaimReviewTest < ActiveSupport::TestCase
     assert_not ClaimReview.find_duplicates("The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide.", "https://www.realfact.com/factchecks/2021/feb/03/starwars", "realfact").empty?
   end
 
+  test "can find duplicate with missing elements" do
+    # For reference:
+    # json = {
+    #   "@context": "http://schema.org",
+    #   "@type": "ClaimReview",
+    #   "author": {
+    #     "@type": "Organization",
+    #     "url": "https://srilanka.factcrescendo.com/"
+    #   },
+    #   "claimReviewed": "කාන්තාරයක තිබූ එක් ගසක් කපා දැමීම වළකාලමින් ඉදි කළ මාර්ගයක ඡායාරූපයක් ද?",
+    #   "itemReviewed": {
+    #     "@type": "Claim",
+    #     "appearance": [{
+    #       "@type": "CreativeWork",
+    #       "url": "https://tinyurl.com/26krkebo"
+    #     }],
+    #     "author": {
+    #       "@type": "Person",
+    #       "name": "Social Media Users"
+    #     },
+    #     "datePublished": "2023-08-18"
+    #   },
+    #   "reviewRating": {
+    #     "@type": "Rating",
+    #     "alternateName": "Misleading"
+    #   },
+    #   "sdPublisher": {
+    #     "@type": "Organization",
+    #     "name": "Google Fact Check Tools",
+    #     "url": "https://g.co/factchecktools"
+    #   },
+    #   "url": "https://srilanka.factcrescendo.com/2023/08/21/digitally-manipulated-image-for-environmental-conservation-campaign-being-shared-as-true-in-sri-lanka/"
+    # }.to_json
+
+    assert_nothing_raised do
+      ClaimReview.find_duplicates("කාන්තාරයක තිබූ එක් ගසක් කපා දැමීම වළකාලමින් ඉදි කළ මාර්ගයක ඡායාරූපයක් ද?", "https://tinyurl.com/26krkebo", nil)
+    end
+  end
+
   test "duplicate raises error" do
     ClaimReview.create!(
       author: {

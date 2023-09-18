@@ -5,6 +5,10 @@ class ClaimReview < ApplicationRecord
   multisearchable against: [:claim_reviewed, :item_reviewed]
 
   before_create do |claim_review|
+    if claim_review.author["name"].nil?
+      claim_review.author["author"] = claim_review.author["url"]
+    end
+
     duplicates = ClaimReview.find_duplicates(claim_review.claim_reviewed, claim_review.url, claim_review.author["name"])
     if duplicates.any?
       raise "Duplicate ClaimReview found: #{duplicates.map(&:id)}"
@@ -37,7 +41,7 @@ class ClaimReview < ApplicationRecord
     end
   end
 
-  sig { params(claim_reviewed: String, url: String, author_name: String).returns(T::Array[ClaimReview]) }
+  sig { params(claim_reviewed: String, url: String, author_name: T.nilable(String)).returns(T::Array[ClaimReview]) }
   def self.find_duplicates(claim_reviewed, url, author_name)
     # We'll compare based on claim_reviewed, url, and author
     possible_duplicates = ClaimReview.where(url: url, claim_reviewed: claim_reviewed)
