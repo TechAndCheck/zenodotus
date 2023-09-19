@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_09_201149) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_19_010847) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -74,6 +74,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_09_201149) do
     t.index ["submitter_id"], name: "index_archive_items_on_submitter_id"
   end
 
+  create_table "claim_review_authors", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "url", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "claim_reviews", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -85,6 +92,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_09_201149) do
     t.jsonb "review_rating"
     t.uuid "media_review_id"
     t.uuid "external_unique_id"
+    t.bigint "claim_review_author_id"
+    t.index ["claim_review_author_id"], name: "index_claim_reviews_on_claim_review_author_id"
     t.index ["media_review_id"], name: "index_claim_reviews_on_media_review_id"
   end
 

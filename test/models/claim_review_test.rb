@@ -6,6 +6,7 @@ class ClaimReviewTest < ActiveSupport::TestCase
 
   test "claim review properly can turn appearances into an array" do
     random_number = rand(10000)
+
     claim_review = ClaimReview.create!(
       author: {
         "@type": "Organization",
@@ -122,9 +123,123 @@ class ClaimReviewTest < ActiveSupport::TestCase
     assert_equal expected, claim_review_json
   end
 
+  test "creates claim_review_author when created" do
+    assert_difference("ClaimReviewAuthor.count") do
+      media_review = MediaReview.create!(media_authenticity_category: "fake",
+                                         author: { "name": "a_name" },
+                                         date_published: "2022-10-22",
+                                         item_reviewed: { "param": "val" },
+                                         url: "https://foobar.com")
+      random_number = rand(10000)
+      ClaimReview.create!(
+        author: {
+          "@type": "Organization",
+          "name": "realfact_#{random_number}",
+          "url": "https://www.realfact.com/"
+        },
+        claim_reviewed: "The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide.",
+        date_published: "2021-02-01",
+        item_reviewed: {
+          "@type": "Claim",
+          "name": "Claim name",
+          "author": {
+            "@type": "Person",
+            "jobTitle": "On the internet",
+            "name": "Viral image"
+          },
+          "datePublished": "2021-01-30"
+        },
+        review_rating: {
+          "@type": "Rating",
+          "alternateName": "False",
+          "bestRating": "9",
+          "ratingValue": "4",
+        },
+        url: "https://www.realfact.com/factchecks/2021/feb/03/starwars_#{random_number}",
+        media_review: media_review
+      )
+    end
+  end
+
+  test "does not create claim_review_author when one is already created" do
+    random_number = rand(10000)
+
+    ClaimReviewAuthor.create!(name: "realfact_#{random_number}", url: "https://www.realfact.com/")
+
+    assert_no_difference("ClaimReviewAuthor.count") do
+      media_review = MediaReview.create!(media_authenticity_category: "fake",
+                                         author: { "name": "a_name" },
+                                         date_published: "2022-10-22",
+                                         item_reviewed: { "param": "val" },
+                                         url: "https://foobar.com")
+      ClaimReview.create!(
+        author: {
+          "@type": "Organization",
+          "name": "realfact_#{random_number}",
+          "url": "https://www.realfact.com/"
+        },
+        claim_reviewed: "The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide.",
+        date_published: "2021-02-01",
+        item_reviewed: {
+          "@type": "Claim",
+          "name": "Claim name",
+          "author": {
+            "@type": "Person",
+            "jobTitle": "On the internet",
+            "name": "Viral image"
+          },
+          "datePublished": "2021-01-30"
+        },
+        review_rating: {
+          "@type": "Rating",
+          "alternateName": "False",
+          "bestRating": "9",
+          "ratingValue": "4",
+        },
+        url: "https://www.realfact.com/factchecks/2021/feb/03/starwars_#{random_number}",
+        media_review: media_review
+      )
+    end
+  end
+
   test "can find duplicates" do
     # We're searching for one of the seeds
-    assert_not ClaimReview.find_duplicates("The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide.", "https://www.realfact.com/factchecks/2021/feb/03/starwars", "realfact").empty?
+    random_number = rand(10000)
+    media_review = MediaReview.create!(media_authenticity_category: "fake",
+                                       author: { "name": "a_name" },
+                                       date_published: "2022-10-22",
+                                       item_reviewed: { "param": "val" },
+                                       url: "https://foobar.com")
+
+    ClaimReview.create!(
+      author: {
+        "@type": "Organization",
+        "name": "realfact_#{random_number}",
+        "url": "https://www.realfact.com/"
+      },
+      claim_reviewed: "The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide.",
+      date_published: "2021-02-01",
+      item_reviewed: {
+        "@type": "Claim",
+        "name": "Claim name",
+        "author": {
+          "@type": "Person",
+          "jobTitle": "On the internet",
+          "name": "Viral image"
+        },
+        "datePublished": "2021-01-30"
+      },
+      review_rating: {
+        "@type": "Rating",
+        "alternateName": "False",
+        "bestRating": "9",
+        "ratingValue": "4",
+      },
+      url: "https://www.realfact.com/factchecks/2021/feb/03/starwars_#{random_number}",
+      media_review: media_review
+    )
+
+    assert_not ClaimReview.find_duplicates("The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide.", "https://www.realfact.com/factchecks/2021/feb/03/starwars_#{random_number}", "realfact_#{random_number}").empty?
   end
 
   test "can find duplicate with missing elements" do

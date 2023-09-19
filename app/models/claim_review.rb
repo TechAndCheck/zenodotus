@@ -1,14 +1,20 @@
 class ClaimReview < ApplicationRecord
   belongs_to :media_review, optional: true, class_name: "MediaReview"
+  belongs_to :claim_review_author, optional: false, class_name: "ClaimReviewAuthor"
 
   include PgSearch::Model
   multisearchable against: [:claim_reviewed, :item_reviewed]
 
-  before_create do |claim_review|
-    if claim_review.author["name"].nil?
-      claim_review.author["author"] = claim_review.author["url"]
-    end
+  before_validation do |claim_review|
+    # Migrate the claim review JSONB to a model instead
+    claim_review.author["author"] = claim_review.author["url"] if claim_review.author["name"].nil?
 
+    # See if there's a ClaimReviewAuthor already
+    self.claim_review_author = ClaimReviewAuthor.find_or_create_by(name: claim_review.author["name"], url: claim_review.author["url"])
+  end
+
+  before_create do |claim_review|
+    # We're keeping the original JSONB for the moment, though that can probably be dropped later
     duplicates = ClaimReview.find_duplicates(claim_review.claim_reviewed, claim_review.url, claim_review.author["name"])
     if duplicates.any?
       raise "Duplicate ClaimReview found: #{duplicates.map(&:id)}"
