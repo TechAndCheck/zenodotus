@@ -1,6 +1,6 @@
 class ClaimReview < ApplicationRecord
   belongs_to :media_review, optional: true, class_name: "MediaReview"
-  belongs_to :claim_review_author, optional: false, class_name: "ClaimReviewAuthor"
+  belongs_to :claim_review_author, class_name: "ClaimReviewAuthor"
 
   include PgSearch::Model
   multisearchable against: [:claim_reviewed, :item_reviewed]
