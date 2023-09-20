@@ -92,7 +92,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_19_010847) do
     t.jsonb "review_rating"
     t.uuid "media_review_id"
     t.uuid "external_unique_id"
-    t.bigint "claim_review_author_id"
+    t.uuid "claim_review_author_id"
     t.index ["claim_review_author_id"], name: "index_claim_reviews_on_claim_review_author_id"
     t.index ["media_review_id"], name: "index_claim_reviews_on_media_review_id"
   end
