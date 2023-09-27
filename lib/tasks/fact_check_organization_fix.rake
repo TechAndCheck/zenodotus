@@ -1,7 +1,7 @@
 namespace :fact_check_organization_fix do
   desc "Fix authors"
   task fix: :environment do |t, args|
-    progress_bar = ProgressBar.create(title: "ClaimReview Items", total: ClaimReview.count)
+    progress_bar = ProgressBar.create(title: "ClaimReview Items", total: ClaimReview.count, format: "%E %B %c/%C %p%% %t")
 
     ClaimReview.all.each do |claim_review|
       progress_bar.increment
@@ -13,7 +13,7 @@ namespace :fact_check_organization_fix do
       puts "Error saving org #{host})" unless claim_review.valid?
     end
 
-    progress_bar = ProgressBar.create(title: "MediaReview Items", total: MediaReview.count)
+    progress_bar = ProgressBar.create(title: "MediaReview Items", total: MediaReview.count, format: "%E %B %c/%C %p%% %t")
 
     MediaReview.all.each do |media_review|
       progress_bar.increment
