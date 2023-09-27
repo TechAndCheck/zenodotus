@@ -27,8 +27,8 @@ class MediaVault::ArchiveController < MediaVaultController
     )
 
     # Yes, this is inefficient...
-    @fact_check_organizations = ArchiveItem.all.collect { |item| item.media_review&.media_review_author }.uniq
-    @fact_check_organizations.sort_by! { |fco| fco.name.downcase }
+    @fact_check_organizations = ArchiveItem.all.collect { |item| item.media_review&.media_review_author }.uniq.compact
+    @fact_check_organizations.sort_by! { |fco| fco.name&.downcase }
     @fact_check_organizations = @fact_check_organizations.map { |fco| [fco.name, fco.id] }
     @fact_check_organizations.insert(0, ["", ""])
 
