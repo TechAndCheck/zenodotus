@@ -26,7 +26,10 @@ class MediaVault::ArchiveController < MediaVaultController
       items: ARCHIVE_ITEMS_PER_PAGE
     )
 
-    @fact_check_organizations = FactCheckOrganization.order("lower(name)").map { |fco| [fco.name, fco.id] }
+    # Yes, this is inefficient...
+    @fact_check_organizations = FactCheckOrganization.all.filter { |fco| fco.media_reviews.any? }
+    @fact_check_organizations.sort_by! { |fco| fco.name.downcase }
+    @fact_check_organizations = @fact_check_organizations.map { |fco| [fco.name, fco.id] }
     @fact_check_organizations.insert(0, ["", ""])
 
     respond_to do | format |
