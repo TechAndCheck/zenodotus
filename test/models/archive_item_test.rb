@@ -27,6 +27,8 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
   end
 
   test "creating an archive item with a contentUrl works" do
+    FactCheckOrganization.create(name: "Fact Crescendo", url: "https://cambodia.factcrescendo.com/")
+
     json = {
             "@context": "http://schema.org",
             "@type": "MediaReview",
@@ -61,6 +63,8 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
   end
 
   test "creating an archive item with partially invalid `mediaItemAppearance`s works still" do
+    FactCheckOrganization.create(name: "PolitiFact", url: "https://politifact.com")
+
     json = {
               "@context": "https://schema.org",
               "@type": " MediaReview",

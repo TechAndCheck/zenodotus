@@ -1,16 +1,23 @@
 class ClaimReview < ApplicationRecord
   belongs_to :media_review, optional: true, class_name: "MediaReview"
-  belongs_to :claim_review_author, optional: true, class_name: "ClaimReviewAuthor"
+  belongs_to :claim_review_author, optional: true, class_name: "FactCheckOrganization"
 
   include PgSearch::Model
   multisearchable against: [:claim_reviewed, :item_reviewed]
 
-  before_validation do |claim_review|
-    # Migrate the claim review JSONB to a model instead
-    claim_review.author["author"] = claim_review.author["url"] if claim_review.author["name"].nil?
+  validate :claim_review_author_must_be_recognized
 
+  before_validation do |claim_review|
     # See if there's a ClaimReviewAuthor already
-    self.claim_review_author = ClaimReviewAuthor.find_or_create_by(name: claim_review.author["name"], url: claim_review.author["url"])
+    host = URI.parse(claim_review.author["url"]).host
+    self.claim_review_author = FactCheckOrganization.find_by(host_name: host)
+  end
+
+  def claim_review_author_must_be_recognized
+    # Make sure that the author is included in our list of FactCheckOrganizations
+    if self.claim_review_author.nil?
+      errors.add(:claim_review_author, "must be created by a recognized Fact Check Organization")
+    end
   end
 
   before_create do |claim_review|

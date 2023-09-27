@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_19_010847) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_25_212847) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -74,13 +74,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_19_010847) do
     t.index ["submitter_id"], name: "index_archive_items_on_submitter_id"
   end
 
-  create_table "claim_review_authors", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.string "url", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "claim_reviews", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -140,6 +133,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_19_010847) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["facebook_post_id"], name: "index_facebook_videos_on_facebook_post_id"
+  end
+
+  create_table "fact_check_organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "url", null: false
+    t.string "host_name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "image_hashes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -218,7 +219,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_19_010847) do
     t.boolean "invalid_url", default: false
     t.string "media_url"
     t.string "original_media_review"
+    t.uuid "media_review_author_id"
     t.index ["archive_item_id"], name: "index_media_reviews_on_archive_item_id"
+    t.index ["media_review_author_id"], name: "index_media_reviews_on_media_review_author_id"
   end
 
   create_table "pg_search_documents", force: :cascade do |t|
@@ -413,6 +416,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_19_010847) do
   end
 
   add_foreign_key "api_keys", "users"
+  add_foreign_key "claim_reviews", "fact_check_organizations", column: "claim_review_author_id"
   add_foreign_key "claim_reviews", "media_reviews"
   add_foreign_key "facebook_images", "facebook_posts"
   add_foreign_key "facebook_videos", "facebook_posts"
@@ -420,6 +424,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_19_010847) do
   add_foreign_key "instagram_images", "instagram_posts"
   add_foreign_key "instagram_videos", "instagram_posts"
   add_foreign_key "media_reviews", "archive_items"
+  add_foreign_key "media_reviews", "fact_check_organizations", column: "media_review_author_id"
   add_foreign_key "screenshots", "archive_items"
   add_foreign_key "text_searches", "users"
   add_foreign_key "twitter_images", "tweets"

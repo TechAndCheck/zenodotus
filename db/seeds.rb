@@ -218,6 +218,11 @@ MediaReview.create(
   archive_item: archive_items[1]
 )
 
+fact_check_organization = FactCheckOrganization.create(
+  name: "realfact",
+  url: "https://realfact.com"
+)
+
 MediaReview.create(
   media_url: "https://www.foobar.com/1",
   original_media_link: "https://www.foobar.com/1_original_media_link",
@@ -262,10 +267,11 @@ ClaimReview.create(
   author: {
     "@type": "Organization",
     "name": "realfact",
-    "url": "https://www.realfact.com/"
+    "url": "https://www.realfact.com"
   },
   claim_reviewed: "The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide.",
   date_published: "2021-02-01",
+  claim_review_author: fact_check_organization,
   item_reviewed: {
     "@type": "Claim",
     "datePublished": "2021-01-30",

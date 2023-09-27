@@ -6,6 +6,7 @@ export default class extends Controller {
     'timestamp',
     'captionContent',
     'captionToggler',
+    'organizationFilter',
   ]
 
   static values = { captionCollapseMode: String }
@@ -29,5 +30,12 @@ export default class extends Controller {
         // eslint-disable-next-line no-console
         console.error('media-vault--archive#toggleCaption called unexpectedly.')
     }
+  }
+
+  filterResultsByOrganization() {
+    let orgValue = this.organizationFilterTarget.value
+    console.log('filterResultsByOrganization called for ' + orgValue)
+
+    window.location = '/dashboard?organization_id=' + orgValue
   }
 }

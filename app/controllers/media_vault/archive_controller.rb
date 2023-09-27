@@ -11,14 +11,23 @@ class MediaVault::ArchiveController < MediaVaultController
 
   ARCHIVE_ITEMS_PER_PAGE = 16
 
-  # It's the index, list all the archived items
+  # It's the index, list all the archived items,
   sig { void }
   def index
+    unless params[:organization_id].blank?
+      @organization = FactCheckOrganization.find(params[:organization_id])
+    end
+
+    archive_items = @organization.nil? ? ArchiveItem : @organization.archive_items
+
     @pagy_archive_items, @archive_items = pagy(
-      ArchiveItem.includes(:media_review, { archivable_item: [:author, :images, :videos] }).order("created_at DESC"),
+      archive_items.includes(:media_review, { archivable_item: [:author, :images, :videos] }).order("created_at DESC"),
       page_param: :p,
       items: ARCHIVE_ITEMS_PER_PAGE
     )
+
+    @fact_check_organizations = FactCheckOrganization.order("lower(name)").map { |fco| [fco.name, fco.id] }
+    @fact_check_organizations.insert(0, ["", ""])
 
     respond_to do | format |
       format.html { render "index" }

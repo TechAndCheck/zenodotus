@@ -13,6 +13,7 @@ class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     host! Figaro.env.MEDIA_VAULT_HOST
+    FactCheckOrganization.create!(name: "PolitiFact", url: "http://www.politifact.com")
 
     @@media_review_json = {
       "@context": "https://schema.org",

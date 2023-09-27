@@ -80,6 +80,8 @@ class ScrapeTest < ActiveSupport::TestCase
       scrape_type: :instagram
     })
 
+    FactCheckOrganization.create(name: "realfact_7", url: "https://realfact.com")
+
     MediaReview.create(
       original_media_link: "https://www.instagram.com/p/CBcqOkyDDH8/",
       date_published: "2021-02-03",
@@ -118,15 +120,18 @@ class ScrapeTest < ActiveSupport::TestCase
       scrape_type: :instagram
     })
 
-    media_review = MediaReview.create(
+    random_number = rand(10000)
+    FactCheckOrganization.create!(name: "realfact_#{random_number}", url: "https://www.realfact.com/")
+
+    media_review = MediaReview.create!(
       media_url: "https://www.instagram.com/p/not_found/",
       original_media_link: "https://www.instagram.com/p/not_found/",
       date_published: "2021-02-03",
       url: "https://www.realfact.com/factchecks/2021/feb/03/starwars_57",
       author: {
         "@type": "Organization",
-        "name": "realfact_57",
-        "url": "https://realfact.com"
+        "name": "realfact_#{random_number}",
+        "url": "https://www.realfact.com"
       },
       media_authenticity_category: "TransformedContent",
       original_media_context_description: "Star Wars Ipsum",

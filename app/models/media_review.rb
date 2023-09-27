@@ -5,6 +5,7 @@ class MediaReview < ApplicationRecord
   multisearchable against: :original_media_context_description
 
   belongs_to :archive_item, optional: true, class_name: "ArchiveItem"
+  belongs_to :media_review_author, optional: true, class_name: "FactCheckOrganization"
   has_many :claim_reviews, foreign_key: :media_review_id, class_name: "ClaimReview", dependent: :destroy
 
   validates :author, presence: true
@@ -12,6 +13,20 @@ class MediaReview < ApplicationRecord
   validates :item_reviewed, presence: true
   validates :media_authenticity_category, presence: true
   validates :url, presence: true
+  validate  :media_review_author_must_be_recognized
+
+  before_validation do |media_review|
+    # See if there's a ClaimReviewAuthor already
+    host = URI.parse(media_review.author["url"]).host
+    self.media_review_author = FactCheckOrganization.find_by(host_name: host)
+  end
+
+  def media_review_author_must_be_recognized
+    # Make sure that the author is included in our list of FactCheckOrganizations
+    if self.media_review_author.nil?
+      errors.add(:media_review_author, "must be created by a recognized Fact Check Organization")
+    end
+  end
 
   before_create do |media_review|
     duplicates = MediaReview.find_duplicates(media_review.url, media_review.author["name"])

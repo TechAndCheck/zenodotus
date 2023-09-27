@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ClaimReviewAuthorTest < ActiveSupport::TestCase
+class FactCheckOrganizationTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -5,6 +5,8 @@ class MediaReviewTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
   def before_all
+    fact_check_organization = FactCheckOrganization.create(name: "realfact_5", url: "https://realfact.com")
+
     @media_review_kwargs = {
       media_url: "https://www.foobar.com/1",
       original_media_link: "https://www.foobar.com/1_original_media_link",
@@ -15,6 +17,7 @@ class MediaReviewTest < ActiveSupport::TestCase
         "name": "realfact_5",
         "url": "https://realfact.com"
       },
+      media_review_author: fact_check_organization,
       media_authenticity_category: "TransformedContent",
       original_media_context_description: "Star Wars Ipsum",
       item_reviewed: {
@@ -76,6 +79,8 @@ class MediaReviewTest < ActiveSupport::TestCase
   # Basically, if you're messing around with `media_review_blueprinter` and this breaks, then just fix
   # it up manually, if you haven't been in that file something went wrong and you should fix the regression.
   test "media review blueprinter output has required characteristics" do
+    FactCheckOrganization.create(name: "realfact_5", url: "https://realfact.com")
+
     media_review = MediaReview.create!(**@media_review_kwargs)
     expected_copy = @expected.deep_dup
     expected_copy["id"] = media_review.id
@@ -101,6 +106,8 @@ class MediaReviewTest < ActiveSupport::TestCase
   # if there was more than one element in the array the blueprinter would break (which is actually
   # counter intuitive, but here we are), so I'm keeping it for now.
   test "can serialize mediareview with empty mediaItemAppearance array" do
+    FactCheckOrganization.create(name: "realfact_5", url: "https://realfact.com")
+
     kwargs_copy = @media_review_kwargs.deep_dup
     kwargs_copy[:item_reviewed][:mediaItemAppearance] = []
 
@@ -111,12 +118,16 @@ class MediaReviewTest < ActiveSupport::TestCase
   end
 
   test "can check if orphaned" do
+    FactCheckOrganization.create(name: "realfact_5", url: "https://realfact.com")
+
     kwargs_copy = @media_review_kwargs.deep_dup
     media_review = MediaReview.create!(**kwargs_copy)
     assert media_review.orphaned?
   end
 
   test "can get humanized media authenticity categories" do
+    FactCheckOrganization.create(name: "realfact_5", url: "https://realfact.com")
+
     media_review = MediaReview.create!(**@media_review_kwargs)
     assert_equal "Transformed", media_review.media_authenticity_category_humanized
 
@@ -137,15 +148,27 @@ class MediaReviewTest < ActiveSupport::TestCase
   end
 
   test "can find duplicates" do
+    FactCheckOrganization.create(name: "realfact_5", url: "https://realfact.com")
+
     media_review = MediaReview.create!(**@media_review_kwargs)
     assert_not MediaReview.find_duplicates(media_review.url, media_review.author["name"]).empty?
   end
 
   test "duplicate raises error" do
+    FactCheckOrganization.create(name: "realfact_5", url: "https://realfact.com")
+
     MediaReview.create!(**@media_review_kwargs)
 
     assert_raises do
       MediaReview.create!(**@media_review_kwargs)
     end
+  end
+
+  test "does not get created if the organization is not in our list" do
+    media_review_kwargs = @media_review_kwargs.deep_dup
+    media_review_kwargs[:author]["url"] = "https://www.fake.com"
+
+    media_review = MediaReview.create(media_review_kwargs)
+    assert media_review.errors.any?
   end
 end

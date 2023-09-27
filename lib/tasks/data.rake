@@ -141,6 +141,57 @@ namespace :data do
     end
   end
 
+  desc "Populate Fact Checking Organizations from our Google Sheets"
+  task populate_fco: :environment do |t, args|
+    if ENV["RAILS_ENV"] == "production" && ENV["HONEYBADGER_API_KEY_GOOGLE_CHECK_IN_ADDRESS"].blank? == false
+      # Check in with Honeybadger
+      `curl #{ENV["HONEYBADGER_API_KEY_GOOGLE_CHECK_IN_ADDRESS"]} &> /dev/null`
+    end
+
+    file_name = "google-feed-#{Time.new.strftime("%Y%m%d-%k:%M:%S")}"
+    downloaded_file = File.open file_name, "wb"
+    request = Typhoeus::Request.new(
+      "https://sheets.googleapis.com/v4/spreadsheets/10nFzJbHbPho7_kMFCRoX7VsQLSNIB3EaUh4ITDlsV0M/values/Fact-checking%20sites?alt=json&key=AIzaSyBgCpWxIarQJSW5AuMxjIRIgLSHeDCcC-U"
+    )
+
+    request.on_headers do |response|
+      raise "Request failed" if response.code != 200
+    end
+
+    request.on_body { |chunk| downloaded_file.write(chunk) }
+
+    request.on_complete do |response|
+      downloaded_file.close
+      j = JSON.parse(File.read(file_name))
+
+      # This is a weird thing where it's a JSON doc that's sorta like a CSV
+      # It's an array of arrays, but the first array is the headers
+
+      # Get the headers
+      headers = j["values"].first
+      headers = headers.map { |h| h.squish.downcase.tr(" ", "_").gsub(/[^[\w]]/, "") }
+
+      # Go through all the rows
+      organizations = j["values"][1..].map do |row|
+        # Create a hash of the row
+        row_hash = {}
+        row.each_with_index { |value, index| row_hash[headers[index]] = value }
+        row_hash
+      end
+
+      puts "Importing #{organizations.count} Fact Checking Organizations..."
+
+      organizations.each do |organization|
+        next if FactCheckOrganization.exists?(url: organization["url"].squish)
+        FactCheckOrganization.create!({ name: organization["name"].squish, url: organization["url"].squish })
+      rescue URI::InvalidURIError
+        # eat this
+      end
+    end
+
+    request.run
+  end
+
   #   desc "load sample data"
   #   task load_samples: :environment do |t, args|
   #     number_of_lines = `wc -l test_urls.txt`.to_i

@@ -14,6 +14,8 @@ class FactCheckInsightsControllerTest < ActionDispatch::IntegrationTest
     FileUtils.mkdir_p("tmp/")
 
     random_number = rand(100000)
+    fco = FactCheckOrganization.create(name: "realfact_#{random_number}", url: "https://realfact.com")
+
     media_review = MediaReview.create!(
       media_url: "https://www.foobar.com/1",
       original_media_link: "https://www.foobar.com/1_original_media_link",
@@ -60,8 +62,8 @@ class FactCheckInsightsControllerTest < ActionDispatch::IntegrationTest
     ClaimReview.create!(
       author: {
         "@type": "Organization",
-        "name": "realfact_#{random_number}",
-        "url": "https://www.realfact.com/"
+        "name": fco.name,
+        "url": fco.url
       },
       claim_reviewed: "The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide.",
       date_published: "2021-02-01",
