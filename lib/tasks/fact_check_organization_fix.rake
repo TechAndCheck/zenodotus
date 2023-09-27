@@ -9,7 +9,8 @@ namespace :fact_check_organization_fix do
       fact_check_organization = FactCheckOrganization.find_by(host_name: host)
       next if fact_check_organization.nil?
 
-      claim_review.update!(claim_review_author: fact_check_organization)
+      claim_review.update(claim_review_author: fact_check_organization)
+      puts "Error saving org #{host})" unless claim_review.valid?
     end
 
     progress_bar = ProgressBar.create(title: "MediaReview Items", total: MediaReview.count)
@@ -20,7 +21,8 @@ namespace :fact_check_organization_fix do
       fact_check_organization = FactCheckOrganization.find_by(host_name: host)
       next if fact_check_organization.nil?
 
-      media_review.update!(media_review_author: fact_check_organization)
+      media_review.update(media_review_author: fact_check_organization)
+      puts "Error saving org #{host})" unless  media_review.valid?
     end
   end
 end
