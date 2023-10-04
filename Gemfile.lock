@@ -34,9 +34,9 @@ GIT
 
 GIT
   remote: https://github.com/cguess/birdsong
-  revision: a0363b1a917e2c4ec9083ac71c7ac800cfb8ade1
+  revision: 5f64be7f6617892ba79f3c646e5f0600beff69b8
   specs:
-    birdsong (0.1.0)
+    birdsong (0.2.0)
       oauth (~> 0.5.6)
       typhoeus (~> 1.4.0)
 
@@ -220,7 +220,7 @@ GEM
       concurrent-ruby (~> 1.1)
       webrick (~> 1.7)
       websocket-driver (>= 0.6, < 0.8)
-    ffi (1.15.5)
+    ffi (1.16.3)
     figaro (1.2.0)
       thor (>= 0.14.0, < 2)
     globalid (1.1.0)
@@ -545,7 +545,7 @@ PLATFORMS
 
 DEPENDENCIES
   aws-sdk-s3
-  birdsong (= 0.1.0)!
+  birdsong (= 0.2.0)!
   blueprinter
   bootsnap (>= 1.4.4)
   bullet
