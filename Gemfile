@@ -132,9 +132,9 @@ gem "streamio-ffmpeg"
 # gem "birdsong", "0.1.0", path: "~/Repositories/birdsong" # twitter
 
 # gem "zorki", "0.1.0", git: "https://github.com/cguess/zorki"
-gem "birdsong", "0.2.0", git: "https://github.com/cguess/birdsong"
-gem "forki", git: "https://github.com/TechAndCheck/forki"
-gem "youtubearchiver", git: "https://github.com/TechAndCheck/YoutubeArchiver"
+# gem "birdsong", "0.2.0", git: "https://github.com/cguess/birdsong"
+# gem "forki", git: "https://github.com/TechAndCheck/forki"
+# gem "youtubearchiver", git: "https://github.com/TechAndCheck/YoutubeArchiver"
 
 gem "terrapin"
 

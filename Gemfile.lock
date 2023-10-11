@@ -1,23 +1,4 @@
 GIT
-  remote: https://github.com/TechAndCheck/YoutubeArchiver
-  revision: ac1fabdefadeb660c178cf9d3a6962a8cc2166fd
-  specs:
-    youtubearchiver (0.1.0)
-      terrapin (~> 0.6)
-      typhoeus (~> 1.4)
-
-GIT
-  remote: https://github.com/TechAndCheck/forki
-  revision: fe881bcab88512d15cfbbd95467272e276e6d69d
-  specs:
-    forki (0.2.3)
-      apparition
-      capybara
-      oj
-      selenium-webdriver
-      typhoeus
-
-GIT
   remote: https://github.com/cedarcode/webauthn-ruby
   revision: d7022a9ed5f3050e908ff846fe6ae8143a16fbbe
   tag: v3.0.0.alpha2
@@ -31,14 +12,6 @@ GIT
       openssl (>= 2.2, < 3.1)
       safety_net_attestation (~> 0.4.0)
       tpm-key_attestation (~> 0.11.0)
-
-GIT
-  remote: https://github.com/cguess/birdsong
-  revision: 5f64be7f6617892ba79f3c646e5f0600beff69b8
-  specs:
-    birdsong (0.2.0)
-      oauth (~> 0.5.6)
-      typhoeus (~> 1.4.0)
 
 GIT
   remote: https://github.com/cguess/discombobulate
@@ -126,9 +99,6 @@ GEM
     addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
     android_key_attestation (0.3.0)
-    apparition (0.6.0)
-      capybara (~> 3.13, < 4)
-      websocket-driver (>= 0.6.5)
     ast (2.4.2)
     awrence (1.2.1)
     aws-eventstream (1.2.0)
@@ -293,8 +263,6 @@ GEM
       racc (~> 1.4)
     nokogiri (1.15.4-x86_64-linux)
       racc (~> 1.4)
-    oauth (0.5.14)
-    oj (3.16.1)
     openssl (3.0.2)
     openssl-signature_algorithm (1.2.1)
       openssl (> 2.0, < 3.1)
@@ -545,7 +513,6 @@ PLATFORMS
 
 DEPENDENCIES
   aws-sdk-s3
-  birdsong (= 0.2.0)!
   blueprinter
   bootsnap (>= 1.4.4)
   bullet
@@ -561,7 +528,6 @@ DEPENDENCIES
   eikon
   ferrum (~> 0.11)
   figaro
-  forki!
   hiredis
   honeybadger (~> 5.2)
   hotwire-livereload
@@ -616,7 +582,6 @@ DEPENDENCIES
   webauthn!
   webdrivers
   yard
-  youtubearchiver!
   zelkova
 
 RUBY VERSION
