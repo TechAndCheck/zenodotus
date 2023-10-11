@@ -2,6 +2,17 @@ name: Ruby
 
 on: [push,pull_request]
 
+env:
+  KEY_ENCRYPTION_SALT: "1234567890"
+  HYPATIA_SERVER_URL: "https://www.example.com"
+  HYPATIA_AUTH_KEY: "1234567890"
+  FACT_CHECK_INSIGHTS_HOST: "factcheckinsights.org"
+  MEDIA_VAULT_HOST: "vault.factcheckinsights.org"
+  AUTH_BASE_HOST: "factcheckinsights.org"
+  MAIL_DOMAIN: "factcheckinsights.org"
+  MAILGUN_API_KEY: "1234567890"
+  USE_S3_DEV_TEST: "false"
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -18,7 +29,40 @@ jobs:
       run: bundle exec rubocop
   tests:
     runs-on: ubuntu-latest
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+      redis:
+        # Docker Hub image
+        image: redis
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps port 6379 on service container to the host
+          - 6379:6379
+
     steps:
+    - uses: actions/checkout@v3
+    - uses: FedericoCarboni/setup-ffmpeg@v2
     - uses: actions/checkout@v2
     - name: Install CuRL
       run: sudo apt-get install libcurl4-openssl-dev
@@ -32,5 +76,9 @@ jobs:
         redis-version: 7
     - name: Install dependencies
       run: bundle install --jobs 4 --retry 3 --deployment
+    - name: Setup database
+      run: bundle exec rails db:setup
+    - name: Precompile assets
+      run: bundle exec rake assets:precompile
     - name: Run tests
       run: bundle exec rails test
