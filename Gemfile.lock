@@ -67,6 +67,12 @@ GIT
       content_disposition (~> 1.0)
       down (~> 5.1)
 
+GIT
+  remote: https://github.com/taf2/curb
+  revision: 13144ec5d50ffea0460298cc5de8a0b33db78d22
+  specs:
+    curb (1.0.5)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -198,7 +204,6 @@ GEM
     country_select (8.0.0)
       countries (~> 5.0)
     crass (1.0.6)
-    curb (1.0.5)
     dartsass-rails (0.4.0)
       railties (>= 6.0.0)
     date (3.3.3)
@@ -581,7 +586,7 @@ DEPENDENCIES
   capybara (>= 3.26)
   comma (~> 4.7.0)
   country_select (~> 8.0)
-  curb
+  curb!
   dartsass-rails (~> 0.4.0)
   debug
   decombobulate!

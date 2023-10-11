@@ -213,8 +213,8 @@ gem "decombobulate", git: "https://github.com/cguess/discombobulate"
 # To zip files easily for export upload
 gem "rubyzip"
 
-# No fucking clue why this is necessary :-)
-gem "curb"
+# Seems as if terrapin needs this
+gem "curb", git: "https://github.com/taf2/curb"
 
 # For some reason this is now necessary?
 gem "debug"
