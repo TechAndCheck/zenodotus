@@ -8,7 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install CuRL
-      run: sudo apt-get install curl
+      run: sudo apt-get install libcurl
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
