@@ -78,5 +78,7 @@ jobs:
       run: bundle install --jobs 4 --retry 3 --deployment
     - name: Setup database
       run: bundle exec rails db:setup
+    - name: Precompile assets
+      run: bundle exec rake assets:precompile
     - name: Run tests
       run: bundle exec rails test
