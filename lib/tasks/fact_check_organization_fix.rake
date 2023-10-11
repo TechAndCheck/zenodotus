@@ -6,7 +6,7 @@ namespace :fact_check_organization_fix do
     ClaimReview.all.each do |claim_review|
       progress_bar.increment
       host = URI.parse(claim_review.url).host
-      fact_check_organization = FactCheckOrganization.find_by(host_name: host)
+      fact_check_organization = FactCheckOrganization.where(host_name: host).order(name: :asc)&.first
       next if fact_check_organization.nil?
 
       claim_review.update(claim_review_author: fact_check_organization)
