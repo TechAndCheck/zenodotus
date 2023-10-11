@@ -215,3 +215,6 @@ gem "rubyzip"
 
 # No fucking clue why this is necessary :-)
 gem "curb"
+
+# For some reason this is now necessary?
+gem "debug"
