@@ -2,6 +2,17 @@ name: Ruby
 
 on: [push,pull_request]
 
+env:
+  KEY_ENCRYPTION_SALT: "1234567890"
+  HYPATIA_SERVER_URL: "https://www.example.com"
+  HYPATIA_AUTH_KEY: "1234567890"
+  FACT_CHECK_INSIGHTS_HOST: "factcheckinsights.org"
+  MEDIA_VAULT_HOST: "vault.factcheckinsights.org"
+  AUTH_BASE_HOST: "factcheckinsights.org"
+  MAIL_DOMAIN: "factcheckinsights.org"
+  MAILGUN_API_KEY: "1234567890"
+  USE_S3_DEV_TEST: "false"
+  
 jobs:
   lint:
     runs-on: ubuntu-latest
