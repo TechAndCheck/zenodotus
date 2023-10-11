@@ -20,7 +20,6 @@ After starting the app, you will get to Insights via `http://www.factcheckinsigh
 
 To run Zenodotus, you'll need to set the following environment variables. Ask a dev on the team to provide you access to them.
 
-- `TWITTER_BEARER_TOKEN`
 - `HYPATIA_SERVER_URL`
 - `HYPATIA_AUTH_KEY`
 - `secret_key_base` (Devise secret)

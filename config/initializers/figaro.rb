@@ -1,5 +1,3 @@
-Figaro.require_keys("TWITTER_BEARER_TOKEN")
-
 # This is the salt value used to encrypt various things, you can generate one by running
 # `rails secret`
 Figaro.require_keys("KEY_ENCRYPTION_SALT")
