@@ -75,10 +75,22 @@ class Scrape < ApplicationRecord
     if response.empty? == false && response.first.has_key?("status") # `status` isn't returned if it's successful, should consider fixing that at some point
       case response.first["status"]
       when "removed"
+        logger.debug "----------------------------------"
+        logger.debug "Post removed at #{self.url}"
+        logger.debug "----------------------------------"
+
         removed = true
       when "error"
+        logger.debug "----------------------------------"
+        logger.debug "Post Errored at #{self.url}"
+        logger.debug "----------------------------------"
+
         errored = true
       else
+        logger.debug "----------------------------------"
+        logger.debug "Post Errored at #{self.url}"
+        logger.debug "----------------------------------"
+
         errored = true # For later in case the option for `status` could be something else
       end
     end
