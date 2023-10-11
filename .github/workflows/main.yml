@@ -61,6 +61,8 @@ jobs:
           - 6379:6379
 
     steps:
+    - uses: actions/checkout@v3
+    - uses: FedericoCarboni/setup-ffmpeg@v2
     - uses: actions/checkout@v2
     - name: Install CuRL
       run: sudo apt-get install libcurl4-openssl-dev
