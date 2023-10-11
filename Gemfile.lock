@@ -1,4 +1,23 @@
 GIT
+  remote: https://github.com/TechAndCheck/YoutubeArchiver
+  revision: 44af04efde6c019a7215d0421e01af030d2ffd3e
+  specs:
+    youtubearchiver (0.1.1)
+      terrapin (~> 0.6)
+      typhoeus (~> 1.4)
+
+GIT
+  remote: https://github.com/TechAndCheck/forki
+  revision: fe881bcab88512d15cfbbd95467272e276e6d69d
+  specs:
+    forki (0.2.3)
+      apparition
+      capybara
+      oj
+      selenium-webdriver
+      typhoeus
+
+GIT
   remote: https://github.com/cedarcode/webauthn-ruby
   revision: d7022a9ed5f3050e908ff846fe6ae8143a16fbbe
   tag: v3.0.0.alpha2
@@ -14,10 +33,30 @@ GIT
       tpm-key_attestation (~> 0.11.0)
 
 GIT
+  remote: https://github.com/cguess/birdsong
+  revision: ad77687eedbc97b02ff3dab3703187f3f76bc69a
+  specs:
+    birdsong (0.2.3)
+      oauth (~> 0.5.6)
+      typhoeus (~> 1.4.0)
+
+GIT
   remote: https://github.com/cguess/discombobulate
   revision: b1df2fa9697c379aa5e5543c7f63794f26149ef4
   specs:
     decombobulate (0.1.4)
+
+GIT
+  remote: https://github.com/cguess/zorki
+  revision: e2e452206a2fdcf5d4c11b383606be4c76d3cbfa
+  specs:
+    zorki (0.1.6)
+      apparition
+      capybara
+      oj
+      selenium-devtools
+      selenium-webdriver
+      typhoeus
 
 GIT
   remote: https://github.com/shrinerb/shrine
@@ -99,6 +138,9 @@ GEM
     addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
     android_key_attestation (0.3.0)
+    apparition (0.6.0)
+      capybara (~> 3.13, < 4)
+      websocket-driver (>= 0.6.5)
     ast (2.4.2)
     awrence (1.2.1)
     aws-eventstream (1.2.0)
@@ -263,6 +305,8 @@ GEM
       racc (~> 1.4)
     nokogiri (1.15.4-x86_64-linux)
       racc (~> 1.4)
+    oauth (0.5.14)
+    oj (3.16.1)
     openssl (3.0.2)
     openssl-signature_algorithm (1.2.1)
       openssl (> 2.0, < 3.1)
@@ -396,6 +440,8 @@ GEM
     safe_type (1.1.1)
     safety_net_attestation (0.4.0)
       jwt (~> 2.0)
+    selenium-devtools (0.118.0)
+      selenium-webdriver (~> 4.2)
     selenium-webdriver (4.13.1)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
@@ -513,6 +559,7 @@ PLATFORMS
 
 DEPENDENCIES
   aws-sdk-s3
+  birdsong!
   blueprinter
   bootsnap (>= 1.4.4)
   bullet
@@ -528,6 +575,7 @@ DEPENDENCIES
   eikon
   ferrum (~> 0.11)
   figaro
+  forki!
   hiredis
   honeybadger (~> 5.2)
   hotwire-livereload
@@ -582,7 +630,9 @@ DEPENDENCIES
   webauthn!
   webdrivers
   yard
+  youtubearchiver!
   zelkova
+  zorki!
 
 RUBY VERSION
    ruby 3.1.4p223
