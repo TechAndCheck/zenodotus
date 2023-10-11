@@ -74,5 +74,7 @@ jobs:
         redis-version: 7
     - name: Install dependencies
       run: bundle install --jobs 4 --retry 3 --deployment
+    - name: Setup database
+      run: rails db:setup
     - name: Run tests
       run: bundle exec rails test
