@@ -18,7 +18,7 @@ namespace :fact_check_organization_fix do
     MediaReview.all.each do |media_review|
       progress_bar.increment
       host = URI.parse(media_review.url).host
-      fact_check_organization = FactCheckOrganization.find_by(host_name: host).order(name: :asc)&.first
+      fact_check_organization = FactCheckOrganization.where(host_name: host).order(name: :asc)&.first
       next if fact_check_organization.nil?
 
       media_review.update(media_review_author: fact_check_organization)
