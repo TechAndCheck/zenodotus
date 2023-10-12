@@ -23,6 +23,7 @@ class ArchiveItem < ApplicationRecord
   def self.create_from_media_review(media_review, external_unique_id)
     # We want to make sure that we have an actual link to archive first just in case
     url = nil
+
     if media_review["itemReviewed"].has_key?("contentUrl")
       url = media_review["itemReviewed"]["contentUrl"]
     elsif media_review["itemReviewed"].has_key?("mediaItemAppearance")
@@ -44,10 +45,14 @@ class ArchiveItem < ApplicationRecord
     # which will attach this MediaReview to the ArchiveItem
 
     media_review_object = MediaReview.create_or_update_from_media_review_hash(media_review, external_unique_id, false)
+    logger.debug "Created media review object with id #{media_review_object}"
     media_review_object.scrape
 
+
+    logger.debug "Checking if we can create claim review"
     if media_review.include?("associatedClaimReview")
-      ClaimReview.create!(
+      logger.debug "Sure enough, we're going to try!"
+      cr = ClaimReview.create!(
         date_published: media_review["associatedClaimReview"]["datePublished"],
         url: media_review["associatedClaimReview"]["url"],
         author: media_review["associatedClaimReview"]["author"],
@@ -56,6 +61,11 @@ class ArchiveItem < ApplicationRecord
         item_reviewed: media_review["associatedClaimReview"]["itemReviewed"],
         media_review: media_review_object
       )
+
+      logger.debug "Created ClaimeReview with id #{cr.id} for media review with id #{media_review_object.id}"
+    else
+      logger.debug "Hrm, we can't, let's check the json shall we?"
+      logger.debug media_review.inspect
     end
 
     media_review_object
