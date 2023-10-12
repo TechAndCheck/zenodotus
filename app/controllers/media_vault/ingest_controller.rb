@@ -111,6 +111,9 @@ class MediaVault::IngestController < MediaVaultController
     review_json = JSON.parse(typed_params.review_json)
     external_unique_id = typed_params.external_unique_id
 
+    logger.info "Receiving review submitted"
+    logger.info review_json
+
     raise ApiErrors::JSONValidationError.error(review_json) unless review_json.key?("@type")
 
     case review_json["@type"]
@@ -236,11 +239,16 @@ class MediaVault::IngestController < MediaVaultController
                should_update: T::Boolean
               ).returns(Hash) }
   def archive_from_media_review(media_review_json, external_unique_id, should_update = false)
-    return {
-      error_code: ApiErrors::JSONValidationError.code,
-      error: ApiErrors::JSONValidationError.message,
-      failures: media_review_json
-    } unless validate_media_review(media_review_json)
+    unless validate_media_review(media_review_json)
+      return {
+        error_code: ApiErrors::JSONValidationError.code,
+        error: ApiErrors::JSONValidationError.message,
+        failures: media_review_json
+      }
+    else
+      logger.info "Validation failed for json"
+      logger.info media_review_json
+    end
 
     if should_update
       media_review = MediaReview.create_or_update_from_media_review_hash(media_review_json, external_unique_id, should_update)

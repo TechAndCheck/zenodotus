@@ -24,6 +24,8 @@ class ArchiveItem < ApplicationRecord
     # We want to make sure that we have an actual link to archive first just in case
     url = nil
 
+    logger.info "Starting to create media review"
+
     if media_review["itemReviewed"].has_key?("contentUrl")
       url = media_review["itemReviewed"]["contentUrl"]
     elsif media_review["itemReviewed"].has_key?("mediaItemAppearance")
