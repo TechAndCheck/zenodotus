@@ -247,7 +247,7 @@ class MediaVault::IngestController < MediaVaultController
       }
     else
       logger.info "Validation failed for json"
-      logger.info media_review_json
+      logger.info validate_media_review(media_review_json)
     end
 
     if should_update
