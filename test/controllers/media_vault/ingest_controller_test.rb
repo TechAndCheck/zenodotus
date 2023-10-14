@@ -267,4 +267,33 @@ class MediaVault::IngestControllerTest < ActionDispatch::IntegrationTest
     claim_review_object.reload
     assert_equal "https://www.foobar.com/", claim_review_object.url
   end
+
+  test "Submitting a Media Review creates a Claim Review" do
+    starting_claim_review_count = ClaimReview.count
+
+    post media_vault_ingest_api_raw_path, params: { review_json: @@media_review_json, external_unique_id: SecureRandom.uuid, api_key: "123456789" }, as: :json
+    assert_response 200
+
+    assert_equal starting_claim_review_count + 1, ClaimReview.count
+  end
+
+  test "Submitting a Media Review that already exists but doesn't have Claim Review creates a Claim Review" do
+    starting_media_review_count = MediaReview.count
+    external_unique_id = SecureRandom.uuid
+
+    media_review_json_dup = @@media_review_json.deep_dup
+    media_review_json_dup["associatedClaimReview"] = ""
+    post media_vault_ingest_api_raw_path, params: { review_json: media_review_json_dup, external_unique_id: external_unique_id, api_key: "123456789" }, as: :json
+
+    assert_equal starting_media_review_count + 1, MediaReview.count
+
+    ###
+
+    starting_claim_review_count = ClaimReview.count
+
+    post media_vault_ingest_api_raw_path, params: { review_json: @@media_review_json, external_unique_id: external_unique_id, api_key: "123456789" }, as: :json
+    assert_response 200
+
+    assert_equal starting_claim_review_count + 1, ClaimReview.count
+  end
 end

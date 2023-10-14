@@ -240,14 +240,14 @@ class MediaVault::IngestController < MediaVaultController
               ).returns(Hash) }
   def archive_from_media_review(media_review_json, external_unique_id, should_update = false)
     unless validate_media_review(media_review_json)
+      logger.info "Validation failed for json"
+      logger.info validate_media_review(media_review_json)
+
       return {
         error_code: ApiErrors::JSONValidationError.code,
         error: ApiErrors::JSONValidationError.message,
         failures: media_review_json
       }
-    else
-      logger.info "Validation failed for json"
-      logger.info validate_media_review(media_review_json)
     end
 
     if should_update

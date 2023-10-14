@@ -49,26 +49,6 @@ class ArchiveItem < ApplicationRecord
     logger.info "Created media review object with id #{media_review_object}"
     media_review_object.scrape
 
-
-    logger.debug "Checking if we can create claim review"
-    if media_review.include?("associatedClaimReview")
-      logger.info "Sure enough, we're going to try!"
-      cr = ClaimReview.create!(
-        date_published: media_review["associatedClaimReview"]["datePublished"],
-        url: media_review["associatedClaimReview"]["url"],
-        author: media_review["associatedClaimReview"]["author"],
-        claim_reviewed: media_review["associatedClaimReview"]["claimReviewed"],
-        review_rating: media_review["associatedClaimReview"]["reviewRating"],
-        item_reviewed: media_review["associatedClaimReview"]["itemReviewed"],
-        media_review: media_review_object
-      )
-
-      logger.info "Created ClaimeReview with id #{cr.id} for media review with id #{media_review_object.id}"
-    else
-      logger.info "Hrm, we can't, let's check the json shall we?"
-      logger.info media_review.inspect
-    end
-
     media_review_object
   end
 

@@ -59,8 +59,8 @@ class MediaReview < ApplicationRecord
     original_media_link = media_review_hash.has_key?("originalMediaLink") ? media_review_hash["originalMediaLink"] : nil
 
     if should_update
-      existing_media_review = MediaReview.where(external_unique_id: external_unique_id).first
-      existing_media_review.update!(
+      mr = MediaReview.where(external_unique_id: external_unique_id).first
+      mr.update!(
         media_url: media_review_hash["itemReviewed"]["contentUrl"],
         original_media_link: original_media_link,
         media_authenticity_category: media_review_hash["mediaAuthenticityCategory"],
@@ -70,8 +70,7 @@ class MediaReview < ApplicationRecord
         author: media_review_hash["author"],
         item_reviewed: media_review_hash["itemReviewed"]
       )
-      existing_media_review.reload
-      existing_media_review
+      mr.reload
     else
       mr = MediaReview.create!(
         media_url: media_review_hash["itemReviewed"]["contentUrl"],
@@ -84,9 +83,45 @@ class MediaReview < ApplicationRecord
         author: media_review_hash["author"],
         item_reviewed: media_review_hash["itemReviewed"]
       )
-
-      mr
     end
+
+    logger.debug "Checking if we can create claim review"
+    if media_review_hash.include?("associatedClaimReview")
+      logger.info "Sure enough, we're going to try!"
+      # Try to find the claimReview already, so we don't duplicate
+
+      cr = ClaimReview.where(url: media_review_hash["associatedClaimReview"]["url"], claim_reviewed: media_review_hash["associatedClaimReview"]["claimReviewed"])
+
+      unless cr.empty?
+        cr = cr.first
+
+        logger.info "Found existing claim review with id #{cr.id}"
+        unless cr.media_review == mr
+          cr.media_review = mr
+          cr.save!
+        end
+
+        logger.info "Found ClaimeReview with id #{cr.id} for media review with id #{mr.id}"
+      else
+        cr = ClaimReview.create!(
+          date_published: media_review_hash["associatedClaimReview"]["datePublished"],
+          url: media_review_hash["associatedClaimReview"]["url"],
+          author: media_review_hash["associatedClaimReview"]["author"],
+          claim_reviewed: media_review_hash["associatedClaimReview"]["claimReviewed"],
+          review_rating: media_review_hash["associatedClaimReview"]["reviewRating"],
+          item_reviewed: media_review_hash["associatedClaimReview"]["itemReviewed"],
+          media_review: mr
+        )
+
+        logger.info "Created ClaimeReview with id #{cr.id} for media review with id #{mr.id}"
+      end
+
+    else
+      logger.info "Hrm, we can't, let's check the json shall we?"
+      logger.info media_review_hash.inspect
+    end
+
+    mr
   end
 
   sig { params(url: String, author_name: String).returns(T::Array[MediaReview]) }
