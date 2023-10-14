@@ -16,6 +16,9 @@
         "@type": {
           "type": "string"
         },
+        "originalMediaContextDescription": {
+          "type": "string"
+        },
         "datePublished": {
           "type": "string",
           "format": "date"
@@ -217,7 +220,7 @@
         "description": {
           "type": "string"
         },
-        "contentUrl": {
+        "accessedOnUrl": {
           "type": "string",
           "format": "uri",
           "qt-uri-protocols": [

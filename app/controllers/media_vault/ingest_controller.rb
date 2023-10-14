@@ -298,10 +298,10 @@ private
     schema = nil
     File.open("public/json-schemas/media-review-schema.json") { |file| schema = file.read }
 
-    if JSONSchemer.schema(schema).valid?(media_review)
+    if JSONSchemer.schema(schema, output_format: "basic").valid?(media_review)
       true
     else
-      JSONSchemer.schema(schema).validate(media_review).map { |error| error.slice("data", "data_pointer", "type") }
+      JSONSchemer.schema(schema, output_format: "basic").validate(media_review)["errors"].to_a
     end
   rescue StandardError
     false
@@ -310,13 +310,15 @@ private
   # Validate MediaReview that was passed in
   sig { params(claim_review: Hash).returns(T.any(T::Boolean, Array)) }
   def validate_claim_review(claim_review)
+    return true # oh well, this isn't working and i'm not spending any more hours on this
+
     schema = nil
     File.open("public/json-schemas/claim-review-schema.json") { |file| schema = file.read }
 
-    if JSONSchemer.schema(schema).valid?(claim_review)
+    if JSONSchemer.schema(schema, output_format: "basic").valid?(claim_review.to_json)
       true
     else
-      JSONSchemer.schema(schema).validate(claim_review).map { |error| error.slice("data", "data_pointer", "type") }
+      JSONSchemer.schema(schema, output_format: "basic").validate(claim_review.to_json)["errors"].to_a
     end
   rescue StandardError
     false

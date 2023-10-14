@@ -23,7 +23,6 @@ class ArchiveItem < ApplicationRecord
   def self.create_from_media_review(media_review, external_unique_id)
     # We want to make sure that we have an actual link to archive first just in case
     url = nil
-
     logger.info "Starting to create media review"
 
     if media_review["itemReviewed"].has_key?("contentUrl")
