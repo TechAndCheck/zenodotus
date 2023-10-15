@@ -5,8 +5,8 @@ class InstagramPostTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
   def before_all
-    @@zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", true)["scrape_result"]
-    @@zorki_video_post = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/", true)["scrape_result"]
+    @@zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    @@zorki_video_post = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
   end
 
   def around
@@ -50,7 +50,7 @@ class InstagramPostTest < ActiveSupport::TestCase
   end
 
   test "can create two Instagram posts from same author" do
-    zorki_post2 = InstagramMediaSource.extract("https://www.instagram.com/p/CQDeYPhMJLG/", true)["scrape_result"]
+    zorki_post2 = InstagramMediaSource.extract("https://www.instagram.com/p/CQDeYPhMJLG/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
     archive_item = Sources::InstagramPost.create_from_zorki_hash(@@zorki_image_post).first.instagram_post
     archive_item2 = Sources::InstagramPost.create_from_zorki_hash(zorki_post2).first.instagram_post
     assert_equal archive_item.author, archive_item2.author
@@ -62,7 +62,7 @@ class InstagramPostTest < ActiveSupport::TestCase
   end
 
   test "can kick off archive from Instagram post" do
-    result = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/", true)
+    result = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/", MediaSource::ScrapeType::Instagram, true)
     assert result
   end
 

@@ -21,7 +21,7 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
   end
 
   test "scraping a post creates a screenshot" do
-    forki_post = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/460964425465155", true)["scrape_result"]
+    forki_post = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/460964425465155", MediaSource::ScrapeType::Facebook, true)["scrape_result"]
     archive_item = Sources::FacebookPost.create_from_forki_hash(forki_post).first
     assert_not_nil archive_item.screenshot
   end

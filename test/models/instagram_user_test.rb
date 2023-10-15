@@ -4,7 +4,7 @@ class InstagramUserTest < ActiveSupport::TestCase
   include Minitest::Hooks
 
   def before_all
-    @@zorki_user = InstagramMediaSource.extract("https://www.instagram.com/p/CQDeYPhMJLG/", true)["scrape_result"].first["post"]["user"]
+    @@zorki_user = InstagramMediaSource.extract("https://www.instagram.com/p/CQDeYPhMJLG/", MediaSource::ScrapeType::Instagram, true)["scrape_result"].first["post"]["user"]
   end
 
   def around

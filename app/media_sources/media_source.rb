@@ -5,6 +5,16 @@ class MediaSource
   extend T::Helpers
   abstract!
 
+  class ScrapeType < T::Enum
+    # (2) Enum values are declared within an `enums do` block
+    enums do
+      Facebook = new
+      Instagram = new
+      YouTube = new
+      Twitter = new
+    end
+  end
+
   # Limit all urls to the host(s) below, use the private method {#self.check_host} in your initializer
   # to check for a valid host or not.
   #
@@ -14,16 +24,6 @@ class MediaSource
   # @return [Array] of [String] of valid host names or [nil]
   sig { abstract.returns(T.nilable(T::Array[String])) }
   def self.valid_host_name; end
-
-  # An abstract method that acts as the entry point to a MediaSource subclass.
-  #
-  # @note This should be overwritten by any implementing class.
-  #
-  # @!scope class
-  # @param url [String] the url of the page/object to be collected for archiving
-  # @return [nil]
-  sig { abstract.params(url: String).returns(T.untyped) }
-  def self.extract(url); end
 
   # Given a possibly ofuscated media post URL, return a URL pointing to the source of the post
   # If the input URL already points to the source of the post, return the input URL
@@ -74,6 +74,60 @@ class MediaSource
     raise MediaSource::HostError.new(url, self)
   end
 
+  # Retrieve the post of the given url
+  #
+  # @!scope class
+  # @params url [String] the url of the page to be collected for archiving
+  # @params force [Boolean] force Hypatia to not queue a request but to scrape immediately.
+  #   Default: false
+  # @returns [String or nil] the path of the screenshot if the screenshot was saved
+  sig { params(url: String, scrape_type: ScrapeType, force: T::Boolean, media_review: T.nilable(MediaReview)).returns(T.any(T.nilable(T::Boolean),  T::Hash[String, String])) }
+  def self.extract(url, scrape_type, force = false, media_review: nil)
+    url = MediaSource.extract_post_url_if_needed(url)
+    object = self.new(url)
+
+    return nil if object.invalid_url
+    return object.retrieve_post!(scrape_type, media_review: media_review) if force
+
+    object.retrieve_post(scrape_type, media_review: media_review)
+  end
+
+  # Scrape the page by sending it to Hypatia
+  #
+  # @!visibility private
+  # @params url [String] a url to grab data for
+  # @return [Forki::Post]
+  sig { params(scrape_type: ScrapeType, media_review: T.nilable(MediaReview)).returns(T::Boolean) }
+  def retrieve_post(scrape_type, media_review: nil)
+    scrape = Scrape.create!({ url: @url, scrape_type: scrape_type.serialize, media_review: media_review })
+    !scrape.nil?
+  end
+
+  # Scrape the page by sending it to Hypatia and forcing the server to process the job immediately. Should only be used for tests
+  #
+  # @return [Hash]
+  sig { params(scrape_type: ScrapeType, media_review: T.nilable(MediaReview)).returns(Hash) }
+  def retrieve_post!(scrape_type, media_review: nil)
+    scrape = Scrape.create!({ url: @url, scrape_type: scrape_type.serialize, media_review: media_review })
+
+    params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: @url, callback_id: scrape.id, force: true }
+
+    response = Typhoeus.get(
+      Figaro.env.HYPATIA_SERVER_URL,
+      followlocation: true,
+      params: params
+    )
+
+    unless response.code == 200
+      scrape.error
+      raise ExternalServerError, "Error: #{response.code} returned from Hypatia server"
+    end
+
+    returned_data = JSON.parse(response.body)
+    returned_data["scrape_result"] = JSON.parse(returned_data["scrape_result"])
+    returned_data
+  end
+
   # A error to indicate the host of a given url does not pass validation
   class HostError < StandardError
     extend T::Sig
@@ -90,4 +144,6 @@ class MediaSource
       super("Invalid URL passed to #{@class.name}, must have host #{@class.valid_host_name}, given #{URI(url).host}")
     end
   end
+
+  class ExternalServerError < StandardError; end
 end

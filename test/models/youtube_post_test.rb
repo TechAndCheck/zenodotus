@@ -7,8 +7,8 @@ class YoutubePostTest < ActiveSupport::TestCase
   include Minitest::Hooks
 
   def before_all
-    @@youtube_post = YoutubeMediaSource.extract("https://www.youtube.com/watch?v=Df7UtQTFUMQ", true)["scrape_result"]
-    @@youtube_post_2 = YoutubeMediaSource.extract("https://www.youtube.com/watch?v=kFFvomxcLWo", true)["scrape_result"]
+    @@youtube_post = YoutubeMediaSource.extract("https://www.youtube.com/watch?v=Df7UtQTFUMQ", MediaSource::ScrapeType::YouTube, true)["scrape_result"]
+    @@youtube_post_2 = YoutubeMediaSource.extract("https://www.youtube.com/watch?v=kFFvomxcLWo", MediaSource::ScrapeType::YouTube, true)["scrape_result"]
   end
 
   def around

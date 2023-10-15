@@ -37,12 +37,12 @@ class InstagramMediaSourceTest < ActiveSupport::TestCase
   end
 
   test "extracting creates an instagram post object" do
-    instagram_post_hash = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", true)
+    instagram_post_hash = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)
     assert_not instagram_post_hash.empty?
   end
 
   test "extracting without force returns true" do
-    instagram_post_response = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", false)
+    instagram_post_response = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, false)
     assert instagram_post_response
   end
 

@@ -32,13 +32,13 @@ class TwitterMediaSourceTest < ActiveSupport::TestCase
   end
 
   def test_extracting_creates_twitter_post_object
-    twitter_post_hash = TwitterMediaSource.extract("https://twitter.com/jack/status/20", true)
+    twitter_post_hash = TwitterMediaSource.extract("https://twitter.com/jack/status/20", MediaSource::ScrapeType::Twitter, true)
     assert_not twitter_post_hash.empty?
   end
 
   def test_unfound_tweet_raises
-    assert_raises(TwitterMediaSource::ExternalServerError) do
-      TwitterMediaSource.extract("https://twitter.com/jack/status/1", true)
+    assert_raises(MediaSource::ExternalServerError) do
+      TwitterMediaSource.extract("https://twitter.com/jack/status/1", MediaSource::ScrapeType::Twitter, true)
     end
   end
 

@@ -7,8 +7,8 @@ class TweetTest < ActiveSupport::TestCase
   include Minitest::Hooks
 
   def before_all
-    @@birdsong_tweet = TwitterMediaSource.extract("https://twitter.com/NYCSanitation/status/1517229098795515906?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw", true)["scrape_result"]
-    @@birdsong_tweet_2 = TwitterMediaSource.extract("https://twitter.com/NYCSanitation/status/1517093299298963456?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw", true)["scrape_result"]
+    @@birdsong_tweet = TwitterMediaSource.extract("https://twitter.com/NYCSanitation/status/1517229098795515906?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw", MediaSource::ScrapeType::Twitter, true)["scrape_result"]
+    @@birdsong_tweet_2 = TwitterMediaSource.extract("https://twitter.com/NYCSanitation/status/1517093299298963456?s=20&t=MJ1KtW5vuzW6Pxs5IJGdDw", MediaSource::ScrapeType::Twitter, true)["scrape_result"]
   end
 
   def around
@@ -81,7 +81,7 @@ class TweetTest < ActiveSupport::TestCase
   end
 
   test "can archive video from tweet" do
-    birdsong_tweet_video = TwitterMediaSource.extract("https://twitter.com/JoeBiden/status/1258817692448051200", true)["scrape_result"]
+    birdsong_tweet_video = TwitterMediaSource.extract("https://twitter.com/JoeBiden/status/1258817692448051200", MediaSource::ScrapeType::Twitter, true)["scrape_result"]
     archive_item = Sources::Tweet.create_from_birdsong_hash(birdsong_tweet_video).first
     assert_not_nil archive_item
     assert_kind_of ArchiveItem, archive_item
@@ -89,13 +89,13 @@ class TweetTest < ActiveSupport::TestCase
   end
 
   test "dhash properly generated from image" do
-    birdsong_image_tweet = TwitterMediaSource.extract("https://twitter.com/Bucks/status/1412471909296578563", true)["scrape_result"]
+    birdsong_image_tweet = TwitterMediaSource.extract("https://twitter.com/Bucks/status/1412471909296578563", MediaSource::ScrapeType::Twitter, true)["scrape_result"]
     archive_item = Sources::Tweet.create_from_birdsong_hash(birdsong_image_tweet).first
     assert_not_nil archive_item.image_hashes.first.dhash
   end
 
   test "dhashes properly generated from video" do
-    birdsong_image_tweet = TwitterMediaSource.extract("https://twitter.com/JoeBiden/status/1258817692448051200", true)["scrape_result"]
+    birdsong_image_tweet = TwitterMediaSource.extract("https://twitter.com/JoeBiden/status/1258817692448051200", MediaSource::ScrapeType::Twitter, true)["scrape_result"]
     archive_item = Sources::Tweet.create_from_birdsong_hash(birdsong_image_tweet).first
     assert_not archive_item.image_hashes.empty?
     archive_item.image_hashes.each do |hash|
@@ -104,7 +104,7 @@ class TweetTest < ActiveSupport::TestCase
   end
 
   test "archiving a video creates a preview screenshot" do
-    birdsong_tweet_video = TwitterMediaSource.extract("https://twitter.com/JoeBiden/status/1258817692448051200", true)["scrape_result"]
+    birdsong_tweet_video = TwitterMediaSource.extract("https://twitter.com/JoeBiden/status/1258817692448051200", MediaSource::ScrapeType::Twitter, true)["scrape_result"]
     archive_item = Sources::Tweet.create_from_birdsong_hash(birdsong_tweet_video).first
     assert_not_nil archive_item.tweet.videos.first.video_derivatives[:preview]
   end

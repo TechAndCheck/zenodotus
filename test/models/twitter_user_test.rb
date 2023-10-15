@@ -7,7 +7,7 @@ class TwitterUserTest < ActiveSupport::TestCase
 
   def before_all
     @birdsong_user = TwitterMediaSource.extract(
-      "https://twitter.com/AmtrakNECAlerts/status/1397922363551870990", true
+      "https://twitter.com/AmtrakNECAlerts/status/1397922363551870990", MediaSource::ScrapeType::Twitter, true
     )["scrape_result"].first["post"]["author"]
   end
 

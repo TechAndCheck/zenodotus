@@ -16,6 +16,7 @@ class Scrape < ApplicationRecord
     }, _prefix: true
 
   has_one :archive_item, dependent: :destroy
+  belongs_to :media_review, dependent: nil, optional: true
 
   after_create :send_notification
 
@@ -62,12 +63,12 @@ class Scrape < ApplicationRecord
 
   sig { params(response: Array).void }
   def fulfill(response)
-    logger.debug "\n*******************************"
-    logger.debug "Processing Fulfill Response"
-    logger.debug "---------------------------"
-    logger.debug "URL: #{self.url}"
-    logger.debug "Response: #{response}"
-    logger.debug "*******************************\n"
+    logger.info "\n*******************************"
+    logger.info "Processing Fulfill Response"
+    logger.info "---------------------------"
+    logger.info "URL: #{self.url}"
+    logger.info "Response: #{response}"
+    logger.info "*******************************\n"
 
     removed = false
     errored = false
@@ -75,21 +76,21 @@ class Scrape < ApplicationRecord
     if response.empty? == false && response.first.has_key?("status") # `status` isn't returned if it's successful, should consider fixing that at some point
       case response.first["status"]
       when "removed"
-        logger.debug "----------------------------------"
-        logger.debug "Post removed at #{self.url}"
-        logger.debug "----------------------------------"
+        logger.info "----------------------------------"
+        logger.info "Post removed at #{self.url}"
+        logger.info "----------------------------------"
 
         removed = true
       when "error"
-        logger.debug "----------------------------------"
-        logger.debug "Post Errored at #{self.url}"
-        logger.debug "----------------------------------"
+        logger.info "----------------------------------"
+        logger.info "Post Errored at #{self.url}"
+        logger.info "----------------------------------"
 
         errored = true
       else
-        logger.debug "----------------------------------"
-        logger.debug "Post Errored at #{self.url}"
-        logger.debug "----------------------------------"
+        logger.info "----------------------------------"
+        logger.info "Post Errored at #{self.url}"
+        logger.info "----------------------------------"
 
         errored = true # For later in case the option for `status` could be something else
       end
@@ -107,6 +108,10 @@ class Scrape < ApplicationRecord
 
     unless media_review_item.nil?
       media_review_item.update!({ taken_down: removed, archive_item_id: archive_item&.id })
+    else
+      logger.info "----------------------------------"
+      logger.info "No MediaReview. This is certainly an error"
+      logger.info "----------------------------------"
     end
 
     self.update!({ fulfilled: true, removed: removed, archive_item: archive_item, error: errored })

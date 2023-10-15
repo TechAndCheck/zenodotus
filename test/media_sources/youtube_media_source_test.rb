@@ -26,7 +26,7 @@ class YoutubeMediaSourceTest < ActiveSupport::TestCase
   end
 
   test "extracting creates a YoutubePost object" do
-    youtube_post_hash = YoutubeMediaSource.extract("https://www.youtube.com/watch?v=Df7UtQTFUMQ", true)
+    youtube_post_hash = YoutubeMediaSource.extract("https://www.youtube.com/watch?v=Df7UtQTFUMQ", MediaSource::ScrapeType::YouTube, true)
     assert_not youtube_post_hash.empty?
   end
 end

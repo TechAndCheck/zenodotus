@@ -11,24 +11,6 @@ class InstagramMediaSource < MediaSource
     ["www.instagram.com", "instagram.com"]
   end
 
-  # Set off a scrape on Instagram using a Hypatia instance. This will then be finished up when the
-  # callback is instantiated.
-  #
-  # @!scope class
-  # @params url [String] the url of the page to be collected for archiving
-  # @params force [Boolean] whether to force Hypatia to not queue a request but to scrape immediately.
-  #   Default: false
-  # @returns [Boolean or Hash] if `force` is set to `true` returns the scraped hash, otherwise the status of the Hypatia job.
-  sig { override.params(url: String, force: T::Boolean).returns(T.any(T::Boolean, T::Hash[String, String])) }
-  def self.extract(url, force = false)
-    url = MediaSource.extract_post_url_if_needed(url)
-    object = self.new(url)
-
-    return object.retrieve_instagram_post! if force
-
-    object.retrieve_instagram_post
-  end
-
   # Initialize the object and capture the screenshot automatically.
   #
   # @params url [String] the url of the page to be collected for archiving
@@ -45,42 +27,6 @@ class InstagramMediaSource < MediaSource
     end
 
     @url = url
-  end
-
-  # Set off a scrape on Instagram using a Hypatia instance. This will then be finished up when the
-  # callback is instantiated.
-  #
-  # @return [Boolean]
-  sig { returns(T::Boolean) }
-  def retrieve_instagram_post
-    scrape = Scrape.create!({ url: @url, scrape_type: :instagram })
-    true unless scrape.nil?
-  end
-
-  # Forces a Hypatia instance to run immediately. This should only be used for testing purposes.
-  #
-  # @return [Hash]
-  sig { returns(Hash) }
-  def retrieve_instagram_post!
-    scrape = Scrape.create!({ url: @url, scrape_type: :instagram })
-
-    params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: @url, callback_id: scrape.id, force: true }
-
-    response = Typhoeus.get(
-      Figaro.env.HYPATIA_SERVER_URL,
-      followlocation: true,
-      params: params
-    )
-
-    unless response.code == 200
-      scrape.error
-      raise ExternalServerError, "Error: #{response.code} returned from Hypatia server"
-    end
-
-    # Hypatia returns arrays always so we grab the first
-    returned_data = JSON.parse(response.body)
-    returned_data["scrape_result"] = JSON.parse(returned_data["scrape_result"])
-    returned_data
   end
 
 private
@@ -121,4 +67,3 @@ end
 
 # A class to indicate that a post url passed in is invalid
 class InstagramMediaSource::InvalidInstagramPostUrlError < StandardError; end
-class InstagramMediaSource::ExternalServerError < StandardError; end

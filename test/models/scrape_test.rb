@@ -107,8 +107,7 @@ class ScrapeTest < ActiveSupport::TestCase
       archive_item: archive_items[0]
     )
 
-    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", true)["scrape_result"]
-
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
     scrape.fulfill(zorki_image_post)
 
     assert scrape.fulfilled
@@ -150,7 +149,7 @@ class ScrapeTest < ActiveSupport::TestCase
       archive_item: archive_items[0]
     )
 
-    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/not_found/", true)["scrape_result"]
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/not_found/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
 
     scrape.fulfill(zorki_image_post)
     media_review.reload
@@ -158,5 +157,45 @@ class ScrapeTest < ActiveSupport::TestCase
     assert scrape.fulfilled
     assert scrape.removed
     assert media_review.taken_down
+  end
+
+  test "scrape created with media review saves it" do
+    random_number = rand(10000)
+    FactCheckOrganization.create!(name: "realfact_#{random_number}", url: "https://www.realfact.com/")
+
+    mr = MediaReview.create!(
+      media_url: "https://www.instagram.com/p/not_found/",
+      original_media_link: "https://www.instagram.com/p/not_found/",
+      date_published: "2021-02-03",
+      url: "https://www.realfact.com/factchecks/2021/feb/03/starwars_57",
+      author: {
+        "@type": "Organization",
+        "name": "realfact_#{random_number}",
+        "url": "https://www.realfact.com"
+      },
+      media_authenticity_category: "TransformedContent",
+      original_media_context_description: "Star Wars Ipsum",
+      item_reviewed: {
+        "@type": "MediaReviewItem",
+        "embeddedTextCaption": "Your droids. They’ll have to wait outside. We don’t want them here. Listen, why don’t you wait out by the speeder. We don’t want any trouble.",
+        "originalMediaLink": "https://www.foobar.com/1",
+        "appearance": {
+          "@type": "ImageObjectSnapshot",
+          "sha256sum": ["8bb6caeb301b85cddc7b67745a635bcda939d17044d9bcf31158ef5e9f8ff072"],
+          "accessedOnUrl": "https://www.facebook.com/photo.php?fbid=10217541425752089&set=a.1391489831857&type=3",
+          "archivedAt": "https://archive.is/dfype"
+        },
+        "contentUrl": "https://www.instagram.com/p/not_found/"
+      },
+      archive_item: archive_items[0]
+    )
+
+    scrape = Scrape.create!({
+      url: "https://www.instagram.com/p/not_found/",
+      scrape_type: :instagram,
+      media_review: mr
+    })
+
+    assert_not_nil scrape.media_review
   end
 end

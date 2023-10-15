@@ -21,12 +21,12 @@ class FacebookMediaSourceTest < ActiveSupport::TestCase
   end
 
   test "extracting creates a facebook post object" do
-    facebook_post_hash = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/460964425465155", true)
+    facebook_post_hash = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/460964425465155", MediaSource::ScrapeType::Facebook, true)
     assert_not facebook_post_hash.empty?
   end
 
   test "extracting without force returns true" do
-    result = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/460964425465155")
+    result = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/460964425465155", MediaSource::ScrapeType::Facebook)
     assert result
   end
 

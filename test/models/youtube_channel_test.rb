@@ -7,7 +7,7 @@ class YoutubeChannelTest < ActiveSupport::TestCase
 
   def before_all
     @@youtube_archiver_channel = YoutubeMediaSource.extract(
-      "https://www.youtube.com/watch?v=kFFvomxcLWo", true
+      "https://www.youtube.com/watch?v=kFFvomxcLWo", MediaSource::ScrapeType::YouTube, true
     )["scrape_result"].first["post"]["channel"]
   end
 

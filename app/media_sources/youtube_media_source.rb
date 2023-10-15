@@ -11,23 +11,6 @@ class YoutubeMediaSource < MediaSource
     ["www.youtube.com", "youtube.com", "youtu.be"]
   end
 
-  # Extracts the video at the input URL by forwarding a scraping request to Hypatia
-  #
-  # @!scope class
-  # @params url [String] the url of the page to be collected for archiving
-  # @params force [Boolean] force Hypatia to not queue a request but to scrape immediately.
-  #   Default: false
-  # @returns Boolean
-  sig { override.params(url: String, force: T::Boolean).returns(T.any(T::Boolean, T::Hash[String, String])) }
-  def self.extract(url, force = false)
-    url = MediaSource.extract_post_url_if_needed(url)
-    object = self.new(url)
-
-    return object.retrieve_youtube_post! if force
-
-    object.retrieve_youtube_post
-  end
-
   # Validate that the url is a direct link to a Youtube video
   #
   # @note this assumes a valid url or else it'll always (usually, maybe, whatever) fail
@@ -61,42 +44,7 @@ class YoutubeMediaSource < MediaSource
 
     @url = url
   end
-
-  # Scrape the page by sending it to Hypatia
-  #
-  # @return [Boolean]
-  sig { returns(T::Boolean) }
-  def retrieve_youtube_post
-    scrape = Scrape.create!({ url: @url, scrape_type: :youtube })
-    true unless scrape.nil?
-  end
-
-  # Scrape the page by sending it to Hypatia and forcing the server to process the job immediately. Should only be used for tests
-  #
-  # @return [Hash]
-  sig { returns(Hash) }
-  def retrieve_youtube_post!
-    scrape = Scrape.create!({ url: @url, scrape_type: :youtube })
-
-    params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: @url, callback_id: scrape.id, force: true }
-
-    response = Typhoeus.get(
-      Figaro.env.HYPATIA_SERVER_URL,
-      followlocation: true,
-      params: params
-    )
-
-    unless response.code == 200
-      scrape.error
-      raise ExternalServerError, "Error: #{response.code} returned from Hypatia server"
-    end
-
-    returned_data = JSON.parse(response.body)
-    returned_data["scrape_result"] = JSON.parse(returned_data["scrape_result"])
-    returned_data
-  end
 end
 
 # A class to indicate that a post url passed in is invalid
 class YoutubeMediaSource::InvalidYoutubePostUrlError < StandardError; end
-class YoutubeMediaSource::ExternalServerError < StandardError; end

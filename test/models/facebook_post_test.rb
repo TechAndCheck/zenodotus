@@ -5,9 +5,9 @@ class FacebookPostTest < ActiveSupport::TestCase
   include Minitest::Hooks
 
   def before_all
-    @@forki_image_post = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/a.108824087345859/336596487901950", true)["scrape_result"]
-    @@forki_image_post_2 = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/460964425465155", true)["scrape_result"]
-    @@forki_video_post = FacebookMediaSource.extract("https://www.facebook.com/Meta/videos/264436895517475", true)["scrape_result"]
+    @@forki_image_post = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/a.108824087345859/336596487901950", MediaSource::ScrapeType::Facebook, true)["scrape_result"]
+    @@forki_image_post_2 = FacebookMediaSource.extract("https://www.facebook.com/Meta/photos/460964425465155", MediaSource::ScrapeType::Facebook, true)["scrape_result"]
+    @@forki_video_post = FacebookMediaSource.extract("https://www.facebook.com/Meta/videos/264436895517475", MediaSource::ScrapeType::Facebook, true)["scrape_result"]
   end
 
   def around

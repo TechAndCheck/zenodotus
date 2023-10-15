@@ -53,7 +53,7 @@ class Sources::YoutubePost < ApplicationRecord
   # returns ArchiveItem
   sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
   def self.create_from_url!(url, user = nil)
-    youtube_archiver_response = YoutubeMediaSource.extract(url, true)["scrape_result"]
+    youtube_archiver_response = YoutubeMediaSource.extract(url, MediaSource::ScrapeType::YouTube, true)["scrape_result"]
     raise "Error sending job to YoutubeArchiver" unless youtube_archiver_response.respond_to?(:first) && youtube_archiver_response.first.has_key?("id")
     Sources::YoutubePost.create_from_youtube_archiver_hash(youtube_archiver_response, user).first
   end
