@@ -136,7 +136,7 @@ namespace :data do
 
     progress_bar = ProgressBar.create(title: "MediaReview Orphans", total: orphaned_media_review.count)
     orphaned_media_review.each do |media_review|
-      media_review.scrape
+      media_review.start_scrape
       progress_bar.increment
     end
   end

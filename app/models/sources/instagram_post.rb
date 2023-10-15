@@ -56,9 +56,9 @@ class Sources::InstagramPost < ApplicationRecord
   # @params url String a string of a url
   # @params user User: the user creating an ArchiveItem
   # returns ScrapeJob
-  sig { params(url: String, user: T.nilable(User)).returns(ScrapeJob) }
-  def self.create_from_url(url, user = nil)
-    scrape = Scrape.create!({ url: url, scrape_type: :instagram })
+  sig { params(url: String, user: T.nilable(User), media_review: T.nilable(MediaReview)).returns(ScrapeJob) }
+  def self.create_from_url(url, user = nil, media_review: nil)
+    scrape = Scrape.create!({ url: url, scrape_type: MediaSource::ScrapeType::Instagram.serialize, media_review: media_review })
     scrape.enqueue
   end
 

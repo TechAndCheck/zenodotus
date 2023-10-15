@@ -47,7 +47,7 @@ class ArchiveItem < ApplicationRecord
 
     media_review_object = MediaReview.create_or_update_from_media_review_hash(media_review, external_unique_id, false)
     logger.info "Created media review object with id #{media_review_object}"
-    media_review_object.scrape
+    media_review_object.start_scrape
 
     media_review_object
   end

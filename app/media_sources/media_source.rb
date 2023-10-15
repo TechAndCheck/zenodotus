@@ -10,7 +10,7 @@ class MediaSource
     enums do
       Facebook = new
       Instagram = new
-      YouTube = new
+      Youtube = new
       Twitter = new
     end
   end

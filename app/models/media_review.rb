@@ -134,11 +134,26 @@ class MediaReview < ApplicationRecord
   end
 
   sig { returns(T::Boolean) }
-  def scrape
-    object_model = ArchiveItem.model_for_url(self.item_reviewed["contentUrl"])
+  def start_scrape
+    url = self.item_reviewed["contentUrl"]
+    if url.nil?
+      self.item_reviewed["mediaItemAppearance"].each do |appearance|
+        object_model = ArchiveItem.model_for_url(appearance["accessedOnUrl"])
+        unless object_model.nil?
+          url = appearance["accessedOnUrl"]
+          break
+        end
+      end
+    end
+
+    if url.nil?
+      raise NoScraperForURL.new(url)
+    end
+
+    object_model = ArchiveItem.model_for_url(url)
     return false if object_model.nil?
 
-    object_model.create_from_url(self.item_reviewed["contentUrl"]) # Start scraping
+    object_model.create_from_url(url, media_review: self) # Start scraping
     true
   end
 
@@ -181,5 +196,12 @@ class MediaReview < ApplicationRecord
 
     humanized_media_authenticity_categories.sort_by! { |e| e.downcase }
     humanized_media_authenticity_categories.join(", ")
+  end
+
+  # A class to indicate that a post url passed in is invalid
+  class NoScraperForURL < StandardError
+    def initialize(url)
+      super("No scraper for url #{url}")
+    end
   end
 end

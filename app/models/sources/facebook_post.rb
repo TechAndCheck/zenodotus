@@ -40,9 +40,9 @@ class Sources::FacebookPost < ApplicationRecord
   # @params url String a string of a url
   # @params user the user adding the ArchiveItem
   # returns ScrapeJob
-  sig { params(url: String, user: T.nilable(User)).returns(ScrapeJob) }
-  def self.create_from_url(url, user = nil)
-    scrape = Scrape.create!({ url: url, scrape_type: :facebook })
+  sig { params(url: String, user: T.nilable(User), media_review: T.nilable(MediaReview)).returns(ScrapeJob) }
+  def self.create_from_url(url, user = nil, media_review: nil)
+    scrape = Scrape.create!({ url: url, scrape_type: MediaSource::ScrapeType::Facebook.serialize, media_review: media_review })
     scrape.enqueue
   end
 

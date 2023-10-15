@@ -97,9 +97,10 @@ class Scrape < ApplicationRecord
     end
 
     # Process everything correctly now that we know it's not removed
+    media_review_item = self.media_review
     media_review_item = MediaReview.find_by(media_url: self.url,
                                             archive_item_id: nil,
-                                            taken_down: nil)
+                                            taken_down: nil) if media_review_item.nil?
 
     unless removed || errored
       archive_item = ArchiveItem.model_for_url(self.url).create_from_hash(response)

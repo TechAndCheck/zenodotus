@@ -20,7 +20,7 @@ class Admin::JobsStatusControllerTest < ActionDispatch::IntegrationTest
 
   test "can resubmit a scrape" do
     sign_in users(:admin)
-    scrape = Scrape.create({ fulfilled: false, url: "https://www.instagram.com/p/CBcqOkyDDH8/", scrape_type: :instagram })
+    scrape = Scrape.create({ fulfilled: false, url: "https://www.instagram.com/p/CBcqOkyDDH8/", scrape_type: MediaSource::ScrapeType::Instagram.serialize })
     assert_not_nil scrape
 
     assert_enqueued_jobs 0
@@ -34,7 +34,7 @@ class Admin::JobsStatusControllerTest < ActionDispatch::IntegrationTest
 
   test "can delete a scrape" do
     sign_in users(:admin)
-    scrape = Scrape.create({ fulfilled: false, url: "https://www.instagram.com/p/CBcqOkyDDH8/", scrape_type: :instagram })
+    scrape = Scrape.create({ fulfilled: false, url: "https://www.instagram.com/p/CBcqOkyDDH8/", scrape_type: MediaSource::ScrapeType::Instagram.serialize })
     assert_not_nil scrape
 
     delete admin_jobs_status_delete_path(id: scrape.id)

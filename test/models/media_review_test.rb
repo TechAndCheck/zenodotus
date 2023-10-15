@@ -176,7 +176,7 @@ class MediaReviewTest < ActiveSupport::TestCase
     FactCheckOrganization.create(name: "realfact_5", url: "https://realfact.com")
 
     media_review = MediaReview.create!(**@media_review_kwargs)
-    media_review.scrape
+    media_review.start_scrape
 
     scrape = Scrape.order(:created_at).last
     assert scrape.media_review == media_review
