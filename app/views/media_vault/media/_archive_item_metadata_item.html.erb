@@ -2,7 +2,9 @@
   <div class="archive-item__metadatum__label"><%= label %></div>
   <div class="archive-item__metadatum__value break-all">
     <% if defined?(url) %>
-      <%= link_to url, url %>
+      <% unless url.nil? %>
+        <%= link_to url, url %>
+      <% end %>
     <% elsif defined?(value) %>
       <span style="word-break: normal;"><%= value %></span>
     <% elsif defined?(time) %>
