@@ -130,6 +130,11 @@ class MediaReview < ApplicationRecord
     end
   end
 
+  sig { returns(T::Array[MediaReview]) }
+  def find_duplicates
+    MediaReview.find_duplicates(self.url, self.author["name"])
+  end
+
   sig { returns(T::Boolean) }
   def start_scrape
     url = self.item_reviewed["contentUrl"]
