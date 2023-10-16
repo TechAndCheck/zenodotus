@@ -18,7 +18,8 @@ class MediaReview < ApplicationRecord
   before_validation do |media_review|
     # See if there's a ClaimReviewAuthor already
     host = URI.parse(media_review.author["url"]).host
-    self.media_review_author = FactCheckOrganization.find_by(host_name: host)
+    matching_hosts = FactCheckOrganization.where(host_name: host).order(:name)
+    self.media_review_author = matching_hosts.first unless matching_hosts.empty?
   end
 
   def media_review_author_must_be_recognized
@@ -37,18 +38,6 @@ class MediaReview < ApplicationRecord
 
   # All media review without an attached piece of archive
   scope :orphaned, -> { where("archive_item_id = ?", nil) }
-
-  # Extract the content URL from a MediaReview hash
-  #
-  # #TODO: REMOVET HIS
-  sig { params(media_review_hash: Hash).returns(String) }
-  def self.get_content_url(media_review_hash)
-    appearance = media_review_hash["itemReviewed"]["mediaItemAppearance"].select do |appearance|
-      appearance.key?("contentUrl")
-    end.first
-
-    appearance["contentUrl"]
-  end
 
   # Create or update a MediaReview Record using the input hash
   sig { params(media_review_hash: Hash,
@@ -71,6 +60,14 @@ class MediaReview < ApplicationRecord
         item_reviewed: media_review_hash["itemReviewed"]
       )
       mr.reload
+
+      # Now, if there's no ArchiveItem, try to find one and put it in
+      if mr.archive_item.nil?
+        archive_item = ArchiveItem.find_by(url: mr.media_url)
+        mr.archive_item = archive_item unless archive_item.nil?
+        mr.save!
+
+      end
     else
       mr = MediaReview.create!(
         media_url: media_review_hash["itemReviewed"]["contentUrl"],
