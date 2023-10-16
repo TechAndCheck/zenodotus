@@ -121,7 +121,7 @@ class MediaReview < ApplicationRecord
     mr
   end
 
-  sig { params(url: String, author_name: String).returns(T::Array[MediaReview]) }
+  sig { params(url: String, author_name: T.nilable(String)).returns(T::Array[MediaReview]) }
   def self.find_duplicates(url, author_name)
     # We'll compare based on url, and author
     possible_duplicates = MediaReview.where(url: url)
