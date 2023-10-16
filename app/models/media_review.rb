@@ -132,7 +132,9 @@ class MediaReview < ApplicationRecord
 
   sig { returns(T::Array[MediaReview]) }
   def find_duplicates
-    MediaReview.find_duplicates(self.url, self.author["name"])
+    duplicates = MediaReview.find_duplicates(self.url, self.author["name"])
+    duplicates.delete(self)
+    duplicates
   end
 
   sig { returns(T::Boolean) }
