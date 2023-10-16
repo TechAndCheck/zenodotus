@@ -10,7 +10,9 @@ class ClaimReview < ApplicationRecord
   before_validation do |claim_review|
     # See if there's a ClaimReviewAuthor already
     host = URI.parse(claim_review.author["url"]).host
-    self.claim_review_author = FactCheckOrganization.find_by(host_name: host)
+
+    matching_hosts = FactCheckOrganization.where(host_name: host).order(:name)
+    self.claim_review_author = matching_hosts.first unless matching_hosts.empty?
   end
 
   def claim_review_author_must_be_recognized
