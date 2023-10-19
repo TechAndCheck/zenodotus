@@ -124,7 +124,7 @@ class MediaReview < ApplicationRecord
   sig { params(url: String, author_name: T.nilable(String)).returns(T::Array[MediaReview]) }
   def self.find_duplicates(url, author_name)
     # We'll compare based on url, and author
-    possible_duplicates = MediaReview.where(url: url)
+    possible_duplicates = MediaReview.where(url: url).order(:created_at)
     possible_duplicates.select do |possible_duplicate|
       possible_duplicate.author["name"] == author_name
     end
