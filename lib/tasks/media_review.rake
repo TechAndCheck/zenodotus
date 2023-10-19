@@ -3,7 +3,7 @@ namespace :media_review do
   task dedup: :environment do |t, args|
     progress_bar = ProgressBar.create(title: "MediaReview Items", total: MediaReview.count)
 
-    MediaReview.all.order(:created_at).map! do |mr|
+    MediaReview.all.order(:created_at).map do |mr|
       progress_bar.increment
       duplicates = mr.find_duplicates
       # If we have duplicates, loop them
