@@ -65,6 +65,13 @@ class ClaimReview < ApplicationRecord
     end
   end
 
+  sig { returns(T::Array[ClaimReview]) }
+  def find_duplicates
+    duplicates = ClaimReview.find_duplicates(self.claim_reviewed, self.url, self.author["name"])
+    duplicates.delete(self)
+    duplicates
+  end
+
   sig { returns(Hash) }
   def render_for_export
     ClaimReviewBlueprint.render_as_hash(self)
