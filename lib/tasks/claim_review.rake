@@ -108,7 +108,7 @@ namespace :claim_review do
 
     crs.keys.each do |key|
       progress_bar.increment
-      duplicates = cr[key]
+      duplicates = crs[key]
       # If we have duplicates, loop them
       if duplicates.count > 1
         # Go through and find all the ClaimReview that have a MediaReview on them
