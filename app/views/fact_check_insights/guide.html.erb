@@ -46,12 +46,105 @@
 <div id="section--schema" class="py-10 lg:py-20">
 	<div class="max-w-2xl mx-auto b2">
 		<h2>What you can expect when you download the data</h2>
-		<p>The Fact-Check Insights dataset is available for download as JSON (one file) and CSV (multiple files).</p>
-		<p>Not every fact-check will contain data for every field, but the main components are:</p>
+		<p>The Fact-Check Insights dataset is available for download as JSON (one file) and CSV (multiple files). The tables below show the JSON data structure; see the "CSV Field" column for the name of the corresponding CSV column. Note that not every item will contain every field.</p>
 	</div>
 
-	<div class="alert">Detail coming soon…</div>
-	<!-- Table here -->
+	<div class="my-10">
+		<h3 class="h4">ClaimReview Schema</h3>
+		<table class="table schema-table">
+			<thead>
+				<tr>
+					<th>Field</th>
+					<th>Value</th>
+					<th>Description</th>
+					<th>Data Type</th>
+					<th>CSV Field</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="boilerplate indent--0">
+					<td class="code" colspan="5">
+						{
+					</td>
+				</tr>
+				<tr class="indent--1">
+					<td class="code">
+						<span class="key">"@type"</span>:
+					</td>
+					<td class="code">
+						<span class="value">"ClaimReview"</span>,
+					</td>
+					<td>Type of object.</td>
+					<td>String</td>
+					<td class="code">
+						<span class="key">"@type"</span>
+					</td>
+				</tr>
+				<tr class="indent--1">
+					<td class="code" colspan="2">
+						<span class="key">"author"</span>: {
+					</td>
+					<td></td>
+					<td>Object</td>
+					<td class="na">n/a</td>
+				</tr>
+				<tr class="indent--2">
+					<td class="code">
+						<span class="key">"@type"</span>:
+					</td>
+					<td class="code">
+						<span class="value">"Organization"</span>,
+					</td>
+					<td>The type of author.</td>
+					<td>String</td>
+					<td class="code">
+						<span class="key">"author_@type"
+					</td>
+				</tr>
+				<tr class="indent--2">
+					<td class="code">
+						<span class="key">"name"</span>:
+					</td>
+					<td class="code">
+						<span class="value">"realfact"</span>,
+					</td>
+					<td>The name of the fact-checking organization that submitted the fact-check.</td>
+					<td>String</td>
+					<td class="code">
+						<span class="key">"author_name"
+					</td>
+				</tr>
+				<tr class="boilerplate indent--1">
+					<td class="code" colspan="5">
+						},
+					</td>
+				</tr>
+				<tr class="boilerplate indent--0">
+					<td class="code" colspan="5">
+						}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="my-10">
+		<h3 class="h4">MediaReview Schema</h3>
+			<table class="table schema-table">
+			<thead>
+				<tr>
+					<th>Field</th>
+					<th>Value</th>
+					<th>Description</th>
+					<th>Data Type</th>
+					<th>CSV Field</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+
 </div>
 
 <div id="section--tips" class="full-bleed py-10 lg:py-20">
