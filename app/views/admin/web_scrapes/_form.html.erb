@@ -1,0 +1,55 @@
+<%= form_with(model: @scrapable_site,
+    url: admin_web_scrapes_path,
+    class: "form"
+  ) do |f| %>
+
+  <%= link_to "Back", admin_web_scrapes_path %>
+  <fieldset class="fieldset">
+    <div class="fieldset__header">
+      <div class="fieldset__title">
+        New web site
+      </div>
+      <div class="fieldset__description">
+        <p>Add a new web site to scrape for ClaimReview</p>
+      </div>
+    </div>
+    <div class="fieldset__fields">
+      <div class="field__wrapper--input">
+        <%= f.label(
+          :name,
+          "Name and shit") %>
+        <%= f.text_field(
+          :name,
+          required: true) %>
+        <%= errors_for_field(@scrapable_site, :name) %>
+        <div class="field__description">The name of the organization (required)</div>
+      </div>
+      <div class="field__wrapper--input">
+        <%= f.label(
+          :url,
+          "Url") %>
+        <%= f.text_field(
+          :url,
+          required: true) %>
+        <%= errors_for_field(@scrapable_site, :url) %>
+        <div class="field__description">This is the base url for the site (required)</div>
+      </div>
+      <div class="field__wrapper--input">
+        <%= f.label(
+          :starting_url,
+          "Starting Url") %>
+        <%= f.text_field(
+          :starting_url,
+          required: false) %>
+        <%= errors_for_field(@scrapable_site, :starting_url) %>
+        <div class="field__description">If you want the scraper to start somewhere else (such as an index page) type it here. Otherwise "Url" above will be the starting point. (optional)</div>
+      </div>
+    </div>
+  </fieldset>
+  <div class="form__align-with-fields">
+    <%= f.submit(
+      "Submit",
+      class: "btn btn--submit") %>
+  </div>
+<% end %>
+<br>

@@ -217,3 +217,6 @@ gem "curb", git: "https://github.com/taf2/curb"
 
 # For some reason this is now necessary?
 gem "debug"
+
+# Scraping web sites
+gem "tanakai"

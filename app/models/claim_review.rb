@@ -26,7 +26,7 @@ class ClaimReview < ApplicationRecord
     # We're keeping the original JSONB for the moment, though that can probably be dropped later
     duplicates = ClaimReview.find_duplicates(claim_review.claim_reviewed, claim_review.url, claim_review.author["name"])
     if duplicates.any?
-      raise "Duplicate ClaimReview found: #{duplicates.map(&:id)}"
+      raise ClaimReview::DuplicateError.new("Duplicate ClaimReview found: #{duplicates.map(&:id)}")
     end
   end
 
@@ -85,4 +85,6 @@ class ClaimReview < ApplicationRecord
       appearance.is_a?(Hash) ? appearance["url"] : appearance
     end
   end
+
+  class DuplicateError < StandardError; end
 end

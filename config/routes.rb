@@ -61,6 +61,11 @@ Rails.application.routes.draw do
     post "applicants/:id/approve", to: "applicants#approve", as: "applicant_approve"
     post "applicants/:id/reject", to: "applicants#reject", as: "applicant_reject"
     delete "applicants/:id", to: "applicants#delete", as: "applicant_delete"
+
+    resources :web_scrapes, only: [:index, :new, :create] do
+      delete "/", action: "delete", as: "delete"
+      post "scrape", action: "scrape_now", as: "scrape"
+    end
   end
 
   constraints host: Figaro.env.FACT_CHECK_INSIGHTS_HOST do

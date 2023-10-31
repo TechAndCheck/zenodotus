@@ -1,0 +1,41 @@
+<% @title_tag = "Web Scrapes" %>
+<% @page_id = "web_scrapes" %>
+
+<div class="content" data-controller="admin--applicants">
+  <h1>Web Scrapes</h1>
+  <h2>Sites</h2>
+
+  <%= link_to "New Web Site", new_admin_web_scrape_path %>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Url</th>
+        <th>Starting Url</th>
+        <th>Last Run</th>
+        <th>Created At</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @sites.each do |site| %>
+        <td>
+          <%= site.name %><br>
+        </td>
+        <td><%= site.url %></td>
+        <td><%= site.starting_url %></td>
+        <td><%= site.last_run %></td>
+        <td><%= site.created_at %></td>
+        <td>
+          <%= button_to "Scrape Now", admin_web_scrape_scrape_path(site), method: :post %>
+        </td>
+        <td>
+          <%= button_to "Delete", admin_web_scrape_delete_path(site), method: :delete %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

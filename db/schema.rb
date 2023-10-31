@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_15_144407) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_31_135406) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -243,6 +243,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_15_144407) do
     t.datetime "updated_at", null: false
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource"
+  end
+
+  create_table "scrapable_sites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "url", null: false
+    t.string "starting_url"
+    t.datetime "last_run"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "scrapes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

@@ -104,7 +104,7 @@ namespace :claim_review do
       "#{cr.url} :: #{cr.claim_reviewed}"
     end
 
-    progress_bar = ProgressBar.create(title: "MediaReview Items", total: crs.keys.count)
+    progress_bar = ProgressBar.create(title: "ClaimReview Items", total: crs.keys.count)
 
     crs.keys.each do |key|
       progress_bar.increment
