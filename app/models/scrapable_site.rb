@@ -2,9 +2,9 @@ class ScrapableSite < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   validates :url, presence: true, uniqueness: true
 
-  def scrape
+  def scrape(time_to_wait = 0.minutes)
     # Kick off a job
-    ScrapeFactCheckSiteJob.perform_later(self.url_to_scrape)
+    ScrapeFactCheckSiteJob.set(wait: time_to_wait).perform_later(self.url_to_scrape)
     set_last_run_to_now
   end
 

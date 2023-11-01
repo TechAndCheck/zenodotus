@@ -26,11 +26,12 @@ class ClaimReviewSpider < Tanakai::Base
     # Get all the links in the page that point to our current domain (or the relative path)
     links = response.xpath("//a").map { |link| link[:href] }
     links = links.map do |link|
+      next if link == url # don't crawl ourselves
       link = link&.starts_with?("/") ? "#{base_url}#{link}" : link # if it's relative, add the base_url
       link if link&.starts_with?(base_url)
     end.compact_blank!
 
-    links.each { |link| request_to :parse, url: link }
+    links.each { |link| request_to(:parse, url: link) }
   end
 
   def parse_claim_review_script_tags(response, url)

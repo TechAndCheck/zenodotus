@@ -11,7 +11,7 @@ class Admin::WebScrapesController < AdminController
     @scrapable_site = ScrapableSite.new(scrapable_site_params)
 
     if @scrapable_site.save
-      redirect_to new_admin_web_scrapes_path, notice: "Successfully added new scrapable web site"
+      redirect_to new_admin_web_scrape_path, notice: "Successfully added new scrapable web site"
     else
       render :new, status: :unprocessable_entity
     end

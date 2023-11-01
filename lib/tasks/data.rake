@@ -192,6 +192,15 @@ namespace :data do
     request.run
   end
 
+  desc "Kick off web site scrapers that have gone past their frequency"
+  task scrape_claim_review_sites: :environment do |t, args|
+    ScrapableSite.all.each_with_index do |scrapable_site, index|
+      if !scrapable_site.last_run.nil? && scrapable_site.last_run < (Time.now - 1.minute) # 24 hours for testing
+        scrapable_site.scrape(index.hours)
+      end
+    end
+  end
+
   #   desc "load sample data"
   #   task load_samples: :environment do |t, args|
   #     number_of_lines = `wc -l test_urls.txt`.to_i
