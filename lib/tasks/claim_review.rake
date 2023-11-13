@@ -99,7 +99,6 @@ namespace :claim_review do
 
   desc "deduplicate"
   task dedup: :environment do |t, args|
-
     crs  = ClaimReview.find_by_sql("SELECT * FROM claim_reviews WHERE claim_reviewed IN (SELECT claim_reviewed FROM claim_reviews GROUP BY claim_reviewed HAVING COUNT(*) > 1) ORDER BY url, created_at ASC").group_by do |cr|
       "#{cr.url} :: #{cr.claim_reviewed}"
     end

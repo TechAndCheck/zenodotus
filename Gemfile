@@ -220,3 +220,5 @@ gem "debug"
 
 # Scraping web sites
 gem "tanakai"
+
+gem "mechanize"

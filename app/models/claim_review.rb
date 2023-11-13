@@ -11,7 +11,10 @@ class ClaimReview < ApplicationRecord
     # See if there's a ClaimReviewAuthor already
     host = URI.parse(claim_review.author["url"]).host
 
-    matching_hosts = FactCheckOrganization.where(host_name: host).order(:name)
+    # Adjust so we add `www` to the front of a bare host
+    adjusted_host = "www.#{host}" if host.split(".").count == 2
+
+    matching_hosts = FactCheckOrganization.where(host_name: [host, adjusted_host]).order(:name)
     self.claim_review_author = matching_hosts.first unless matching_hosts.empty?
   end
 

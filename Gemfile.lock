@@ -656,6 +656,7 @@ DEPENDENCIES
   json_schemer
   listen (~> 3.3)
   mailgun-ruby (~> 1.2)
+  mechanize
   minitest-hooks
   os
   pagy (~> 5.6)
