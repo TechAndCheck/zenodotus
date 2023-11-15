@@ -1,11 +1,16 @@
 class ClaimReviewMech < Mechanize
   VALID_SCHEMES = ["http", "https"]
 
-  def process(start_url)
+  def process(start_url: nil, scrapable_site: nil)
+    start_url = scrapable_site.url_to_scrape if start_url.nil? && !scrapable_site.nil?
+
     self.max_history = nil
     links_visited = []
     link_stack = [start_url]
     initial_host = URI.parse(start_url).host
+
+    found_claims_count = scrapable_site.nil? ? 0 : scrapable_site.number_of_claims_found
+    start_time = Time.now
 
     while link_stack.count.positive? do
       link = link_stack.pop
@@ -120,6 +125,8 @@ class ClaimReviewMech < Mechanize
           begin
             claim_review = ClaimReview.create_or_update_from_claim_review_hash(json_element, "#{link}::#{index}", false)
             puts("Created a claim_review at #{link} with id #{claim_review.id}")
+            found_claims_count += 1
+            scrapable_site.update(number_of_claims_found: found_claims_count) unless scrapable_site.nil?
           rescue ClaimReview::DuplicateError
             puts("Error filing a duplicate ClaimReview at #{link}")
             # add_event(e.full_message) && return
@@ -129,6 +136,13 @@ class ClaimReviewMech < Mechanize
           end
         end
       end
+
+      GC.start if (links_visited.count % 50).zero?
     end
+
+    end_time = Time.now - start_time
+    scrapable_site.update(last_run_time: end_time) unless scrapable_site.nil?
+
+    { found_claims_count: found_claims_count, time_elapsed: end_time }
   end
 end

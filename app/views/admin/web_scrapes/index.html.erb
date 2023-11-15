@@ -14,6 +14,8 @@
         <th>Url</th>
         <th>Starting Url</th>
         <th>Last Run</th>
+        <th>Last Run Time</th>
+        <th>Total Claims Found</th>
         <th>Created At</th>
         <th></th>
         <th></th>
@@ -27,6 +29,8 @@
         <td><%= site.url %></td>
         <td><%= site.starting_url %></td>
         <td><%= site.last_run %></td>
+        <td><%= integer_to_time_duration(site.last_run_time) unless site.last_run_time.nil? %></td>
+        <td><%= site.number_of_claims_found %></td>
         <td><%= site.created_at %></td>
         <td>
           <%= button_to "Scrape Now", admin_web_scrape_scrape_path(site), method: :post %>

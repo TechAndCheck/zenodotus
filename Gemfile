@@ -52,6 +52,8 @@ group :development, :test do
   gem "minitest-hooks" # Used to apply stubs to each test
 
   gem "hotwire-livereload" # Live reload for JS, HTML and CSS devlopment
+
+  gem "memory_profiler"
 end
 
 group :development do

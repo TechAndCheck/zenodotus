@@ -4,7 +4,7 @@ class ScrapableSite < ApplicationRecord
 
   def scrape(time_to_wait = 0.minutes)
     # Kick off a job
-    ScrapeFactCheckSiteJob.set(wait: time_to_wait).perform_later(self.url_to_scrape)
+    ScrapeFactCheckSiteJob.set(wait: time_to_wait).perform_later(self)
     set_last_run_to_now
   end
 
@@ -14,7 +14,7 @@ class ScrapableSite < ApplicationRecord
     logger.info "You're calling a scraper in a blocking way, that's usually NOT what you want."
     logger.info "Use `.scrape` instead of `.scrape!` trust Chris on this."
     logger.info "*************************STOP************************************************"
-    ScrapeFactCheckSiteJob.perform_now(self.url_to_scrape)
+    ScrapeFactCheckSiteJob.perform_now(self)
     set_last_run_to_now
   end
 
