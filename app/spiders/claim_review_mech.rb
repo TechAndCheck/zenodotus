@@ -137,7 +137,7 @@ class ClaimReviewMech < Mechanize
         end
       end
 
-      GC.start if (links_visited.count % 50).zero?
+      GC.start
     end
 
     end_time = Time.now - start_time
