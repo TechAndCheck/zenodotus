@@ -4,7 +4,7 @@ class ClaimReviewMech < Mechanize
   def process(start_url: nil, scrapable_site: nil)
     start_url = scrapable_site.url_to_scrape if start_url.nil? && !scrapable_site.nil?
 
-    self.max_history = nil
+    self.max_history = 0
     links_visited = []
     link_stack = [start_url]
     initial_host = URI.parse(start_url).host
@@ -132,7 +132,7 @@ class ClaimReviewMech < Mechanize
             # add_event(e.full_message) && return
           rescue StandardError => e
             puts("Error filing a ClaimReview at #{link}")
-            puts(e.full_message) && return
+            puts(e.full_message) && next
           end
         end
       end
