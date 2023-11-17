@@ -3,6 +3,7 @@ class ClaimReviewMech < Mechanize
 
   def process(start_url: nil, scrapable_site: nil)
     start_url = scrapable_site.url_to_scrape if start_url.nil? && !scrapable_site.nil?
+    base_host = URI.parse(start_url).host
 
     self.max_history = 0
     links_visited = []
@@ -19,7 +20,7 @@ class ClaimReviewMech < Mechanize
       puts "Navigating to new link #{link}"
 
       begin
-        get(link)
+        page = get(link)
       rescue Mechanize::ResponseCodeError => e
         self.history.push(page, page.uri)
         case e.response_code
@@ -28,6 +29,7 @@ class ClaimReviewMech < Mechanize
           next
         else
           puts "Error not caught with response code #{e.response_code}"
+          next
         end
       rescue Mechanize::RedirectLimitReachedError,
              Errno::ECONNRESET,
@@ -38,6 +40,7 @@ class ClaimReviewMech < Mechanize
         next # Skip all the various things that can go wrong
       rescue StandardError => e
         puts "Error not caught with error #{e.message}"
+        next
       end
 
       # Skip non-sites too
@@ -62,7 +65,7 @@ class ClaimReviewMech < Mechanize
         next unless found_link.uri.scheme.nil? || VALID_SCHEMES.include?(found_link.uri.scheme)
 
         host = found_link.uri.host
-        next if !host.nil? && host != agent.history.first.uri.host # Make sure it's not a link to off the page
+        next if !host.nil? && host != base_host # Make sure it's not a link to off the page
 
         next if host.nil? && !found_link.href.starts_with?("/") # wanna make sure it's not weird
 
