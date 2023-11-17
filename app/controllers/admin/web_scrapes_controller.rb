@@ -1,6 +1,6 @@
 class Admin::WebScrapesController < AdminController
   def index
-    @sites = ScrapableSite.all
+    @sites = ScrapableSite.all.order(:name)
   end
 
   def new
