@@ -81,7 +81,7 @@ class ClaimReviewBlueprint < Blueprinter::Base
         }
       }
     else
-      if appearance.is_a?(String)
+      if claim_review.item_reviewed.dig("appearance")&.is_a?(String)
         massaged_appearance = { "url": appearance, "@type": "CreativeWork" }
       else
         massaged_appearance = claim_review.item_reviewed.dig("appearance")&.map do |appearance|
