@@ -82,7 +82,7 @@ class ClaimReviewBlueprint < Blueprinter::Base
       }
     else
       if claim_review.item_reviewed.dig("appearance")&.is_a?(String)
-        massaged_appearance = { "url": appearance, "@type": "CreativeWork" }
+        massaged_appearance = { "url": claim_review.item_reviewed.dig("appearance"), "@type": "CreativeWork" }
       else
         massaged_appearance = claim_review.item_reviewed.dig("appearance")&.map do |appearance|
           # As usual Google is weirder than us and we represent the data internally differently

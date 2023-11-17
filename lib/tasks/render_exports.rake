@@ -133,6 +133,6 @@ namespace :render_exports do
       puts "************************************"
     end
   ensure
-    File.delete(zipfile_name) if File.exist? zipfile_name
+    File.delete(zipfile_name) if !zipfile_name.nil? && File.exist?(zipfile_name)
   end
 end
