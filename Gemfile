@@ -28,7 +28,7 @@ gem "pagy", "~> 5.6"
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 # use sidekiq for job queueing
-gem "sidekiq", "~> 6.5"
+gem "sidekiq", "~> 7"
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
@@ -228,4 +228,4 @@ gem "mechanize"
 
 # Better logging printing
 gem "amazing_print"
-gem "rails_semantic_logger"
+# gem "rails_semantic_logger"
