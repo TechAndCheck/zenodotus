@@ -81,7 +81,13 @@ class ClaimReviewMech < Mechanize
       # Check the page for ClaimReview
       script_elements = page.search("//script[@type='application/ld+json']").map(&:text)
       script_elements.each do |script_element|
-        json = JSON.parse(script_element)
+        begin
+          json = JSON.parse(script_element)
+        rescue StandardError => e
+          # Let's ignore bad JSON
+          next
+        end
+
 
         # One off for AfricaCheck
         json = (json.is_a?(Array) ? json : [json]).map do |j|
