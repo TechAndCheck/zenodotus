@@ -9,7 +9,7 @@ export default class extends Controller {
   }
 
   clickAllScrapes(event) {
-    const checkboxes = document.getElementsByName('site[]')
+    const checkboxes = document.getElementsByName('sites_selected[]')
     checkboxes.forEach(function (checkbox, _) {
       checkbox.checked = event.currentTarget.checked;
     })
