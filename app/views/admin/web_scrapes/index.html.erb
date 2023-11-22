@@ -1,45 +1,80 @@
 <% @title_tag = "Web Scrapes" %>
 <% @page_id = "web_scrapes" %>
 
-<div class="content" data-controller="admin--applicants">
+<div class="content" data-controller="admin--web-scrapes">
   <h1>Web Scrapes</h1>
   <h2>Sites</h2>
 
   <%= link_to "New Web Site", new_admin_web_scrape_path %>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Url</th>
-        <th>Starting Url</th>
-        <th>Last Run</th>
-        <th>Last Run Time</th>
-        <th>Total Claims Found</th>
-        <th>Created At</th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-    <% @sites.each do |site| %>
-        <td>
-          <%= site.name %><br>
-        </td>
-        <td><%= site.url %></td>
-        <td><%= site.starting_url %></td>
-        <td><%= site.last_run %></td>
-        <td><%= integer_to_time_duration(site.last_run_time) unless site.last_run_time.nil? %></td>
-        <td><%= site.number_of_claims_found %></td>
-        <td><%= site.created_at %></td>
-        <td>
-          <%= button_to "Scrape Now", admin_web_scrape_scrape_path(site), method: :post %>
-        </td>
-        <td>
-          <%= button_to "Delete", admin_web_scrape_delete_path(site), method: :delete %>
-        </td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
+  <%= form_with url: handle_form_admin_web_scrapes_path, class: "form" do |form| %>
+  <div style="display: flex; justify-content: space-around;">
+    <div class="field__wrapper--input">
+      <%= form.select :filter, ["hello", "goodbye"] %>
+    </div>
+    <div>
+      Filter 3
+    </div>
+  </div>
+
+  <turbo-frame id="web_scrapes_list">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>
+            <%= check_box_tag "#", "_", false,
+                    { class: "checkbox",
+                    "data-action": "click->admin--web-scrapes#clickAllScrapes" } %>
+          </th>
+          <th style="display: flex;">
+            <div>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                <path fill-rule="evenodd" d="M14.77 12.79a.75.75 0 01-1.06-.02L10 8.832 6.29 12.77a.75.75 0 11-1.08-1.04l4.25-4.5a.75.75 0 011.08 0l4.25 4.5a.75.75 0 01-.02 1.06z" clip-rule="evenodd" />
+              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            Name
+          </th>
+          <th>Url</th>
+          <th>Starting Url</th>
+          <th>Last Run</th>
+          <th>Last Run Time</th>
+          <th>Total Claims Found</th>
+          <th>Created At</th>
+          <%# <th></th> %>
+          <%# <th></th> %>
+        </tr>
+      </thead>
+      <tbody>
+      <% @sites.each do |site| %>
+          <td>
+            <%= check_box_tag "sites_selected[]", site.id, false, class: "checkbox"%>
+          </td>
+          <td>
+            <%= site.name %><br>
+          </td>
+          <td style="word-break:break-all;"><%= site.url %></td>
+          <td style="word-break:break-all;"><%= site.starting_url %></td>
+          <td><%= site.last_run %></td>
+          <td><%= integer_to_time_duration(site.last_run_time) unless site.last_run_time.nil? %></td>
+          <td><%= site.number_of_claims_found %></td>
+          <td><%= site.created_at %></td>
+          <!-- <td>
+            <%= link_to "Scrape Now", "#", "data-action": "click->admin--web-scrapes#startScrape", id: site.id %>
+          </td> -->
+          <!-- <td>
+            <%= button_to "Delete", admin_web_scrape_path(site), method: :delete %>
+          </td> -->
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <div>
+    <%= button_tag 'Scrape Selected', name: 'route_to[scrape_group]', class: "btn btn--text" %>
+    <%= button_tag 'Delete Selected', name: 'route_to[delete_group]', class: "btn btn--text" %>
+  </div>
+  <% end %>
+  </turbo-frame>
 </div>

@@ -223,4 +223,9 @@ gem "debug"
 # Scraping web sites
 gem "tanakai"
 
+# For regular scraping
 gem "mechanize"
+
+# Better logging printing
+gem "amazing_print"
+gem "rails_semantic_logger"

@@ -143,6 +143,7 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
+    amazing_print (1.5.0)
     android_key_attestation (0.3.0)
     apparition (0.6.0)
       capybara (~> 3.13, < 4)
@@ -409,6 +410,10 @@ GEM
     rails-settings-cached (2.9.2)
       activerecord (>= 5.0.0)
       railties (>= 5.0.0)
+    rails_semantic_logger (4.14.0)
+      rack
+      railties (>= 5.1)
+      semantic_logger (~> 4.13)
     railties (7.0.8)
       actionpack (= 7.0.8)
       activesupport (= 7.0.8)
@@ -495,6 +500,8 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    semantic_logger (4.15.0)
+      concurrent-ruby (~> 1.0)
     set (1.0.3)
     sidekiq (6.5.12)
       connection_pool (>= 2.2.5, < 3)
@@ -630,6 +637,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  amazing_print
   aws-sdk-s3
   birdsong!
   blueprinter
@@ -669,6 +677,7 @@ DEPENDENCIES
   rack-mini-profiler (~> 2.0)
   rails (~> 7.0.8)
   rails-settings-cached (~> 2.9)
+  rails_semantic_logger
   rake
   redis (~> 4.0)
   rolify (~> 6.0)

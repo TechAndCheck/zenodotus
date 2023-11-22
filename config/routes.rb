@@ -62,8 +62,10 @@ Rails.application.routes.draw do
     post "applicants/:id/reject", to: "applicants#reject", as: "applicant_reject"
     delete "applicants/:id", to: "applicants#delete", as: "applicant_delete"
 
-    resources :web_scrapes, only: [:index, :new, :create] do
-      delete "/", action: "delete", as: "delete"
+    # post "web_scrapes/scrape_selected", action: "web_scrapes#scrape_selected", as: "scrape_selected"
+
+    resources :web_scrapes, only: [:index, :new, :create, :destroy] do
+      post :handle_form, on: :collection
       post "scrape", action: "scrape_now", as: "scrape"
     end
   end

@@ -17,7 +17,7 @@ class ClaimReviewMech < Mechanize
       link = link_stack.pop
       links_visited << link
 
-      puts "Navigating to new link #{link}"
+      logger.info "Navigating to new link #{link}"
 
       begin
         page = get(link)
@@ -28,7 +28,7 @@ class ClaimReviewMech < Mechanize
           # Move on
           next
         else
-          puts "Error not caught with response code #{e.response_code}"
+          logger.error "Error not caught with response code #{e.response_code}"
           next
         end
       rescue Mechanize::RedirectLimitReachedError,
@@ -39,7 +39,7 @@ class ClaimReviewMech < Mechanize
              SocketError
         next # Skip all the various things that can go wrong
       rescue StandardError => e
-        puts "Error not caught with error #{e.message}"
+        logger.error "Error not caught with error #{e.message}"
         next
       end
 
@@ -75,7 +75,7 @@ class ClaimReviewMech < Mechanize
 
         link_stack.push(url)
       rescue StandardError => e
-        puts "Error not caught with error #{e.message}"
+        logger.error "Error not caught with error #{e.message}"
       end
 
       # Check the page for ClaimReview
@@ -93,7 +93,7 @@ class ClaimReviewMech < Mechanize
             j
           end
         rescue StandardError => e
-          puts "Error not caught with error #{e.message}"
+          logger.error "Error not caught with error #{e.message}"
         end
 
         if json.count.positive? && json.first.is_a?(Array)
@@ -127,15 +127,15 @@ class ClaimReviewMech < Mechanize
           # ClaimReview.find_duplicates(json_element["claimReviewed"], json_element["link"]), json_element["author"]["name"]
           begin
             claim_review = ClaimReview.create_or_update_from_claim_review_hash(json_element, "#{link}::#{index}", false)
-            puts("Created a claim_review at #{link} with id #{claim_review.id}")
+            logger.info("Created a claim_review at #{link} with id #{claim_review.id}")
             found_claims_count += 1
             scrapable_site.update(number_of_claims_found: found_claims_count) unless scrapable_site.nil?
           rescue ClaimReview::DuplicateError
-            puts("Error filing a duplicate ClaimReview at #{link}")
+            logger.error("Error filing a duplicate ClaimReview at #{link}")
             # add_event(e.full_message) && return
           rescue StandardError => e
-            puts("Error filing a ClaimReview at #{link}")
-            puts(e.full_message) && next
+            logger.error("Error filing a ClaimReview at #{link}")
+            logger.error(e.full_message) && next
           end
         end
       end
