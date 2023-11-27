@@ -2,8 +2,10 @@ class ClaimReviewMech < Mechanize
   VALID_SCHEMES = ["http", "https"]
 
   def process(start_url: nil, scrapable_site: nil)
+    scrapable_site.set_last_run_to_now && scrapable_site.checkin unless scrapable_site.nil?
+
     start_url = scrapable_site.url_to_scrape if start_url.nil? && !scrapable_site.nil?
-    base_host = URI.parse(start_url).host
+    @base_host = URI.parse(start_url).host
 
     self.max_history = 0
     links_visited = []
@@ -13,11 +15,21 @@ class ClaimReviewMech < Mechanize
     found_claims_count = scrapable_site.nil? ? 0 : scrapable_site.number_of_claims_found
     start_time = Time.now
 
+    log_message("Beginning scraping", :info)
+
+    progress_counter = 0 # For status purposes we want to only output logging every 50 links or so
     while link_stack.count.positive? do
       link = link_stack.pop
       links_visited << link
 
-      Rails.logger.info "Navigating to new link #{link}"
+      log_level = :debug
+
+      if (progress_counter % 100).zero?
+        scrapable_site.checkin # Every 100, check in
+        log_level = :info
+      end
+
+      log_message("Navigating to new link #{link}", log_level)
 
       begin
         page = get(link)
@@ -28,7 +40,7 @@ class ClaimReviewMech < Mechanize
           # Move on
           next
         else
-          Rails.logger.error "Error not caught with response code #{e.response_code}"
+          log_message("Error not caught with response code #{e.response_code}", :error)
           next
         end
       rescue Mechanize::RedirectLimitReachedError,
@@ -39,7 +51,7 @@ class ClaimReviewMech < Mechanize
              SocketError
         next # Skip all the various things that can go wrong
       rescue StandardError => e
-        Rails.logger.error "Error not caught with error #{e.message}"
+        log_message("Error not caught with error #{e.message}", :error)
         next
       end
 
@@ -65,7 +77,7 @@ class ClaimReviewMech < Mechanize
         next unless found_link.uri.scheme.nil? || VALID_SCHEMES.include?(found_link.uri.scheme)
 
         host = found_link.uri.host
-        next if !host.nil? && host != base_host # Make sure it's not a link to off the page
+        next if !host.nil? && host != @base_host # Make sure it's not a link to off the page
 
         next if host.nil? && !found_link.href.starts_with?("/") # wanna make sure it's not weird
 
@@ -75,7 +87,7 @@ class ClaimReviewMech < Mechanize
 
         link_stack.push(url)
       rescue StandardError => e
-        Rails.logger.error "Error not caught with error #{e.message}"
+        log_message("Error not caught with error #{e.message}", :error)
       end
 
       # Check the page for ClaimReview
@@ -99,7 +111,7 @@ class ClaimReviewMech < Mechanize
             j
           end
         rescue StandardError => e
-          Rails.logger.error "Error not caught with error #{e.message}"
+          log_message("Error not caught with error #{e.message}", :error)
         end
 
         if json.count.positive? && json.first.is_a?(Array)
@@ -133,25 +145,45 @@ class ClaimReviewMech < Mechanize
           # ClaimReview.find_duplicates(json_element["claimReviewed"], json_element["link"]), json_element["author"]["name"]
           begin
             claim_review = ClaimReview.create_or_update_from_claim_review_hash(json_element, "#{link}::#{index}", false)
-            Rails.logger.info("Created a claim_review at #{link} with id #{claim_review.id}")
+            log_message("Created a claim_review at #{link} with id #{claim_review.id}", :info)
             found_claims_count += 1
             scrapable_site.update(number_of_claims_found: found_claims_count) unless scrapable_site.nil?
           rescue ClaimReview::DuplicateError
-            Rails.logger.error("Error filing a duplicate ClaimReview at #{link}")
+            log_message("Error filing a duplicate ClaimReview at #{link}", :error)
             # add_event(e.full_message) && return
           rescue StandardError => e
-            Rails.logger.error("Error filing a ClaimReview at #{link}")
-            Rails.logger.error(e.full_message) && next
+            log_message("Error filing a ClaimReview at #{link}", :error)
+            log_message(e.full_message, :error) && next
           end
         end
       end
 
-      GC.start
+      GC.start if (progress_counter % 50).zero? # We force garbage collection for memory purposes
+      progress_counter += 1 # Keep the count up
     end
 
+    # Hey! We're done, close up shop
+    log_message("Ending scraping", :info)
+
     end_time = Time.now - start_time
-    scrapable_site.update(last_run_time: end_time) unless scrapable_site.nil?
+    scrapable_site.finish_scrape unless scrapable_site.nil?
 
     { found_claims_count: found_claims_count, time_elapsed: end_time }
+  end
+
+  def log_message(text, level = :debug)
+    @base_host ||= "Unknown"
+    message = "Scraper: #{@base_host} | #{text}"
+
+    case level
+    when :debug
+      Rails.logger.debug(message)
+    when :info
+      Rails.logger.info(message)
+    when :error
+      Rails.logger.error(message)
+    else
+      raise "Invalid log level #{level}"
+    end
   end
 end

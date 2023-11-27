@@ -5,17 +5,16 @@ class ScrapableSite < ApplicationRecord
   def scrape(time_to_wait = 0.minutes)
     # Kick off a job
     ScrapeFactCheckSiteJob.set(wait: time_to_wait).perform_later(self)
-    set_last_run_to_now
   end
 
   # This is only for testing, do NOT use in production, it's blocking. That's bad
   def scrape!
     logger.info "*************************STOP************************************************"
     logger.info "You're calling a scraper in a blocking way, that's usually NOT what you want."
-    logger.info "Use `.scrape` instead of `.scrape!` trust Chris on this."
+    logger.info "Use `.scrape` instead of `.scrape!`"
+    logger.info "\n\nTrust Chris on this."
     logger.info "*************************STOP************************************************"
     ScrapeFactCheckSiteJob.perform_now(self)
-    set_last_run_to_now
   end
 
   def url_to_scrape
@@ -24,5 +23,32 @@ class ScrapableSite < ApplicationRecord
 
   def set_last_run_to_now
     self.update({ last_run: Time.now })
+  end
+
+  def checkin
+    self.update({ last_heartbeat_at: Time.now })
+  end
+
+  def finish_scrape
+    self.update({ last_run_finished_at: Time.now })
+  end
+
+  def running?
+    # Let's a assume it's not running if there's no heartbeat saved
+    return false if self.last_heartbeat_at.blank? || (self.last_run_finished_at.blank? && self.last_run.blank?)
+    return true if self.last_run_finished_at.blank?
+
+    self.last_heartbeat_at < self.last_run_finished_at
+  end
+
+  def stalled?
+    # If we haven't checked in in 10 minutes, it's stalled
+    self.running? && self.last_heartbeat_at < Time.now - 10.minutes
+  end
+
+  def emoji_for_status
+    return "🔴" if self.stalled?
+    return "🟢" if self.running?
+    "⚪"
   end
 end

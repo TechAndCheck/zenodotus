@@ -26,6 +26,7 @@
                     { class: "checkbox",
                     "data-action": "click->admin--web-scrapes#clickAllScrapes" } %>
           </th>
+          <th>Status</th>
           <th style="display: flex;">
             <!-- <div>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
@@ -39,7 +40,9 @@
           </th>
           <th>Url</th>
           <th>Starting Url</th>
-          <th>Last Run</th>
+          <th>Last Run Started At</th>
+          <th>Last Run Completed At</th>
+          <th>Last Heartbeat</th>
           <th>Last Run Time</th>
           <th>Total Claims Found</th>
           <th>Created At</th>
@@ -53,11 +56,17 @@
             <%= check_box_tag "sites_selected[]", site.id, false, class: "checkbox"%>
           </td>
           <td>
+            <%= site.emoji_for_status %>
+          </td>
+          <td>
             <%= site.name %><br>
           </td>
           <td style="word-break:break-all;"><%= site.url %></td>
           <td style="word-break:break-all;"><%= site.starting_url %></td>
           <td><%= site.last_run %></td>
+          <td><%= site.last_run_finished_at %></td>
+          <% debugger %>
+          <td><%= site.last_heartbeat_at %></td>
           <td><%= integer_to_time_duration(site.last_run_time) unless site.last_run_time.nil? %></td>
           <td><%= site.number_of_claims_found %></td>
           <td><%= site.created_at %></td>
