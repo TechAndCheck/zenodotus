@@ -55,8 +55,10 @@ class ClaimReviewMech < Mechanize
         next
       end
 
+      next unless page.is_a?(Mechanize::Page) # We're not doing files
+
       # Skip non-sites too
-      if !page.response["content-type"].include?("text/html")
+      if page.response.key?("content-type") && !page.response["content-type"].include?("text/html")
         next
       end
 
