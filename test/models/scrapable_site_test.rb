@@ -41,6 +41,16 @@ class ScrapableSiteTest < ActiveSupport::TestCase
     assert(scrapable_site.running?)
   end
 
+  test "a scrapable site can be marked as running after a previous run" do
+    scrapable_site = scrapable_sites(:one)
+    scrapable_site.scrape!
+
+    assert_not(scrapable_site.running?)
+
+    scrapable_site.update({ last_heartbeat_at: Time.now })
+    assert(scrapable_site.running?)
+  end
+
   test "a scrapable site is not stalled until heartbeat doesn't check in for 10 minutes" do
     scrapable_site = scrapable_sites(:one)
     scrapable_site.scrape!
