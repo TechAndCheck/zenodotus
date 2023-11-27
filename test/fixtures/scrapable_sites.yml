@@ -7,3 +7,8 @@
 one:
   name: "Example Site"
   url: "https://www.example.com"
+
+two:
+  name: "Example Site2"
+  url: "https://www.example.com"
+  starting_url: "https://example.com/latest"

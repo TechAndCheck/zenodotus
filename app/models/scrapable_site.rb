@@ -18,7 +18,7 @@ class ScrapableSite < ApplicationRecord
   end
 
   def url_to_scrape
-    self.starting_url.nil? ? self.url : self.url
+    self.starting_url.nil? ? self.url : self.starting_url
   end
 
   def set_last_run_to_now

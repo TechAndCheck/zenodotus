@@ -1,6 +1,14 @@
 require "test_helper"
 
 class ScrapableSiteTest < ActiveSupport::TestCase
+  test "a scrapable site returns the correct url to start" do
+    scrapable_site = scrapable_sites(:one)
+    assert_equal "https://www.example.com", scrapable_site.url_to_scrape
+
+    scrapable_site = scrapable_sites(:two)
+    assert_equal "https://example.com/latest", scrapable_site.url_to_scrape
+  end
+
   test "a scrapable site can be marked as started" do
     scrapable_site = scrapable_sites(:one)
     assert_nil(scrapable_site.last_run)
