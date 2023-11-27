@@ -36,7 +36,7 @@ class ScrapableSite < ApplicationRecord
   def running?
     # Let's a assume it's not running if there's no heartbeat saved
     return false if self.last_heartbeat_at.blank? || (self.last_run_finished_at.blank? && self.last_run.blank?)
-    return true if self.last_run_finished_at.blank?
+    return true if !self.last_run.blank? && self.last_run_finished_at.blank?
 
     self.last_heartbeat_at < self.last_run_finished_at
   end
