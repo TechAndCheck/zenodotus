@@ -65,7 +65,6 @@
           <td style="word-break:break-all;"><%= site.starting_url %></td>
           <td><%= site.last_run %></td>
           <td><%= site.last_run_finished_at %></td>
-          <% debugger %>
           <td><%= site.last_heartbeat_at %></td>
           <td><%= integer_to_time_duration(site.last_run_time) unless site.last_run_time.nil? %></td>
           <td><%= site.number_of_claims_found %></td>
