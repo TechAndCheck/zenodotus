@@ -23,6 +23,7 @@ class ScrapableSiteTest < ActiveSupport::TestCase
 
     scrapable_site.finish_scrape
     assert_not_nil(scrapable_site.last_run_finished_at)
+    assert_not_nil(scrapable_site.last_run_time)
   end
 
   test "a scrapable site can be marked as running" do

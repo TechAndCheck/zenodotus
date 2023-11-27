@@ -30,7 +30,10 @@ class ScrapableSite < ApplicationRecord
   end
 
   def finish_scrape
-    self.update({ last_run_finished_at: Time.now })
+    self.update({
+      last_run_finished_at: Time.now,
+      last_run_time: Time.now.to_i - self.last_run.to_i
+    })
   end
 
   def running?
