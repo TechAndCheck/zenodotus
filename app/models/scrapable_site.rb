@@ -41,7 +41,7 @@ class ScrapableSite < ApplicationRecord
     return false if self.last_heartbeat_at.blank? || (self.last_run_finished_at.blank? && self.last_run.blank?)
     return true if !self.last_run.blank? && self.last_run_finished_at.blank?
 
-    self.last_heartbeat_at < self.last_run_finished_at
+    self.last_heartbeat_at > self.last_run_finished_at
   end
 
   def stalled?
