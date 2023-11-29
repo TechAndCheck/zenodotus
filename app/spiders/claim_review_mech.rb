@@ -34,7 +34,12 @@ class ClaimReviewMech < Mechanize
       begin
         page = get(link)
       rescue Mechanize::ResponseCodeError => e
-        self.history.push(page, page.uri)
+        if page.nil? # no idea why this happens, but it does occasionally
+          self.history.push(page, link)
+        else
+          self.history.push(page, page.uri) unless page.nil?
+        end
+
         case e.response_code
         when "404", "403", "500", "503"
           # Move on
@@ -63,33 +68,47 @@ class ClaimReviewMech < Mechanize
       end
 
       # Add all the links on the current page
-      page.links.each do |found_link|
-        # Now we make sure that a bunch of things are satisfied before visiting later
-        # Check if we've been there yet
-        begin
-          next if found_link.uri.nil? # Weird links may not have a URI
-        rescue URI::InvalidURIError
-          next # The URI isn't really doable.
+      begin
+        page.links.each do |found_link|
+          # Now we make sure that a bunch of things are satisfied before visiting later
+          # Check if we've been there yet
+          begin
+            next if found_link.uri.nil? # Weird links may not have a URI
+          rescue URI::InvalidURIError
+            next # The URI isn't really doable.
+          end
+
+          # You may think you could simplify this with a null check ala `found_link.uri&.host`
+          # this won't work because it'll make it nil, which will screw up the logic on the next page
+
+          # Make sure we're only following http/https links (empty is assumed to be fine)
+          next unless found_link.uri.scheme.nil? || VALID_SCHEMES.include?(found_link.uri.scheme)
+
+          host = found_link.uri.host
+          next if !host.nil? && host != @base_host # Make sure it's not a link to off the page
+
+          next if host.nil? && !found_link.href.starts_with?("/") # wanna make sure it's not weird
+
+          # Push it onto the stack, rewriting the url if necessary to be full
+          url = host.nil? && found_link.href != "#" ? "#{page.uri.scheme}://#{initial_host}#{found_link.href}" : found_link.href
+          next if links_visited.include?(url) || link_stack.include?(url) # Make sure we didn't see it yet
+
+          link_stack.push(url)
+        rescue StandardError => e
+          log_message("Error not caught with error #{e.message}", :error)
+          log_message("Url: #{link}", :error)
+
+          Honeybadger.notify(e, context: {
+            link: link
+          })
         end
+      rescue Nokogiri::XML::SyntaxError => e
+        log_message("Nokogiri parsing error #{e.message}", :error)
+        log_message("Url: #{link}", :error)
 
-        # You may think you could simplify this with a null check ala `found_link.uri&.host`
-        # this won't work because it'll make it nil, which will screw up the logic on the next page
-
-        # Make sure we're only following http/https links (empty is assumed to be fine)
-        next unless found_link.uri.scheme.nil? || VALID_SCHEMES.include?(found_link.uri.scheme)
-
-        host = found_link.uri.host
-        next if !host.nil? && host != @base_host # Make sure it's not a link to off the page
-
-        next if host.nil? && !found_link.href.starts_with?("/") # wanna make sure it's not weird
-
-        # Push it onto the stack, rewriting the url if necessary to be full
-        url = host.nil? && found_link.href != "#" ? "#{page.uri.scheme}://#{initial_host}#{found_link.href}" : found_link.href
-        next if links_visited.include?(url) || link_stack.include?(url) # Make sure we didn't see it yet
-
-        link_stack.push(url)
-      rescue StandardError => e
-        log_message("Error not caught with error #{e.message}", :error)
+        Honeybadger.notify(e, context: {
+          link: link
+        })
       end
 
       # Check the page for ClaimReview
@@ -138,6 +157,11 @@ class ClaimReviewMech < Mechanize
             }
           end
 
+          # Rarely the author can be an array, if so we grab the first one
+          if json_element["author"].is_a?(Array)
+            json_element["author"] = json_element["author"].count.positive? ? json_element["author"].first : {}
+          end
+
           if !json_element["author"].has_key?("url") || json_element["author"]["url"].empty?
             uri = URI(json_element["url"])
             json_element["author"]["url"] = "#{uri.scheme}://#{uri.host}"
@@ -158,6 +182,10 @@ class ClaimReviewMech < Mechanize
             log_message(e.full_message, :error) && next
           end
         end
+      rescue StandardError => e
+        Honeybadger.notify(e, context: {
+          link: link
+        })
       end
 
       GC.start if (progress_counter % 50).zero? # We force garbage collection for memory purposes

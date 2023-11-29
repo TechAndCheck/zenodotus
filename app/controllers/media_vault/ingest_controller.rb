@@ -39,6 +39,7 @@ class MediaVault::IngestController < MediaVaultController
     enums do
       JSONParseError = new
       JSONValidationError = new
+      ClaimReviewDuplicateError = new
     end
 
     class JSONParseException < StandardError
@@ -61,11 +62,22 @@ class MediaVault::IngestController < MediaVaultController
       end
     end
 
+    class ClaimReviewDuplicateException < StandardError
+      def initialize(json)
+        @json = json
+      end
+
+      def message
+        "Duplicate Claim Review submitted. Json: #{@json}"
+      end
+    end
+
     sig { returns(Integer) }
     def code
       case self
       when JSONParseError then 10
       when JSONValidationError then 11
+      when ClaimReviewDuplicateError then 12
       else T.absurd(self)
       end
     end
@@ -75,6 +87,7 @@ class MediaVault::IngestController < MediaVaultController
       case self
       when JSONParseError then "Error parsing JSON, invalid JSON"
       when JSONValidationError then "Error parsing JSON, JSON does not conform to schema"
+      when ClaimReviewDuplicateError then "Duplicate Claim Review submitted, this already exists in our database"
       else T.absurd(self)
       end
     end
@@ -84,6 +97,7 @@ class MediaVault::IngestController < MediaVaultController
       case self
       when JSONParseError then JSONParseException.new
       when JSONValidationError then JSONValidationException.new(payload)
+      when ClaimReviewDuplicateError then ClaimReviewDuplicateException.new(payload)
       else T.absurd(self)
       end
     end
@@ -287,6 +301,13 @@ class MediaVault::IngestController < MediaVaultController
       response_code: response.code,
       response: response.message,
       claim_review_id: claim_review_object.id
+    }
+  rescue ClaimReview::DuplicateError
+    # We should eat this here since it's not really a big deal
+    {
+      error_code: ApiErrors::ClaimReviewDuplicateError.code,
+      error: ApiErrors::ClaimReviewDuplicateError.message,
+      failures: claim_review_json
     }
   end
 
