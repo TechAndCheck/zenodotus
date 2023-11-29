@@ -18,5 +18,5 @@ production:
 :verbose: true
 :timeout: 25
 
-# note: the queue for scraping of social media sites is not set here, but instead is in the Procfile
-# so that they don't overwrite each other
+# note: the queue for scraping of web sites for ClaimReview is not set here, but instead is in the Procfile
+# so that it doesn't overcrowd itself (otherwise scraping blocks the queues)
