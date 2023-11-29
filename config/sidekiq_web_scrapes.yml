@@ -1,0 +1,13 @@
+development:
+  :concurrency: 5
+  :queues:
+    - zenodotus_development_web_scrapes
+test:
+  :queues:
+    - zenodotus_development_web_scrapes
+production:
+  :concurrency: 6
+  :queues:
+    - zenodotus_development_web_scrapes
+:verbose: true
+:timeout: 25
