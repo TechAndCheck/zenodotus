@@ -149,51 +149,14 @@ class ClaimReviewMech < Mechanize
         end
 
         json.each_with_index do |json_element, index|
-          next unless json_element.key?("@type") && json_element["@type"] == "ClaimReview"
+          json_element = [json_element] unless json_element.is_a?(Array)
 
-          # Sometimes there's spaces and such in the url, so we get rid of that
-          json_element["url"] = json_element["url"].strip
-
-          # Another AfricaCheck carve out
-          # This one is a rewrite, because they link to the journalist's profile,
-          # which breaks our deduplication process entirely
-          if URI(json_element["url"]).host == "africacheck.org" && json_element["author"].is_a?(String) && json_element["author"].ends_with?("Array")
-            json_element["author"] = {
-              "@type": "Organization",
-              "name": "Africa Check",
-              "url": "https://africacheck.org"
-            }
+          json_element.each do |element|
+            if extract_schema_review(json) # Returns true if properly extracted, false otherwise
+              found_claims_count += 1
+              scrapable_site.update(number_of_claims_found: found_claims_count) unless scrapable_site.nil?
+            end
           end
-
-          # Rarely the author can be an array, if so we grab the first one
-          if json_element["author"].is_a?(Array)
-            json_element["author"] = json_element["author"].count.positive? ? json_element["author"].first : {}
-          end
-
-          if !json_element["author"].has_key?("url") || json_element["author"]["url"].empty?
-            uri = URI(json_element["url"])
-            json_element["author"]["url"] = "#{uri.scheme}://#{uri.host}"
-          end
-
-          # Check if this ClaimReview already exists
-          # ClaimReview.find_duplicates(json_element["claimReviewed"], json_element["link"]), json_element["author"]["name"]
-          begin
-            claim_review = ClaimReview.create_or_update_from_claim_review_hash(json_element, "#{link}::#{index}", false)
-            log_message("Created a claim_review at #{link} with id #{claim_review.id}", :info)
-            found_claims_count += 1
-            scrapable_site.update(number_of_claims_found: found_claims_count) unless scrapable_site.nil?
-          rescue ClaimReview::DuplicateError
-            log_message("Error filing a duplicate ClaimReview at #{link}", :error)
-            # add_event(e.full_message) && return
-          rescue StandardError => e
-            log_message("Error filing a ClaimReview at #{link}", :error)
-            log_message(e.full_message, :error) && next
-          end
-        rescue TypeError => e
-          Honeybadger.notify(e, context: {
-            link: link,
-            json: json_element
-          })
         end
       rescue StandardError => e
         Honeybadger.notify(e, context: {
@@ -212,6 +175,57 @@ class ClaimReviewMech < Mechanize
     scrapable_site.finish_scrape unless scrapable_site.nil?
 
     { found_claims_count: found_claims_count, time_elapsed: end_time }
+  end
+
+  def extract_schema_review(json_element)
+    return false unless json_element.key?("@type") && json_element["@type"] == "ClaimReview"
+
+    # Sometimes there's spaces and such in the url, so we get rid of that
+    json_element["url"] = json_element["url"].strip
+
+    # Another AfricaCheck carve out
+    # This one is a rewrite, because they link to the journalist's profile,
+    # which breaks our deduplication process entirely
+    if URI(json_element["url"]).host == "africacheck.org" && json_element["author"].is_a?(String) && json_element["author"].ends_with?("Array")
+      json_element["author"] = {
+        "@type": "Organization",
+        "name": "Africa Check",
+        "url": "https://africacheck.org"
+      }
+    end
+
+    # Rarely the author can be an array, if so we grab the first one
+    if json_element["author"].is_a?(Array)
+      json_element["author"] = json_element["author"].count.positive? ? json_element["author"].first : {}
+    end
+
+    if !json_element["author"].has_key?("url") || json_element["author"]["url"].empty?
+      uri = URI(json_element["url"])
+      json_element["author"]["url"] = "#{uri.scheme}://#{uri.host}"
+    end
+
+    # Check if this ClaimReview already exists
+    # ClaimReview.find_duplicates(json_element["claimReviewed"], json_element["link"]), json_element["author"]["name"]
+    begin
+      claim_review = ClaimReview.create_or_update_from_claim_review_hash(json_element, "#{link}::#{index}", false)
+      log_message("Created a claim_review at #{link} with id #{claim_review.id}", :info)
+    rescue ClaimReview::DuplicateError
+      log_message("Error filing a duplicate ClaimReview at #{link}", :error)
+      return false
+    rescue StandardError => e
+      log_message("Error filing a ClaimReview at #{link}", :error)
+      log_message(e.full_message, :error) && next
+      return false
+    end
+
+    true
+  rescue TypeError => e
+    Honeybadger.notify(e, context: {
+      link: link,
+      json: json_element
+    })
+
+    false
   end
 
   def log_message(text, level = :debug)
