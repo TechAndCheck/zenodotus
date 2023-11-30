@@ -94,16 +94,15 @@ class ClaimReviewMech < Mechanize
           next if links_visited.include?(url) || link_stack.include?(url) # Make sure we didn't see it yet
 
           link_stack.push(url)
-        rescue URI::InvalidComponentError => e
-          Honeybadger.notify(e, context: {
-            link: found_link.inspect
-          })
+        rescue URI::InvalidComponentError
+          # Let's eat invalid URLs
+          next
         rescue StandardError => e
           log_message("Error not caught with error #{e.message}", :error)
           log_message("Url: #{link}", :error)
 
           Honeybadger.notify(e, context: {
-            link: link
+            link: found_link
           })
         end
 
