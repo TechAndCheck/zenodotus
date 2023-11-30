@@ -219,7 +219,7 @@ class ClaimReviewMech < Mechanize
     end
 
     true
-  rescue TypeError => e
+  rescue StandardError => e
     Honeybadger.notify(e, context: {
       link: link,
       json: json_element
