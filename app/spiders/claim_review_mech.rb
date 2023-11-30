@@ -149,11 +149,7 @@ class ClaimReviewMech < Mechanize
         end
 
         json.each_with_index do |json_element, index|
-          begin
-            next unless json_element["@type"] == "ClaimReview"
-          rescue StandardError
-            # we'll eat parsing errors
-          end
+          next unless json_element.key?("@type") && json_element["@type"] == "ClaimReview"
 
           # Sometimes there's spaces and such in the url, so we get rid of that
           json_element["url"] = json_element["url"].strip
