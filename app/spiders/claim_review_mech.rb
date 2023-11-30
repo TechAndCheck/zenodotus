@@ -214,7 +214,7 @@ class ClaimReviewMech < Mechanize
       return false
     rescue StandardError => e
       log_message("Error filing a ClaimReview at #{link}", :error)
-      log_message(e.full_message, :error) && next
+      log_message(e.full_message, :error)
       return false
     end
 
