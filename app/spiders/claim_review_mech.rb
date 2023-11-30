@@ -94,6 +94,10 @@ class ClaimReviewMech < Mechanize
           next if links_visited.include?(url) || link_stack.include?(url) # Make sure we didn't see it yet
 
           link_stack.push(url)
+        rescue URI::InvalidComponentError => e
+          Honeybadger.notify(e, context: {
+            link: found_link.inspect
+          })
         rescue StandardError => e
           log_message("Error not caught with error #{e.message}", :error)
           log_message("Url: #{link}", :error)
@@ -102,17 +106,23 @@ class ClaimReviewMech < Mechanize
             link: link
           })
         end
+
+        script_elements = page.search("//script[@type='application/ld+json']").map(&:text)
+
       rescue Nokogiri::XML::SyntaxError => e
         log_message("Nokogiri parsing error #{e.message}", :error)
         log_message("Url: #{link}", :error)
 
         Honeybadger.notify(e, context: {
-          link: link
+          link: link,
+          page: page
         })
+
+        # go to next if the page can't be parsed
+        next
       end
 
       # Check the page for ClaimReview
-      script_elements = page.search("//script[@type='application/ld+json']").map(&:text)
       script_elements.each do |script_element|
         begin
           json = JSON.parse(script_element)
@@ -145,6 +155,9 @@ class ClaimReviewMech < Mechanize
           rescue StandardError
             # we'll eat parsing errors
           end
+
+          # Sometimes there's spaces and such in the url, so we get rid of that
+          json_element["url"] = json_element["url"].strip
 
           # Another AfricaCheck carve out
           # This one is a rewrite, because they link to the journalist's profile,
@@ -181,6 +194,11 @@ class ClaimReviewMech < Mechanize
             log_message("Error filing a ClaimReview at #{link}", :error)
             log_message(e.full_message, :error) && next
           end
+        rescue TypeError => e
+          Honeybadger.notify(e, context: {
+            link: link,
+            json: json_element
+          })
         end
       rescue StandardError => e
         Honeybadger.notify(e, context: {
