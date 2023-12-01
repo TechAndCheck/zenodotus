@@ -152,7 +152,7 @@ class ClaimReviewMech < Mechanize
           json_element = [json_element] unless json_element.is_a?(Array)
 
           json_element.each do |element|
-            if extract_schema_review(json) # Returns true if properly extracted, false otherwise
+            if extract_schema_review(json, link) # Returns true if properly extracted, false otherwise
               found_claims_count += 1
               scrapable_site.update(number_of_claims_found: found_claims_count) unless scrapable_site.nil?
             end
@@ -177,7 +177,7 @@ class ClaimReviewMech < Mechanize
     { found_claims_count: found_claims_count, time_elapsed: end_time }
   end
 
-  def extract_schema_review(json_element)
+  def extract_schema_review(json_element, link)
     return false unless json_element.key?("@type") && json_element["@type"] == "ClaimReview"
 
     # Sometimes there's spaces and such in the url, so we get rid of that
