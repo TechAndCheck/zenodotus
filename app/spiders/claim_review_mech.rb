@@ -148,6 +148,10 @@ class ClaimReviewMech < Mechanize
           end
         rescue StandardError => e
           log_message("Error not caught with error #{e.message}", :error)
+          Honeybadger.notify(e, context: {
+            link: link,
+            page: page
+          })
         end
 
         if json.count.positive? && json.first.is_a?(Array)
