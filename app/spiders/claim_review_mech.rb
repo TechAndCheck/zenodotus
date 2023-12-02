@@ -105,7 +105,7 @@ class ClaimReviewMech < Mechanize
           next
         rescue StandardError => e
           log_message("Error not caught with error #{e.message}", :error)
-          log_message("Url: #{link}", :error)
+          log_message("Url: #{found_link}", :error)
 
           Honeybadger.notify(e, context: {
             link: found_link
@@ -225,6 +225,11 @@ class ClaimReviewMech < Mechanize
     rescue StandardError => e
       log_message("Error filing a ClaimReview at #{link}", :error)
       log_message(e.full_message, :error)
+
+      Honeybadger.notify(e, context: {
+        link: link
+      })
+
       return false
     end
 
