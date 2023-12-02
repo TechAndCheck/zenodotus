@@ -1,15 +1,15 @@
 class ClaimReviewMech < Mechanize
   VALID_SCHEMES = ["http", "https"]
 
-  def process(start_url: nil, scrapable_site: nil)
+  def process(start_url: nil, scrapable_site: nil, links_visited: nil, link_stack: nil, backoff_time: 0)
     scrapable_site.set_last_run_to_now && scrapable_site.checkin unless scrapable_site.nil?
 
     start_url = scrapable_site.url_to_scrape if start_url.nil? && !scrapable_site.nil?
     @base_host = URI.parse(start_url).host
 
     self.max_history = 0
-    links_visited = []
-    link_stack = [start_url]
+    links_visited = [] if links_visited.nil?
+    link_stack = [start_url] if link_stack.nil?
     initial_host = URI.parse(start_url).host
 
     found_claims_count = scrapable_site.nil? ? 0 : scrapable_site.number_of_claims_found
@@ -32,6 +32,7 @@ class ClaimReviewMech < Mechanize
       log_message("Navigating to new link #{link}", log_level)
 
       begin
+        sleep(backoff_time) if backoff_time.positive? # If we're being rate limited, wait a bit
         page = get(link)
       rescue Mechanize::ResponseCodeError => e
         if page.nil? # no idea why this happens, but it does occasionally
@@ -44,6 +45,11 @@ class ClaimReviewMech < Mechanize
         when "404", "403", "500", "503"
           # Move on
           next
+        when "429"
+          # We're being rate limited, so we need to reschedule this scrape. Say in five minutes
+          log_message("Rate limited, rescheduling", :info)
+          ClaimReviewMechWorker.perform_in(5.minutes, start_url: start_url, scrapable_site: scrapable_site, links_visited: links_visited, link_stack: link_stack, backoff_time: backoff_time + 0.5)
+          return
         else
           log_message("Error not caught with response code #{e.response_code}", :error)
           next
@@ -152,7 +158,7 @@ class ClaimReviewMech < Mechanize
           json_element = [json_element] unless json_element.is_a?(Array)
 
           json_element.each do |element|
-            if extract_schema_review(json, link) # Returns true if properly extracted, false otherwise
+            if extract_schema_review(element, link) # Returns true if properly extracted, false otherwise
               found_claims_count += 1
               scrapable_site.update(number_of_claims_found: found_claims_count) unless scrapable_site.nil?
             end
