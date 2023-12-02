@@ -48,7 +48,7 @@ class ClaimReviewMech < Mechanize
         when "429"
           # We're being rate limited, so we need to reschedule this scrape. Say in five minutes
           log_message("Rate limited, rescheduling", :info)
-          ClaimReviewMechWorker.perform_in(5.minutes, start_url: start_url, scrapable_site: scrapable_site, links_visited: links_visited, link_stack: link_stack, backoff_time: backoff_time + 0.5)
+          ClaimReviewMech.perform_in(5.minutes, start_url: start_url, scrapable_site: scrapable_site, links_visited: links_visited, link_stack: link_stack, backoff_time: backoff_time + 0.5)
           return
         else
           log_message("Error not caught with response code #{e.response_code}", :error)
@@ -161,8 +161,8 @@ class ClaimReviewMech < Mechanize
         json.each_with_index do |json_element, index|
           json_element = [json_element] unless json_element.is_a?(Array)
 
-          json_element.each do |element|
-            if extract_schema_review(element, link) # Returns true if properly extracted, false otherwise
+          json_element.each_with_index do |element, index|
+            if extract_schema_review(element, link, index) # Returns true if properly extracted, false otherwise
               found_claims_count += 1
               scrapable_site.update(number_of_claims_found: found_claims_count) unless scrapable_site.nil?
             end
@@ -187,7 +187,7 @@ class ClaimReviewMech < Mechanize
     { found_claims_count: found_claims_count, time_elapsed: end_time }
   end
 
-  def extract_schema_review(json_element, link)
+  def extract_schema_review(json_element, link, index)
     return false unless json_element.key?("@type") && json_element["@type"] == "ClaimReview"
 
     # Sometimes there's spaces and such in the url, so we get rid of that
