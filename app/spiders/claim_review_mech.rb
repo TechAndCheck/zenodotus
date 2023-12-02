@@ -47,8 +47,9 @@ class ClaimReviewMech < Mechanize
           next
         when "429"
           # We're being rate limited, so we need to reschedule this scrape. Say in five minutes
-          log_message("Rate limited, rescheduling", :info)
-          ClaimReviewMech.perform_in(5.minutes, start_url: start_url, scrapable_site: scrapable_site, links_visited: links_visited, link_stack: link_stack, backoff_time: backoff_time + 0.5)
+          backoff_time += 0.5
+          log_message("Rate limited, rescheduling to #{backoff_time}", :info)
+          ScrapeFactCheckSiteJob.set(wait: 5.minutes).perform_later(start_url: start_url, scrapable_site: scrapable_site, links_visited: links_visited, link_stack: link_stack, backoff_time: backoff_time)
           return
         else
           log_message("Error not caught with response code #{e.response_code}", :error)

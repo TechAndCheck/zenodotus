@@ -4,7 +4,7 @@ class ScrapableSite < ApplicationRecord
 
   def scrape(time_to_wait = 0.minutes)
     # Kick off a job
-    ScrapeFactCheckSiteJob.set(wait: time_to_wait).perform_later(self)
+    ScrapeFactCheckSiteJob.set(wait: time_to_wait).perform_later(scrapable_site: self)
   end
 
   # This is only for testing, do NOT use in production, it's blocking. That's bad

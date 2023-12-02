@@ -30,7 +30,7 @@ class Scrape < ApplicationRecord
   # Make the call to Hypatia, the return should be { success: "true" } after parsing
   # This does it synchronously. If you're calling this you probably mean to call `enqueue`
   sig { returns(Hash) }
-  def perform
+  def perform(start_url: nil, scrapable_site: nil, links_visited: nil, link_stack: nil, backoff_time: 0)
     params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: self.url, callback_id: self.id }
 
     # Move this to the Scrape model so they're easily resubmittable
