@@ -14,7 +14,7 @@ class ScrapableSite < ApplicationRecord
     logger.info "Use `.scrape` instead of `.scrape!`"
     logger.info "\n\nTrust Chris on this."
     logger.info "*************************STOP************************************************"
-    ScrapeFactCheckSiteJob.perform_now(self)
+    ScrapeFactCheckSiteJob.perform_now(scrapable_site: self)
   end
 
   def url_to_scrape
