@@ -9,7 +9,11 @@ class ClaimReview < ApplicationRecord
 
   before_validation do |claim_review|
     # See if there's a ClaimReviewAuthor already
-    host = URI.parse(claim_review.author["url"]).host
+    begin
+      host = URI.parse(claim_review.author["url"]).host
+    rescue URI::InvalidURIError
+      host = URI.parse("https://#{claim_review.author["url"]}").host
+    end
 
     # Adjust so we add `www` to the front of a bare host
     adjusted_host = "www.#{host}" if host.split(".").count == 2

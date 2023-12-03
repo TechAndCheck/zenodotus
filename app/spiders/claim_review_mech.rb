@@ -101,8 +101,8 @@ class ClaimReviewMech < Mechanize
           next if links_visited.include?(url) || link_stack.include?(url) # Make sure we didn't see it yet
 
           link_stack.push(url)
-        rescue URI::InvalidComponentError
-          # Let's eat invalid URLs
+        rescue URI::InvalidComponentError, Nokogiri::XML::SyntaxError
+          # Let's eat invalid URLs, occasionally we'll get a .shtml file, which... let's assume here
           next
         rescue StandardError => e
           log_message("Error not caught with error #{e.message}", :error)
@@ -142,6 +142,7 @@ class ClaimReviewMech < Mechanize
         json = (json.is_a?(Array) ? json : [json]).map do |j|
           if j.has_key?("@graph") && j["@graph"].is_a?(Array)
             j["@graph"].map do |object|
+              object ||= {}
               { "@context": "https://schema.org/" }.merge(object)
             end
           else
@@ -189,12 +190,15 @@ class ClaimReviewMech < Mechanize
   end
 
   def extract_schema_review(json_element, link, index)
-    return false unless json_element.key?("@type") && json_element["@type"] == "ClaimReview"
+    return false unless json_element.is_a?(Hash) && json_element.key?("@type") && json_element["@type"] == "ClaimReview"
 
     # Sometimes there's spaces and such in the url, so we get rid of that
     json_element["url"] = json_element["url"].strip
 
-    # Another AfricaCheck carve out
+    # Encode the url properly in case there's non-ASCII characters
+    json_element["url"] = CGI.escape(json_element["url"])
+
+    # Sometimes the author is a string, so we make it an object
     # This one is a rewrite, because they link to the journalist's profile,
     # which breaks our deduplication process entirely
     if URI(json_element["url"]).host == "africacheck.org" && json_element["author"].is_a?(String) && json_element["author"].ends_with?("Array")
@@ -213,6 +217,12 @@ class ClaimReviewMech < Mechanize
     if !json_element["author"].has_key?("url") || json_element["author"]["url"].empty?
       uri = URI(json_element["url"])
       json_element["author"]["url"] = "#{uri.scheme}://#{uri.host}"
+    end
+
+    # Rarely the `claimReviewed` field is in `description` instead, so we'll flip it
+    if !json_element.has_key?("claimReviewed") && json_element.has_key?("description") && json_element["description"].is_a?(String)
+      json_element["claimReviewed"] = json_element["description"]
+      json_element["description"] = nil
     end
 
     # Check if this ClaimReview already exists
