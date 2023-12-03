@@ -196,7 +196,7 @@ class ClaimReviewMech < Mechanize
     json_element["url"] = json_element["url"].strip
 
     # Encode the url properly in case there's non-ASCII characters
-    json_element["url"] = CGI.escape(json_element["url"])
+    json_element["url"] = url_encode_path(json_element["url"])
 
     # Sometimes the author is a string, so we make it an object
     # This one is a rewrite, because they link to the journalist's profile,
@@ -252,6 +252,15 @@ class ClaimReviewMech < Mechanize
     })
 
     false
+  end
+
+  def url_encode_path(url)
+    uri = URI.parse(url)
+    split_path = uri.path.split("/").map { |path| CGI.escape(path) }
+    uri.path = split_path.join("/")
+    uri.query = CGI.escape(uri.query) unless uri.query.nil?
+    uri.fragment = CGI.escape(uri.fragment) unless uri.fragment.nil?
+    uri.to_s
   end
 
   def log_message(text, level = :debug)
