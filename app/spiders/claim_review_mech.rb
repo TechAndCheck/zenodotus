@@ -4,7 +4,11 @@ class ClaimReviewMech < Mechanize
   def process(start_url: nil, scrapable_site: nil, links_visited: nil, link_stack: nil, backoff_time: 0)
     scrapable_site.set_last_run_to_now && scrapable_site.checkin unless scrapable_site.nil?
 
-    start_url = scrapable_site.url_to_scrape if start_url.nil? && !scrapable_site.nil?
+    # Figure out which url we should be scraping, 1. start_url, 2. scrapable_site.url_to_scrape, 3. scrapable_site.url
+    if start_url.nil?
+      start_url = scrapable_site.url_to_scrape.blank? ? scrapable_site.url : scrapable_site.url_to_scrape
+    end
+
     @base_host = URI.parse(start_url).host
 
     self.max_history = 0
