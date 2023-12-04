@@ -225,6 +225,12 @@ class ClaimReviewMech < Mechanize
       json_element["description"] = nil
     end
 
+    # Rarely the `claimReviewed` field is in `name` instead, so we'll flip it
+    if !json_element.has_key?("claimReviewed") && json_element.has_key?("name") && json_element["name"].is_a?(String)
+      json_element["claimReviewed"] = json_element["name"]
+      json_element["name"] = nil
+    end
+
     # Check if this ClaimReview already exists
     # ClaimReview.find_duplicates(json_element["claimReviewed"], json_element["link"]), json_element["author"]["name"]
     begin
