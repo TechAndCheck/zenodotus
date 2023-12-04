@@ -66,6 +66,13 @@ class ClaimReviewMech < Mechanize
              Net::OpenTimeout,
              SocketError
         next # Skip all the various things that can go wrong
+      rescue Sidekiq::Shutdown
+        log_message("Sidekiq shutdown", :error)
+        Honeybadger.notify(e, context: {
+          link: found_link,
+          backoff_time: backoff_time
+        })
+        return false
       rescue StandardError => e
         log_message("Error not caught with error #{e.message}", :error)
         next
