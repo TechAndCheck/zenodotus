@@ -3,7 +3,7 @@ class ScrapeFactCheckSiteJob < ApplicationJob
   sidekiq_options retry: false
 
   discard_on Exception do |job, error|
-    Honeybadger.notify(e) # This is a last ditch if something goes wrong
+    Honeybadger.notify(error) # This is a last ditch if something goes wrong
   end
 
 

@@ -92,13 +92,16 @@ class ClaimReviewMech < Mechanize
           next unless found_link.uri.scheme.nil? || VALID_SCHEMES.include?(found_link.uri.scheme)
 
           host = found_link.uri.host
-          next if !host.nil? && host != @base_host # Make sure it's not a link to off the page
-
+          next if !host.nil? && host != @base_host                # Make sure it's not a link to off the page
           next if host.nil? && !found_link.href.starts_with?("/") # wanna make sure it's not weird
+          next if found_link.uri.path.ends_with?(".shtml")        # We don't want to follow SHTML files
+          next if found_link.uri.fragment.present?                # We don't want to follow links with fragments
 
           # Push it onto the stack, rewriting the url if necessary to be full
           url = host.nil? && found_link.href != "#" ? "#{page.uri.scheme}://#{initial_host}#{found_link.href}" : found_link.href
           next if links_visited.include?(url) || link_stack.include?(url) # Make sure we didn't see it yet
+
+          url = URI::Parser.new.escape(url) # Clean up the URL if there's non-ASCII characters
 
           link_stack.push(url)
         rescue URI::InvalidComponentError, Nokogiri::XML::SyntaxError
@@ -143,6 +146,8 @@ class ClaimReviewMech < Mechanize
           if j.has_key?("@graph") && j["@graph"].is_a?(Array)
             j["@graph"].map do |object|
               object ||= {}
+              next if object.is_a?(Array) # If it's an array, it's probably not what we're looking for
+
               { "@context": "https://schema.org/" }.merge(object)
             end
           else
@@ -196,7 +201,7 @@ class ClaimReviewMech < Mechanize
     json_element["url"] = json_element["url"].strip
 
     # Encode the url properly in case there's non-ASCII characters
-    json_element["url"] = url_encode_path(json_element["url"])
+    json_element["url"] = URI.parse(URI::Parser.new.escape(json_element["url"]))
 
     # Sometimes the author is a string, so we make it an object
     # This one is a rewrite, because they link to the journalist's profile,
@@ -231,6 +236,11 @@ class ClaimReviewMech < Mechanize
       json_element["name"] = nil
     end
 
+    # If `claimReviewed` is still nil we'll move on
+    if !json_element.has_key?("claimReviewed") || json_element["claimReviewed"].nil?
+      return false
+    end
+
     # Check if this ClaimReview already exists
     # ClaimReview.find_duplicates(json_element["claimReviewed"], json_element["link"]), json_element["author"]["name"]
     begin
@@ -258,19 +268,6 @@ class ClaimReviewMech < Mechanize
     })
 
     false
-  end
-
-  def url_encode_path(url)
-    uri = URI.parse(url)
-    uri.path = uri.path.split("/").map { |path| CGI.escape(path) }.join("/")
-
-    unless uri.query.nil?
-      uri.query = uri.query.split("&").map { |e| e.split("=").map { |f| CGI.escape(f) }.join("=") }.join("&")
-    end
-
-    # We'll not do this until it rears its head
-    uri.fragment = CGI.escape(uri.fragment) unless uri.fragment.nil?
-    uri.to_s
   end
 
   def log_message(text, level = :debug)
