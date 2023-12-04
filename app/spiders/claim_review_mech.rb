@@ -256,9 +256,13 @@ class ClaimReviewMech < Mechanize
 
   def url_encode_path(url)
     uri = URI.parse(url)
-    split_path = uri.path.split("/").map { |path| CGI.escape(path) }
-    uri.path = split_path.join("/")
-    uri.query = CGI.escape(uri.query) unless uri.query.nil?
+    uri.path = uri.path.split("/").map { |path| CGI.escape(path) }.join("/")
+
+    unless uri.query.nil?
+      uri.query = uri.query.split("&").map { |e| e.split("=").map { |f| CGI.escape(f) }.join("=") }.join("&")
+    end
+
+    # We'll not do this until it rears its head
     uri.fragment = CGI.escape(uri.fragment) unless uri.fragment.nil?
     uri.to_s
   end
