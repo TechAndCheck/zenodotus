@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: https://github.com/cguess/discombobulate
-  revision: b1df2fa9697c379aa5e5543c7f63794f26149ef4
+  revision: cc73c9eeb79d2f63fd20207811b2d68c2ae3ba37
   specs:
     decombobulate (0.1.4)
 
