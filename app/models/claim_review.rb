@@ -121,6 +121,7 @@ class ClaimReview < ApplicationRecord
     line += (1..15).map do |i|
       next if item_reviewed["appearance"].nil?
       if item_reviewed["appearance"].first.is_a?(Array)
+        next if item_reviewed["appearance"][i - 1].nil?
         [item_reviewed["appearance"][i - 1]["url"],
          item_reviewed["appearance"][i - 1]["@type"]]
       elsif item_reviewed["appearance"].first.is_a?(String)
@@ -131,7 +132,7 @@ class ClaimReview < ApplicationRecord
     end
 
     line.flatten
-  rescue StndardError => e
+  rescue StandardError => e
     Honeybadger.notify(e, context: { claimReview: self.inspect })
   end
 
