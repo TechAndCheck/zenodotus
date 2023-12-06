@@ -204,9 +204,9 @@ class MediaReview < ApplicationRecord
 
   sig { returns(Array) }
   def self.csv_headers
-    # id  @context  @type datePublished mediaAuthenticityCategory originalMediaContextDescription originalMediaLink url author.@type  author.name author.url  itemReviewed.contentUrl itemReviewed.startTime  itemReviewed.endTime  itemReviewed.@type
-    ["id", "@context", "@type", "datePublished", "mediaAuthenticityCategory", "originalMediaContextDescription", "originalMediaLink", "url", "author.@type",
-      "author.name", "author.url", "itemReviewed.contentUrl", "itemReviewed.startTime", "itemReviewed.endTime", "itemReviewed.@type"]
+    ["id", "@context", "@type", "datePublished", "mediaAuthenticityCategory", "originalMediaContextDescription",
+      "originalMediaLink", "url", "author.@type", "author.name", "author.url", "itemReviewed.contentUrl",
+      "itemReviewed.startTime", "itemReviewed.endTime", "itemReviewed.@type"]
   end
 
   sig { returns Array }

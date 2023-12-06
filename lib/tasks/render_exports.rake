@@ -51,7 +51,7 @@ namespace :render_exports do
     )
 
     MediaReview.all.each_slice(GROUP_SIZE) do |media_review|
-      rendered_media_reviews += media_review.map(&:render_for_export)
+      rendered_media_reviews += media_review.map(&:render_to_csv_line)
       progressbar.increment
     end
 
@@ -70,7 +70,7 @@ namespace :render_exports do
       raise e
     end
 
-    puts "Rendering CSV"
+    puts "Rendering ClaimReview CSV"
     # Render ClaimReview CSV
     claim_review_csv = CSV.generate(encoding: "UTF-8") do |csv|
       csv << ClaimReview.csv_headers
@@ -79,6 +79,7 @@ namespace :render_exports do
       end
     end
 
+    puts "Rendering MediaReview CSV"
     # Render MediaReview CSV
     media_review_csv = CSV.generate(encoding: "UTF-8") do |csv|
       csv << MediaReview.csv_headers
