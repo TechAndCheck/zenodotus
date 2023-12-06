@@ -35,7 +35,7 @@ namespace :render_exports do
     )
 
     ClaimReview.all.each_slice(GROUP_SIZE) do |claim_review|
-      rendered_claim_reviews += claim_review.map(&:render_for_export)
+      rendered_claim_reviews += claim_review.map(&:render_to_csv_line)
       progressbar.increment
     end
 
@@ -70,31 +70,7 @@ namespace :render_exports do
       raise e
     end
 
-    # Render CSV
-    rendered_claim_reviews = []
-    progressbar = ProgressBar.create(
-      title: "ClaimReview CSV",
-      total: claim_review_chunk_size,
-      format: "%t | %b | %a/%f | eta: %l | %P%% | %c/%C"
-    )
-
-    ClaimReview.all.each_slice(GROUP_SIZE) do |claim_review|
-      rendered_claim_reviews += claim_review.map(&:render_to_csv_line)
-      progressbar.increment
-    end
-
-    rendered_media_reviews = []
-    progressbar = ProgressBar.create(
-      title: "MediaReview CSV",
-      total: media_review_chunk_size,
-      format: "%t | %b | %a/%f | eta: %l | %P%% | %c/%C"
-    )
-
-    MediaReview.all.each_slice(GROUP_SIZE) do |media_review|
-      rendered_media_reviews += media_review.map(&:render_to_csv_line)
-      progressbar.increment
-    end
-
+    puts "Rendering CSV"
     # Render ClaimReview CSV
     claim_review_csv = CSV.generate(encoding: "UTF-8") do |csv|
       csv << ClaimReview.csv_headers
@@ -123,7 +99,6 @@ namespace :render_exports do
       zipfile.get_output_stream("media_review.csv") { |f| f.write media_review_csv }
     end
 
-    debugger
     begin
       # Upload to AWS
       puts "Uploading JSON to AWS S3"
