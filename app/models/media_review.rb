@@ -202,6 +202,23 @@ class MediaReview < ApplicationRecord
     humanized_media_authenticity_categories.join(", ")
   end
 
+  sig { returns(Array) }
+  def self.csv_headers
+    # id  @context  @type datePublished mediaAuthenticityCategory originalMediaContextDescription originalMediaLink url author.@type  author.name author.url  itemReviewed.contentUrl itemReviewed.startTime  itemReviewed.endTime  itemReviewed.@type
+    ["id", "@context", "@type", "datePublished", "mediaAuthenticityCategory", "originalMediaContextDescription", "originalMediaLink", "url", "author.@type",
+      "author.name", "author.url", "itemReviewed.contentUrl", "itemReviewed.startTime", "itemReviewed.endTime", "itemReviewed.@type"]
+  end
+
+  sig { returns Array }
+  def render_to_csv_line
+    ["#{self.id}", "https://schema.org", "MediaReview", "#{self.date_published}", "#{self.media_authenticity_category}",
+      "#{self.original_media_context_description}", "#{self.original_media_link}", "#{self.url}", "#{self.author["@type"]}",
+      "#{self.author["name"]}", "#{self.author["url"]}", "#{self.item_reviewed["contentUrl"]}", "#{self.item_reviewed["startTime"]}",
+      "#{self.item_reviewed["endTime"]}", "#{self.item_reviewed["@type"]}"]
+  rescue StndardError => e
+    Honeybadger.notify(e, context: { claimReview: self.inspect })
+  end
+
   # A class to indicate that a post url passed in is invalid
   class NoScraperForURL < StandardError
     def initialize(url)

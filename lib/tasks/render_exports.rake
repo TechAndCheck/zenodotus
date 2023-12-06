@@ -70,11 +70,46 @@ namespace :render_exports do
       raise e
     end
 
-    # Convert to CSV
-    puts "Converting to CSV"
+    # Render CSV
+    rendered_claim_reviews = []
+    progressbar = ProgressBar.create(
+      title: "ClaimReview CSV",
+      total: claim_review_chunk_size,
+      format: "%t | %b | %a/%f | eta: %l | %P%% | %c/%C"
+    )
 
-    claim_review_csv = Decombobulate.new(rendered_claim_reviews).to_csv
-    media_review_csv = Decombobulate.new(rendered_media_reviews).to_csv
+    ClaimReview.all.each_slice(GROUP_SIZE) do |claim_review|
+      rendered_claim_reviews += claim_review.map(&:render_to_csv_line)
+      progressbar.increment
+    end
+
+    rendered_media_reviews = []
+    progressbar = ProgressBar.create(
+      title: "MediaReview CSV",
+      total: media_review_chunk_size,
+      format: "%t | %b | %a/%f | eta: %l | %P%% | %c/%C"
+    )
+
+    MediaReview.all.each_slice(GROUP_SIZE) do |media_review|
+      rendered_media_reviews += media_review.map(&:render_to_csv_line)
+      progressbar.increment
+    end
+
+    # Render ClaimReview CSV
+    claim_review_csv = CSV.generate(encoding: "UTF-8") do |csv|
+      csv << ClaimReview.csv_headers
+      rendered_claim_reviews.each do |claim_review|
+        csv << claim_review
+      end
+    end
+
+    # Render MediaReview CSV
+    media_review_csv = CSV.generate(encoding: "UTF-8") do |csv|
+      csv << MediaReview.csv_headers
+      rendered_media_reviews.each do |media_review|
+        csv << media_review
+      end
+    end
 
     # Excel doesn't like to assume files are UTF8 (unlike everyone else for the last 20 years)
     # so we have to add a byte string to the start of the files.
@@ -88,6 +123,7 @@ namespace :render_exports do
       zipfile.get_output_stream("media_review.csv") { |f| f.write media_review_csv }
     end
 
+    debugger
     begin
       # Upload to AWS
       puts "Uploading JSON to AWS S3"

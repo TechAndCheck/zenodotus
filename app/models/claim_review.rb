@@ -84,6 +84,57 @@ class ClaimReview < ApplicationRecord
     ClaimReviewBlueprint.render_as_hash(self)
   end
 
+  sig { returns(Array) }
+  def self.csv_headers
+    headers = [
+      "id", "@context", "@type", "claimReviewed", "datePublished", "url", "author.@type",
+      "author.name", "author.url", "itemReviewed.@type", "itemReviewed.author.@type",
+      "reviewRating.@type", "reviewRating.alternateName", "author.image", "itemReviewed.name",
+      "itemReviewed.datePublished", "itemReviewed.firstAppearance", "itemReviewed.author.image", "reviewRating.ratingExplanation",
+      "itemReviewed.author.jobTitle", "reviewRating.bestRating", "reviewRating.worstRating", "reviewRating.image"]
+
+    headers += (1..15).map do |i|
+      ["itemReviewed.appearance.#{i}.url",
+        "itemReviewed.appearance.#{i}.@type"]
+    end
+
+    headers.flatten
+  end
+
+  sig { returns Array }
+  def render_to_csv_line
+    item_reviewed = self.item_reviewed.nil? ? { "author": {}, "appearance": [], "reviewRating": {} }.transform_keys(&:to_s) : self.item_reviewed
+    item_reviewed["author"] = {} if item_reviewed["author"].nil?
+
+    review_rating = self.review_rating.nil? ? {} : self.review_rating
+
+    line = ["#{self.id}", "https://schema.org", "ClaimReview", "#{self.claim_reviewed}",
+      "#{self.date_published}", "#{self.url}", "#{self.author["@type"]}",
+      "#{self.author["name"]}", "#{self.author["url"]}", "#{item_reviewed["@type"]}",
+      "#{item_reviewed["author"]["@type"]}", "#{review_rating["@type"]}",
+      "#{review_rating["alternateName"]}", "#{self.author["image"]}",
+      "#{item_reviewed["name"]}", "#{item_reviewed["datePublished"]}", "#{item_reviewed["firstAppearance"]}",
+      "#{item_reviewed["author"]["image"]}", "#{review_rating["ratingExplanation"]}",
+      "#{item_reviewed["author"]["jobTitle"]}", "#{review_rating["bestRating"]}",
+      "#{review_rating["worstRating"]}", "#{review_rating["image"]}"]
+
+    line += (1..15).map do |i|
+      next if item_reviewed["appearance"].nil?
+      if item_reviewed["appearance"].first.is_a?(Array)
+        [item_reviewed["appearance"][i - 1]["url"],
+         item_reviewed["appearance"][i - 1]["@type"]]
+      elsif item_reviewed["appearance"].first.is_a?(String)
+        [item_reviewed["appearance"], ""]
+      else
+        []
+      end
+    end
+
+    line.flatten
+  rescue StndardError => e
+    Honeybadger.notify(e, context: { claimReview: self.inspect })
+  end
+
   sig { returns T::Array[String] }
   def appearances
     return [] if self.item_reviewed["appearance"].nil?
