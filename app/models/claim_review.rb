@@ -90,8 +90,9 @@ class ClaimReview < ApplicationRecord
       "id", "@context", "@type", "claimReviewed", "datePublished", "url", "author.@type",
       "author.name", "author.url", "itemReviewed.@type", "itemReviewed.author.@type",
       "reviewRating.@type", "reviewRating.alternateName", "author.image", "itemReviewed.name",
-      "itemReviewed.datePublished", "itemReviewed.firstAppearance", "itemReviewed.author.image", "reviewRating.ratingExplanation",
-      "itemReviewed.author.jobTitle", "reviewRating.bestRating", "reviewRating.worstRating", "reviewRating.image"]
+      "itemReviewed.datePublished", "itemReviewed.firstAppearance.url", "itemReviewed.firstAppearance.type",
+      "itemReviewed.author.image", "reviewRating.ratingExplanation", "itemReviewed.author.jobTitle",
+      "reviewRating.bestRating", "reviewRating.worstRating", "reviewRating.image"]
 
     headers += (1..15).map do |i|
       ["itemReviewed.appearance.#{i}.url",
@@ -105,6 +106,7 @@ class ClaimReview < ApplicationRecord
   def render_to_csv_line
     item_reviewed = self.item_reviewed.nil? ? { "author": {}, "appearance": [], "reviewRating": {} }.transform_keys(&:to_s) : self.item_reviewed
     item_reviewed["author"] = {} if item_reviewed["author"].nil?
+    item_reviewed["firstAppearance"] = {} if item_reviewed["firstAppearance"].nil?
 
     review_rating = self.review_rating.nil? ? {} : self.review_rating
 
@@ -113,9 +115,9 @@ class ClaimReview < ApplicationRecord
       "#{self.author["name"]}", "#{self.author["url"]}", "#{item_reviewed["@type"]}",
       "#{item_reviewed["author"]["@type"]}", "#{review_rating["@type"]}",
       "#{review_rating["alternateName"]}", "#{self.author["image"]}",
-      "#{item_reviewed["name"]}", "#{item_reviewed["datePublished"]}", "#{item_reviewed["firstAppearance"]}",
-      "#{item_reviewed["author"]["image"]}", "#{review_rating["ratingExplanation"]}",
-      "#{item_reviewed["author"]["jobTitle"]}", "#{review_rating["bestRating"]}",
+      "#{item_reviewed["name"]}", "#{item_reviewed["datePublished"]}", "#{item_reviewed["firstAppearance"]["url"]}",
+      "#{item_reviewed["firstAppearance"]["@type"]}", "#{item_reviewed["author"]["image"]}",
+      "#{review_rating["ratingExplanation"]}", "#{item_reviewed["author"]["jobTitle"]}", "#{review_rating["bestRating"]}",
       "#{review_rating["worstRating"]}", "#{review_rating["image"]}"]
 
     line += (1..15).map do |i|
