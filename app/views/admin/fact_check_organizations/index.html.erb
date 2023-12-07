@@ -1,0 +1,29 @@
+<% @title_tag = "Web Scrapes" %>
+<% @page_id = "web_scrapes" %>
+
+<div class="content" data-controller="admin--web-scrapes">
+  <h1>Fact Check Organizations</h1>
+  <h2>Orgs</h2>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Url</th>
+        <th>Host</th>
+        <th>ClaimReview #</th>
+        <th>MediaReview #</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @fact_check_organizations.each do |org| %>
+        <td><%= org.name %></td>
+        <td><%= org.url %></td>
+        <td><%= org.host_name %></td>
+        <td><%= org.claim_reviews.count %></td>
+        <td><%= org.media_reviews.count %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

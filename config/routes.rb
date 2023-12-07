@@ -68,6 +68,8 @@ Rails.application.routes.draw do
       post :handle_form, on: :collection
       post "scrape", action: "scrape_now", as: "scrape"
     end
+
+    resources :fact_check_organizations, only: [:index]
   end
 
   constraints host: Figaro.env.FACT_CHECK_INSIGHTS_HOST do
