@@ -133,6 +133,8 @@ class ClaimReview < ApplicationRecord
       end
     end
 
+    puts "#{self.inspect}" if line.flatten.is_a?(String)
+
     line.flatten
   rescue StandardError => e
     Honeybadger.notify(e, context: { claimReview: self.inspect })
