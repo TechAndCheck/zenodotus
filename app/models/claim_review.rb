@@ -92,11 +92,11 @@ class ClaimReview < ApplicationRecord
   def self.csv_headers
     headers = [
       "id", "@context", "@type", "claimReviewed", "datePublished", "url", "author.@type",
-      "author.name", "author.url", "itemReviewed.@type", "itemReviewed.author.@type",
-      "reviewRating.@type", "reviewRating.alternateName", "author.image", "itemReviewed.name",
-      "itemReviewed.datePublished", "itemReviewed.firstAppearance.url", "itemReviewed.firstAppearance.type",
-      "itemReviewed.author.image", "reviewRating.ratingExplanation", "itemReviewed.author.jobTitle",
-      "reviewRating.bestRating", "reviewRating.worstRating", "reviewRating.image"]
+      "author.name", "author.url", "itemReviewed.@type", "itemReviewed.author.name", "itemReviewed.author.@type",
+      "itemReviewed.author.sameAs", "reviewRating.@type", "reviewRating.ratingValue", "reviewRating.alternateName",
+      "author.image", "itemReviewed.name", "itemReviewed.datePublished", "itemReviewed.firstAppearance.url",
+      "itemReviewed.firstAppearance.type", "itemReviewed.author.image", "reviewRating.ratingExplanation",
+      "itemReviewed.author.jobTitle", "reviewRating.bestRating", "reviewRating.worstRating", "reviewRating.image"]
 
     headers += (1..15).map do |i|
       ["itemReviewed.appearance.#{i}.url",
@@ -131,9 +131,9 @@ class ClaimReview < ApplicationRecord
     # Create the input array
     line = ["#{self.id}", "https://schema.org", "ClaimReview", "#{self.claim_reviewed}",
       "#{self.date_published}", "#{self.url}", "#{self.author["@type"]}",
-      "#{self.author["name"]}", "#{self.author["url"]}", "#{item_reviewed["@type"]}",
-      "#{item_reviewed["author"]["@type"]}", "#{review_rating["@type"]}",
-      "#{review_rating["alternateName"]}", "#{self.author["image"]}",
+      "#{self.author["name"]}", "#{self.author["url"]}", "#{item_reviewed["@type"]}", "#{item_reviewed["author"]["name"]}",
+      "#{item_reviewed["author"]["@type"]}", "#{item_reviewed["author"]["sameAs"]}", "#{review_rating["@type"]}",
+      "#{review_rating["ratingValue"]}", "#{review_rating["alternateName"]}", "#{self.author["image"]}",
       "#{item_reviewed["name"]}", "#{item_reviewed["datePublished"]}", "#{item_reviewed["firstAppearance"]["url"]}",
       "#{item_reviewed["firstAppearance"]["@type"]}", "#{item_reviewed["author"]["image"]}",
       "#{review_rating["ratingExplanation"]}", "#{item_reviewed["author"]["jobTitle"]}", "#{review_rating["bestRating"]}",

@@ -193,6 +193,7 @@ namespace :render_exports do
       raise e
     end
   ensure
+    debugger
     File.delete(zipfile_name) if !zipfile_name.nil? && File.exist?(zipfile_name)
   end
 end
