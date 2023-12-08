@@ -5,6 +5,10 @@ class ClaimReview < ApplicationRecord
   include PgSearch::Model
   multisearchable against: [:claim_reviewed, :item_reviewed]
 
+  # Everything says not to use default_scopes, but in this case I think it's appropriate because we
+  # actually really really really only want to show confirmed claim_reviews.
+  default_scope { where.not(claim_review_author: nil) }
+
   validate :claim_review_author_must_be_recognized
 
   before_validation do |claim_review|
