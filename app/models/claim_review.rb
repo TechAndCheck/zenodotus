@@ -108,6 +108,15 @@ class ClaimReview < ApplicationRecord
     item_reviewed["author"] = {} if item_reviewed["author"].nil?
     item_reviewed["firstAppearance"] = {} if item_reviewed["firstAppearance"].nil?
 
+    # Fix formatting... again
+    if item_reviewed["firstAppearance"].is_a?(Array)
+      if !item_reviewed["firstAppearance"].empty?
+        item_reviewed["firstAppearance"] = item_reviewed["firstAppearance"].first
+      else
+        item_reviewed["firstAppearance"] = {}
+      end
+    end
+
     review_rating = self.review_rating.nil? ? {} : self.review_rating
 
     line = ["#{self.id}", "https://schema.org", "ClaimReview", "#{self.claim_reviewed}",
