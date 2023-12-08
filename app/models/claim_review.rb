@@ -140,17 +140,17 @@ class ClaimReview < ApplicationRecord
       "#{review_rating["worstRating"]}", "#{review_rating["image"]}"]
 
     line += (1..15).map do |i|
-      break if item_reviewed["appearance"].nil?
+      ["", ""] if item_reviewed["appearance"].nil?
       if item_reviewed["appearance"].first.is_a?(Array)
-        break if item_reviewed["appearance"][i - 1].nil? # We've gone through them all
-        [item_reviewed["appearance"][i - 1]["url"],
-         "CreativeWork"]
-      elsif item_reviewed["appearance"].first.is_a?(String)
+        if item_reviewed["appearance"][i - 1].nil? # We've gone through them all
+          ["", ""]
+        else
+          [item_reviewed["appearance"][i - 1]["url"], "CreativeWork"]
+        end
+      elsif item_reviewed["appearance"].first.is_a?(String) && i.zero?
         [item_reviewed["appearance"], "CreativeWork"]
-        break # there's only one
       else
         ["", ""]
-        break # there's none
       end
     end
 
