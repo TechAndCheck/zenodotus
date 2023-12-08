@@ -117,6 +117,8 @@ class ClaimReview < ApplicationRecord
       else
         item_reviewed["firstAppearance"] = {}
       end
+    elsif item_reviewed["firstAppearance"].is_a?(String)
+      item_reviewed["firstAppearance"] = { "url": item_reviewed["firstAppearance"], "@type": "CreativeWork" }
     end
 
     # Hard code @type for first appearance if it exists
