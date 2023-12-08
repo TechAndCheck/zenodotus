@@ -148,7 +148,7 @@ class ClaimReview < ApplicationRecord
       elsif item_reviewed["appearance"].first.is_a?(String)
         [item_reviewed["appearance"], "CreativeWork"]
       else
-        []
+        ["", ""]
       end
     end
 
