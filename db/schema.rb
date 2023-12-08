@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_27_190558) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_08_184333) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -88,6 +88,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_27_190558) do
     t.uuid "claim_review_author_id"
     t.index ["claim_review_author_id"], name: "index_claim_reviews_on_claim_review_author_id"
     t.index ["media_review_id"], name: "index_claim_reviews_on_media_review_id"
+  end
+
+  create_table "corpus_downloads", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "download_type", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_corpus_downloads_on_user_id"
   end
 
   create_table "facebook_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -433,6 +441,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_27_190558) do
   add_foreign_key "api_keys", "users"
   add_foreign_key "claim_reviews", "fact_check_organizations", column: "claim_review_author_id"
   add_foreign_key "claim_reviews", "media_reviews"
+  add_foreign_key "corpus_downloads", "users"
   add_foreign_key "facebook_images", "facebook_posts"
   add_foreign_key "facebook_videos", "facebook_posts"
   add_foreign_key "image_searches", "users"

@@ -23,6 +23,8 @@ class User < ApplicationRecord
   # These are the applicants that this user has reviewed.
   has_many :applicants, foreign_key: :reviewer_id, dependent: :nullify
 
+  has_many :corpus_downloads, dependent: :nullify
+
   validates :name, presence: true
   validates :email, presence: true
   validates :webauthn_id, uniqueness: true, allow_nil: true

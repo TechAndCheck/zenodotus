@@ -18,7 +18,16 @@ class FactCheckInsightsController < ApplicationController
           return
         end
 
-        file_name = request.format == :json ? "exports/fact_check_insights.json" : "exports/fact_check_insights.zip"
+        if request.format == :json
+          file_name = "exports/fact_check_insights.json"
+          type = :json
+        else
+          file_name = "exports/fact_check_insights.zip"
+          type = :csv
+        end
+
+        CorpusDownload.create({ download_type: type, user: current_user })
+
         # Generate public signed link for the file on AWS
         json_presigned_url = get_presigned_url_for_s3_file(file_name)
 

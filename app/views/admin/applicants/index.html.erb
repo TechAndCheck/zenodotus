@@ -105,6 +105,7 @@
 				<th>Country</th>
 				<th>Applied for</th>
 				<th>Status</th>
+				<th># corpus downloads</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -130,6 +131,9 @@
 						data-admin--applicants-target="timestamp"
 						><%= applicant.reviewed_at %></time>
 					by <%= applicant.reviewer.name %>
+				</td>
+				<td>
+					<%= applicant.user.nil? ? "" : applicant.user.corpus_downloads.count %>
 				</td>
 				<td>
 					<%= link_to "Details", admin_applicant_path(applicant) %>

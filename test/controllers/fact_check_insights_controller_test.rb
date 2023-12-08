@@ -98,25 +98,23 @@ class FactCheckInsightsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can download data as an admin" do
-    skip "Waiting to turn on Insights first"
     sign_in users(:admin)
 
     get fact_check_insights_download_path(format: :json)
-    assert_response :success
+    assert_response :redirect
 
     get fact_check_insights_download_path(format: :zip)
-    assert_response :success
+    assert_response :redirect
   end
 
   test "can download data as a permitted user" do
-    skip "Waiting to turn on Insights first"
     sign_in users(:fact_check_insights_user)
 
     get fact_check_insights_download_path(format: :json)
-    assert_response :success
+    assert_response :redirect
 
     get fact_check_insights_download_path(format: :zip)
-    assert_response :success
+    assert_response :redirect
   end
 
   test "cannot download data when not logged in" do
@@ -131,6 +129,14 @@ class FactCheckInsightsControllerTest < ActionDispatch::IntegrationTest
     host! Figaro.env.MEDIA_VAULT_HOST
 
     assert_raises ActionController::RoutingError do
+      get fact_check_insights_download_path(format: :json)
+    end
+  end
+
+  test "downloading a file creates a corpus_download record" do
+    sign_in users(:fact_check_insights_user)
+
+    assert_difference "CorpusDownload.count" do
       get fact_check_insights_download_path(format: :json)
     end
   end
