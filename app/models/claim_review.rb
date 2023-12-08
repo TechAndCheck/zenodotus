@@ -141,13 +141,13 @@ class ClaimReview < ApplicationRecord
 
     line += (1..15).map do |i|
       ["", ""] if item_reviewed["appearance"].nil?
-      if item_reviewed["appearance"].first.is_a?(Array)
+      if item_reviewed["appearance"].is_a?(Array)
         if item_reviewed["appearance"][i - 1].nil? # We've gone through them all
           ["", ""]
         else
           [item_reviewed["appearance"][i - 1]["url"], "CreativeWork"]
         end
-      elsif item_reviewed["appearance"].first.is_a?(String) && i.zero?
+      elsif item_reviewed["appearance"]&.is_a?(String) && i.zero?
         [item_reviewed["appearance"], "CreativeWork"]
       else
         ["", ""]
