@@ -104,9 +104,11 @@ class ClaimReview < ApplicationRecord
 
   sig { returns Array }
   def render_to_csv_line
+    # Prep the structure so the output is correct
     item_reviewed = self.item_reviewed.nil? ? { "author": {}, "appearance": [], "reviewRating": {} }.transform_keys(&:to_s) : self.item_reviewed
     item_reviewed["author"] = {} if item_reviewed["author"].nil?
     item_reviewed["firstAppearance"] = {} if item_reviewed["firstAppearance"].nil?
+    review_rating = self.review_rating.nil? ? {} : self.review_rating
 
     # Fix formatting... again
     if item_reviewed["firstAppearance"].is_a?(Array)
@@ -117,8 +119,10 @@ class ClaimReview < ApplicationRecord
       end
     end
 
-    review_rating = self.review_rating.nil? ? {} : self.review_rating
+    # Hard code @type for first appearance if it exists
+    item_reviewed["firstAppearance"]["@type"] = "CreativeWork" if item_reviewed["firstAppearance"].has_key?("url")
 
+    # Create the input array
     line = ["#{self.id}", "https://schema.org", "ClaimReview", "#{self.claim_reviewed}",
       "#{self.date_published}", "#{self.url}", "#{self.author["@type"]}",
       "#{self.author["name"]}", "#{self.author["url"]}", "#{item_reviewed["@type"]}",
@@ -134,7 +138,7 @@ class ClaimReview < ApplicationRecord
       if item_reviewed["appearance"].first.is_a?(Array)
         next if item_reviewed["appearance"][i - 1].nil?
         [item_reviewed["appearance"][i - 1]["url"],
-         item_reviewed["appearance"][i - 1]["@type"]]
+         "CreativeWork"]
       elsif item_reviewed["appearance"].first.is_a?(String)
         [item_reviewed["appearance"], ""]
       else
