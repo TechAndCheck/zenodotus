@@ -146,7 +146,7 @@ class ClaimReview < ApplicationRecord
         [item_reviewed["appearance"][i - 1]["url"],
          "CreativeWork"]
       elsif item_reviewed["appearance"].first.is_a?(String)
-        [item_reviewed["appearance"], ""]
+        [item_reviewed["appearance"], "CreativeWork"]
       else
         []
       end
