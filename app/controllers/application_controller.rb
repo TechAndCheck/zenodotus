@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   def index
     if site_is_fact_check_insights?
       claim_review_count = ClaimReview.count
-      organization_count = ClaimReview.distinct.count(:author)
+      organization_count = FactCheckOrganization.count
 
       # This following number has to be manually updated since there's no data anywhere that
       # represents the country of the fact checker.
