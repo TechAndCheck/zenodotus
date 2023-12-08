@@ -211,7 +211,7 @@ class MediaReview < ApplicationRecord
 
   sig { returns Array }
   def render_to_csv_line
-    ["#{self.id}", "https://schema.org", "MediaReview", "#{self.date_published}", "#{self.media_authenticity_category}",
+    ["#{self.id}", "https://schema.org", "MediaReview", "#{self.date_published}", "#{self.media_authenticity_category_humanized}",
       "#{self.original_media_context_description}", "#{self.original_media_link}", "#{self.url}", "#{self.author["@type"]}",
       "#{self.author["name"]}", "#{self.author["url"]}", "#{self.item_reviewed["contentUrl"]}", "#{self.item_reviewed["startTime"]}",
       "#{self.item_reviewed["endTime"]}", "#{self.item_reviewed["@type"]}"]
