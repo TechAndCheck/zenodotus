@@ -8,11 +8,14 @@ namespace :fact_check_organization_fix do
       next if claim_review.claim_review_author.present?
 
       fact_check_organization = claim_review.fact_check_organization_for_author_from_url(claim_review.author["url"])
-
-      Rails.logger.info("no org found for #{claim_review.author['url']}") if fact_check_organization.nil?
       next if fact_check_organization.nil?
 
-      claim_review.update!(claim_review_author: fact_check_organization)
+      begin
+        claim_review.update!(claim_review_author: fact_check_organization)
+      rescue Exception => e
+        Rails.logger.info("Error saving claim review #{claim_review.id} - #{e.inspect}")
+      end
+
       Rails.logger.info "Error saving org #{host})" unless claim_review.valid?
     end
 
