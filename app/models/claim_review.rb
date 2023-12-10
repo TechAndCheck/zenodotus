@@ -145,7 +145,11 @@ class ClaimReview < ApplicationRecord
         if item_reviewed["appearance"][i - 1].nil? # We've gone through them all
           ["", ""]
         else
-          [item_reviewed["appearance"][i - 1]["url"], "CreativeWork"]
+          if item_reviewed["appearance"][i - 1].is_a?(String)
+            [item_reviewed["appearance"][i - 1], "CreativeWork"]
+          elsif item_reviewed["appearance"][i - 1].is_a?(Hash)
+            [item_reviewed["appearance"][i - 1]["url"], "CreativeWork"]
+          end
         end
       elsif item_reviewed["appearance"]&.is_a?(String) && i.zero?
         [item_reviewed["appearance"], "CreativeWork"]
