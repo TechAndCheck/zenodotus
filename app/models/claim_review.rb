@@ -22,7 +22,7 @@ class ClaimReview < ApplicationRecord
     end
   end
 
-  sig { params(url: String).returns(T.nlable(FactCheckOrganization)) }
+  sig { params(url: String).returns(T.nilable(FactCheckOrganization)) }
   def fact_check_organization_for_author_from_url(url)
     # See if there's a ClaimReviewAuthor already
     begin
