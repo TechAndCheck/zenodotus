@@ -12,18 +12,7 @@ class ClaimReview < ApplicationRecord
   validate :claim_review_author_must_be_recognized
 
   before_validation do |claim_review|
-    # See if there's a ClaimReviewAuthor already
-    begin
-      host = URI.parse(claim_review.author["url"]).host
-    rescue URI::InvalidURIError
-      host = URI.parse("https://#{claim_review.author["url"]}").host
-    end
-
-    # Adjust so we add `www` to the front of a bare host
-    adjusted_host = "www.#{host}" if host.split(".").count == 2
-
-    matching_hosts = FactCheckOrganization.where(host_name: [host, adjusted_host]).order(:name)
-    self.claim_review_author = matching_hosts.first unless matching_hosts.empty?
+    self.claim_review_author = self.fact_check_organization_for_author_from_url(claim_review.author["url"])
   end
 
   def claim_review_author_must_be_recognized
@@ -31,6 +20,22 @@ class ClaimReview < ApplicationRecord
     if self.claim_review_author.nil?
       errors.add(:claim_review_author, "must be created by a recognized Fact Check Organization")
     end
+  end
+
+  sig { params(url: String).returns(T.nlable(FactCheckOrganization)) }
+  def fact_check_organization_for_author_from_url(url)
+    # See if there's a ClaimReviewAuthor already
+    begin
+      host = URI.parse(url).host
+    rescue URI::InvalidURIError
+      host = URI.parse("https://#{url}").host
+    end
+
+    # Adjust so we add `www` to the front of a bare host
+    adjusted_host = "www.#{host}" if host.split(".").count == 2
+
+    matching_hosts = FactCheckOrganization.where(host_name: [host, adjusted_host]).order(:name)
+    matching_hosts.first unless matching_hosts.empty?
   end
 
   before_create do |claim_review|
