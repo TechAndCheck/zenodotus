@@ -10,7 +10,7 @@ namespace :fact_check_organization_fix do
       fact_check_organization = claim_review.fact_check_organization_for_author_from_url(claim_review.author["url"])
       next if fact_check_organization.nil?
 
-      claim_review.update(claim_review_author: fact_check_organization)
+      claim_review.update!(claim_review_author: fact_check_organization)
       Rails.logger.info "Error saving org #{host})" unless claim_review.valid?
     end
 
