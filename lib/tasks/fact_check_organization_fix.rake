@@ -11,6 +11,7 @@ namespace :fact_check_organization_fix do
       next if fact_check_organization.nil?
 
       begin
+        Rails.logger.info "Updating claim review #{claim_review.id} with org #{fact_check_organization.name}: #{fact_check_organization.id}"
         claim_review.update!(claim_review_author: fact_check_organization)
       rescue Exception => e
         Rails.logger.info("Error saving claim review #{claim_review.id} - #{e.inspect}")
