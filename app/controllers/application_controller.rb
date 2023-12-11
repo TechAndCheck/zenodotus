@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   def index
     if site_is_fact_check_insights?
       claim_review_count = ClaimReview.count
-      organization_count = FactCheckOrganization.count
+      organization_count = FactCheckOrganization.where("(SELECT COUNT(*) FROM claim_reviews WHERE claim_reviews.claim_review_author_id = fact_check_organizations.id) > 0").count
 
       # This following number has to be manually updated since there's no data anywhere that
       # represents the country of the fact checker.
