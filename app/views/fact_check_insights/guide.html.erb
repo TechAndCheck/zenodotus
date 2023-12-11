@@ -44,84 +44,83 @@
 </div>
 
 <style>
-  /* Styling for schema table */
   .tabs {
     overflow: hidden;
     border: 1px solid #ccc;
     background-color: #f1f1f1;
-    display: inline-block;
     margin-top: 20px;
+    display: flex;
+    justify-content: center; 
+    width: fit-content; 
+    margin: 0 auto; 
+    margin-bottom: 20px;
   }
 
-
   .tablink {
-    float: left;
-    display: block;
-    color: #333;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-weight: bold;
-    cursor: pointer;
-    border-right: 1px solid #ccc;
+   display: inline-block;
+   color: #333;
+   text-align: center;
+   padding: 14px 16px;
+   text-decoration: none;
+   font-weight: bold;
+   cursor: pointer;
+   border-right: 1px solid #ccc;
   }
 
   .tablink:hover {
-    background-color: #ddd;
+   background-color: #ddd;
   }
 
-.tabcontent {
-  display: none;
-  padding: 20px;
-  border: 1px solid #ccc;
-}
+  .tabcontent {
+   display: none;
+   padding: 20px;
+   border: 1px solid #ccc;
+  }
 
-.tabcontent.active {
-  border-top: 1px solid #ccc;
-}
-
+  .tabcontent.active {
+   border-top: 1px solid #ccc;
+  }
 
   .table-container {
-    overflow-x: auto;
-    margin-top: 20px;
-    display: none; /* Initially hide tables */
+   overflow-x: auto;
+   margin-top: 20px;
   }
 
   table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
+   width: 100%;
+   border-collapse: collapse;
+   table-layout: fixed;
   }
 
-
   th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-    word-wrap: break-word;
+   border: 1px solid #ddd;
+   padding: 8px;
+   text-align: left;
+   word-wrap: break-word;
   }
 
   th {
-    background-color: #f2f2f2;
+   background-color: #f2f2f2;
   }
 
   tr:nth-child(even) {
-    background-color: #f9f9f9;
+   background-color: #f9f9f9;
   }
 
   tr:hover {
-    background-color: #f1f1f1;
+   background-color: #f1f1f1;
   }
 
   .active {
-    background-color: #ccc;
+   background-color: #ccc;
   }
+
   @media only screen and (max-width: 600px) {
-    th, td {
-      white-space: normal;
-    }
+   th, td {
+    white-space: normal;
+   }
   }
-}
+
 </style>
 
 <script>
@@ -145,7 +144,6 @@
       selectedTab.style.display = "block";
       document.querySelector('.tablink[data-tab="' + tabName + '"]').classList.add("active");
 
-      // Additional logic to show tables based on the selected tab
       if (tabName === 'json') {
         document.querySelector('.table-container[data-tab="json-claim-review"]').style.display = 'block';
         document.querySelector('.table-container[data-tab="json-media-review"]').style.display = 'block';
@@ -492,7 +490,7 @@
           </tr>
           <tr>
           <td>mediaAuthenticityCategory</td>
-          <td>The fact-checker&#39;s conclusion about whether the media was manipulated, ranging from &quot;Original&quot; to &quot;Transformed&quot; (More detail)</td>
+          <td>The fact-checker&#39;s conclusion about whether the media was manipulated, ranging from &quot;Original&quot; to &quot;Transformed&quot; (<a href="https://www.claimreviewproject.com/mediareview/definitions-and-examples">More detail</a>)</td>
           <td>Transformed</td>
           </tr>
           <tr>
@@ -599,12 +597,12 @@
           </tr>
           <tr>
           <td>reviewRating.ratingValue</td>
-          <td>An optional numerical value assigned to a fact-checker&#39;s rating. Not standardized. (Note:<br/>1.) The ClaimReview schema specifies the use of an integer for the ratingValue, worstRating and bestRating fields.<br/>2.) For organziations that use ratings scales (such as PolitiFact), if the rating chosen falls on the scale, the numerical rating will appear in the ratingValue field.<br/>3.) If the rating isn‚Äôt on the scale (ratings that use custom text, or special categories like Flip Flops), the ratingValue field will be empty, but worstRating and bestRating will still appear.<br/>4.) For organizations that don‚Äôt use ratings that fall on a numerical scale, all three fields will be blank.)</td>
+          <td>An optional numerical value assigned to a fact-checker&#39;s rating. Not standardized. (Note:<br/>1.) The ClaimReview schema specifies the use of an integer for the ratingValue, worstRating and bestRating fields.<br/>2.) For organziations that use ratings scales (such as PolitiFact), if the rating chosen falls on the scale, the numerical rating will appear in the ratingValue field.<br/>3.) If the rating isn't on the scale (ratings that use custom text, or special categories like Flip Flops), the ratingValue field will be empty, but worstRating and bestRating will still appear.<br/>4.) For organizations that don't use ratings that fall on a numerical scale, all three fields will be blank.)</td>
           <td>8</td>
           </tr>
           <tr>
           <td>reviewRating.alternateName</td>
-          <td>The fact-checker&#39;s conclusion about the accuracy of the claim in text form ‚Äî either a rating, like &quot;Half True,&quot; or a short summary, like &quot;No evidence&quot;</td>
+          <td>The fact-checker&#39;s conclusion about the accuracy of the claim in text form — either a rating, like &quot;Half True,&quot; or a short summary, like &quot;No evidence&quot;</td>
           <td>Mostly True</td>
           </tr>
           <tr>
@@ -709,7 +707,7 @@
           </tr>
           <tr>
           <td>mediaAuthenticityCategory</td>
-          <td>The fact-checker&#39;s conclusion about whether the media was manipulated, ranging from &quot;Original&quot; to &quot;Transformed&quot; (More detail)</td>
+          <td>The fact-checker&#39;s conclusion about whether the media was manipulated, ranging from &quot;Original&quot; to &quot;Transformed&quot; (<a href="https://www.claimreviewproject.com/mediareview/definitions-and-examples">More detail</a>)</td>
           <td>Transformed</td>
           </tr>
           <tr>
