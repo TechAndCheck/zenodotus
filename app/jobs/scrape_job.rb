@@ -16,7 +16,7 @@ class ScrapeJob < ApplicationJob
     ActionCable.server.broadcast("jobs_channel", { jobs_count: Sidekiq::Queue.new.size })
   end
 
-  def perform(scrape, start_url: nil, scrapable_site: nil, links_visited: nil, link_stack: nil, backoff_time: 0)
+  def perform(scrape)
     puts "Beginning to scrape #{scrape.url} @ #{Time.now}"
     scrape.perform
 

@@ -30,7 +30,7 @@ class Scrape < ApplicationRecord
   # Make the call to Hypatia, the return should be { success: "true" } after parsing
   # This does it synchronously. If you're calling this you probably mean to call `enqueue`
   sig { returns(Hash) }
-  def perform(start_url: nil, scrapable_site: nil, links_visited: nil, link_stack: nil, backoff_time: 0)
+  def perform
     params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: self.url, callback_id: self.id }
 
     # Move this to the Scrape model so they're easily resubmittable
@@ -43,7 +43,7 @@ class Scrape < ApplicationRecord
     json_error_response = JSON.parse(response.body)
     if response.code != 200
       if response.code == 400 && json_error_response.nil? == false && json_error_response["code"] == 10
-        logger.debug("Marking: #{self.url} as removed. 🦕")
+        logger.info("Marking: #{self.url} as removed. 🦕")
         # The url is not valid, so we should mark it as removed
         self.fulfill([{ status: "removed" }])
         # We don't raise because we don't want it to retry.
