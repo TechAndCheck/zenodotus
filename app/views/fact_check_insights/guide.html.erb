@@ -27,7 +27,7 @@
 		<div class="lg:mx-auto lg:max-w-xl">
 			<h2>MediaReview: Fact-checking images, video, and more</h2>
 			<p class="b2">MediaReview is a sibling to ClaimReview that allows fact-checkers to share their assessment of whether a given image, video, meme or other piece of media has been manipulated. It is typically used in conjunction with ClaimReview.</p>
-			<p class="b3">Fact-checking organizations interested in tagging their articles with ClaimReview can visit <%= link_to "The ClaimReview Project", "https://www.claimreviewproject.com/" %> website for more information about getting started.</p>
+			<p class="b3">Fact-checking organizations interested in tagging their articles with ClaimReview and MediaReview can visit <%= link_to "The ClaimReview Project", "https://www.claimreviewproject.com/" %> website for more information about getting started.</p>
 		</div>
 	</div>
 </div>
@@ -43,15 +43,728 @@
 	</div>
 </div>
 
-<div id="section--schema" class="py-10 lg:py-20">
-	<div class="max-w-2xl mx-auto b2">
-		<h2>What you can expect when you download the data</h2>
-		<p>The Fact-Check Insights dataset is available for download as JSON (one file) and CSV (multiple files).</p>
-		<p>Not every fact-check will contain data for every field, but the main components are:</p>
-	</div>
+<style>
+  .tabs {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center; 
+    width: fit-content; 
+    margin: 0 auto; 
+    margin-bottom: 20px;
+		margin-top: 20px;
+  }
 
-	<div class="alert">Detail coming soon…</div>
-	<!-- Table here -->
+  .tablink {
+   display: inline-block;
+   color: #333;
+   text-align: center;
+   padding: 14px 16px;
+   text-decoration: none;
+   font-weight: bold;
+   cursor: pointer;
+   border-right: 1px solid #ccc;
+  }
+
+  .tablink:hover {
+   background-color: #ddd;
+  }
+
+  .tabcontent {
+   display: none;
+   padding: 20px;
+   border: 1px solid #ccc;
+  }
+
+  .tabcontent.active {
+   border-top: 1px solid #ccc;
+  }
+
+  .table-container {
+   overflow-x: auto;
+   margin-top: 20px;
+  }
+
+  table {
+   width: 100%;
+   border-collapse: collapse;
+   table-layout: fixed;
+  }
+
+  th, td {
+   border: 1px solid #ddd;
+   padding: 8px;
+   text-align: left;
+   word-wrap: break-word;
+  }
+
+  th {
+   background-color: #f2f2f2;
+  }
+
+  tr:nth-child(even) {
+   background-color: #f9f9f9;
+  }
+
+  tr:hover {
+   background-color: #f1f1f1;
+  }
+
+  .active {
+   background-color: #ccc;
+  }
+
+  @media only screen and (max-width: 600px) {
+   th, td {
+    white-space: normal;
+   }
+  }
+
+</style>
+
+<script>
+  function toggleTab(tabName) {
+    var selectedTab = document.getElementById(tabName);
+    
+    if (selectedTab.style.display === "block") {
+      selectedTab.style.display = "none";
+      document.querySelector('.tablink[data-tab="' + tabName + '"]').classList.remove("active");
+    } else {
+      var tabcontent = document.getElementsByClassName("tabcontent");
+      for (var i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+
+      var tablinks = document.getElementsByClassName("tablink");
+      for (var i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+      }
+
+      selectedTab.style.display = "block";
+      document.querySelector('.tablink[data-tab="' + tabName + '"]').classList.add("active");
+
+      if (tabName === 'json') {
+        document.querySelector('.table-container[data-tab="json-claim-review"]').style.display = 'block';
+        document.querySelector('.table-container[data-tab="json-media-review"]').style.display = 'block';
+      } else if (tabName === 'csv') {
+        document.querySelector('.table-container[data-tab="csv-claim-review"]').style.display = 'block';
+        document.querySelector('.table-container[data-tab="csv-media-review"]').style.display = 'block';
+      }
+    }
+  }
+</script>
+
+<div id="section--schema" class="py-10 lg:py-20">
+  <div class="max-w-2xl mx-auto b2">
+    <h2>What you can expect when you download the data</h2>
+    <p>The Fact-Check Insights dataset is available for download as JSON (one file) and CSV (multiple files).</p>
+    <p>Not every fact-check will contain data for every field, but the main components are (click a tab to expand):</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tablink" onclick="toggleTab('json')" data-tab="json">JSON</button>
+    <button class="tablink" onclick="toggleTab('csv')" data-tab="csv">CSV</button>
+  </div>
+
+  <div id="json" class="tabcontent">
+    <div class="table-container" data-tab="json-claim-review">
+      <h4>ClaimReview</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>JSON Key</th>
+            <th>Description</th>
+            <th>Example Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+          <td>id</td>
+          <td>Unique ID for each ClaimReview entry</td>
+          <td>6c4f3a30-2ec1-4e2e-9b57-41ad876223e5</td>
+          </tr>
+          <tr>
+          <td>@context</td>
+          <td>Link to schema.org, the home of ClaimReview</td>
+          <td>https://schema.org</td>
+          </tr>
+          <tr>
+          <td>@type</td>
+          <td>Type of schema being used</td>
+          <td>ClaimReview</td>
+          </tr>
+          <tr>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>author</td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>@type</td>
+          <td>Type of author</td>
+          <td>Organization</td>
+          </tr>
+          <tr>
+          <td>name</td>
+          <td>The name of the fact-checking organization that submitted the fact-check</td>
+          <td>PolitiFact </td>
+          </tr>
+          <tr>
+          <td>url</td>
+          <td>The main URL of the fact-checking organization</td>
+          <td>http://www.politifact.com</td>
+          </tr>
+          <tr>
+          <td>image</td>
+          <td>The logo of the fact-checking organization</td>
+          <td>https://d10r9aj6omusou.cloudfront.net/factstream-logo-image-61554e34-b525-4723-b7ae-d1860eaa2296.png</td>
+          </tr>
+          <tr>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>claimReviewed</td>
+          <td>The claim/statement that was assessed by the fact-checker</td>
+          <td>Marsha Blackburn &quot;voted against the Reauthorization of the Violence Against Women Act, which attempts to protect women from domestic violence, stalking, and date rape.&quot;</td>
+          </tr>
+          <tr>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>datePublished</td>
+          <td>The date the fact-check article was published</td>
+          <td>2018-10-09</td>
+          </tr>
+          <tr>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>itemReviewed</td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>@type</td>
+          <td>Type of item reviewed</td>
+          <td>Claim</td>
+          </tr>
+          <tr>
+          <td>datePublished</td>
+          <td>The date the claim was made</td>
+          <td>2018-10-07</td>
+          </tr>
+          <tr>
+          <td>name</td>
+          <td>The location where the claim was made</td>
+          <td>in an Instagram post</td>
+          </tr>
+          <tr>
+          <td>appearance</td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>url</td>
+          <td>A URL where the claim appeared</td>
+          <td>https://www.instagram.com/p/BopoXpYnCes/?hl=en</td>
+          </tr>
+          <tr>
+          <td>@type</td>
+          <td>Type of content being referenced</td>
+          <td>Creative Work</td>
+          </tr>
+          <tr>
+          <td>firstAppearance</td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>url</td>
+          <td>The URL of the first known appearance of the claim</td>
+          <td>https://www.instagram.com/p/BopoXpYnCes/?hl=en</td>
+          </tr>
+          <tr>
+          <td>@type</td>
+          <td>Type of content being referenced</td>
+          <td>Creative Work</td>
+          </tr>
+          <tr>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>author</td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>@type</td>
+          <td>Type of speaker</td>
+          <td>Person</td>
+          </tr>
+          <tr>
+          <td>name</td>
+          <td>The person or group that made the claim that was assessed by the fact-checker</td>
+          <td>Taylor Swift</td>
+          </tr>
+          <tr>
+          <td>jobTitle</td>
+          <td>A title or description of the person or group that made the claim</td>
+          <td>Mega pop star</td>
+          </tr>
+          <tr>
+          <td>image</td>
+          <td>An image of the person or group that made the claim</td>
+          <td>https://static.politifact.com/CACHE/images/politifact/mugs/taylor_swift_mug/03dfe1b483ec8a57b6fe18297ce7f9fd.jpg</td>
+          </tr>
+          <tr>
+          <td>sameAs</td>
+          <td>URLs that help establish the identity of the person or group that made the claim, such as a Wikipedia page (rarely used)</td>
+          <td>https://www.taylorswift.com/</td>
+          </tr>
+          <tr>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>reviewRating</td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>@type</td>
+          <td>Type of review</td>
+          <td>Rating</td>
+          </tr>
+          <tr>
+          <td>ratingValue</td>
+          <td>An optional numerical value assigned to a fact-checker&#39;s rating. Not standardized. (Note:<br/>1.) The ClaimReview schema specifies the use of an integer for the ratingValue, worstRating and bestRating fields.<br/>2.) For organziations that use ratings scales (such as PolitiFact), if the rating chosen falls on the scale, the numerical rating will appear in the ratingValue field.<br/>3.) If the rating isn’t on the scale (ratings that use custom text, or special categories like Flip Flops), the ratingValue field will be empty, but worstRating and bestRating will still appear.<br/>4.) For organizations that don’t use ratings that fall on a numerical scale, all three fields will be blank.)</td>
+          <td>8</td>
+          </tr>
+          <tr>
+          <td>bestRating</td>
+          <td>An optional numerical value representing what rating a fact-checker would assign to the most accurate content it assesses. See note above.</td>
+          <td>10</td>
+          </tr>
+          <tr>
+          <td>worstRating</td>
+          <td>An optional numerical value representing what rating a fact-checker would assign to the least accurate content it assesses. See note above.</td>
+          <td>0</td>
+          </tr>
+          <tr>
+          <td>ratingExplanation</td>
+          <td>One to two short sentences providing context and information that led to the fact-checker&#39;s conclusion</td>
+          <td>Blackburn voted in favor of a Republican alternative that lacked discrimination protections based on sexual orientation and gender identity. But Blackburn did vote no on the final version that became law.</td>
+          </tr>
+          <tr>
+          <td>image</td>
+          <td>An image representing the fact-checker&#39;s rating, such as the Truth-O-Meter</td>
+          <td>https://static.politifact.com/politifact/rulings/meter-mostly-true.jpg</td>
+          </tr>
+          <tr>
+          <td>alternateName</td>
+          <td>The fact-checker&#39;s conclusion about the accuracy of the claim in text form — either a rating, like &quot;Half True,&quot; or a short summary, like &quot;No evidence&quot;</td>
+          <td>Mostly True</td>
+          </tr>
+          <tr>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>url</td>
+          <td>The URL of the fact-check article</td>
+          <td>https://www.politifact.com/truth-o-meter/statements/2018/oct/09/taylor-swift/taylor-swift-marsha-blackburn-voted-against-reauth/</td>
+          </tr>
+       </tbody>
+      </table>
+    </div>
+    <div class="table-container" data-tab="json-media-review">
+      <h4>MediaReview</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>JSON Key</th>
+            <th>Description</th>
+            <th>Example Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+          <td>id</td>
+          <td>Unique ID for each MediaReview entry</td>
+          <td>2bfe531d-ff53-40f5-8114-a819db22ca8b</td>
+          </tr>
+          <tr>
+          <td>@context</td>
+          <td>Link to schema.org, the home of MediaReview</td>
+          <td>https://schema.org</td>
+          </tr>
+          <tr>
+          <td>@type</td>
+          <td> </td>
+          <td>MediaReview</td>
+          </tr>
+          <tr>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>author</td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>@type</td>
+          <td>Type of author</td>
+          <td>Organization</td>
+          </tr>
+          <tr>
+          <td>name</td>
+          <td>The name of the fact-checking organization</td>
+          <td>PolitiFact</td>
+          </tr>
+          <tr>
+          <td>url</td>
+          <td>The URL of the fact-checking organization</td>
+          <td>http://www.politifact.com</td>
+          </tr>
+          <tr>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>datePublished</td>
+          <td>The date the fact-check article was published</td>
+          <td>2020-07-02</td>
+          </tr>
+          <tr>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>itemReviewed</td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>contentUrl</td>
+          <td>The URL of the post containing the media that was fact-checked</td>
+          <td>https://www.facebook.com/photo.php?fbid=10223714143346243&amp;set=a.3020234149519&amp;type=3&amp;theater</td>
+          </tr>
+          <tr>
+          <td>startTime</td>
+          <td>Timestamp of video edit (in HH:MM:SS format)</td>
+          <td>0:01:00</td>
+          </tr>
+          <tr>
+          <td>endTime</td>
+          <td>Ending timestamp of video edit, if applicable (in HH:MM:SS format)</td>
+          <td>0:02:00</td>
+          </tr>
+          <tr>
+          <td>@type </td>
+          <td>Type of media reviewed</td>
+          <td>ImageObject / VideoObject / AudioObject</td>
+          </tr>
+          <tr>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          </tr>
+          <tr>
+          <td>mediaAuthenticityCategory</td>
+          <td>The fact-checker&#39;s conclusion about whether the media was manipulated, ranging from &quot;Original&quot; to &quot;Transformed&quot; (<a href="https://www.claimreviewproject.com/mediareview/definitions-and-examples">More detail</a>)</td>
+          <td>Transformed</td>
+          </tr>
+          <tr>
+          <td>originalMediaContextDescription</td>
+          <td>A short sentence explaining the original context if media is used out of context</td>
+          <td>In this case, there was no original context. But this is a text field.</td>
+          </tr>
+          <tr>
+          <td>originalMediaLink</td>
+          <td>Link to the original, non-manipulated version of the media (if available)</td>
+          <td>https://example.com/</td>
+          </tr>
+          <tr>
+          <td>url</td>
+          <td>The URL of the fact-check article that assesses a piece of media</td>
+          <td>https://www.politifact.com/factchecks/2020/jul/02/facebook-posts/no-taylor-swift-didnt-say-we-should-remove-statue-/</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="csv" class="tabcontent">
+    <div class="table-container" data-tab="csv-claim-review">
+      <h4>ClaimReview</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>CSV Key</th>
+            <th>Description</th>
+            <th>Example Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+          <td>id</td>
+          <td>Unique ID for each ClaimReview entry</td>
+          <td>6c4f3a30-2ec1-4e2e-9b57-41ad876223e5</td>
+          </tr>
+          <tr>
+          <td>@context</td>
+          <td>Link to schema.org, the home of ClaimReview</td>
+          <td>https://schema.org</td>
+          </tr>
+          <tr>
+          <td>@type</td>
+          <td>Type of schema being used</td>
+          <td>ClaimReview</td>
+          </tr>
+          <tr>
+          <td>claimReviewed</td>
+          <td>The claim/statement that was assessed by the fact-checker</td>
+          <td>Marsha Blackburn &quot;voted against the Reauthorization of the Violence Against Women Act, which attempts to protect women from domestic violence, stalking, and date rape.&quot;</td>
+          </tr>
+          <tr>
+          <td>datePublished</td>
+          <td>The date the fact-check article was published</td>
+          <td>10/9/18</td>
+          </tr>
+          <tr>
+          <td>url</td>
+          <td>The URL of the fact-check article</td>
+          <td>https://www.politifact.com/truth-o-meter/statements/2018/oct/09/taylor-swift/taylor-swift-marsha-blackburn-voted-against-reauth/</td>
+          </tr>
+          <tr>
+          <td>author.@type</td>
+          <td>Type of author</td>
+          <td>Organization</td>
+          </tr>
+          <tr>
+          <td>author.name</td>
+          <td>The name of the fact-checking organization that submitted the fact-check</td>
+          <td>PolitiFact</td>
+          </tr>
+          <tr>
+          <td>author.url</td>
+          <td>The main URL of the fact-checking organization</td>
+          <td>http://www.politifact.com</td>
+          </tr>
+          <tr>
+          <td>itemReviewed.@type</td>
+          <td>Type of item reviewed</td>
+          <td>Claim</td>
+          </tr>
+          <tr>
+          <td>itemReviewed.author.name</td>
+          <td>The person or group that made the claim that was assessed by the fact-checker</td>
+          <td>Taylor Swift</td>
+          </tr>
+          <tr>
+          <td>itemReviewed.author.@type</td>
+          <td>Type of speaker</td>
+          <td>Person</td>
+          </tr>
+          <tr>
+          <td>itemReviewed.author.sameAs</td>
+          <td>URLs that help establish the identity of the person or group that made the claim, such as a Wikipedia page (rarely used)</td>
+          <td>https://www.taylorswift.com/</td>
+          </tr>
+          <tr>
+          <td>reviewRating.@type</td>
+          <td>Type of review</td>
+          <td>Rating</td>
+          </tr>
+          <tr>
+          <td>reviewRating.ratingValue</td>
+          <td>An optional numerical value assigned to a fact-checker&#39;s rating. Not standardized. (Note:<br/>1.) The ClaimReview schema specifies the use of an integer for the ratingValue, worstRating and bestRating fields.<br/>2.) For organziations that use ratings scales (such as PolitiFact), if the rating chosen falls on the scale, the numerical rating will appear in the ratingValue field.<br/>3.) If the rating isn't on the scale (ratings that use custom text, or special categories like Flip Flops), the ratingValue field will be empty, but worstRating and bestRating will still appear.<br/>4.) For organizations that don't use ratings that fall on a numerical scale, all three fields will be blank.)</td>
+          <td>8</td>
+          </tr>
+          <tr>
+          <td>reviewRating.alternateName</td>
+          <td>The fact-checker&#39;s conclusion about the accuracy of the claim in text form — either a rating, like &quot;Half True,&quot; or a short summary, like &quot;No evidence&quot;</td>
+          <td>Mostly True</td>
+          </tr>
+          <tr>
+          <td>author.image</td>
+          <td>The logo of the fact-checking organization</td>
+          <td>https://d10r9aj6omusou.cloudfront.net/factstream-logo-image-61554e34-b525-4723-b7ae-d1860eaa2296.png</td>
+          </tr>
+          <tr>
+          <td>itemReviewed.name</td>
+          <td>The location where the claim was made</td>
+          <td>in an Instagram post</td>
+          </tr>
+          <tr>
+          <td>itemReviewed.datePublished</td>
+          <td>The date the claim was made</td>
+          <td>10/7/18</td>
+          </tr>
+          <tr>
+          <td>itemReviewed.firstAppearance.url</td>
+          <td>The URL of the first known appearance of the claim</td>
+          <td>https://www.instagram.com/p/BopoXpYnCes/?hl=en</td>
+          </tr>
+          <tr>
+          <td>itemReviewed.firstAppearance.type</td>
+          <td>Type of content being referenced</td>
+          <td>Creative Work</td>
+          </tr>
+          <tr>
+          <td>itemReviewed.author.image</td>
+          <td>An image of the person or group that made the claim</td>
+          <td>https://static.politifact.com/CACHE/images/politifact/mugs/taylor_swift_mug/03dfe1b483ec8a57b6fe18297ce7f9fd.jpg</td>
+          </tr>
+          <tr>
+          <td>reviewRating.ratingExplanation</td>
+          <td>One to two short sentences providing context and information that led to the fact-checker&#39;s conclusion</td>
+          <td>Blackburn voted in favor of a Republican alternative that lacked discrimination protections based on sexual orientation and gender identity. But Blackburn did vote no on the final version that became law.</td>
+          </tr>
+          <tr>
+          <td>itemReviewed.author.jobTitle</td>
+          <td>A title or description of the person or group that made the claim</td>
+          <td>Mega pop star</td>
+          </tr>
+          <tr>
+          <td>reviewRating.bestRating</td>
+          <td>An optional numerical value representing what rating a fact-checker would assign to the most accurate content it assesses. See note on &quot;reviewRating.ratingValue&quot; field above.</td>
+          <td>10</td>
+          </tr>
+          <tr>
+          <td>reviewRating.worstRating</td>
+          <td>An optional numerical value representing what rating a fact-checker would assign to the least accurate content it assesses. See note on &quot;reviewRating.ratingValue&quot; field above.</td>
+          <td>0</td>
+          </tr>
+          <tr>
+          <td>reviewRating.image</td>
+          <td>An image representing the fact-checker&#39;s rating, such as the Truth-O-Meter</td>
+          <td>https://static.politifact.com/politifact/rulings/meter-mostly-true.jpg</td>
+          </tr>
+          <tr>
+          <td>itemReviewed.appearance.1.url to itemReviewed.appearance.15.url</td>
+          <td>A URL where the claim appeared. This field has been limited to the first 15 URLs submitted for the stability of the CSV. See the JSON download for complete &quot;appearance&quot; data.</td>
+          <td>https://www.instagram.com/p/BopoXpYnCes/?hl=en</td>
+          </tr>
+          <tr>
+          <td>itemReviewed.appearance.1.@type to itemReviewed.appearance.15.@type</td>
+          <td>Type of content being referenced</td>
+          <td>CreativeWork</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-container" data-tab="csv-media-review">
+      <h4>MediaReview</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>CSV Key</th>
+            <th>Description</th>
+            <th>Example Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+          <td>id</td>
+          <td>Unique ID for each MediaReview entry</td>
+          <td>2bfe531d-ff53-40f5-8114-a819db22ca8b</td>
+          </tr>
+          <tr>
+          <td>@context</td>
+          <td>Link to schema.org, the home of MediaReview</td>
+          <td>https://schema.org</td>
+          </tr>
+          <tr>
+          <td>@type</td>
+          <td>Type of schema being used</td>
+          <td>MediaReview</td>
+          </tr>
+          <tr>
+          <td>datePublished</td>
+          <td>The date the fact-check article was published</td>
+          <td>2020-07-02</td>
+          </tr>
+          <tr>
+          <td>mediaAuthenticityCategory</td>
+          <td>The fact-checker&#39;s conclusion about whether the media was manipulated, ranging from &quot;Original&quot; to &quot;Transformed&quot; (<a href="https://www.claimreviewproject.com/mediareview/definitions-and-examples">More detail</a>)</td>
+          <td>Transformed</td>
+          </tr>
+          <tr>
+          <td>originalMediaContextDescription</td>
+          <td>A short sentence explaining the original context if media is used out of context</td>
+          <td>In this case, there was no original context. But this is a text field.</td>
+          </tr>
+          <tr>
+          <td>originalMediaLink</td>
+          <td>Link to the original, non-manipulated version of the media (if available)</td>
+          <td>https://example.com/</td>
+          </tr>
+          <tr>
+          <td>url</td>
+          <td>The URL of the fact-check article that assesses a piece of media</td>
+          <td>https://www.politifact.com/factchecks/2020/jul/02/facebook-posts/no-taylor-swift-didnt-say-we-should-remove-statue-/</td>
+          </tr>
+          <tr>
+          <td>author.@type</td>
+          <td>Type of author</td>
+          <td>Organization</td>
+          </tr>
+          <tr>
+          <td>author.name</td>
+          <td>The name of the fact-checking organization</td>
+          <td>PolitiFact</td>
+          </tr>
+          <tr>
+          <td>author.url</td>
+          <td>The URL of the fact-checking organization</td>
+          <td>http://www.politifact.com</td>
+          </tr>
+          <tr>
+          <td>itemReviewed.contentUrl</td>
+          <td>The URL of the post containing the media that was fact-checked</td>
+          <td>https://www.facebook.com/photo.php?fbid=10223714143346243&amp;set=a.3020234149519&amp;type=3&amp;theater</td>
+          </tr>
+          <tr>
+          <td>itemReviewed.startTime</td>
+          <td>Timestamp of video edit (in HH:MM:SS format)</td>
+          <td>0:01:00</td>
+          </tr>
+          <tr>
+          <td>itemReviewed.endTime</td>
+          <td>Ending timestamp of video edit, if applicable (in HH:MM:SS format)</td>
+          <td>0:02:00</td>
+          </tr>
+          <tr>
+          <td>itemReviewed.@type</td>
+          <td>Type of media being reviewed</td>
+          <td>ImageObject / VideoObject / AudioObject</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 <div id="section--tips" class="full-bleed py-10 lg:py-20">
@@ -68,7 +781,7 @@
 			</li>
 			<li class="tip">
 				<h3 class="h4">A ratings exception</h3>
-				<p>Fact-checkers do use standard ratings for MediaReview, when describing if a fact-checked image, video, audio or meme has been manipulated, and if so, how. Those ratings include “Missing Context,” “Edited,” “Satire/Parody,” and more.</p>
+				<p>Fact-checkers do use <a href="https://www.claimreviewproject.com/mediareview/definitions-and-examples">standard ratings</a> for MediaReview, when describing if a fact-checked image, video, audio or meme has been manipulated, and if so, how. Those ratings include “Missing Context,” “Edited,” “Satire/Parody,” and more.</p>
 			</li>
 			<li class="tip">
 				<h3 class="h4">Duplicates Duplicates</h3>
@@ -84,6 +797,11 @@
 			</li>
 		</ul>
 	</div>
+    <div class="contain">
+      <p></p>
+      &nbsp;
+     <p><em>Note: While we have made small attempts to enhance data clarity where obvious, the content is primarily presented in its original form as submitted by fact-checking organizations. We have made no alterations to the content itself. The dataset reflects the information provided by the original sources, and any discrepancies or variations are a result of the data as submitted by the fact-checkers.</em></p>
+   </div>
 </div>
 
 <%= render partial: "download_cta", locals: {

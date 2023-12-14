@@ -36,7 +36,7 @@
 		</div>
 
 		<div class="lg:flex lg:items-center lg:justify-between lg:gap-20 lg:mb-20 mb-10">
-			<p class="b1 lg:basis-2/4 mb-0">This rich, important dataset grows every day, providing key data about articles from hundreds of fact-checkers around the world, including well-known organizations such as The Washington Post, Africa Check, Boom, Full Fact, Chequeado and Pagella Politica.</p>
+			<p class="b1 lg:basis-2/4 mb-0">This rich, important dataset grows every day, providing key data about articles from fact-checkers around the world, including well-known organizations such as FactCheck.org, PesaCheck, Factly, Full Fact, Chequeado and Pagella Politica.</p>
 			<div class="masked-image masked-image--media-review hidden lg:block lg:basis-2/4 lg:max-w-xl">
 				<%= image_tag "photos/subway.jpg" %>
 			</div>
@@ -113,6 +113,7 @@
 			</div>
 			<div class="lg:basis-2/4 lg:shrink-0 py-10 lg:py-20 pl-0 lg:pl-20">
 				<p class="h4">Visit the <%= link_to "Download the Data", fact_check_insights_download_path %> section for more details and to request access.</p>
+				<p><%= link_to "Download", fact_check_insights_download_path, class: "btn btn--reversed btn--lg" %></p>
 			</div>
 		</div>
 	</div>
