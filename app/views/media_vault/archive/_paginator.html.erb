@@ -1,5 +1,5 @@
 <div class="paginator-bar">
-	<%== pagy_info(@pagy_archive_items, item_name: "post") %>
+	<%== pagy_info(@pagy_archive_items, item_name: "post".pluralize(@pagy_archive_items.count)) %>
 	<%== pagy_nav(@pagy_archive_items) if @pagy_archive_items.pages > 1 %>
 </div>
 
