@@ -8,7 +8,7 @@ class ArchiveItem < ApplicationRecord
   delegate :images, to: :archivable_item
   delegate :videos, to: :archivable_item
 
-  has_one :media_review, dependent: :destroy, foreign_key: :archive_item_id
+  has_one :media_review, dependent: :nullify, foreign_key: :archive_item_id
   has_one :screenshot, dependent: :destroy, foreign_key: :archive_item_id, class_name: "Screenshot"
   accepts_nested_attributes_for :screenshot, allow_destroy: true
   has_many :image_hashes, dependent: :destroy
