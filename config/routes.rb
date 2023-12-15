@@ -12,7 +12,8 @@ Rails.application.routes.draw do
              only: [
                :sessions,
                :confirmations,
-               :registrations
+               :registrations,
+               :passwords
              ],
              controllers: {
                sessions: "users/sessions",
