@@ -224,10 +224,15 @@ class ClaimReviewMech < Mechanize
   end
 
   def extract_schema_review(json_element, link, index)
-    return false unless json_element.is_a?(Hash) && json_element.key?("@type") && json_element["@type"] == "ClaimReview"
+    return false unless is_valid_schema_for_claim_review(json_element)
 
     # Sometimes there's spaces and such in the url, so we get rid of that
     json_element["url"] = json_element["url"].strip
+
+    # Sometimes the url doesn't have the scheme on it, breaking parsing
+    unless json_element["url"].starts_with?("http://") || json_element["url"].starts_with?("http://")
+      json_element["url"] = "https://#{json_element["url"]}" # We're making a big assumption here...
+    end
 
     # Encode the url properly in case there's non-ASCII characters
     json_element["url"] = URI.parse(URI::Parser.new.escape(json_element["url"]))
@@ -295,6 +300,14 @@ class ClaimReviewMech < Mechanize
       link: link,
       json: json_element
     })
+
+    false
+  end
+
+  def is_valid_schema_for_claim_review(json_element)
+    return false unless json_element.is_a?(Hash) && json_element.key?("@type")
+    return true if json_element["@type"].is_a?(String) && json_element["@type"] == "ClaimReview"
+    return true if json_element["@type"].is_a?(Array) && json_element["@type"].include?("ClaimReview")
 
     false
   end
