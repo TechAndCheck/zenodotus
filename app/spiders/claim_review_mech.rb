@@ -1,5 +1,6 @@
 class ClaimReviewMech < Mechanize
   VALID_SCHEMES = ["http", "https"]
+  NUMBER_OF_SCRAPES_WITHOUT_CR_BEFORE_SKIPPING = 50
 
   def process(start_url: nil, scrapable_site: nil, links_visited: nil, link_stack: nil, backoff_time: 0)
     scrapable_site.set_last_run_to_now && scrapable_site.checkin unless scrapable_site.nil?
@@ -22,6 +23,7 @@ class ClaimReviewMech < Mechanize
     log_message("Beginning scraping", :info)
 
     progress_counter = 0 # For status purposes we want to only output logging every 50 links or so
+    links_since_found_claim_review_count = 0 # Stopgap to prevent runaway scrapes
     while link_stack.count.positive? do
       link = link_stack.pop
       links_visited << link
@@ -85,6 +87,12 @@ class ClaimReviewMech < Mechanize
         next
       end
 
+      # Don't add links to the stack queue if we've already hit the limit of pages without links
+      if links_since_found_claim_review_count >= NUMBER_OF_SCRAPES_WITHOUT_CR_BEFORE_SKIPPING
+        links_since_found_claim_review_count = 0
+        next
+      end
+
       # Add all the links on the current page
       begin
         page.links.each do |found_link|
@@ -142,6 +150,8 @@ class ClaimReviewMech < Mechanize
         next
       end
 
+      original_found_claims_count = found_claims_count # To keep track if there's new CR on *this* page
+
       # Check the page for ClaimReview
       script_elements.each do |script_element|
         begin
@@ -194,6 +204,14 @@ class ClaimReviewMech < Mechanize
 
       GC.start if (progress_counter % 50).zero? # We force garbage collection for memory purposes
       progress_counter += 1 # Keep the count up
+
+      if found_claims_count > original_found_claims_count
+        links_since_found_claim_review_count = 0
+      else
+        links_since_found_claim_review_count += 1
+      end
+
+      log_message("#{links_since_found_claim_review_count} pages since we found something")
     end
 
     # Hey! We're done, close up shop
@@ -259,7 +277,7 @@ class ClaimReviewMech < Mechanize
       log_message("Created a claim_review at #{link} with id #{claim_review.id}", :info)
     rescue ClaimReview::DuplicateError
       log_message("Error filing a duplicate ClaimReview at #{link}", :error)
-      return false
+      return true # We still want to return as true so that we keep scraping even if it's in our database
     rescue StandardError => e
       log_message("Error filing a ClaimReview at #{link}", :error)
       log_message(e.full_message, :error)
