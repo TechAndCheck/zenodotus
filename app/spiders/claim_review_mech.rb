@@ -116,6 +116,9 @@ class ClaimReviewMech < Mechanize
           next if found_link.uri.path.ends_with?(".shtml")        # We don't want to follow SHTML files
           next if found_link.uri.fragment.present?                # We don't want to follow links with fragments
 
+          # One off for Teyit, because it's real weird
+          next if !found_link.uri.query.nil? && found_link.uri.query.scan(/25/).length > 3
+
           # Push it onto the stack, rewriting the url if necessary to be full
           url = host.nil? && found_link.href != "#" ? "#{page.uri.scheme}://#{initial_host}#{found_link.href}" : found_link.href
           next if links_visited.include?(url) || link_stack.include?(url) # Make sure we didn't see it yet
@@ -162,7 +165,8 @@ class ClaimReviewMech < Mechanize
         end
 
 
-        # One off for AfricaCheck
+        # debugger if script_element.include?("ClaimReview")
+        # One off for AfricaCheck (nope, there's others it turns outx)
         json = (json.is_a?(Array) ? json : [json]).map do |j|
           if j.has_key?("@graph") && j["@graph"].is_a?(Array)
             j["@graph"].map do |object|
@@ -182,9 +186,19 @@ class ClaimReviewMech < Mechanize
           })
         end
 
-        if json.count.positive? && json.first.is_a?(Array)
-          json = json.first
-        end
+        # Remove this after testing for Africa Check too
+        # json.each do |j|
+        #   # This makes it easier for the code, and we don't really care about memory since it'll
+        #   # be gone after this loop anyways and marked for the GC
+        #   j = [j] if !j.is_a?(Array)
+
+
+
+        # end
+
+        # if json.count.positive? && json.first.is_a?(Array)
+        #   json = json.first # HAAHAHAHA don't do this
+        # end
 
         json.each_with_index do |json_element, index|
           json_element = [json_element] unless json_element.is_a?(Array)
@@ -230,7 +244,7 @@ class ClaimReviewMech < Mechanize
     json_element["url"] = json_element["url"].strip
 
     # Sometimes the url doesn't have the scheme on it, breaking parsing
-    unless json_element["url"].starts_with?("http://") || json_element["url"].starts_with?("http://")
+    unless json_element["url"].starts_with?("http://") || json_element["url"].starts_with?("https://")
       json_element["url"] = "https://#{json_element["url"]}" # We're making a big assumption here...
     end
 
