@@ -116,6 +116,9 @@ class ClaimReviewMech < Mechanize
           next if found_link.uri.path.ends_with?(".shtml")        # We don't want to follow SHTML files
           next if found_link.uri.fragment.present?                # We don't want to follow links with fragments
 
+          # Don't add the same link we're on if there's a link to that for some reason
+          next if found_link.uri.to_s == start_url
+
           # One off for Teyit, because it's real weird
           next if !found_link.uri.query.nil? && found_link.uri.query.scan(/25/).length > 3
 
@@ -260,6 +263,11 @@ class ClaimReviewMech < Mechanize
         "name": "Africa Check",
         "url": "https://africacheck.org"
       }
+    end
+
+    # Occasionally a site will use "publisher" instead of "author", so we want to rename that
+    if (!json_element.key?("author") || json_element["author"].blank?) && (json_element.key?("publisher"))
+      json_element["author"] = json_element["publisher"]
     end
 
     # Rarely the author can be an array, if so we grab the first one
