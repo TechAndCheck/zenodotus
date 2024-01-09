@@ -1,6 +1,6 @@
 class ClaimReviewMech < Mechanize
   VALID_SCHEMES = ["http", "https"]
-  NUMBER_OF_SCRAPES_WITHOUT_CR_BEFORE_SKIPPING = 50
+  NUMBER_OF_SCRAPES_WITHOUT_CR_BEFORE_SKIPPING = 30
 
   def process(start_url: nil, scrapable_site: nil, links_visited: nil, link_stack: nil, backoff_time: 0)
     scrapable_site.set_last_run_to_now && scrapable_site.checkin unless scrapable_site.nil?
