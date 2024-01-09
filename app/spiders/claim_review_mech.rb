@@ -71,7 +71,7 @@ class ClaimReviewMech < Mechanize
       rescue Sidekiq::Shutdown
         log_message("Sidekiq shutdown", :error)
         Honeybadger.notify(e, context: {
-          link: found_link,
+          link: link,
           backoff_time: backoff_time
         })
         return false
