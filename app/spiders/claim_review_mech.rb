@@ -1,6 +1,6 @@
 class ClaimReviewMech < Mechanize
   VALID_SCHEMES = ["http", "https"]
-  NUMBER_OF_SCRAPES_WITHOUT_CR_BEFORE_SKIPPING = 30
+  NUMBER_OF_SCRAPES_WITHOUT_CR_BEFORE_SKIPPING = 100
 
   def process(start_url: nil, scrapable_site: nil, links_visited: nil, link_stack: nil, backoff_time: 0)
     scrapable_site.set_last_run_to_now && scrapable_site.checkin unless scrapable_site.nil?
@@ -48,9 +48,17 @@ class ClaimReviewMech < Mechanize
         end
 
         case e.response_code
-        when "404", "403", "500", "503"
+        when "404", "500", "503"
+          log_message("Received error code #{e.response_code}", :info)
           # Move on
           next
+        when "403"
+          # We're forbidden, so we need to reschedule this scrape.
+          backoff_time += 0.5
+          log_message("Rate limited from Cloudflare (probably), rescheduling to #{backoff_time}", :info)
+          log_message("Error: #{e.message}", :info)
+          ScrapeFactCheckSiteJob.set(wait: 30.seconds).perform_later(start_url: start_url, scrapable_site: scrapable_site, links_visited: links_visited, link_stack: link_stack, backoff_time: backoff_time)
+          return
         when "429"
           # We're being rate limited, so we need to reschedule this scrape. Say in five minutes
           backoff_time += 0.5
@@ -59,6 +67,7 @@ class ClaimReviewMech < Mechanize
           return
         else
           log_message("Error not caught with response code #{e.response_code}", :error)
+          log_message("Error: #{e.message}", :error)
           next
         end
       rescue Mechanize::RedirectLimitReachedError,
@@ -142,7 +151,6 @@ class ClaimReviewMech < Mechanize
         end
 
         script_elements = page.search("//script[@type='application/ld+json']").map(&:text)
-
       rescue Nokogiri::XML::SyntaxError => e
         log_message("Nokogiri parsing error #{e.message}", :error)
         log_message("Url: #{link}", :error)
@@ -167,6 +175,7 @@ class ClaimReviewMech < Mechanize
           next
         end
 
+        # debugger if link.starts_with?("https://www.snopes.com/fact-check")
 
         # debugger if script_element.include?("ClaimReview")
         # One off for AfricaCheck (nope, there's others it turns outx)
