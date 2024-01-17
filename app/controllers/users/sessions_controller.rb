@@ -29,7 +29,7 @@ class Users::SessionsController < Devise::SessionsController
   # POST /resource/sign_in
   # We patch this so that instead of logging the user in we check that they exist and then move to the 2FA page
   def create
-    user = User.find_for_authentication(email: params["user"][:email])
+    user = User.find_for_authentication(email: params["user"][:email].downcase)
 
     # This will redirect back to the login page and handle flashes and such if it's invalid
     warden.authenticate!(auth_options) if user.nil? || !user.valid_password?(params["user"][:password])

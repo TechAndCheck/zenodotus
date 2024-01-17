@@ -311,7 +311,7 @@ class AccountsController < ApplicationController
   sig { void }
   def send_password_reset_email
     typed_params = TypedParams[ResetPasswordParams].new.extract!(params)
-    email = typed_params.email
+    email = typed_params.email.downcase
     @user = User.find_by(email: email)
     @user.send_reset_password_instructions unless @user.nil?
     redirect_to "/users/sign_in", notice: "A recovery email has been sent to the provided email address"
@@ -348,12 +348,12 @@ class AccountsController < ApplicationController
   def change_email
     typed_params = TypedParams[ChangeEmailParams].new.extract!(params)
 
-    if typed_params.email != typed_params.email_confirmation
+    if typed_params.email.downcase != typed_params.email_confirmation.downcase
       flash.now[:alert] = "Email addresses did not match. Please try again."
     elsif URI::MailTo::EMAIL_REGEXP.match(typed_params.email).nil?
       flash.now[:alert] = "Email address was improperly formatted. Please try again."
     else
-      current_user.email = typed_params.email
+      current_user.email = typed_params.email.downcase
       current_user.save
       flash.now[:alert] = "We just sent a confirmation message to the email address you provided. Please check your inbox and follow the confirmation link in the message."
     end

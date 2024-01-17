@@ -34,6 +34,8 @@ class ApplicantsController < ApplicationController
       # Add the confirmation token the applicant uses to confirm their email address
       confirmation_token: Devise.friendly_token,
     })
+    decorated_params[:email] = decorated_params[:email].downcase
+
     @applicant = Applicant.new(decorated_params)
 
     existing_user = User.readonly.find_by(email: @applicant[:email].downcase)

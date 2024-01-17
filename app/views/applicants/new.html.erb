@@ -33,7 +33,9 @@
 							"Email address *") %>
 						<%= f.email_field(
 							:email,
-							required: true) %>
+							required: true,
+							autocapitalize: "off",
+							autocomplete: "email") %>
 						<%= errors_for_field(
 							@applicant,
 							:email) %>
