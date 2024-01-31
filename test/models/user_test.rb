@@ -6,8 +6,8 @@ class UserTest < ActiveSupport::TestCase
 
     user = User.create_from_applicant(approved_applicant)
 
-    assert user.is_new_user?
-    assert user.is_fact_check_insights_user?
+    assert_predicate user, :is_new_user?
+    assert_predicate user, :is_fact_check_insights_user?
   end
 
   test "should assign Vault applicants the Vault role" do
@@ -15,25 +15,25 @@ class UserTest < ActiveSupport::TestCase
 
     user = User.create_from_applicant(approved_vault_applicant)
 
-    assert user.is_media_vault_user?
+    assert_predicate user, :is_media_vault_user?
   end
 
   test "should recognize Insights-only users" do
     fact_check_insights_user = users(:fact_check_insights_user)
 
-    assert fact_check_insights_user.is_fact_check_insights_user?
+    assert_predicate fact_check_insights_user, :is_fact_check_insights_user?
     assert_not fact_check_insights_user.is_media_vault_user?
   end
 
   test "should recognize MediaVault users" do
     media_vault_user = users(:media_vault_user)
 
-    assert media_vault_user.is_fact_check_insights_user?
-    assert media_vault_user.is_media_vault_user?
+    assert_predicate media_vault_user, :is_fact_check_insights_user?
+    assert_predicate media_vault_user, :is_media_vault_user?
   end
 
   test "should recognize admins" do
-    assert users(:admin).is_admin?
+    assert_predicate users(:admin), :is_admin?
   end
 
   test "should recognize users are not admins" do
@@ -121,7 +121,7 @@ class UserTest < ActiveSupport::TestCase
   test "can generate recovery codes" do
     user = users(:fact_check_insights_user)
 
-    assert user.hashed_recovery_codes.empty?
+    assert_predicate user.hashed_recovery_codes, :empty?
     recovery_codes = user.generate_recovery_codes
     assert_not user.hashed_recovery_codes.empty?
 

@@ -12,6 +12,6 @@ class AccountsHelperTest < ActionView::TestCase
     search_records = TextSearch.all
     dated_search_records = split_searches_by_date(search_records)
     assert_not_nil dated_search_records
-    assert_equal dated_search_records[dated_search_records.keys.first].length, 3
+    assert_equal 3, dated_search_records[dated_search_records.keys.first].length
   end
 end

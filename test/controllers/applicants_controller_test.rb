@@ -126,13 +126,13 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
     get applicant_confirm_path(email: applicant[:email], token: applicant[:confirmation_token])
 
     applicant.reload
-    assert applicant.confirmed?
+    assert_predicate applicant, :confirmed?
   end
 
   test "can reconfirm an applicant" do
     applicant = applicants(:confirmed)
 
-    assert applicant.confirmed?
+    assert_predicate applicant, :confirmed?
 
     get applicant_confirm_path(email: applicant[:email], token: applicant[:confirmation_token])
 

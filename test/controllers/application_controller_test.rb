@@ -15,13 +15,13 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
     host! Figaro.env.FACT_CHECK_INSIGHTS_HOST
     get root_url
 
-    assert @controller.site_is_fact_check_insights?
+    assert_predicate @controller, :site_is_fact_check_insights?
   end
 
   test "can recognize the Vault host" do
     host! Figaro.env.MEDIA_VAULT_HOST
     get root_url
 
-    assert @controller.site_is_media_vault?
+    assert_predicate @controller, :site_is_media_vault?
   end
 end

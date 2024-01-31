@@ -43,7 +43,7 @@ class InstagramUserTest < ActiveSupport::TestCase
 
     # Set a property to something random
     archive_entity.instagram_user.update!({ followers_count: 2 })
-    assert_equal archive_entity.instagram_user.followers_count, 2
+    assert_equal 2, archive_entity.instagram_user.followers_count
     # Now try and save it again, and make sure the followers count is correct
     archive_entity2 = Sources::InstagramUser.create_from_zorki_hash([@@zorki_user]).first.instagram_user
     assert_equal archive_entity.service_id, archive_entity2.service_id

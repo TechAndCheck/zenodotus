@@ -112,7 +112,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
   test "should remove new_user role during setup" do
     user = users(:new_user)
 
-    assert user.is_new_user?
+    assert_predicate user, :is_new_user?
 
     post create_account_path({
       reset_password_token: user.set_reset_password_token,

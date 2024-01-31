@@ -16,7 +16,7 @@
 			grid-template-columns: 1fr 1fr;
 		}
 
-		.applicants--reviewed {
+	.applicants--reviewed {
 			@media screen and (min-width: shared.$screen-lg-floor) {
 				width: 60%;
 			}
@@ -51,6 +51,24 @@
 
 		&.applicant__detail--full-width {
 			grid-column: 1 / -1;
+		}
+	}
+
+	.applicant__permissions {
+		.header {
+			font-weight: shared.$font-weight--bold;
+			font-size: 1em;
+		}
+
+		> dt {
+			font-weight: shared.$font-weight--semibold;
+			font-size: 0.9em;
+		}
+
+		> dd {
+			.na {
+				color: lightgray;
+			}
 		}
 	}
 

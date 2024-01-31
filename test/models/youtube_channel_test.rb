@@ -44,7 +44,7 @@ class YoutubeChannelTest < ActiveSupport::TestCase
 
     # Set a property to something random
     archive_entity.youtube_channel.update!({ num_subscribers: 2 })
-    assert_equal archive_entity.youtube_channel.num_subscribers, 2
+    assert_equal 2, archive_entity.youtube_channel.num_subscribers
     # Now try and save it again, and make sure the subscriber count is correct
     archive_entity2 = Sources::YoutubeChannel.create_from_youtube_archiver_hash([@@youtube_archiver_channel]).first
     assert_equal archive_entity.service_id, archive_entity2.service_id
