@@ -12,6 +12,25 @@ class Admin::ApplicantsController < AdminController
     @applicant = Applicant.find(params[:id])
   end
 
+  class UpdateParams < T::Struct
+    const :id, String
+    const :fact_check_insights_enabled, String
+    const :media_vault_enabled, String
+  end
+
+  sig { void }
+  def update
+    typed_params = TypedParams[UpdateParams].new.extract!(params)
+    user = Applicant.find(typed_params.id).user
+    raise "Applicant doesn't have a user" if user.nil?
+
+    user.remove_role(:fact_check_insights_user) if typed_params.fact_check_insights_enabled == "0"
+    user.add_role(:fact_check_insights_user) if typed_params.fact_check_insights_enabled == "1"
+
+    user.remove_role(:media_vault_user) if typed_params.media_vault_enabled == "0"
+    user.add_role(:media_vault_user) if typed_params.media_vault_enabled == "1"
+  end
+
   sig { void }
   def approve
     @applicant = Applicant.find(review_params[:id])

@@ -53,5 +53,28 @@
         </div>
       </dl>
     </div>
+    <div class="applicant box">
+      <div class="applicant__detail">
+        <header>Permissions</header>
+        <dt>Roles</dt>
+        <%= form_with url: admin_applicant_update_path, method: :post do |form| %>
+        <dd>
+          <%= form.check_box :fact_check_insights_enabled,
+                              checked: @applicant.user.has_role?(:fact_check_insights_user) %>
+          <%= form.label :fact_check_insights,
+                          SiteDefinitions::FACT_CHECK_INSIGHTS[:title] %>
+        </dd>
+        <dd>
+          <%= form.check_box :media_vault_enabled,
+                              checked: @applicant.user.has_role?(:media_vault_user) %>
+          <%= form.label :media_review, SiteDefinitions::MEDIA_VAULT[:title] %>
+        </dd>
+        <dd>
+          <%= form.submit "Update", class: "btn btn--submit" %>
+        </dd>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>
+

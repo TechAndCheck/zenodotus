@@ -38,7 +38,7 @@ class ScrapableSiteTest < ActiveSupport::TestCase
     scrapable_site = scrapable_sites(:one)
     scrapable_site.scrape!
 
-    assert(scrapable_site.running?)
+    assert_predicate(scrapable_site, :running?)
   end
 
   test "a scrapable site can be marked as running after a previous run" do
@@ -48,7 +48,7 @@ class ScrapableSiteTest < ActiveSupport::TestCase
     assert_not(scrapable_site.running?)
 
     scrapable_site.update({ last_heartbeat_at: Time.now })
-    assert(scrapable_site.running?)
+    assert_predicate(scrapable_site, :running?)
   end
 
   test "a scrapable site is not stalled until heartbeat doesn't check in for 10 minutes" do
@@ -66,7 +66,7 @@ class ScrapableSiteTest < ActiveSupport::TestCase
 
     # Now we go back in time even more
     scrapable_site.update({ last_heartbeat_at: Time.now - 11.minutes })
-    assert(scrapable_site.stalled?)
+    assert_predicate(scrapable_site, :stalled?)
   end
 
   test "a scrapable site returns correct emoji for status" do

@@ -208,7 +208,7 @@ class ClaimReviewTest < ActiveSupport::TestCase
       media_review: media_review
     )
 
-    assert cr.errors.any?
+    assert_predicate cr.errors, :any?
   end
   test "can find duplicates" do
     # We're searching for one of the seeds

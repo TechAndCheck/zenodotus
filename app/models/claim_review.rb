@@ -156,7 +156,7 @@ class ClaimReview < ApplicationRecord
             [item_reviewed["appearance"][i - 1]["url"], "CreativeWork"]
           end
         end
-      elsif item_reviewed["appearance"]&.is_a?(String) && i.zero?
+      elsif item_reviewed["appearance"].is_a?(String) && i.zero?
         [item_reviewed["appearance"], "CreativeWork"]
       else
         ["", ""]

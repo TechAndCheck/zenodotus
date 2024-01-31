@@ -61,6 +61,7 @@ Rails.application.routes.draw do
     resources :applicants, only: [:index, :show]
     post "applicants/:id/approve", to: "applicants#approve", as: "applicant_approve"
     post "applicants/:id/reject", to: "applicants#reject", as: "applicant_reject"
+    post "applicants/:id/update", to: "applicants#update", as: "applicant_update"
     delete "applicants/:id", to: "applicants#delete", as: "applicant_delete"
 
     # post "web_scrapes/scrape_selected", action: "web_scrapes#scrape_selected", as: "scrape_selected"

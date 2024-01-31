@@ -21,7 +21,7 @@ class ApplicantTest < ActiveSupport::TestCase
     assert_not @applicant.valid?
 
     @applicant.accepted_terms = true
-    assert @applicant.valid?
+    assert_predicate @applicant, :valid?
 
     @applicant.accepted_terms = false
     assert_not @applicant.valid?
@@ -80,7 +80,7 @@ class ApplicantTest < ActiveSupport::TestCase
   # If they attempt to unaccept, their model should not be valid.
   test "cannot un-accept terms" do
     new_applicant = applicants(:new)
-    assert new_applicant.valid?
+    assert_predicate new_applicant, :valid?
 
     assert_raises ActiveRecord::RecordInvalid do
       new_applicant.update!({
@@ -104,7 +104,7 @@ class ApplicantTest < ActiveSupport::TestCase
 
     new_applicant.confirm
 
-    assert new_applicant.confirmed?
+    assert_predicate new_applicant, :confirmed?
   end
 
   test "does not reconfirm if already confirmed" do
@@ -131,7 +131,7 @@ class ApplicantTest < ActiveSupport::TestCase
     new_applicant.confirm
     new_applicant.approve
 
-    assert new_applicant.approved?
+    assert_predicate new_applicant, :approved?
   end
 
   test "can approve an applicant only once" do
@@ -139,7 +139,7 @@ class ApplicantTest < ActiveSupport::TestCase
 
     confirmed_applicant.approve
 
-    assert confirmed_applicant.approved?
+    assert_predicate confirmed_applicant, :approved?
     assert_raises Applicant::StatusChangeError do
       confirmed_applicant.approve
     end
@@ -150,7 +150,7 @@ class ApplicantTest < ActiveSupport::TestCase
 
     confirmed_applicant.reject
 
-    assert confirmed_applicant.rejected?
+    assert_predicate confirmed_applicant, :rejected?
     assert_raises Applicant::StatusChangeError do
       confirmed_applicant.reject
     end
@@ -159,13 +159,13 @@ class ApplicantTest < ActiveSupport::TestCase
   test "can determine review status of applicant" do
     confirmed_applicant = applicants(:confirmed)
 
-    assert confirmed_applicant.unreviewed?
+    assert_predicate confirmed_applicant, :unreviewed?
     assert_not confirmed_applicant.reviewed?
 
     confirmed_applicant.approve
 
     assert_not confirmed_applicant.unreviewed?
-    assert confirmed_applicant.reviewed?
+    assert_predicate confirmed_applicant, :reviewed?
   end
 
   test "can add notes during approval" do

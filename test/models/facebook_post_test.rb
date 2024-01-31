@@ -38,8 +38,8 @@ class FacebookPostTest < ActiveSupport::TestCase
     assert_not_nil archive_item.facebook_post.author
     assert_not_nil archive_item.facebook_post.images
 
-    assert archive_item.facebook_post.number_of_likes.positive?
-    assert archive_item.facebook_post.number_of_love_reactions.positive?
+    assert_predicate archive_item.facebook_post.number_of_likes, :positive?
+    assert_predicate archive_item.facebook_post.number_of_love_reactions, :positive?
   end
 
   test "can archive Facebook post from url" do

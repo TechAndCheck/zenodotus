@@ -122,7 +122,7 @@ class MediaReviewTest < ActiveSupport::TestCase
 
     kwargs_copy = @media_review_kwargs.deep_dup
     media_review = MediaReview.create!(**kwargs_copy)
-    assert media_review.orphaned?
+    assert_predicate media_review, :orphaned?
   end
 
   test "can get humanized media authenticity categories" do
@@ -169,7 +169,7 @@ class MediaReviewTest < ActiveSupport::TestCase
     media_review_kwargs[:author]["url"] = "https://www.fake.com"
 
     media_review = MediaReview.create(media_review_kwargs)
-    assert media_review.errors.any?
+    assert_predicate media_review.errors, :any?
   end
 
   test "starting a scrape attaches the correct media review" do
