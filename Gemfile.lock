@@ -166,7 +166,9 @@ GEM
       aws-sigv4 (~> 1.4)
     aws-sigv4 (1.5.1)
       aws-eventstream (~> 1, >= 1.0.2)
+    backport (1.2.0)
     bcrypt (3.1.18)
+    benchmark (0.3.0)
     bindata (2.4.14)
     bindex (0.8.1)
     blueprinter (0.25.3)
@@ -225,6 +227,7 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    diff-lcs (1.5.1)
     docile (1.4.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
@@ -234,6 +237,7 @@ GEM
       railties (>= 3.2)
     down (5.4.1)
       addressable (~> 2.8)
+    e2mmap (0.1.0)
     eikon (0.1.10)
       ruby-vips (~> 2.1)
       sorbet-runtime (>= 0.5.9204)
@@ -272,6 +276,7 @@ GEM
     irb (1.8.1)
       rdoc
       reline (>= 0.3.8)
+    jaro_winkler (1.5.6)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -282,6 +287,10 @@ GEM
       regexp_parser (~> 2.0)
       simpleidn (~> 0.2)
     jwt (2.6.0)
+    kramdown (2.4.0)
+      rexml
+    kramdown-parser-gfm (1.1.0)
+      kramdown (~> 2.0)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -438,6 +447,8 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    reverse_markdown (2.1.1)
+      nokogiri
     rexml (3.2.6)
     rolify (6.0.0)
     rotp (6.2.2)
@@ -510,6 +521,21 @@ GEM
     simpleidn (0.2.1)
       unf (~> 0.1.4)
     sixarm_ruby_unaccent (1.2.0)
+    solargraph (0.48.0)
+      backport (~> 1.2)
+      benchmark
+      bundler (>= 1.17.2)
+      diff-lcs (~> 1.4)
+      e2mmap
+      jaro_winkler (~> 1.5)
+      kramdown (~> 2.3)
+      kramdown-parser-gfm (~> 1.1)
+      parser (~> 3.0)
+      reverse_markdown (>= 1.0.5, < 3)
+      rubocop (>= 0.52)
+      thor (~> 1.0)
+      tilt (~> 2.0)
+      yard (~> 0.9, >= 0.9.24)
     sorbet (0.5.10460)
       sorbet-static (= 0.5.10460)
     sorbet-coerce (0.7.0)
@@ -570,6 +596,7 @@ GEM
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
     thor (1.2.2)
+    tilt (2.3.0)
     timeout (0.4.0)
     tmuxinator (3.0.5)
       erubis (~> 2.6)
@@ -689,6 +716,7 @@ DEPENDENCIES
   shrine!
   sidekiq (~> 6)
   simplecov
+  solargraph
   sorbet
   sorbet-rails
   sorbet-runtime

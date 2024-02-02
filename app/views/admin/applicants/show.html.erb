@@ -53,6 +53,7 @@
         </div>
       </dl>
     </div>
+    <% unless @applicant.user.nil? %>
     <div class="applicant box">
       <div class="applicant__detail">
         <header>Permissions</header>
@@ -75,6 +76,6 @@
         <% end %>
       </div>
     </div>
+    <% end %>
   </div>
 </div>
-

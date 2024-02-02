@@ -76,6 +76,9 @@ group :development do
 
   # We use Yard for all of our documentation
   gem "yard", require: false
+
+  # An LSP
+  gem "solargraph"
 end
 
 group :test do
