@@ -14,23 +14,37 @@ class MediaVault::ArchiveController < MediaVaultController
   # It's the index, list all the archived items,
   sig { void }
   def index
-    unless params[:organization_id].blank?
-      @organization = FactCheckOrganization.find(params[:organization_id])
+    from_date = "0000-01-01"
+    to_date = Date.today.to_s
+
+    unless params[:organization_id].blank? && params[:from_date].blank? && params[:to_date].blank?
+      @organization = FactCheckOrganization.find(params[:organization_id]) if params[:organization_id].present?
+      from_date = params[:from_date] if params[:from_date].present?
+      to_date = params[:to_date] if params[:to_date].present?
     end
 
     archive_items = @organization.nil? ? ArchiveItem : @organization.archive_items
+    archive_items = archive_items.includes(:media_review, { archivable_item: [:author, :images, :videos] }).order("created_at DESC")
 
-    @pagy_archive_items, @archive_items = pagy(
-      archive_items.includes(:media_review, { archivable_item: [:author, :images, :videos] }).order("created_at DESC"),
+    # This is bad, but it's working for test purposes
+    archive_items = archive_items.filter do |item|
+      item.archivable_item.posted_at >= Date.parse(from_date) && item.archivable_item.posted_at <= Date.parse(to_date)
+    end unless from_date == "0000-01-01" && to_date == Date.today.to_s # An exception if you're not filtering
+
+    @pagy_archive_items, @archive_items = pagy_array( # This is just `pagy(` when we get it back to and ActiveRecord collection
+      archive_items,
       page_param: :p,
       items: ARCHIVE_ITEMS_PER_PAGE
     )
+
+    # Set these variables if we want to
+    @from_date = from_date unless from_date == "0000-01-01"
+    @to_date = to_date unless to_date == Date.today.to_s
 
     # Yes, this is inefficient...
     @fact_check_organizations = ArchiveItem.all.collect { |item| item.media_review&.media_review_author }.uniq.compact
     @fact_check_organizations.sort_by! { |fco| fco.name&.downcase }
     @fact_check_organizations = @fact_check_organizations.map { |fco| [fco.name, fco.id] }
-    @fact_check_organizations.insert(0, ["", ""])
 
     respond_to do | format |
       format.html { render "index" }

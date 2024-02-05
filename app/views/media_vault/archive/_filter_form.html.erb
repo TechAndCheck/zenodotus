@@ -1,0 +1,33 @@
+<div data-controller="media-vault--archive" class="form form--filter">
+	<% if show %>
+	<button data-action="media-vault--archive#showFilters" data-media-vault--archive-target="filterWrapperToggle">
+		Hide Filters &nbsp;&nbsp;<span style="font-size: 0.5em">▲</span>
+	</button>
+	<% else %>
+	<button data-action="media-vault--archive#showFilters" data-media-vault--archive-target="filterWrapperToggle">
+		Show Filters &nbsp;&nbsp;<span style="font-size: 0.5em">▼</span>
+	</button>
+	<% end %>
+	<div class="<%= show ? "": "hidden" %>" data-media-vault--archive-target="filterWrapper">
+		<div class="fieldset">
+			<% organization_id = @organization.nil? ? nil : @organization.id 
+			   time_filter_from = @from_date.nil? ? nil : @from_date
+			   time_filter_to = @to_date.nil? ? nil : @to_date %>
+
+			<div class="field field__wrapper--input">
+				<label>Filter</label>
+				<%= select_tag("org-filter", options_for_select(@fact_check_organizations, selected: organization_id), prompt: "Organization", "data-media-vault--archive-target": "organizationFilter") %>
+			</div>
+			<div class="field field__wrapper--input">
+				<label>From</label><%= date_field_tag("time-filter-start", time_filter_from, min: "1995-09-24", max: Date.today.to_s, "data-media-vault--archive-target": "fromDateFilter") %>
+			</div>
+			<div class="field field__wrapper--input">
+				<label>To</label><%= date_field_tag("time-filter-start", time_filter_to,  min: "1995-09-24", max: Date.today.to_s, "data-media-vault--archive-target": "toDateFilter") %>
+			</div>
+			<div class="actions">
+				<button class="btn btn--submit" data-action="media-vault--archive#filterResults">Filter</button>
+				<button class="btn btn--clear" data-action="media-vault--archive#clearFilters">Clear Filters</button>
+			</div>
+		</div>
+	</div>
+</div>
