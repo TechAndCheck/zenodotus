@@ -20,3 +20,26 @@
 #page--media_vault--home {
 	background-color: shared.$color--brand--media-vault;
 }
+
+.page--media_vault--dashboard {
+	.form--filter {
+		padding-bottom: 1.5rem;
+		border-bottom: 1px solid shared.$color--tan-5;
+
+		.actions {
+			align-self: flex-end;
+
+			.btn {
+				background-color: shared.$color--brand--media-vault;
+			}
+
+			.btn--clear {
+				background-color: shared.$color--tan-5;
+			}
+		}
+
+		.hidden {
+			display: none;
+		}
+	}
+}

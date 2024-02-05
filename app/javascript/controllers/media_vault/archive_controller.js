@@ -6,7 +6,11 @@ export default class extends Controller {
     'timestamp',
     'captionContent',
     'captionToggler',
+    'filterWrapper',
+    'filterWrapperToggle',
     'organizationFilter',
+    'fromDateFilter',
+    'toDateFilter'
   ]
 
   static values = { captionCollapseMode: String }
@@ -32,10 +36,47 @@ export default class extends Controller {
     }
   }
 
-  filterResultsByOrganization() {
+  showFilters() {
+    if(this.filterWrapperTarget.classList.contains("hidden")) {
+      this.filterWrapperTarget.classList.remove('hidden') 
+        this.filterWrapperToggleTarget.innerHTML = 'Hide Filters &nbsp;&nbsp;<span style="font-size: 0.5em">▲</span>'
+    } else {
+      this.filterWrapperTarget.classList.add('hidden')
+      this.filterWrapperToggleTarget.innerHTML = 'Show Filters &nbsp;&nbsp;<span style="font-size: 0.5em">▼</span>'
+    }
+  }
+
+  clearFilters() {
+    this.organizationFilterTarget.value = ''
+    this.fromDateFilterTarget.value = ''
+    this.toDateFilterTarget.value = ''
+    window.location = '/dashboard'
+  }
+
+  filterResults() {
     let orgValue = this.organizationFilterTarget.value
     console.log('filterResultsByOrganization called for ' + orgValue)
 
-    window.location = '/dashboard?organization_id=' + orgValue
+    let fromDateValue = this.fromDateFilterTarget.value
+    console.log('fromDateValue: ' + fromDateValue)
+
+    let toDateValue = this.toDateFilterTarget.value
+    console.log('toDateValue: ' + toDateValue)
+
+    if(!orgValue && !fromDateValue && !toDateValue) {
+      return
+    }
+
+    var url = '/dashboard?'
+    if (orgValue) {
+      url += 'organization_id=' + orgValue
+    }
+    if (fromDateValue) {
+      url += '&from_date=' + fromDateValue
+    }
+    if (toDateValue) {
+      url += '&to_date=' + toDateValue
+    }
+    window.location = url
   }
 }

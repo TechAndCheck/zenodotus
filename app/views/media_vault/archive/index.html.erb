@@ -2,15 +2,12 @@
 
 <%= turbo_frame_tag "modal" %>
 
-<div class="content">
+<div class="content page--media_vault--dashboard">
 	<h2>Recently-archived media:</h2>
 
-	<div data-controller="media-vault--archive">
-		<% organization_id = @organization.nil? ? "" : @organization.id %>
-		<%= select_tag("filter", options_for_select(@fact_check_organizations, selected: organization_id), "data-media-vault--archive-target": "organizationFilter") %>
-		<button class="btn" data-action="media-vault--archive#filterResultsByOrganization">Filter Organization</button>
-	</div>
-	<br />
+	<% show = !@organization.nil? || !@from_date.nil? || !@to_date.nil? %>
+	<%= render partial: "filter_form", locals: { show: show } %>
+
 	<%= turbo_frame_tag "archived_items", target: "_top", class: "archive-items archive-items--boxed-items archive-items--masonry" do %>
 		<% render partial: "archive_items", locals: { archive_items: @archive_items } %>
 	<% end %>
