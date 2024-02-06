@@ -27,6 +27,8 @@ class MediaVault::ArchiveController < MediaVaultController
     archive_items = archive_items.includes(:media_review, { archivable_item: [:author, :images, :videos] }).order("created_at DESC")
 
     # This is bad, but it's working for test purposes
+    # The way to *actually* fix this is to add the `posted_at` field to the ArchiveItem as well on save, so it can be filterd properly later
+    # In fact, if this comment is still here it means this hasn't been done. So take the hour and DO IT NOW. (says Chris at 7pm)
     archive_items = archive_items.filter do |item|
       item.archivable_item.posted_at >= Date.parse(from_date) && item.archivable_item.posted_at <= Date.parse(to_date)
     end unless from_date == "0000-01-01" && to_date == Date.today.to_s # An exception if you're not filtering
