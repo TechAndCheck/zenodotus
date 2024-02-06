@@ -50,8 +50,6 @@ export default class extends Controller {
   async pasteImage(event) {
     if(event.clipboardData.files.length === 0) { return }
 
-    preventDefault()
-
     this.searchBoxTarget.style.opacity = 0.5
     this.searchBoxSpinnerTarget.style.visibility = 'visible'
     this.searchByMediaFileInputTarget.files = event.clipboardData.files
