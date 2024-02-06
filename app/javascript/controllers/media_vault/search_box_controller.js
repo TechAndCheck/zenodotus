@@ -43,41 +43,20 @@ export default class extends Controller {
     }
 
     element.onpaste = (event) => {
-      console.log('onpaste')
-      event.preventDefault()
-
       this.pasteImage(event)
     }
   }
 
   async pasteImage(event) {
-    console.log('pasteImage')
+    if(event.clipboardData.files.length === 0) { return }
+
+    preventDefault()
 
     this.searchBoxTarget.style.opacity = 0.5
     this.searchBoxSpinnerTarget.style.visibility = 'visible'
     this.searchByMediaFileInputTarget.files = event.clipboardData.files
     this.switchToMediaMode()
     this.searchByMediaFormTarget.requestSubmit()
-
-    // try {
-    //   const clipboardContents = await navigator.clipboard.read()
-    //   for (const item of clipboardContents) {
-    //     if (!item.types.includes("image/png")) {
-    //       throw new Error("Clipboard does not contain PNG image data.")
-    //     }
-    //     const blob = await item.getType("image/png")
-
-    //     this.searchBoxTarget.style.opacity = 0.5
-    //     this.searchBoxSpinnerTarget.style.visibility = 'visible'
-    //     this.searchByMediaFileInputTarget.files = event.dataTransfer.files
-    //     this.switchToMediaMode()
-    //     this.searchByMediaFormTarget.requestSubmit()
-
-    //     // destinationImage.src = URL.createObjectURL(blob)
-    //   }
-    // } catch (error) {
-    //   log(error.message)
-    // }
   }
 
   switchToMediaMode() {
