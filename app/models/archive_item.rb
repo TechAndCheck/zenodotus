@@ -7,6 +7,7 @@ class ArchiveItem < ApplicationRecord
   delegate :service_id, to: :archivable_item
   delegate :images, to: :archivable_item
   delegate :videos, to: :archivable_item
+  delegate :posted_at, to: :archivable_item
 
   has_one :media_review, dependent: :nullify, foreign_key: :archive_item_id
   has_one :screenshot, dependent: :destroy, foreign_key: :archive_item_id, class_name: "Screenshot"
