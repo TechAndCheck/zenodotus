@@ -14,6 +14,13 @@ class MediaVault::SearchController < MediaVaultController
     typed_params = TypedParams[SearchParams].new.extract!(params)
 
     if params.has_key?(:q)
+      # Check if the query is a url, if so, try to download it
+      begin
+        uri = URI.parse(typed_params.q)
+        uri && uri.host.present? # This is just a check if it a URL, we don't care abou the results
+        search_by_url(typed_params.q)
+      rescue URI::InvalidURIError; end # Do nothing, just do a regular text search
+
       search_by_text(typed_params.q)
     end
 
@@ -104,6 +111,44 @@ private
         @post_results.append(result.archive_item) unless result.archive_item.nil?
       elsif result.class == ClaimReview
         @post_results.append(result.media_review.archive_item) if result.media_review&.archive_item
+      end
+    end
+  end
+
+  # This downloads a file and then searches it. It streams it in since we have no idea if it's small or big
+  sig { params(url: String).void }
+  def search_by_url(url)
+    downloaded_file = Shrine.remote_url(url)
+    @media_search = ImageSearch.create_with_media_item(downloaded_file, current_user)
+
+    respond_to do |format|
+      format.turbo_stream do
+        # See #456 for why we aren't really using Turbo here.
+        redirect_to media_vault_search_path(msid: @media_search.id)
+      end
+      format.html do
+        redirect_to media_vault_search_path(msid: @media_search.id)
+      end
+    end
+  rescue Shrine::Plugins::RemoteUrl::DownloadError, RuntimeError => e
+    flash[:error] = case e.message
+                    when "remote file too large"
+                      "The file you wanted to search is too large. You will have to make a clip that is less than 20mb."
+                    when "remote file not found"
+                      "The URL you entered could not be found. Please check that it's correct or try another."
+                    when "Invalid media uploaded."
+                      "The URL you entered is not a valid media file. Please check that it's correct or try another."
+                    else
+                      "The URL you entered could not be downloaded. Please check that it's correct or try another."
+    end
+
+    respond_to do |format|
+      format.turbo_stream do
+        # See #456 for why we aren't really using Turbo here.
+        redirect_back(fallback_location: media_vault_root_path)
+      end
+      format.html do
+        redirect_back(fallback_location: media_vault_root_path)
       end
     end
   end

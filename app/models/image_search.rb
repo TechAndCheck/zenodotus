@@ -21,7 +21,7 @@ class ImageSearch < ApplicationRecord
     8
   end
 
-  sig { params(media_item: ActionDispatch::Http::UploadedFile, current_user: User).returns(ImageSearch) }
+  sig { params(media_item: T.any(ActionDispatch::Http::UploadedFile, Tempfile, File), current_user: User).returns(ImageSearch) }
   def self.create_with_media_item(media_item, current_user)
     mime = IO.popen(
       ["file", "--brief", "--mime-type", media_item.path],
