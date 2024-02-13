@@ -6,6 +6,7 @@ require "shrine/storage/file_system"
 require "shrine/storage/memory"
 require "shrine/storage/s3"
 
+
 # Available buckets are `zenodotus-testing` (24-hour expiration) and `zenodotus-production` (permanant)
 def make_s3_bucket(bucket_name, cdn_name = nil)
   Shrine::Storage::S3.new(
@@ -50,3 +51,4 @@ Shrine.plugin :restore_cached_data # re-extract metadata when attaching a cached
 Shrine.plugin :tempfile
 Shrine.plugin :derivatives
 Shrine.plugin :keep_files if ENV["STAGING"]
+Shrine.plugin :remote_url, max_size: 20 * 1024 * 1024 # 20MB
