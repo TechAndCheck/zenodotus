@@ -7,24 +7,27 @@ class MediaVault::SearchController < MediaVaultController
   end
   class MediaSearchParams < T::Struct
     const :media, ActionDispatch::Http::UploadedFile
+    const :q, T.nilable(String)
   end
 
   sig { void }
   def index
     typed_params = TypedParams[SearchParams].new.extract!(params)
 
-    if params.has_key?(:q)
+    if params.has_key?(:q) && typed_params.msid.nil?
       # Check if the query is a url, if so, try to download it
       begin
-        uri = URI.parse(typed_params.q)
-        uri && uri.host.present? # This is just a check if it a URL, we don't care about the results
-        search_by_url(typed_params.q) if uri.class == URI::HTTP || uri.class == URI::HTTPS # URI Can parse just regular strings, so we make sure it's not
+        @uri = URI.parse(typed_params.q)
+        @uri && @uri.host.present? # This is just a check if it a URL, we don't care about the results
+        search_by_url(typed_params.q) if @uri.class == URI::HTTP || @uri.class == URI::HTTPS # URI Can parse just regular strings, so we make sure it's not
       rescue URI::InvalidURIError; end # Do nothing, just do a regular text search
 
+      @uri = nil # We set this so we can show the proper search field if the url was passed in
       search_by_text(typed_params.q)
     end
 
     if params.has_key?(:msid)
+      @query = typed_params.q
       search_by_media_search_id(typed_params.msid)
     end
   end
@@ -40,14 +43,15 @@ class MediaVault::SearchController < MediaVaultController
     typed_params = TypedParams[MediaSearchParams].new.extract!(params)
 
     @media_search = ImageSearch.create_with_media_item(typed_params.media, current_user)
+    @query = typed_params.q
 
     respond_to do |format|
       format.turbo_stream do
         # See #456 for why we aren't really using Turbo here.
-        redirect_to media_vault_search_path(msid: @media_search.id)
+        redirect_to media_vault_search_path(msid: @media_search.id, q: @query)
       end
       format.html do
-        redirect_to media_vault_search_path(msid: @media_search.id)
+        redirect_to media_vault_search_path(msid: @media_search.id, q: @query)
       end
     end
   end
@@ -124,10 +128,10 @@ private
     respond_to do |format|
       format.turbo_stream do
         # See #456 for why we aren't really using Turbo here.
-        redirect_to media_vault_search_path(msid: @media_search.id)
+        redirect_to media_vault_search_path(msid: @media_search.id, q: url)
       end
       format.html do
-        redirect_to media_vault_search_path(msid: @media_search.id)
+        redirect_to media_vault_search_path(msid: @media_search.id, q: url)
       end
     end
   rescue Shrine::Plugins::RemoteUrl::DownloadError, RuntimeError => e

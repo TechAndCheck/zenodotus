@@ -10,7 +10,7 @@
 			</div>
 		<% end %>
 
-		<% if defined?(@query) %>
+		<% if defined?(@query) && @media_search.nil? %>
 			<h3>“<%= @query %>”</h3>
 		<% end %>
 	</div>

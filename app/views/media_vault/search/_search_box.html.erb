@@ -1,4 +1,4 @@
-<div class="search-box <%= "search-box--media-mode" if (defined?(@media_search)) %>"
+<div class="search-box <%= "search-box--media-mode" if (defined?(@media_search) && @query.nil?) %>"
 	data-controller="media-vault--search-box"
 	data-media-vault--search-box-target="searchBox"
 >
@@ -9,7 +9,7 @@
     %>
       <fieldset class="search-box__fieldset" data-media-vault--search-box-target="searchByTextFieldset" style="margin-right: 10%">
         <%= f.label :q, "Search by text", class: "search-box__form__label" %>
-        <%= f.text_field :q, class: "search-box__form__field", value: (@query if defined?(@query)), "data-media-vault--search-box-target": "searchByTextField" %>
+        <%= f.text_field :q, class: "search-box__form__field", value: (@query if defined?(@query) && !@query.nil?), "data-media-vault--search-box-target": "searchByTextField" %>
         <%= f.submit "Search", class: "search-box__form__submit btn btn--reversed-subtle" %>
         <!--<div class="search-box__spinner__equalizer" style="width: 15%">
       </div>-->
