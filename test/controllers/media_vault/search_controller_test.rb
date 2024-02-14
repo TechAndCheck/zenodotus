@@ -94,7 +94,6 @@ class MediaVault::SearchControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-
   # TODO: check too large of a file, no file, and a file that's not a media
 
   # TODO: check that text search results are returned properly

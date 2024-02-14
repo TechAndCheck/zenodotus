@@ -17,8 +17,8 @@ class MediaVault::SearchController < MediaVaultController
       # Check if the query is a url, if so, try to download it
       begin
         uri = URI.parse(typed_params.q)
-        uri && uri.host.present? # This is just a check if it a URL, we don't care abou the results
-        search_by_url(typed_params.q)
+        uri && uri.host.present? # This is just a check if it a URL, we don't care about the results
+        search_by_url(typed_params.q) if uri.class == URI::HTTP || uri.class == URI::HTTPS # URI Can parse just regular strings, so we make sure it's not
       rescue URI::InvalidURIError; end # Do nothing, just do a regular text search
 
       search_by_text(typed_params.q)
