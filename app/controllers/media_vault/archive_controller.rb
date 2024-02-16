@@ -34,7 +34,7 @@ class MediaVault::ArchiveController < MediaVaultController
 
     # Set these variables if we want to
     @from_date = from_date unless from_date == "0000-01-01"
-    @to_date = to_date unless to_date == Date.today.to_s
+    @to_date = to_date unless to_date == Date.today.to_s && from_date == "0000-01-01"
 
     # Yes, this is inefficient...
     @fact_check_organizations = ArchiveItem.all.collect { |item| item.media_review&.media_review_author }.uniq.compact
