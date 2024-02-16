@@ -29,4 +29,17 @@ namespace :media_review do
       end
     end
   end
+
+  desc "Even out the posted_at dates"
+  task fill_posted_at: :environment do |t, args|
+    progress_bar = ProgressBar.create(title: "Archive Items", total: ArchiveItem.count)
+
+    ArchiveItem.all.order(:created_at).map do |ai|
+      progress_bar.increment
+      ai.posted_at = ai.archivable_item.posted_at
+      ai.save(validate: false)
+    rescue Aws::S3::Errors::NoSuchKey
+      puts "No AWS key for #{ai.id}"
+    end
+  end
 end

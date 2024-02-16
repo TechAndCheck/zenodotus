@@ -7,7 +7,7 @@ class ArchiveItem < ApplicationRecord
   delegate :service_id, to: :archivable_item
   delegate :images, to: :archivable_item
   delegate :videos, to: :archivable_item
-  delegate :posted_at, to: :archivable_item
+  # delegate :posted_at, to: :archivable_item
 
   has_one :media_review, dependent: :nullify, foreign_key: :archive_item_id
   has_one :screenshot, dependent: :destroy, foreign_key: :archive_item_id, class_name: "Screenshot"
@@ -15,6 +15,12 @@ class ArchiveItem < ApplicationRecord
   has_many :image_hashes, dependent: :destroy
   belongs_to :submitter, optional: true, class_name: "User"
   belongs_to :scrape, optional: true
+
+  before_create :update_posted
+
+  def update_posted
+    self.posted_at = self.archivable_item.posted_at
+  end
 
   # Begins the Scrape process that will allow us to create an ArchiveItem
   #

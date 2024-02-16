@@ -185,7 +185,6 @@ class AccountsController < ApplicationController
     session[:webauthn_credential_register_challenge] = options.challenge
     options = { publicKey: options }
 
-    # redirect_to after_sign_in_path_for(current_user)
     respond_to do |format|
       format.json { render json: options }
     end

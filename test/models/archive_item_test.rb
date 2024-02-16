@@ -26,6 +26,7 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
     assert_not_nil archive_item.screenshot
   end
 
+  # TODO... this is wrong, it doesn't return an ArchiveItem, it's a MediaReview
   test "creating an archive item with a contentUrl works" do
     FactCheckOrganization.create(name: "Fact Crescendo", url: "https://cambodia.factcrescendo.com/")
 

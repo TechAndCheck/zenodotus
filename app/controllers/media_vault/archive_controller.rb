@@ -24,14 +24,7 @@ class MediaVault::ArchiveController < MediaVaultController
     end
 
     archive_items = @organization.nil? ? ArchiveItem : @organization.archive_items
-    archive_items = archive_items.includes(:media_review, { archivable_item: [:author, :images, :videos] }).order("created_at DESC")
-
-    # This is bad, but it's working for test purposes
-    # The way to *actually* fix this is to add the `posted_at` field to the ArchiveItem as well on save, so it can be filterd properly later
-    # In fact, if this comment is still here it means this hasn't been done. So take the hour and DO IT NOW. (says Chris at 7pm)
-    archive_items = archive_items.filter do |item|
-      item.archivable_item.posted_at >= Date.parse(from_date) && item.archivable_item.posted_at <= Date.parse(to_date)
-    end unless from_date == "0000-01-01" && to_date == Date.today.to_s # An exception if you're not filtering
+    archive_items = archive_items.where(posted_at: from_date...to_date).includes(:media_review, { archivable_item: [:author, :images, :videos] }).order(posted_at: :desc)
 
     @pagy_archive_items, @archive_items = pagy_array( # This is just `pagy(` when we get it back to and ActiveRecord collection
       archive_items,
@@ -89,7 +82,7 @@ class MediaVault::ArchiveController < MediaVaultController
       #       Leaving it alone for now since this is an admin-only function anyway.
       format.turbo_stream do
         @pagy_archive_items, @archive_items = pagy(
-          ArchiveItem.includes(:media_review, { archivable_item: [:author, :images, :videos] }).order("created_at DESC"),
+          ArchiveItem.includes(:media_review, { archivable_item: [:author, :images, :videos] }).order(posted_at: :desc),
           page_param: :p,
           items: ARCHIVE_ITEMS_PER_PAGE
         )
