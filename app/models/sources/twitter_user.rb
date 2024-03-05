@@ -5,6 +5,8 @@ class Sources::TwitterUser < ApplicationRecord
   include ImageUploader::Attachment(:profile_image) # adds an `image` virtual attribute
   include PgSearch::Model
 
+  self.table_name = "twitter_user"
+
   multisearchable against: [:handle, :display_name]
 
   # The tweets that a TwitterUser have authored
@@ -20,8 +22,12 @@ class Sources::TwitterUser < ApplicationRecord
   def self.create_from_birdsong_hash(birdsong_users)
     birdsong_users.map do |birdsong_user|
       # First check if the user already exists, if so, return that
-      twitter_user = Sources::TwitterUser.find_by(twitter_id: birdsong_user["id"])
-      twitter_user_hash  = self.twitter_user_hash_from_birdsong_user(birdsong_user)
+      begin
+        twitter_user = Sources::TwitterUser.find_by(twitter_id: birdsong_user["id"])
+        twitter_user_hash  = self.twitter_user_hash_from_birdsong_user(birdsong_user)
+      rescue StandardError # => e
+        # debugger
+      end
 
       # If there's no user, then create it
       if twitter_user.nil?
