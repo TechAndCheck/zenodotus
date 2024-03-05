@@ -3,7 +3,7 @@
 class ArchiveItem < ApplicationRecord
   include Dhashable
 
-  delegated_type :archivable_item, types: %w[Sources::Tweet Sources::InstagramPost Sources::FacebookPost Sources::YoutubePost]
+  delegated_type :archivable_item, types: %w[Sources::Tweet Sources::InstagramPost Sources::FacebookPost Sources::YoutubePost Sources::TikTokPost]
   delegate :service_id, to: :archivable_item
   delegate :images, to: :archivable_item
   delegate :videos, to: :archivable_item
@@ -124,6 +124,15 @@ class ArchiveItem < ApplicationRecord
   sig { returns(T.nilable(Sources::YoutubePost)) }
   def youtube_post
     self.sources_youtube_post
+  end
+
+  # A helper function to make it easier to access the item, instead of `.sources_tik_tok_post`
+  # this allows just the use of `.tik_tok_post`
+  #
+  # @returns +Sources::TikTokPost+
+  sig { returns(T.nilable(Sources::TikTokPost)) }
+  def tik_tok_post
+    self.sources_tik_tok_post
   end
 
   # Proxy for the normalized representation of this related archivable item for use in the view

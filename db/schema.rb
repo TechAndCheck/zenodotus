@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_05_003116) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_05_011720) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -312,6 +312,21 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_05_003116) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_tiktok_posts_on_author_id"
+  end
+
+  create_table "tik_tok_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "display_name", null: false
+    t.string "handle", null: false
+    t.integer "number_of_posts", null: false
+    t.integer "followers_count", null: false
+    t.integer "following_count", null: false
+    t.boolean "verified", null: false
+    t.text "profile", null: false
+    t.string "url"
+    t.string "profile_image_url", null: false
+    t.jsonb "profile_image_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tweets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
