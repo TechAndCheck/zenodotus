@@ -121,6 +121,6 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
     assert_equal Sources::Tweet, ArchiveItem.model_for_url(url)
 
     url = "https://www.tiktok.com/@guess/video/7091753416032128299"
-    assert_equal Sources::TikTokVideo, ArchiveItem.model_for_url(url)
+    assert_equal Sources::TikTokPost, ArchiveItem.model_for_url(url)
   end
 end

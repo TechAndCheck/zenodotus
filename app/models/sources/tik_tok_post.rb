@@ -4,7 +4,7 @@ class Sources::TikTokPost < ApplicationRecord
 
   multisearchable against: :text
 
-  has_many :videos, foreign_key: :tiktok_post_id, class_name: "MediaModels::Videos::TikTokVideo", dependent: :destroy
+  has_many :videos, foreign_key: :tik_tok_post_id, class_name: "MediaModels::Videos::TikTokVideo", dependent: :destroy
   accepts_nested_attributes_for :videos, allow_destroy: true
 
   # The `TwitterUser` that is the author of this tweet.
@@ -74,35 +74,33 @@ class Sources::TikTokPost < ApplicationRecord
   sig { params(morris_posts: T::Array[Hash], user: T.nilable(User)).returns(T::Array[ArchiveItem]) }
   def self.create_from_morris_hash(morris_posts, user = nil)
     morris_posts.map do |morris_post|
-      morris_post = morris_post["post"]
-      user_json = morris_post["user"]
+      user_json = morris_post["post"]["user"]
       tiktok_user = Sources::TikTokUser.create_from_morris_hash([user_json]).first.tiktok_user
 
       video_attributes = []
       screenshot_attributes = {}
 
-      if morris_post["aws_screenshot_key"].present?
-        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(morris_post["aws_screenshot_key"])
+      if morris_post["post"]["aws_screenshot_key"].present?
+        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(morris_post["post"]["aws_screenshot_key"])
         screenshot_attributes = { image: File.open(downloaded_path, binmode: true) }
       else
         tempfile = Tempfile.new(binmode: true)
-        tempfile.write(Base64.decode64(morris_post["screenshot_file"]))
+        tempfile.write(Base64.decode64(morris_post["post"]["screenshot_file"]))
         screenshot_attributes = { image: File.open(tempfile.path, binmode: true) }
         tempfile.close!
       end
 
-      if morris_post["aws_video_key"].present?
-        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(morris_post["aws_video_key"])
+      if morris_post["post"]["aws_video_key"].present?
+        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(morris_post["post"]["aws_video_key"])
         video_attributes = [ { video: File.open(downloaded_path, binmode: true) } ]
       end
 
       hash = {
-        text:              morris_post["text"],
-        tiktok_id:      morris_post["id"],
-        posted_at:         morris_post["date"],
-        number_of_likes:   morris_post["number_of_likes"],
+        text:              morris_post["post"]["text"],
+        tik_tok_id:      morris_post["id"],
+        posted_at:         morris_post["post"]["date"],
+        number_of_likes:   morris_post["post"]["number_of_likes"],
         author:            tiktok_user,
-        images_attributes: image_attributes,
         videos_attributes: video_attributes
       }
 
@@ -116,7 +114,7 @@ class Sources::TikTokPost < ApplicationRecord
   # @returns String of the ID.
   sig { returns(String) }
   def service_id
-    tiktok_id
+    tik_tok_id
   end
 
   # Normalized representation of this archivable item for use in the view template.
@@ -137,5 +135,9 @@ class Sources::TikTokPost < ApplicationRecord
       archive_item_caption:             self.text,
       published_at:                     self.posted_at,
     }
+  end
+
+  def images
+    []
   end
 end
