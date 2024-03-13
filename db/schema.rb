@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_15_181331) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_13_163541) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
@@ -72,7 +73,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_15_181331) do
     t.uuid "submitter_id"
     t.uuid "scrape_id"
     t.datetime "posted_at"
+    t.boolean "private", default: false, null: false
     t.index ["submitter_id"], name: "index_archive_items_on_submitter_id"
+  end
+
+  create_table "archive_items_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "archive_item_id", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["archive_item_id", "user_id"], name: "index_archive_items_users_on_archive_item_id_and_user_id", unique: true
+    t.index ["archive_item_id"], name: "index_archive_items_users_on_archive_item_id"
+    t.index ["user_id"], name: "index_archive_items_users_on_user_id"
   end
 
   create_table "claim_reviews", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -440,6 +452,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_15_181331) do
   end
 
   add_foreign_key "api_keys", "users"
+  add_foreign_key "archive_items_users", "archive_items"
+  add_foreign_key "archive_items_users", "users"
   add_foreign_key "claim_reviews", "fact_check_organizations", column: "claim_review_author_id"
   add_foreign_key "claim_reviews", "media_reviews"
   add_foreign_key "corpus_downloads", "users"

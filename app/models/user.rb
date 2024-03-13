@@ -11,7 +11,7 @@ class User < ApplicationRecord
   has_many :webauthn_credentials, dependent: :destroy
 
   has_many :api_keys, dependent: :delete_all
-  has_many :archive_items, foreign_key: :submitter_id, dependent: :nullify
+  # has_many :archive_items, foreign_key: :submitter_id, dependent: :nullify
 
   has_many :image_searches, dependent: :destroy
   has_many :text_searches, dependent: :destroy
@@ -25,9 +25,19 @@ class User < ApplicationRecord
 
   has_many :corpus_downloads, dependent: :nullify
 
+  has_many :archive_items_users, dependent: :destroy, class_name: "ArchiveItemUser"
+  has_many :archive_items, through: :archive_items_users
+
   validates :name, presence: true
   validates :email, presence: true
   validates :webauthn_id, uniqueness: true, allow_nil: true
+
+  # Get private archive items that the user has access to. This is what should always be used,
+  # For some reason i can't get unscoped auto stuff to work on the association
+  sig { returns(ArchiveItem::ActiveRecord_Relation) }
+  def private_archive_items
+    self.archive_items.unscoped
+  end
 
   # `Devise::Recoverable#set_reset_password_token` is a protected method, which prevents us from
   # calling it directly. Since we need to be able to do that for tests and for duck-punching other

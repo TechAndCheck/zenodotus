@@ -23,8 +23,17 @@ class MediaVault::ArchiveController < MediaVaultController
       to_date = params[:to_date] if params[:to_date].present?
     end
 
+    # Here we need to see if we're on a personal archive page, and limit if so to the one's this person owns.
+    where_hash = { posted_at: from_date...to_date }
+    not_hash = {}
+    if params[:personal_archive].present?
+      where_hash[:private_vault_user_id] = current_user.id
+    else
+      not_hash[:private_vault_user_id] = nil
+    end
+
     archive_items = @organization.nil? ? ArchiveItem : @organization.archive_items
-    archive_items = archive_items.where(posted_at: from_date...to_date).includes(:media_review, { archivable_item: [:author, :images, :videos] }).order(posted_at: :desc)
+    archive_items = archive_items.where(where_hash).not(not_hash).includes(:media_review, { archivable_item: [:author, :images, :videos] }).order(posted_at: :desc)
 
     @pagy_archive_items, @archive_items = pagy_array( # This is just `pagy(` when we get it back to and ActiveRecord collection
       archive_items,

@@ -89,4 +89,20 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
     end
     assert_response :success
   end
+
+  test "personal vault only shows the user's own items" do
+    sign_in users(:user)
+    get media_vault_personal_dashboard_url
+    assert_response :success
+    assert_select "a[href=?]", media_vault_dashboard_path, count: 0
+  end
+
+  test "can switch to personal vault" do
+    sign_in users(:user)
+    get media_vault_dashboard_url
+    assert_response :success
+    assert_select "a[href=?]", media_vault_personal_dashboard_path
+    get media_vault_personal_dashboard_url
+    assert_response :success
+  end
 end
