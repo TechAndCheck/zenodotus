@@ -175,9 +175,6 @@ gem "simplecov", require: false
 # Used to store our files in S3
 gem "aws-sdk-s3"
 
-# This enables reverse image and video searching
-gem "zelkova"
-
 # Generates a country selector for forms
 # Also adds and uses the `countries` gem
 gem "country_select", "~> 8.0"

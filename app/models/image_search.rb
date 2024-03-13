@@ -1,5 +1,11 @@
 # typed: strict
 
+
+# NOTE: This now uses Postgres for searching, which is very very quick.
+# However, a significant amount of the slow down is the FFMPEG processing itself. I wonder if using
+# Lambda such as described here https://aws.amazon.com/blogs/media/processing-user-generated-content-using-aws-lambda-and-ffmpeg/
+# may speed this up since we can throw a huge instance at a very short-lived process?
+
 class ImageSearch < ApplicationRecord
   include ImageUploader::Attachment(:image) # adds an `image` virtual attribute
   include VideoUploader::Attachment(:video)
