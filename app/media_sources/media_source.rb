@@ -12,6 +12,7 @@ class MediaSource
       Instagram = new
       Youtube = new
       Twitter = new
+      TikTok = new
     end
   end
 

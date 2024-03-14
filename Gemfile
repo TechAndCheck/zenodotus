@@ -79,6 +79,9 @@ group :development do
 
   # An LSP
   gem "solargraph"
+
+  # Brakeman checks for security vulnerabilities
+  gem "brakeman", require: false
 end
 
 group :test do
