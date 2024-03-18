@@ -204,7 +204,7 @@ gem "comma", "~>4.7.0"
 gem "webauthn", git: "https://github.com/cedarcode/webauthn-ruby", tag: "v3.0.0.alpha2"
 
 # For TOTP one-time passcode (Firefox doesn't support passkeys)
-gem "rotp", "~> 6.2"
+gem "rotp", "~> 6.3"
 # For generating the QRCode from the TOTP setup string
 gem "rqrcode", "~> 2.0"
 
