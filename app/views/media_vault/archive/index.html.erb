@@ -6,7 +6,7 @@
 	<%# Make this change dpeending on if we're in MyVault or not %>
 	<div class="flex justify-between flex-col md:flex-row lg:flex-row">
 		<div>
-			<h2>Recently-archived media:</h2>
+			<h2><%= @myvault ? "MyVault:" : "Recently-archived media:" %></h2>
 		</div>
 		<div>
 			<%= link_to media_vault_archive_add_path, class: "btn btn--naked icon-prefixed", data: { turbo_stream: 'modal' } do %>

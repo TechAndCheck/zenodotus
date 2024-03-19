@@ -133,7 +133,7 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
     Sources::InstagramPost.create_from_zorki_hash(post)
 
     sign_in users(:user)
-    get media_vault_personal_dashboard_url
+    get media_vault_myvault_url
     assert_response :success
     assert_select "div.archive-item", count: 0
   end
@@ -143,7 +143,7 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
     post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
     Sources::InstagramPost.create_from_zorki_hash(post, users(:user))
 
-    get media_vault_personal_dashboard_url
+    get media_vault_myvault_url
     assert_response :success
     assert_select "div.archive-item", count: 1
 
@@ -157,7 +157,7 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
 
     # Sign in with a different user
     sign_in users(:media_vault_user)
-    get media_vault_personal_dashboard_url
+    get media_vault_myvault_url
     assert_response :success
     assert_select "div.archive-item", count: 2
   end
@@ -166,8 +166,8 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:user)
     get media_vault_dashboard_url
     assert_response :success
-    assert_select "a[href=?]", media_vault_personal_dashboard_path
-    get media_vault_personal_dashboard_url
+    assert_select "a[href=?]", media_vault_myvault_path
+    get media_vault_myvault_url
     assert_response :success
   end
 end

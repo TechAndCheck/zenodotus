@@ -9,6 +9,6 @@ class TextSearch < ApplicationRecord
   sig { returns(T::Array[ArchivableItem]) }
   def run
     # TODO: Optimize this query to avoid sorting the entire set of ArchivableItems (#129)
-    PgSearch.multisearch(self.query).includes(searchable: %i(author images videos)).map { |document | document.searchable }
+    PgSearch.multisearch(self.query).publically_viewable.includes(searchable: %i(author images videos)).map { |document | document.searchable }
   end
 end

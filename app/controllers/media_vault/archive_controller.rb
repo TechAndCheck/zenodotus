@@ -12,7 +12,7 @@ class MediaVault::ArchiveController < MediaVaultController
   sig { void }
   def index
     from_date = "0000-01-01"
-    to_date = Date.today.to_s
+    to_date = (Date.today + 1).to_s
 
     unless params[:organization_id].blank? && params[:from_date].blank? && params[:to_date].blank?
       @organization = FactCheckOrganization.find(params[:organization_id]) if params[:organization_id].present?
@@ -21,16 +21,14 @@ class MediaVault::ArchiveController < MediaVaultController
     end
 
     # Here we need to see if we're on a personal archive page, and limit if so to the one's this person owns.
-    where_hash = { posted_at: from_date...to_date }
-    not_hash = {}
-    if params[:personal_archive].present?
-      where_hash[:submitter_id] = current_user.id
+    if params[:myvault].present?
+      archive_items = current_user.archive_items
+      @myvault = true
     else
-      where_hash[:submitter_id] = nil
+      archive_items = @organization.nil? ? ArchiveItem.publically_viewable : @organization.archive_items.publically_viewable
     end
 
-    archive_items = @organization.nil? ? ArchiveItem : @organization.archive_items
-    archive_items = archive_items.where(where_hash).where.not(not_hash).includes(:media_review, { archivable_item: [:author, :images, :videos] }).order(posted_at: :desc)
+    archive_items = archive_items.where({ posted_at: from_date...to_date }).includes(:media_review, { archivable_item: [:author, :images, :videos] }).order(posted_at: :desc)
 
     @pagy_archive_items, @archive_items = pagy_array( # This is just `pagy(` when we get it back to and ActiveRecord collection
       archive_items,
@@ -40,7 +38,7 @@ class MediaVault::ArchiveController < MediaVaultController
 
     # Set these variables if we want to
     @from_date = from_date unless from_date == "0000-01-01"
-    @to_date = to_date unless to_date == Date.today.to_s && from_date == "0000-01-01"
+    @to_date = to_date unless to_date == (Date.today + 1).to_s && from_date == "0000-01-01"
 
     # Yes, this is inefficient...
     @fact_check_organizations = ArchiveItem.all.collect { |item| item.media_review&.media_review_author }.uniq.compact

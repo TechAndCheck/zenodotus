@@ -19,14 +19,18 @@ class ArchiveItem < ApplicationRecord
   has_many :archive_items_users, dependent: :destroy, class_name: "ArchiveItemUser"
   has_many :users, through: :archive_items_users
 
-  before_create :update_posted
+  before_create :update_posted, :set_private_flag
 
   # Yes, default scopes are usually a code smell, but the *vast* majority of the time we don't want to include
   # private archive items in our queries. We'll be explicit otherwise.
-  default_scope { where(private: false) }
+  scope :publically_viewable, -> { where(private: false) }
 
   def update_posted
     self.posted_at = self.archivable_item.posted_at
+  end
+
+  def set_private_flag
+    self.private = self.submitter.present?
   end
 
   def promote_to_public

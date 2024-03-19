@@ -117,20 +117,15 @@ class Scrape < ApplicationRecord
                                             taken_down: nil) if media_review_item.nil?
 
     unless removed || errored
-      archive_item = ArchiveItem.model_for_url(self.url).create_from_hash(response)
+      archive_item = ArchiveItem.model_for_url(self.url).create_from_hash(response, self.user)
       archive_item = archive_item.empty? ? nil : archive_item.first
 
-      # debugger unless archive_item.nil?
-
-      # archive_item&.update!({ posted_at: archive_item.archiveable_item.posted_at })
+      # Add a user to the archive_item if we have a user
+      archive_item.users << self.user if archive_item.present? && self.user.present?
     end
 
     unless media_review_item.nil?
       media_review_item.update!({ taken_down: removed, archive_item_id: archive_item&.id })
-    else
-      logger.info "----------------------------------"
-      logger.info "No MediaReview. This is certainly an error"
-      logger.info "----------------------------------"
     end
 
     self.update!({ fulfilled: true, removed: removed, archive_item: archive_item, error: errored })

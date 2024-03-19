@@ -19,7 +19,7 @@ module Scrapable
       scrape_type = self.scrape_type
       raise "`scrape_type` must return an instance of MediaSource::ScrapeType" unless scrape_type.is_a?(MediaSource::ScrapeType)
 
-      scrape = Scrape.create!({ url: url, scrape_type: scrape_type.serialize, media_review: media_review })
+      scrape = Scrape.create!({ url: url, scrape_type: scrape_type.serialize, media_review: media_review, user: user })
       scrape.enqueue
     end
   end
