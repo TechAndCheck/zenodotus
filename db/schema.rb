@@ -19,7 +19,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_15_194841) do
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "applicant_status", ["approved", "rejected"]
-  create_enum "scrape_type", ["instagram", "facebook", "twitter", "youtube"]
+  create_enum "scrape_type", ["instagram", "facebook", "twitter", "youtube", "tiktok"]
 
   create_table "api_keys", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "hashed_api_key"
@@ -318,13 +318,36 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_15_194841) do
 
   create_table "tik_tok_posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "text", null: false
-    t.string "tiktok_id", null: false
+    t.string "tik_tok_id", null: false
     t.datetime "posted_at", precision: nil, null: false
     t.integer "number_of_likes", null: false
     t.uuid "author_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["author_id"], name: "index_tiktok_posts_on_author_id"
+    t.index ["author_id"], name: "index_tik_tok_posts_on_author_id"
+  end
+
+  create_table "tik_tok_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "display_name", null: false
+    t.string "handle", null: false
+    t.integer "number_of_posts", null: false
+    t.integer "followers_count", null: false
+    t.integer "following_count", null: false
+    t.boolean "verified", null: false
+    t.text "profile", null: false
+    t.string "url"
+    t.string "profile_image_url", null: false
+    t.jsonb "profile_image_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tik_tok_videos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tik_tok_post_id"
+    t.jsonb "video_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tik_tok_post_id"], name: "index_tik_tok_videos_on_instagram_post_id"
   end
 
   create_table "tweets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

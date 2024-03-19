@@ -45,6 +45,7 @@ class Sources::Tweet < ApplicationRecord
   # returns ArchiveItem with type Tweet that has been saved to the database
   sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
   def self.create_from_url!(url, user = nil)
+    # debugger
     tweet_response = TwitterMediaSource.extract(url, MediaSource::ScrapeType::Twitter, true)
     tweet_response = tweet_response["scrape_result"] unless tweet_response.nil?
     raise "Invalid Twitter url #{url}" if tweet_response.nil?
