@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_13_163541) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_15_194841) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -288,6 +288,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_13_163541) do
     t.boolean "error", default: false, null: false
     t.boolean "removed", default: false
     t.uuid "media_review_id"
+    t.uuid "user_id"
     t.index ["media_review_id"], name: "index_scrapes_on_media_review_id"
   end
 
@@ -313,6 +314,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_13_163541) do
     t.string "query"
     t.uuid "user_id"
     t.index ["user_id"], name: "index_text_searches_on_user_id"
+  end
+
+  create_table "tik_tok_posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "text", null: false
+    t.string "tiktok_id", null: false
+    t.datetime "posted_at", precision: nil, null: false
+    t.integer "number_of_likes", null: false
+    t.uuid "author_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_tiktok_posts_on_author_id"
   end
 
   create_table "tweets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

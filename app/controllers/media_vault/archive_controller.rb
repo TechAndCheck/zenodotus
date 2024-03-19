@@ -1,10 +1,7 @@
 # typed: strict
 
 class MediaVault::ArchiveController < MediaVaultController
-  before_action :authenticate_super_user!, only: [
-    :add,
-    :submit_url,
-  ]
+  before_action :authenticate_super_user!, only: []
 
   skip_before_action :authenticate_user_and_setup!, only: :scrape_result_callback
   skip_before_action :must_be_media_vault_user, only: :scrape_result_callback
@@ -27,13 +24,13 @@ class MediaVault::ArchiveController < MediaVaultController
     where_hash = { posted_at: from_date...to_date }
     not_hash = {}
     if params[:personal_archive].present?
-      where_hash[:private_vault_user_id] = current_user.id
+      where_hash[:submitter_id] = current_user.id
     else
-      not_hash[:private_vault_user_id] = nil
+      where_hash[:submitter_id] = nil
     end
 
     archive_items = @organization.nil? ? ArchiveItem : @organization.archive_items
-    archive_items = archive_items.where(where_hash).not(not_hash).includes(:media_review, { archivable_item: [:author, :images, :videos] }).order(posted_at: :desc)
+    archive_items = archive_items.where(where_hash).where.not(not_hash).includes(:media_review, { archivable_item: [:author, :images, :videos] }).order(posted_at: :desc)
 
     @pagy_archive_items, @archive_items = pagy_array( # This is just `pagy(` when we get it back to and ActiveRecord collection
       archive_items,
@@ -50,6 +47,13 @@ class MediaVault::ArchiveController < MediaVaultController
     @fact_check_organizations.sort_by! { |fco| fco.name&.downcase }
     @fact_check_organizations = @fact_check_organizations.map { |fco| [fco.name, fco.id] }
 
+    # TODO ##################################
+    # Redirect to status page
+    # Make sure to include email instructions
+    ########################################
+
+    @render_empty = true unless params[:render_empty].present? && params[:render_empty] = false
+
     respond_to do | format |
       format.html { render "index" }
     end
@@ -57,7 +61,13 @@ class MediaVault::ArchiveController < MediaVaultController
 
   # A form for submitting URLs
   sig { void }
-  def add; end
+  def add
+    respond_to do |format|
+      # Just a heads up, note that you have to properly render `turbo_stream`
+      format.turbo_stream { render turbo_stream: turbo_stream.replace("modal", partial: "media_vault/archive/add") }
+      format.html { redirect_to media_vault_dashboard_path }
+    end
+  end
 
   # A class representing the allowed params into the `submit_url` endpoint
   class SubmitUrlParams < T::Struct
@@ -65,6 +75,7 @@ class MediaVault::ArchiveController < MediaVaultController
   end
 
   # Entry point for submitting a URL for archiving
+  # Good lord this is an unweidly method, but there's a lot of angles
   #
   # @params {url_to_archive} the url to pull in
   sig { void }
@@ -72,45 +83,45 @@ class MediaVault::ArchiveController < MediaVaultController
     typed_params = TypedParams[SubmitUrlParams].new.extract!(params)
     url = typed_params.url_to_archive
     object_model = ArchiveItem.model_for_url(url)
-    begin
-      object_model.create_from_url!(url, current_user)
-    rescue StandardError => e
+
+    # If there's no object_model then we don't have that URL
+    if object_model.nil?
       respond_to do |format|
-        error = "#{e.class}: #{e.message}"
-        format.turbo_stream { render turbo_stream: [
-          turbo_stream.replace("modal", partial: "media_vault/archive/add", locals: { error: error }),
-        ] }
-        format.html { redirect_to media_vault_dashboard_path }
+        format.turbo_stream { render turbo_stream: turbo_stream.update("modal", partial: "media_vault/archive/add", locals: { error: "Unfortunately we do not currently support archiving of links from this URL" }) }
+        format.html do
+          flash.now[:error] = { title: "Error Submitting Request", body: "Unfortunately we do not currently support archiving of links from this URL" }
+          redirect_to media_vault_dashboard_path
+        end
       end
+
       return
     end
 
+    # Try to start the scrape, otherwise... error out again
+    begin
+      object_model.create_from_url(url, current_user)
+    rescue StandardError => e
+      Honeybadger.notify(e)
+
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.update("modal", partial: "media_vault/archive/add", locals: { error: "An unexpected error has been raised submitting your request. We've been notified and will be looking into it shortly." }) }
+        format.html do
+          flash.now[:error] = { title: "Error Submitting Request", body: "An unexpected error has been raised submitting your request. We've been notified and will be looking into it shortly." }
+          redirect_to media_vault_dashboard_path
+        end
+      end
+
+      return
+    end
+
+    # WOOOOO
     respond_to do |format|
-      flash.now[:success] = "Successfully archived your link!"
-      # TODO: Turbo-updating the archive items doesn't currently seem to work.
-      #       Leaving it alone for now since this is an admin-only function anyway.
+      flash.now[:success] = { title: "Request Successfully Queued", body: "We will notify you via email when the request is done processing.<br>This may take awhile depending on the size of the current queue.".html_safe }
+
       format.turbo_stream do
-        @pagy_archive_items, @archive_items = pagy(
-          ArchiveItem.includes(:media_review, { archivable_item: [:author, :images, :videos] }).order(posted_at: :desc),
-          page_param: :p,
-          items: ARCHIVE_ITEMS_PER_PAGE
-        )
         render turbo_stream: [
           turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
-          turbo_stream.replace("modal", partial: "media_vault/archive/add", locals: { render_empty: true }),
-          turbo_stream.update(
-            "archived_items",
-            partial: "media_vault/archive/archive_items",
-            locals: { archive_items: @archive_items }
-          ),
-          # TODO: In addition to none of the Turbo-updating working, updating the paginator fails
-          # because the `pagy/nav` partial can't be found despite being directly from the docs:
-          # https://ddnexus.github.io/pagy/how-to.html#use-it-in-your-app
-          # turbo_stream.update(
-          #   "archived_items_pagination",
-          #   partial: "pagy/nav",
-          #   locals: { pagy: @pagy_archive_items }
-          # )
+          turbo_stream.replace("modal", html: '<turbo-frame id="modal"></turbo-frame>'.html_safe), # The html is there so they can archive another right away
         ]
       end
       format.html { redirect_to media_vault_dashboard_path }

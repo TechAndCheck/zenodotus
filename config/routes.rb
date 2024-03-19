@@ -89,6 +89,7 @@ Rails.application.routes.draw do
       root "application#index"
 
       get "dashboard", to: "archive#index"
+      get "personal_dashboard", to: "archive#index", defaults: { personal_archive: true }
       get "guide"
       get "optout"
 

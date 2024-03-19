@@ -17,6 +17,7 @@ class Scrape < ApplicationRecord
 
   has_one :archive_item, dependent: :destroy
   belongs_to :media_review, dependent: nil, optional: true
+  belongs_to :user, optional: true
 
   after_create :send_notification
 
@@ -59,6 +60,19 @@ class Scrape < ApplicationRecord
   sig { void }
   def send_notification
     ActionCable.server.broadcast("scrapes_channel", { scrapes_count: Scrape.where(fulfilled: false, error: nil).count })
+  end
+
+  sig { void }
+  def send_completion_email
+    if self.user.present?
+      if self.removed
+        ScrapeMailer.with(url: self.url, user: self.user).scrape_removed_email.deliver_later
+      elsif self.error
+        ScrapeMailer.with(url: self.url, user: self.user).scrape_error_email.deliver_later
+      else
+        ScrapeMailer.with(url: self.url, user: self.user).scrape_complete_email.deliver_later
+      end
+    end
   end
 
   sig { params(response: Array).void }
@@ -123,6 +137,9 @@ class Scrape < ApplicationRecord
 
     # Update any channels listening to the scrape count
     self.send_notification
+
+    # Send the completion email or whatever if necessary
+    self.send_completion_email
   rescue StandardError => e
     Honeybadger.notify(e, context: {
       id: self.id,
