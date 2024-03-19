@@ -1,5 +1,11 @@
 # typed: strict
 
+
+# NOTE: This now uses Postgres for searching, which is very very quick.
+# However, a significant amount of the slow down is the FFMPEG processing itself. I wonder if using
+# Lambda such as described here https://aws.amazon.com/blogs/media/processing-user-generated-content-using-aws-lambda-and-ffmpeg/
+# may speed this up since we can throw a huge instance at a very short-lived process?
+
 class ImageSearch < ApplicationRecord
   include ImageUploader::Attachment(:image) # adds an `image` virtual attribute
   include VideoUploader::Attachment(:video)
@@ -42,39 +48,37 @@ class ImageSearch < ApplicationRecord
 
   # Runs the search against all images in the database given the +image+ attached
   #
-  # Right now this is very very slow due to it doing all the dhashing in Ruby. We can probably move
-  # this to the database in a function eventually.
-  #
   # @return An ordered array of the search results with the format
   # { image: ArchiveItem, distance: Float } Note that the lower the distance the better the match
   # as this meaning the hamming distance between the images is less.
   sig { returns(T::Array[T::Hash[ArchiveItem, Float]]) }
   def run
-    # For images, we do our thing
     if self.image.nil? == false
-      image_hashes = Zelkova.graph.search(self.dhashes.first)
+      # Currently we run the query twice (speed at our scale is quite easy)
+      # We do this so we can get the proper distance in the result
+      image_hashes = ImageHash.find_by_sql("SELECT * FROM image_hashes WHERE levenshtein(dhash, '#{self.dhashes.first}') < 20 ORDER BY levenshtein(dhash, '#{self.dhashes.first}');")
+      image_hashes_raw = ImageHash.connection.select_all("SELECT *, levenshtein(dhash, '#{self.dhashes.first}') FROM image_hashes WHERE levenshtein(dhash, '#{self.dhashes.first}') < 20 ORDER BY levenshtein(dhash, '#{self.dhashes.first}');")
 
-      images = image_hashes.map do |image_hash|
-        hash = ImageHash.find(image_hash[:node].metadata[:id])
-        { image: hash.archive_item, distance: image_hash[:distance] }
+      images = image_hashes.map.with_index do |image_hash, index|
+        { image: image_hash.archive_item, distance: image_hashes_raw[index]["levenshtein"] }
       end
 
       images
     else
       # For videos we have to loop
       video_hashes = []
+      video_hashes_raw = []
       self.dhashes.each do |dhash|
-        video_hashes = video_hashes | Zelkova.graph.search(dhash["dhash"])
+        video_hashes += ImageHash.find_by_sql("SELECT * FROM image_hashes WHERE levenshtein(dhash, '#{dhash["dhash"]}') < 20 ORDER BY levenshtein(dhash, '#{dhash["dhash"]}');")
+        video_hashes_raw += ImageHash.connection.select_all("SELECT *, levenshtein(dhash, '#{dhash["dhash"]}') FROM image_hashes WHERE levenshtein(dhash, '#{dhash["dhash"]}') < 20 ORDER BY levenshtein(dhash, '#{dhash["dhash"]}');")
       end
 
-      videos = video_hashes.map do |video_hash|
-        hash = ImageHash.find(video_hash[:node].metadata[:id])
-        { video: hash.archive_item, distance: video_hash[:distance] }
+      videos = video_hashes.map.with_index do |video_hash, index|
+        { video: video_hash.archive_item, distance: video_hashes_raw[index]["levenshtein"] }
       end
-
-      videos.sort_by! { |video| video[:distance] }
 
       # Videos are now sorted by distance, but we want to only keep the shortest distance
+      # Probably can get this into the sql above
       videos.uniq! { |video_hash| video_hash[:video] }
 
       videos

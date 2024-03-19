@@ -9,18 +9,12 @@ class ImageSearchTest < ActiveSupport::TestCase
     video_file = File.open("test/mocks/media/youtube_media_23b12624-2ef2-4dcb-97d2-966aa9fcba80.mp4", binmode: true)
     @image_search = ImageSearch.create!(image: image_file, user: users(:user))
     @video_search = ImageSearch.create!(video: video_file, user: users(:user))
-
-    Zelkova.graph.reset
   end
 
   def around
     AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
       super
     end
-  end
-
-  def teardown
-    Zelkova.graph.reset
   end
 
   test "can create image search" do
