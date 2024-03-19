@@ -27,6 +27,11 @@ class MediaVault::AuthorsController < MediaVaultController
       archive_item_model_name:  "YoutubePost",
       author_name_method:       "title",
     },
+    tiktok: {
+      author_source_model_name: "TikTokUser",
+      archive_item_model_name:  "TikTokPost",
+      author_name_method:       "display_name",
+    }
   }
 
   class AuthorParams < T::Struct

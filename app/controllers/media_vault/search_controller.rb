@@ -83,7 +83,8 @@ private
       Sources::Tweet,
       Sources::InstagramPost,
       Sources::FacebookPost,
-      Sources::YoutubePost
+      Sources::YoutubePost,
+      Sources::TikTokPost,
     ]
 
     author_models = [
@@ -91,6 +92,7 @@ private
       Sources::InstagramUser,
       Sources::TwitterUser,
       Sources::YoutubeChannel,
+      Sources::TikTokUser,
     ]
 
     @post_results = []
