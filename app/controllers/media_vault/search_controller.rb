@@ -23,17 +23,17 @@ class MediaVault::SearchController < MediaVaultController
       begin
         @uri = URI.parse(typed_params.q)
         @uri && @uri.host.present? # This is just a check if it a URL, we don't care about the results
-        search_by_url(typed_params.q, private: typed_params.private) if @uri.class == URI::HTTP || @uri.class == URI::HTTPS # URI Can parse just regular strings, so we make sure it's not
+        search_by_url(typed_params.q, private: @myvault) if @uri.class == URI::HTTP || @uri.class == URI::HTTPS # URI Can parse just regular strings, so we make sure it's not
       rescue URI::InvalidURIError; end # Do nothing, just do a regular text search
 
       @uri = nil # We set this so we can show the proper search field if the url was passed in
 
-      search_by_text(typed_params.q, private: typed_params.private.nil? ? false : typed_params.private)
+      search_by_text(typed_params.q, private: @myvault)
     end
 
     if params.has_key?(:msid)
       @query = typed_params.q
-      search_by_media_search_id(typed_params.msid, private: typed_params.private)
+      search_by_media_search_id(typed_params.msid, private: @myvault)
     end
   end
 
@@ -43,28 +43,31 @@ class MediaVault::SearchController < MediaVaultController
   # repeated. This is achieved by returning the ID on the X-search-id header (for Turbo requests)
   # and by redirecting to the search index page with the ID on the query params (for standard
   # requests). Thus, we only run the search within this action for the Turbo requests.
-  sig { params(private: T.nilable(T::Boolean)) }
+  sig { params(private: T.nilable(T::Boolean)).void }
   def search_by_media(private: false)
     typed_params = TypedParams[MediaSearchParams].new.extract!(params)
 
-    @media_search = ImageSearch.create_with_media_item(typed_params.media, current_user)
+    @myvault = typed_params.private.nil? ? false : typed_params.private
+
+
+    @media_search = ImageSearch.create_with_media_item(typed_params.media, current_user, @myvault)
     @query = typed_params.q
 
     respond_to do |format|
       format.turbo_stream do
         # See #456 for why we aren't really using Turbo here.
-        redirect_to media_vault_search_path(msid: @media_search.id, q: @query)
+        redirect_to media_vault_search_path(msid: @media_search.id, q: @query, private: @myvault)
       end
       format.html do
-        redirect_to media_vault_search_path(msid: @media_search.id, q: @query)
+        redirect_to media_vault_search_path(msid: @media_search.id, q: @query, private: @myvault)
       end
     end
   end
 
 private
 
-  sig { params(id: String).void }
-  def search_by_media_search_id(id)
+  sig { params(id: String, private: T::Boolean).void }
+  def search_by_media_search_id(id, private: false)
     @media_search = ImageSearch.find(id)
     @results = @media_search.run
     @post_results = @results.filter_map { |result|
@@ -130,15 +133,15 @@ private
   sig { params(url: String, private: T.nilable(T::Boolean)).void }
   def search_by_url(url, private: false)
     downloaded_file = Shrine.remote_url(url)
-    @media_search = ImageSearch.create_with_media_item(downloaded_file, current_user)
+    @media_search = ImageSearch.create_with_media_item(downloaded_file, current_user, private)
 
     respond_to do |format|
       format.turbo_stream do
         # See #456 for why we aren't really using Turbo here.
-        redirect_to media_vault_search_path(msid: @media_search.id, q: url)
+        redirect_to media_vault_search_path(msid: @media_search.id, q: url, private: private)
       end
       format.html do
-        redirect_to media_vault_search_path(msid: @media_search.id, q: url)
+        redirect_to media_vault_search_path(msid: @media_search.id, q: url, private: private)
       end
     end
   rescue Shrine::Plugins::RemoteUrl::DownloadError, RuntimeError => e

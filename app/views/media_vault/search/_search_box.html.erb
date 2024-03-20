@@ -34,6 +34,7 @@
         turbo: false,
       } do |f|
     %>
+      <%= f.hidden_field :private, value: (myvault.nil? ? false : myvault) %>
       <div class="search-box__form__elements">
         <fieldset class="search-box__fieldset" data-media-vault--search-box-target="searchByMediaFieldset">
           <%= f.label :media, "Search by media", class: "search-box__form__label" %>

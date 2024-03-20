@@ -83,6 +83,55 @@ class MediaVault::SearchControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "can search media for private posts" do
+    Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CHdIkUVBz3C/", users(:media_vault_user))
+    Sources::YoutubePost.create_from_url!("https://www.youtube.com/watch?v=Df7UtQTFUMQ", users(:media_vault_user))
+    Sources::YoutubePost.create_from_url!("https://youtube.com/shorts/OgWNIBZfwDI")
+
+    assert_difference("ImageSearch.count") do
+      sign_in users(:media_vault_user)
+
+      video_file = File.open("test/mocks/media/youtube_media_23b12624-2ef2-4dcb-97d2-966aa9fcba80.mp4", binmode: true)
+      media_search = ImageSearch.create_with_media_item(video_file, users(:media_vault_user), true)
+
+      get media_vault_search_path(msid: media_search.id, private: true)
+      assert_response :success
+
+      results = media_search.run
+
+      assert_equal 2, results.count
+
+      results.each do |result|
+        assert result[:video].private
+      end
+    end
+  end
+
+
+  test "can search media for public posts" do
+    Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CHdIkUVBz3C/", users(:media_vault_user))
+    Sources::YoutubePost.create_from_url!("https://www.youtube.com/watch?v=Df7UtQTFUMQ", users(:media_vault_user))
+    Sources::YoutubePost.create_from_url!("https://youtube.com/shorts/OgWNIBZfwDI")
+
+    assert_difference("ImageSearch.count") do
+      sign_in users(:media_vault_user)
+
+      video_file = File.open("test/mocks/media/youtube_media_23b12624-2ef2-4dcb-97d2-966aa9fcba80.mp4", binmode: true)
+      media_search = ImageSearch.create_with_media_item(video_file, users(:media_vault_user), false)
+
+      get media_vault_search_path(msid: media_search.id, private: false)
+      assert_response :success
+
+      results = media_search.run
+
+      assert_equal 1, results.count
+
+      results.each do |result|
+        assert_not result[:video].private
+      end
+    end
+  end
+
   test "A url with nothing in a url search fails properly" do
     assert_no_difference("ImageSearch.count") do
       sign_in users(:media_vault_user)
@@ -130,10 +179,4 @@ class MediaVault::SearchControllerTest < ActionDispatch::IntegrationTest
       assert_response :redirect
     end
   end
-
-  # TODO: check too large of a file, no file, and a file that's not a media
-
-  # TODO: check that text search results are returned properly
-  # TODO: check that media search history is created
-  # TODO: check that media search results are returned properly
 end
