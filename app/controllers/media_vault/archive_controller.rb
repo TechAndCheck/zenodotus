@@ -126,6 +126,18 @@ class MediaVault::ArchiveController < MediaVaultController
     end
   end
 
+  # A status page for ad hoc archives
+  sig { void }
+  def status
+    scrapes = Scrape.where(user: current_user).order(created_at: :desc)
+
+    @pagy_scrapes, @scrapes = pagy_array( # This is just `pagy(` when we get it back to and ActiveRecord collection
+          scrapes,
+          page_param: :p,
+          items: ARCHIVE_ITEMS_PER_PAGE
+        )
+  end
+
   # Export entire archive of reviewed media to a JSON File
   sig { void }
   def export_archive_data
