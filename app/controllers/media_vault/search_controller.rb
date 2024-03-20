@@ -4,31 +4,36 @@ class MediaVault::SearchController < MediaVaultController
   class SearchParams < T::Struct
     const :q, T.nilable(String)    # Text Query
     const :msid, T.nilable(String) # Media Search ID
+    const :private, T.nilable(T::Boolean)
   end
   class MediaSearchParams < T::Struct
     const :media, ActionDispatch::Http::UploadedFile
     const :q, T.nilable(String)
+    const :private, T.nilable(T::Boolean)
   end
 
   sig { void }
   def index
     typed_params = TypedParams[SearchParams].new.extract!(params)
 
+    @myvault = typed_params.private.nil? ? false : typed_params.private
+
     if params.has_key?(:q) && typed_params.msid.nil?
       # Check if the query is a url, if so, try to download it
       begin
         @uri = URI.parse(typed_params.q)
         @uri && @uri.host.present? # This is just a check if it a URL, we don't care about the results
-        search_by_url(typed_params.q) if @uri.class == URI::HTTP || @uri.class == URI::HTTPS # URI Can parse just regular strings, so we make sure it's not
+        search_by_url(typed_params.q, private: typed_params.private) if @uri.class == URI::HTTP || @uri.class == URI::HTTPS # URI Can parse just regular strings, so we make sure it's not
       rescue URI::InvalidURIError; end # Do nothing, just do a regular text search
 
       @uri = nil # We set this so we can show the proper search field if the url was passed in
-      search_by_text(typed_params.q)
+
+      search_by_text(typed_params.q, private: typed_params.private.nil? ? false : typed_params.private)
     end
 
     if params.has_key?(:msid)
       @query = typed_params.q
-      search_by_media_search_id(typed_params.msid)
+      search_by_media_search_id(typed_params.msid, private: typed_params.private)
     end
   end
 
@@ -38,8 +43,8 @@ class MediaVault::SearchController < MediaVaultController
   # repeated. This is achieved by returning the ID on the X-search-id header (for Turbo requests)
   # and by redirecting to the search index page with the ID on the query params (for standard
   # requests). Thus, we only run the search within this action for the Turbo requests.
-  sig { void }
-  def search_by_media
+  sig { params(private: T.nilable(T::Boolean)) }
+  def search_by_media(private: false)
     typed_params = TypedParams[MediaSearchParams].new.extract!(params)
 
     @media_search = ImageSearch.create_with_media_item(typed_params.media, current_user)
@@ -70,11 +75,11 @@ private
   rescue ActiveRecord::RecordNotFound
   end
 
-  sig { params(query: String).void }
-  def search_by_text(query)
+  sig { params(query: String, private: T.nilable(T::Boolean)).void }
+  def search_by_text(query, private: false)
     @query = query
 
-    search = TextSearch.create!(query: @query, user: current_user)
+    search = TextSearch.create!(query: @query, user: current_user, private: private)
     @results = search.run
 
     # Split results into posts and authors based on class.
@@ -122,8 +127,8 @@ private
   end
 
   # This downloads a file and then searches it. It streams it in since we have no idea if it's small or big
-  sig { params(url: String).void }
-  def search_by_url(url)
+  sig { params(url: String, private: T.nilable(T::Boolean)).void }
+  def search_by_url(url, private: false)
     downloaded_file = Shrine.remote_url(url)
     @media_search = ImageSearch.create_with_media_item(downloaded_file, current_user)
 

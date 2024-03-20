@@ -7,6 +7,7 @@
       class: "search-box__form search-box__form--text",
       data: { "media-vault--search-box-target": "searchByTextForm" } do |f|
     %>
+      <%= f.hidden_field :private, value: (myvault.nil? ? false : myvault) %>
       <fieldset class="search-box__fieldset" data-media-vault--search-box-target="searchByTextFieldset" style="margin-right: 10%">
         <%= f.label :q, "Search by text", class: "search-box__form__label" %>
         <%= f.text_field :q, class: "search-box__form__field", value: (@query if defined?(@query) && !@query.nil?), "data-media-vault--search-box-target": "searchByTextField" %>

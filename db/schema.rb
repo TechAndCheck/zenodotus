@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_20_025228) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_20_050601) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -178,6 +178,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_20_025228) do
     t.uuid "user_id"
     t.jsonb "dhashes", array: true
     t.jsonb "video_data"
+    t.boolean "private", default: false, null: false
     t.index ["user_id"], name: "index_image_searches_on_user_id"
   end
 

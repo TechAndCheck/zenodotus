@@ -133,7 +133,6 @@ class Scrape < ApplicationRecord
     # Send the completion email or whatever if necessary
     self.send_completion_email
   rescue StandardError => e
-
     logger.error "Error fulfilling scrape: #{e}"
     Honeybadger.notify(e, context: {
       id: self.id,

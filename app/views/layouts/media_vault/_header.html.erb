@@ -22,7 +22,7 @@
 					<li><%= link_to media_vault_myvault_path, class: "btn btn--naked" do %><span>MyVault</span><% end %></li>
 					<li><%= link_to media_vault_guide_path, class: "btn btn--naked" do %><span>Guide<span class="hideable"> to MediaVault</span></span><% end %></li>
 					<li class="site-nav__search">
-						<%= render partial: "media_vault/search/search_box" %>
+						<%= render partial: "media_vault/search/search_box", locals: { myvault: @myvault } %>
 					</li>
 				<% else %>
 					<li><%= render partial: "media_vault/request_access_instructions" %></li>

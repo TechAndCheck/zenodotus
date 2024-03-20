@@ -4,6 +4,19 @@ require "test_helper"
 
 class MediaVault::SearchControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include Minitest::Hooks
+
+  def around
+    AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
+      super
+    end
+  end
+
+  def after_all
+    if File.exist?("tmp") && File.directory?("tmp")
+      FileUtils.rm_r("tmp")
+    end
+  end
 
   setup do
     host! Figaro.env.MEDIA_VAULT_HOST
@@ -35,6 +48,30 @@ class MediaVault::SearchControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_equal 1, TextSearch.count
+  end
+
+  test "can run private and public text search" do
+    # Set up a private archived post
+    @private_scrape = Scrape.create!({
+      url: "https://www.instagram.com/p/CHdIkUVBz3C",
+      scrape_type: :instagram,
+      user: users(:media_vault_user),
+    })
+
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    @private_scrape.fulfill(zorki_image_post)
+
+    sign_in users(:media_vault_user)
+
+    get media_vault_search_url(q: "pardoned", private: true)
+
+    assert_response :success
+    assert_equal 1, TextSearch.first.run.count
+
+    get media_vault_search_url(q: "pardoned", private: false)
+
+    assert_response :success
+    assert_equal 0, TextSearch.all[1].run.count
   end
 
   test "can search by url of media" do

@@ -5,8 +5,13 @@ class Sources::Tweet < ApplicationRecord
   include PgSearch::Model
   include Scrapable
 
-  multisearchable against: :text
-
+  multisearchable(
+    against: :text,
+    additional_attributes: -> (post) { {
+      private: post.archive_item.nil? ? false : post.archive_item.private, # Messy but meh
+      user_id: post.archive_item&.users&.map(&:id)
+    } }
+  )
   has_many :images, foreign_key: :tweet_id, class_name: "MediaModels::Images::TwitterImage", dependent: :destroy
   accepts_nested_attributes_for :images, allow_destroy: true
 

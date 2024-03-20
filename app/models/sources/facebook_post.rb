@@ -7,7 +7,10 @@ class Sources::FacebookPost < ApplicationRecord
 
   multisearchable(
     against: :text,
-    additional_attributes: -> (post) { { private: post.archive_item.private } }
+    additional_attributes: -> (post) { {
+      private: post.archive_item.nil? ? false : post.archive_item.private, # Messy but meh
+      user_id: post.archive_item&.users&.map(&:id)
+    } }
   )
 
   has_many :images, foreign_key: :facebook_post_id, class_name: "MediaModels::Images::FacebookImage", dependent: :destroy

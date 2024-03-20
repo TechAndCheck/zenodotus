@@ -3,7 +3,13 @@ class Sources::TikTokPost < ApplicationRecord
   include PgSearch::Model
   include Scrapable
 
-  multisearchable against: :text
+  multisearchable(
+    against: :text,
+    additional_attributes: -> (post) { {
+      private: post.archive_item.nil? ? false : post.archive_item.private, # Messy but meh
+      user_id: post.archive_item&.users&.map(&:id)
+    } }
+  )
 
   has_many :videos, foreign_key: :tik_tok_post_id, class_name: "MediaModels::Videos::TikTokVideo", dependent: :destroy
   accepts_nested_attributes_for :videos, allow_destroy: true
