@@ -30,7 +30,7 @@ class MediaVault::ArchiveController < MediaVaultController
 
     archive_items = archive_items.where({ posted_at: from_date...to_date }).includes(:media_review, { archivable_item: [:author, :images, :videos] }).order(posted_at: :desc)
 
-    @pagy_archive_items, @archive_items = pagy_array( # This is just `pagy(` when we get it back to and ActiveRecord collection
+    @pagy_items, @archive_items = pagy_array( # This is just `pagy(` when we get it back to and ActiveRecord collection
       archive_items,
       page_param: :p,
       items: ARCHIVE_ITEMS_PER_PAGE
@@ -131,11 +131,28 @@ class MediaVault::ArchiveController < MediaVaultController
   def status
     scrapes = Scrape.where(user: current_user).order(created_at: :desc)
 
-    @pagy_scrapes, @scrapes = pagy_array( # This is just `pagy(` when we get it back to and ActiveRecord collection
+    @pagy_items, @scrapes = pagy_array( # This is just `pagy(` when we get it back to and ActiveRecord collection
           scrapes,
           page_param: :p,
           items: ARCHIVE_ITEMS_PER_PAGE
         )
+  end
+
+  # Restart the scrape
+  sig { void }
+  def restart_scrape
+    scrape = Scrape.find(params[:scrape_id])
+    scrape.enqueue
+
+    respond_to do |format|
+      flash.now[:success] = { title: "Scrape Restarted", body: "Your scrape has been restarted and will be processed shortly." }
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash })
+        ]
+      end
+      format.html { redirect_to media_vault_status_path }
+    end
   end
 
   # Export entire archive of reviewed media to a JSON File

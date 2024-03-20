@@ -93,6 +93,9 @@ Rails.application.routes.draw do
       get "guide"
       get "optout"
 
+      get "status", to: "archive#status"
+      get "status/:scrape_id/restart", to: "archive#restart_scrape", as: "restart_scrape"
+
       get "search", to: "search#index", as: "search"
       post "search_by_media", to: "search#search_by_media", as: "search_by_media"
 
