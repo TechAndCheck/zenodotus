@@ -17,7 +17,7 @@
 	</div>
 
 	<% show = !@organization.nil? || !@from_date.nil? || !@to_date.nil? %>
-	<%= render partial: "filter_form", locals: { show: show } %>
+	<%= render partial: "filter_form", locals: { show: show, myvault: @myvault } %>
 
 	<%= turbo_frame_tag "modal" do %>
 
