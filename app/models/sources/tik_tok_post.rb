@@ -1,6 +1,7 @@
 class Sources::TikTokPost < ApplicationRecord
   include ArchivableItem
   include PgSearch::Model
+  include Scrapable
 
   multisearchable against: :text
 
@@ -43,16 +44,13 @@ class Sources::TikTokPost < ApplicationRecord
     Sources::TikTokPost.create_from_morris_hash(morris_response, user).first
   end
 
-  # Spawns an ActiveJob tasked with creating an +ArchiveItem+ from a +url+ as a string
+  # Returns the scrape type for the +Scrapable+ concernt
   #
   # @!scope class
-  # @params url String a string of a url
-  # @params user User: the user creating an ArchiveItem
-  # returns ScrapeJob
-  sig { params(url: String, user: T.nilable(User), media_review: T.nilable(MediaReview)).returns(ScrapeJob) }
-  def self.create_from_url(url, user = nil, media_review: nil)
-    scrape = Scrape.create!({ url: url, scrape_type: MediaSource::ScrapeType::TikTok.serialize, media_review: media_review })
-    scrape.enqueue
+  # @returns [MediaSource::ScrapeType] the type of scrape that this class is
+  sig { returns(MediaSource::ScrapeType) }
+  def self.scrape_type
+    MediaSource::ScrapeType::TikTok
   end
 
   # An alias for create_from_morris_hash painted with a generic name so it can be called in a model agnostic fashion

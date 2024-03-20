@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_15_194841) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_20_025228) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -252,6 +252,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_15_194841) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.virtual "content_tsvector", type: :tsvector, as: "to_tsvector('english'::regconfig, content)", stored: true
+    t.boolean "private", default: false, null: false
+    t.uuid "user_id", array: true
     t.index ["content_tsvector"], name: "index_pg_search_documents_on_content_tsvector", using: :gin
     t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
   end
@@ -313,6 +315,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_15_194841) do
     t.datetime "updated_at", null: false
     t.string "query"
     t.uuid "user_id"
+    t.boolean "private", default: false, null: false
     t.index ["user_id"], name: "index_text_searches_on_user_id"
   end
 

@@ -5,7 +5,10 @@ class Sources::FacebookPost < ApplicationRecord
   include PgSearch::Model
   include Scrapable
 
-  multisearchable against: :text
+  multisearchable(
+    against: :text,
+    additional_attributes: -> (post) { { private: post.archive_item.private } }
+  )
 
   has_many :images, foreign_key: :facebook_post_id, class_name: "MediaModels::Images::FacebookImage", dependent: :destroy
   accepts_nested_attributes_for :images, allow_destroy: true

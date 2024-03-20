@@ -5,7 +5,13 @@ class Sources::InstagramPost < ApplicationRecord
   include PgSearch::Model
   include Scrapable
 
-  multisearchable against: :text
+  multisearchable(
+    against: :text,
+    additional_attributes: -> (post) { {
+      private: post.archive_item.nil? ? false : post.archive_item.private, # Messy but meh
+      user_id: post.archive_item&.users&.map(&:id)
+    } }
+  )
 
   has_many :images, foreign_key: :instagram_post_id, class_name: "MediaModels::Images::InstagramImage", dependent: :destroy
   accepts_nested_attributes_for :images, allow_destroy: true

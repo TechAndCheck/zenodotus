@@ -119,9 +119,6 @@ class Scrape < ApplicationRecord
     unless removed || errored
       archive_item = ArchiveItem.model_for_url(self.url).create_from_hash(response, self.user)
       archive_item = archive_item.empty? ? nil : archive_item.first
-
-      # Add a user to the archive_item if we have a user
-      archive_item.users << self.user if archive_item.present? && self.user.present?
     end
 
     unless media_review_item.nil?
@@ -136,6 +133,8 @@ class Scrape < ApplicationRecord
     # Send the completion email or whatever if necessary
     self.send_completion_email
   rescue StandardError => e
+
+    logger.error "Error fulfilling scrape: #{e}"
     Honeybadger.notify(e, context: {
       id: self.id,
       url: self.url,

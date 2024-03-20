@@ -33,7 +33,7 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
 
     archive_item = ArchiveItem.first
     archive_item.update(private: true)
-    assert_equal 0, ArchiveItem.count
+    assert_equal 0, ArchiveItem.publically_viewable.count
   end
 
   test "archive items that are private can still be retrieve by user" do
@@ -43,7 +43,7 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
     user.archive_items << archive_item
     assert_equal 1, user.archive_items.count
     archive_item.update(private: true)
-    assert_equal 1, user.private_archive_items.count
+    assert_equal 1, user.archive_items.count
   end
 
   test "archive items that are private can be upgraded to public" do
@@ -53,11 +53,11 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
 
     user = users(:user)
     user.archive_items << archive_item
-    assert_equal 1, user.private_archive_items.count
+    assert_equal 1, user.archive_items.count
 
-    assert_equal 0, ArchiveItem.count
+    assert_equal 0, ArchiveItem.publically_viewable.count
     archive_item.promote_to_public
-    assert_equal 1, ArchiveItem.count
+    assert_equal 1, ArchiveItem.publically_viewable.count
   end
 
   test "multiple users can be associated with an archive item" do
