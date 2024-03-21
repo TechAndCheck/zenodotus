@@ -8,7 +8,7 @@ class ScrapeMailer < ApplicationMailer
     mail({
       from: email_address_with_name("no-reply@#{Figaro.env.MAIL_DOMAIN}", "MediaVault"),
       to: params[:user][:email],
-      subject: "MyVault Scrape Completed",
+      subject: "MyVault Archive Request Completed",
     })
   end
 
@@ -19,7 +19,7 @@ class ScrapeMailer < ApplicationMailer
     mail({
       from: email_address_with_name("no-reply@#{Figaro.env.MAIL_DOMAIN}", "MediaVault"),
       to: params[:user][:email],
-      subject: "MyVault Scrape Removed",
+      subject: "MyVault Archive Request Failed",
     })
   end
 
@@ -30,7 +30,7 @@ class ScrapeMailer < ApplicationMailer
     mail({
       from: email_address_with_name("no-reply@#{Figaro.env.MAIL_DOMAIN}", "MediaVault"),
       to: params[:user][:email],
-      subject: "MyVault Scrape Error",
+      subject: "MyVault Archive Request Error",
     })
   end
 end
