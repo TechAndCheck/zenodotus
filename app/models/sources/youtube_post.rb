@@ -6,7 +6,13 @@ class Sources::YoutubePost < ApplicationRecord
   include PgSearch::Model
   include Scrapable
 
-  multisearchable against: :title
+  multisearchable(
+    against: :title,
+    additional_attributes: -> (post) { {
+      private: post.archive_item.nil? ? false : post.archive_item.private, # Messy but meh
+      user_id: post.archive_item&.users&.map(&:id)
+    } }
+  )
 
   has_many :videos, foreign_key: :youtube_post_id, class_name: "MediaModels::Videos::YoutubeVideo", dependent: :destroy
   accepts_nested_attributes_for :videos, allow_destroy: true

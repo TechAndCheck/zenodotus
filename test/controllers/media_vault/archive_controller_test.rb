@@ -37,9 +37,39 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
     model_for_twitter_url = ArchiveItem.model_for_url("https://twitter.com/EFF/status/1427321758311387136")
     model_for_instagram_url = ArchiveItem.model_for_url("https://www.instagram.com/p/CSjrCgrrZq4/")
     model_for_facebook_url = ArchiveItem.model_for_url("https://www.facebook.com/barackobama/videos/632588137735860/")
+    model_for_youtube_url = ArchiveItem.model_for_url("https://www.youtube.com/watch?v=Df7UtQTFUMQ/")
+    model_for_tiktok_url = ArchiveItem.model_for_url("https://www.tiktok.com/@guess/video/7091753416032128299")
     assert_equal model_for_twitter_url, Sources::Tweet
     assert_equal model_for_instagram_url, Sources::InstagramPost
     assert_equal model_for_facebook_url, Sources::FacebookPost
+    assert_equal model_for_tiktok_url, Sources::TikTokPost
+    assert_equal model_for_youtube_url, Sources::YoutubePost
+  end
+
+  test "only a media vault user or super user can submit a url" do
+    sign_in users(:fact_check_insights_user)
+    get media_vault_archive_add_path
+    assert_response :redirect
+
+    sign_in users(:media_vault_user)
+    get media_vault_archive_add_path(format: :turbo_stream)
+    assert_response :success
+
+    sign_in users(:admin)
+    get media_vault_archive_add_path(format: :turbo_stream)
+    assert_response :success
+  end
+
+  test "can submit a url for scraping ad hoc" do
+    sign_in users(:media_vault_user)
+    get media_vault_archive_add_path(format: :turbo_stream)
+    assert_response :success # Not sure why this is redirecting, should be `:success`
+
+    assert_changes -> { Scrape.count } do
+      post media_vault_archive_add_path, params: { url_to_archive: "https://www.instagram.com/p/CBcqOkyDDH8/" }
+
+      assert_response :redirect
+    end
   end
 
   test "scrape results update errors if there's no scrape found" do
@@ -90,19 +120,58 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "personal vault only shows the user's own items" do
+  test "vault only shows all items it should" do
+    # This is public
+    post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    Sources::InstagramPost.create_from_zorki_hash(post)
+
     sign_in users(:user)
-    get media_vault_personal_dashboard_url
+    get media_vault_dashboard_url
     assert_response :success
-    assert_select "a[href=?]", media_vault_dashboard_path, count: 0
+
+    assert_select "div.archive-item", count: 1
+  end
+
+  test "personal vault only shows the user's own items" do
+    post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    Sources::InstagramPost.create_from_zorki_hash(post)
+
+    sign_in users(:user)
+    get media_vault_myvault_url
+    assert_response :success
+    assert_select "div.archive-item", count: 0
+  end
+
+  test "personal vault doesn't show other user's items" do
+    sign_in users(:user)
+    post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    Sources::InstagramPost.create_from_zorki_hash(post, users(:user))
+
+    get media_vault_myvault_url
+    assert_response :success
+    assert_select "div.archive-item", count: 1
+
+    post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    Sources::InstagramPost.create_from_zorki_hash(post, users(:media_vault_user))
+
+    post = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    Sources::InstagramPost.create_from_zorki_hash(post, users(:media_vault_user))
+
+    assert_select "div.archive-item", count: 1
+
+    # Sign in with a different user
+    sign_in users(:media_vault_user)
+    get media_vault_myvault_url
+    assert_response :success
+    assert_select "div.archive-item", count: 2
   end
 
   test "can switch to personal vault" do
     sign_in users(:user)
     get media_vault_dashboard_url
     assert_response :success
-    assert_select "a[href=?]", media_vault_personal_dashboard_path
-    get media_vault_personal_dashboard_url
+    assert_select "a[href=?]", media_vault_myvault_path
+    get media_vault_myvault_url
     assert_response :success
   end
 end

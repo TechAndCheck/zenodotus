@@ -3,7 +3,7 @@
 class ArchiveItem < ApplicationRecord
   include Dhashable
 
-  delegated_type :archivable_item, types: %w[Sources::Tweet Sources::InstagramPost Sources::FacebookPost Sources::YoutubePost]
+  delegated_type :archivable_item, types: %w[Sources::Tweet Sources::InstagramPost Sources::FacebookPost Sources::YoutubePost Sources::TikTokPost]
   delegate :service_id, to: :archivable_item
   delegate :images, to: :archivable_item
   delegate :videos, to: :archivable_item
@@ -12,21 +12,32 @@ class ArchiveItem < ApplicationRecord
   has_one :media_review, dependent: :nullify, foreign_key: :archive_item_id
   has_one :screenshot, dependent: :destroy, foreign_key: :archive_item_id, class_name: "Screenshot"
   accepts_nested_attributes_for :screenshot, allow_destroy: true
-  has_many :image_hashes, dependent: :destroy
+  has_many :image_hashes, dependent: :destroy # since videos are searched using images. this is fine
   belongs_to :submitter, optional: true, class_name: "User"
   belongs_to :scrape, optional: true
 
   has_many :archive_items_users, dependent: :destroy, class_name: "ArchiveItemUser"
   has_many :users, through: :archive_items_users
 
-  before_create :update_posted
+  before_create :update_posted, :set_user_for_archivable_item, :set_private_flag
+  after_save -> { self.archivable_item.update_pg_search_document }
 
   # Yes, default scopes are usually a code smell, but the *vast* majority of the time we don't want to include
   # private archive items in our queries. We'll be explicit otherwise.
-  default_scope { where(private: false) }
+  scope :publically_viewable, -> { where(private: false) }
+
+  # NOTE: This could probably be done wiht some refactoring, however, it's like ripping out a wall to replace a light switch right now
+  # This will have to come later when you're not pulling 3 all nighters before a ChopTop... Chris
+  def set_user_for_archivable_item
+    self.users << self.submitter unless self.submitter.nil? || self.users.include?(self.submitter)
+  end
 
   def update_posted
     self.posted_at = self.archivable_item.posted_at
+  end
+
+  def set_private_flag
+    self.private = self.submitter.present?
   end
 
   def promote_to_public
@@ -135,6 +146,15 @@ class ArchiveItem < ApplicationRecord
   sig { returns(T.nilable(Sources::YoutubePost)) }
   def youtube_post
     self.sources_youtube_post
+  end
+
+  # A helper function to make it easier to access the item, instead of `.sources_tik_tok_post`
+  # this allows just the use of `.tik_tok_post`
+  #
+  # @returns +Sources::TikTokPost+
+  sig { returns(T.nilable(Sources::TikTokPost)) }
+  def tik_tok_post
+    self.sources_tik_tok_post
   end
 
   # Proxy for the normalized representation of this related archivable item for use in the view

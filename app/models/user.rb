@@ -32,13 +32,6 @@ class User < ApplicationRecord
   validates :email, presence: true
   validates :webauthn_id, uniqueness: true, allow_nil: true
 
-  # Get private archive items that the user has access to. This is what should always be used,
-  # For some reason i can't get unscoped auto stuff to work on the association
-  sig { returns(ArchiveItem::ActiveRecord_Relation) }
-  def private_archive_items
-    self.archive_items.unscoped
-  end
-
   # `Devise::Recoverable#set_reset_password_token` is a protected method, which prevents us from
   # calling it directly. Since we need to be able to do that for tests and for duck-punching other
   # `Devise::Recoverable` methods, we pull it into the public space here.

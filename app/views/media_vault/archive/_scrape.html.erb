@@ -1,0 +1,7 @@
+<tr>
+	<td><%= scrape.url %></td>
+	<td><%= scrape.fulfilled %></td>
+	<td><%= scrape.error %></td>
+	<td><%= scrape.removed %></td>
+	<td><%= link_to "Requeue", media_vault_restart_scrape_path(scrape) %></td>
+</tr>

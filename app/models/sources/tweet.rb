@@ -5,8 +5,13 @@ class Sources::Tweet < ApplicationRecord
   include PgSearch::Model
   include Scrapable
 
-  multisearchable against: :text
-
+  multisearchable(
+    against: :text,
+    additional_attributes: -> (post) { {
+      private: post.archive_item.nil? ? false : post.archive_item.private, # Messy but meh
+      user_id: post.archive_item&.users&.map(&:id)
+    } }
+  )
   has_many :images, foreign_key: :tweet_id, class_name: "MediaModels::Images::TwitterImage", dependent: :destroy
   accepts_nested_attributes_for :images, allow_destroy: true
 
@@ -45,6 +50,7 @@ class Sources::Tweet < ApplicationRecord
   # returns ArchiveItem with type Tweet that has been saved to the database
   sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
   def self.create_from_url!(url, user = nil)
+    # debugger
     tweet_response = TwitterMediaSource.extract(url, MediaSource::ScrapeType::Twitter, true)
     tweet_response = tweet_response["scrape_result"] unless tweet_response.nil?
     raise "Invalid Twitter url #{url}" if tweet_response.nil?
