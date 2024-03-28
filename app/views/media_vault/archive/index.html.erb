@@ -3,10 +3,25 @@
 <%= turbo_frame_tag "modal" %>
 
 <div class="content page--media_vault--dashboard">
-	<h2>Recently-archived media:</h2>
+	<%# Make this change dpeending on if we're in MyVault or not %>
+	<div class="flex justify-between flex-col md:flex-row lg:flex-row">
+		<div>
+			<h2><%= @myvault ? "MyVault:" : "Recently-archived media:" %></h2>
+		</div>
+		<div>
+			<%= link_to media_vault_archive_add_path, class: "btn btn--naked icon-prefixed", data: { turbo_stream: 'modal' } do %>
+				<%= use_svg "plus", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
+				<span>Save A Post</span>
+			<% end %>
+		</div>
+	</div>
 
 	<% show = !@organization.nil? || !@from_date.nil? || !@to_date.nil? %>
-	<%= render partial: "filter_form", locals: { show: show } %>
+	<%= render partial: "filter_form", locals: { show: show, myvault: @myvault } %>
+
+	<%= turbo_frame_tag "modal" do %>
+
+	<% end %>
 
 	<%= turbo_frame_tag "archived_items", target: "_top", class: "archive-items archive-items--boxed-items archive-items--masonry" do %>
 		<% render partial: "archive_items", locals: { archive_items: @archive_items } %>

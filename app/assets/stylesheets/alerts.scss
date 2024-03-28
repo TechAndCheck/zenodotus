@@ -48,6 +48,11 @@ Semantic variants:
 
 	.alert__message {
 		padding: calc(var(--alert--internal-spacing) / 2);
+		.title {
+			font-weight: shared.$font-weight--semibold;
+			font-size: calc(shared.$font-size--base * 1.25);
+			margin-bottom: calc(var(--alert--internal-spacing) / 2);
+		}
 
 		ul {
 			list-style-type: disc;

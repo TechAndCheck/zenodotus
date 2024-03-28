@@ -18,7 +18,7 @@
 	<% if (@results || []).any? %>
 
 		<% if @author_results.try(:any?) %>
-			<h2 class="search-results__title"><%= pluralize(@author_results.length, "matching author") %> found:</h2>
+			<h2 class="search-results__title"><%= pluralize(@author_results.length, "matching author") %> found<%= " in your MyVault" if @myvault %>:</h2>
 			<div class="search-results search-results--authors">
 				<% @author_results.each do |author| %>
 					<%= link_to media_vault_author_path(author, platform: author.platform), class: "search-result" do %>
@@ -29,7 +29,7 @@
 		<% end %>
 
 		<% if @post_results.any? %>
-			<h2 class="search-results__title"><%= pluralize(@post_results.length, "matching post") %> found:</h2>
+			<h2 class="search-results__title"><%= pluralize(@post_results.length, "matching post") %> found<%= " in your MyVault" if @myvault %>:</h2>
 			<div class="search-results search-results--posts archive-items archive-items--boxed-items archive-items--masonry">
 				<% @post_results.each do |post| %>
 					<%= render partial: "media_vault/media/archive_item", locals: { preview: true, **post.normalized_attrs_for_views } %>
@@ -38,6 +38,6 @@
 		<% end %>
 
 	<% else %>
-		<h1 class="text--center">No results found.</h1>
+		<h1 class="text--center">No results found<%= " in your MyVault" if @myvault %>.</h1>
 	<% end %>
 </div>

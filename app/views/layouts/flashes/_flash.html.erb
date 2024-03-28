@@ -1,14 +1,17 @@
 <div class="flash alert alert--<%= flash_type %>" role="alert" data-controller="flash-box">
 	<div class="alert__message">
-	<% if message.respond_to?(:each) %>
-		<ul>
-		<% message.each do |flash_type_i, message_i| %>
-			<li><%= message_i %></li>
+		<% if message.is_a?(Hash) %>
+			<div class="title"><%= message[:title] %></div>
+			<p><%= message[:body] %></p>
+		<% elsif message.respond_to?(:each) %>
+			<ul>
+			<% message.each do |flash_type_i, message_i| %>
+				<li><%= message_i %></li>
+			<% end %>
+			</ul>
+		<% else %>
+			<%= message %>
 		<% end %>
-		</ul>
-	<% else %>
-		<%= message %>
-	<% end %>
 	</div>
 	<button data-action="flash-box#closeBox" type="button" class="alert__close-button" aria-label="Close">
 		<%= use_svg "x", svg_attrs: { class: "icon", aria: { hidden: true } } %>

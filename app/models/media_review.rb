@@ -63,10 +63,11 @@ class MediaReview < ApplicationRecord
 
       # Now, if there's no ArchiveItem, try to find one and put it in
       if mr.archive_item.nil?
+        # NOTE: ArchiveItem does not, indeed, have a `url`
+        # We'll want to probably add the url to the archive_item
         archive_item = ArchiveItem.find_by(url: mr.media_url)
         mr.archive_item = archive_item unless archive_item.nil?
         mr.save!
-
       end
     else
       mr = MediaReview.create!(

@@ -49,8 +49,12 @@ class MediaVault::AuthorsController < MediaVaultController
     author_model = Sources.const_get(@platform[:author_source_model_name])
     @author = author_model.find(typed_params.id)
     @archive_items = ArchiveItem.includes(archivable_item: [:author, :images, :videos])
-                               .where(archivable_item_type: "Sources::#{@platform[:archive_item_model_name]}")
+                               .where(archivable_item_type: "Sources::#{@platform[:archive_item_model_name]}", private: false)
                                .select { |i| i.send(@platform[:archive_item_model_name].underscore).author == @author }
+
+    @archive_items = @archive_items.union(current_user.archive_items.includes(archivable_item: [:author, :images, :videos])
+                                                      .where(archivable_item_type: "Sources::#{@platform[:archive_item_model_name]}", private: true)
+                                                      .select { |i| i.send(@platform[:archive_item_model_name].underscore).author == @author })
 
     respond_to do |format|
       format.html do; end

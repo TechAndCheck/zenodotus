@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_13_165253) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_20_050601) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -73,7 +73,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_13_165253) do
     t.uuid "submitter_id"
     t.uuid "scrape_id"
     t.datetime "posted_at"
+    t.boolean "private", default: false, null: false
     t.index ["submitter_id"], name: "index_archive_items_on_submitter_id"
+  end
+
+  create_table "archive_items_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "archive_item_id", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["archive_item_id", "user_id"], name: "index_archive_items_users_on_archive_item_id_and_user_id", unique: true
+    t.index ["archive_item_id"], name: "index_archive_items_users_on_archive_item_id"
+    t.index ["user_id"], name: "index_archive_items_users_on_user_id"
   end
 
   create_table "claim_reviews", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -167,6 +178,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_13_165253) do
     t.uuid "user_id"
     t.jsonb "dhashes", array: true
     t.jsonb "video_data"
+    t.boolean "private", default: false, null: false
     t.index ["user_id"], name: "index_image_searches_on_user_id"
   end
 
@@ -241,6 +253,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_13_165253) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.virtual "content_tsvector", type: :tsvector, as: "to_tsvector('english'::regconfig, content)", stored: true
+    t.boolean "private", default: false, null: false
+    t.uuid "user_id", array: true
     t.index ["content_tsvector"], name: "index_pg_search_documents_on_content_tsvector", using: :gin
     t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
   end
@@ -277,6 +291,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_13_165253) do
     t.boolean "error", default: false, null: false
     t.boolean "removed", default: false
     t.uuid "media_review_id"
+    t.uuid "user_id"
     t.index ["media_review_id"], name: "index_scrapes_on_media_review_id"
   end
 
@@ -301,41 +316,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_13_165253) do
     t.datetime "updated_at", null: false
     t.string "query"
     t.uuid "user_id"
+    t.boolean "private", default: false, null: false
     t.index ["user_id"], name: "index_text_searches_on_user_id"
   end
 
   create_table "tik_tok_posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "text", null: false
-    t.string "tik_tok_id", null: false
+    t.string "tiktok_id", null: false
     t.datetime "posted_at", precision: nil, null: false
     t.integer "number_of_likes", null: false
     t.uuid "author_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["author_id"], name: "index_tik_tok_posts_on_author_id"
-  end
-
-  create_table "tik_tok_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "display_name", null: false
-    t.string "handle", null: false
-    t.integer "number_of_posts", null: false
-    t.integer "followers_count", null: false
-    t.integer "following_count", null: false
-    t.boolean "verified", null: false
-    t.text "profile", null: false
-    t.string "url"
-    t.string "profile_image_url", null: false
-    t.jsonb "profile_image_data"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "tik_tok_videos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "tik_tok_post_id"
-    t.jsonb "video_data"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["tik_tok_post_id"], name: "index_tik_tok_videos_on_instagram_post_id"
+    t.index ["author_id"], name: "index_tiktok_posts_on_author_id"
   end
 
   create_table "tweets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -475,6 +468,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_13_165253) do
   end
 
   add_foreign_key "api_keys", "users"
+  add_foreign_key "archive_items_users", "archive_items"
+  add_foreign_key "archive_items_users", "users"
   add_foreign_key "claim_reviews", "fact_check_organizations", column: "claim_review_author_id"
   add_foreign_key "claim_reviews", "media_reviews"
   add_foreign_key "corpus_downloads", "users"

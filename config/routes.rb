@@ -89,8 +89,12 @@ Rails.application.routes.draw do
       root "application#index"
 
       get "dashboard", to: "archive#index"
+      get "myvault", to: "archive#index", defaults: { myvault: true }
       get "guide"
       get "optout"
+
+      get "status", to: "archive#status"
+      get "status/:scrape_id/restart", to: "archive#restart_scrape", as: "restart_scrape"
 
       get "search", to: "search#index", as: "search"
       post "search_by_media", to: "search#search_by_media", as: "search_by_media"

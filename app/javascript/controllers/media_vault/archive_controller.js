@@ -10,7 +10,8 @@ export default class extends Controller {
     'filterWrapperToggle',
     'organizationFilter',
     'fromDateFilter',
-    'toDateFilter'
+    'toDateFilter',
+    'savePostModal'
   ]
 
   static values = { captionCollapseMode: String }

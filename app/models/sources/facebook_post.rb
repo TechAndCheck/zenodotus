@@ -3,8 +3,15 @@
 class Sources::FacebookPost < ApplicationRecord
   include ArchivableItem
   include PgSearch::Model
+  include Scrapable
 
-  multisearchable against: :text
+  multisearchable(
+    against: :text,
+    additional_attributes: -> (post) { {
+      private: post.archive_item.nil? ? false : post.archive_item.private, # Messy but meh
+      user_id: post.archive_item&.users&.map(&:id)
+    } }
+  )
 
   has_many :images, foreign_key: :facebook_post_id, class_name: "MediaModels::Images::FacebookImage", dependent: :destroy
   accepts_nested_attributes_for :images, allow_destroy: true
@@ -34,16 +41,13 @@ class Sources::FacebookPost < ApplicationRecord
     false
   end
 
-  # Spawns an ActiveJob tasked with creating an +ArchiveItem+ from a +url+ as a string
+  # Returns the scrape type for the +Scrapable+ concernt
   #
   # @!scope class
-  # @params url String a string of a url
-  # @params user the user adding the ArchiveItem
-  # returns ScrapeJob
-  sig { params(url: String, user: T.nilable(User), media_review: T.nilable(MediaReview)).returns(ScrapeJob) }
-  def self.create_from_url(url, user = nil, media_review: nil)
-    scrape = Scrape.create!({ url: url, scrape_type: MediaSource::ScrapeType::Facebook.serialize, media_review: media_review })
-    scrape.enqueue
+  # @returns [MediaSource::ScrapeType] the type of scrape that this class is
+  sig { returns(MediaSource::ScrapeType) }
+  def self.scrape_type
+    MediaSource::ScrapeType::Facebook
   end
 
   # Create a +ArchiveItem+ from a +url+ as a string. Skips Hypatia's queue.

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+	</head>
+	<body>
+		<p>Your archive request below has been completed and is now added to your MyVault.</p>
+		<div>
+			<h5>URL Archived</h5>
+			<%= @url %>
+		</div>
+
+		<!-- <h5>Archive Results</h5> -->
+		<!-- Preview goes here? -->
+
+		<div>
+			<%= link_to 'View in MyVault', media_vault_myvault_url, class: 'button' %>
+		</div>
+
+		<p>Thanks,</p>
+		<p>The Duke Reporters’ Lab Team</p>
+	</body>
+</html>

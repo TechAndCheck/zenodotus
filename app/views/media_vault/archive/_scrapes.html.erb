@@ -1,0 +1,18 @@
+<div>
+	<table>
+		<thead>
+			<tr>
+				<th>URL</th>
+				<th>Fulfilled</th>
+				<th>Errored</th>
+				<th>Removed</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<% pagy_items.each do |scrape| %>
+				<%= render partial: "scrape", locals: { scrape: scrape } %>
+			<% end %>
+		</tbody>
+	</table>
+</div>

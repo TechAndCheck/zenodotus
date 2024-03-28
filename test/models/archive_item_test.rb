@@ -26,6 +26,63 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
     assert_not_nil archive_item.screenshot
   end
 
+  test "archive items by default only retrieve publicly available items" do
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    Sources::InstagramPost.create_from_zorki_hash(zorki_image_post).first
+    assert_equal 1, ArchiveItem.count
+
+    archive_item = ArchiveItem.first
+    archive_item.update(private: true)
+    assert_equal 0, ArchiveItem.publically_viewable.count
+  end
+
+  test "archive items that are private can still be retrieve by user" do
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    archive_item = Sources::InstagramPost.create_from_zorki_hash(zorki_image_post).first
+    user = users(:user)
+    user.archive_items << archive_item
+    assert_equal 1, user.archive_items.count
+    archive_item.update(private: true)
+    assert_equal 1, user.archive_items.count
+  end
+
+  test "archive items that are private can be upgraded to public" do
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    archive_item = Sources::InstagramPost.create_from_zorki_hash(zorki_image_post).first
+    archive_item.update private: true
+
+    user = users(:user)
+    user.archive_items << archive_item
+    assert_equal 1, user.archive_items.count
+
+    assert_equal 0, ArchiveItem.publically_viewable.count
+    archive_item.promote_to_public
+    assert_equal 1, ArchiveItem.publically_viewable.count
+  end
+
+  test "multiple users can be associated with an archive item" do
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    archive_item = Sources::InstagramPost.create_from_zorki_hash(zorki_image_post).first
+    user = users(:user)
+    user.archive_items << archive_item
+    user2 = users(:media_vault_user)
+    user2.archive_items << archive_item
+    assert_equal 2, archive_item.users.count
+  end
+
+  test "an archive item with multiple users isn't deleted if one of the users is" do
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    archive_item = Sources::InstagramPost.create_from_zorki_hash(zorki_image_post).first
+    user = users(:user)
+    user.archive_items << archive_item
+    user2 = users(:media_vault_user)
+    user2.archive_items << archive_item
+    assert_equal 2, archive_item.users.count
+
+    user.destroy
+    assert_equal 1, ArchiveItem.count
+  end
+
   # TODO... this is wrong, it doesn't return an ArchiveItem, it's a MediaReview
   test "creating an archive item with a contentUrl works" do
     FactCheckOrganization.create(name: "Fact Crescendo", url: "https://cambodia.factcrescendo.com/")
@@ -60,6 +117,7 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
     assert_nothing_raised do
       archive_item = ArchiveItem.create_from_media_review(json.deep_stringify_keys, nil)
     end
+
     assert_equal "ImageObject", archive_item.item_reviewed["@type"]
   end
 

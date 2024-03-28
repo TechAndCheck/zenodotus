@@ -16,10 +16,32 @@ class ArchiveItem < ApplicationRecord
   belongs_to :submitter, optional: true, class_name: "User"
   belongs_to :scrape, optional: true
 
-  before_create :update_posted
+  has_many :archive_items_users, dependent: :destroy, class_name: "ArchiveItemUser"
+  has_many :users, through: :archive_items_users
+
+  before_create :update_posted, :set_user_for_archivable_item, :set_private_flag
+  after_save -> { self.archivable_item.update_pg_search_document }
+
+  # Yes, default scopes are usually a code smell, but the *vast* majority of the time we don't want to include
+  # private archive items in our queries. We'll be explicit otherwise.
+  scope :publically_viewable, -> { where(private: false) }
+
+  # NOTE: This could probably be done wiht some refactoring, however, it's like ripping out a wall to replace a light switch right now
+  # This will have to come later when you're not pulling 3 all nighters before a ChopTop... Chris
+  def set_user_for_archivable_item
+    self.users << self.submitter unless self.submitter.nil? || self.users.include?(self.submitter)
+  end
 
   def update_posted
     self.posted_at = self.archivable_item.posted_at
+  end
+
+  def set_private_flag
+    self.private = self.submitter.present?
+  end
+
+  def promote_to_public
+    self.update(private: false)
   end
 
   # Begins the Scrape process that will allow us to create an ArchiveItem

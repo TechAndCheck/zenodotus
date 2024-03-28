@@ -51,4 +51,18 @@ class InstagramMediaSourceTest < ActiveSupport::TestCase
       InstagramMediaSource.send(:extract_instagram_id_from_url, "https://instagram.com/")
     end
   end
+
+  test "id can be pulled from variations of the url" do
+    assert InstagramMediaSource.validate_instagram_post_url("https://www.instagram.com/9thstreetjournal/p/C4qqX1LvBbU/")
+    assert InstagramMediaSource.validate_instagram_post_url("https://www.instagram.com/p/C4qqX1LvBbU/")
+    assert InstagramMediaSource.validate_instagram_post_url("https://www.instagram.com/reel/CvzTrIagwK2/")
+    assert InstagramMediaSource.validate_instagram_post_url("https://www.instagram.com/tv/CvzTrIagwK2/")
+
+    assert_equal "C1nPLjNrxct", InstagramMediaSource.extract_instagram_id_from_url("https://www.instagram.com/p/C1nPLjNrxct/")
+    assert_equal "CvzTrIagwK2", InstagramMediaSource.extract_instagram_id_from_url("https://www.instagram.com/reel/CvzTrIagwK2/")
+    assert_equal "CvzTrIagwK2", InstagramMediaSource.extract_instagram_id_from_url("https://www.instagram.com/tv/CvzTrIagwK2/")
+    assert_equal "C4qqX1LvBbU", InstagramMediaSource.extract_instagram_id_from_url("https://www.instagram.com/9thstreetjournal/p/C4qqX1LvBbU/")
+    assert_equal "C4qqX1LvBbU", InstagramMediaSource.extract_instagram_id_from_url("https://www.instagram.com/9thstreetjournal/reel/C4qqX1LvBbU/")
+    assert_equal "C4qqX1LvBbU", InstagramMediaSource.extract_instagram_id_from_url("https://www.instagram.com/9thstreetjournal/tv/C4qqX1LvBbU/")
+  end
 end

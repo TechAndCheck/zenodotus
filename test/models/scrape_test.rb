@@ -3,6 +3,7 @@ require "test_helper"
 class ScrapeTest < ActiveSupport::TestCase
   include Minitest::Hooks
   include ActiveJob::TestHelper
+  include ActionMailer::TestHelper
 
   def around
     AwsS3Downloader.stub(:download_file_in_s3_received_from_hypatia, S3_MOCK_STUB) do
@@ -237,5 +238,188 @@ class ScrapeTest < ActiveSupport::TestCase
 
     assert_not_nil scrape.archive_item.posted_at
     assert_equal scrape.archive_item.posted_at, scrape.archive_item.archivable_item.posted_at
+
+    assert_nil scrape.archive_item.submitter
+    assert_not scrape.archive_item.private
+  end
+
+  test "fulfilling a scrape with a user creates an archive item set to private and with the user on it" do
+    scrape = Scrape.create!({
+      url: "https://www.instagram.com/p/CBcqOkyDDH8/",
+      scrape_type: :instagram,
+      user: users(:user)
+    })
+
+    FactCheckOrganization.create(name: "realfact_7", url: "https://realfact.com")
+
+    MediaReview.create(
+      original_media_link: "https://www.instagram.com/p/CBcqOkyDDH8/",
+      date_published: "2021-02-03",
+      url: "https://www.realfact.com/factchecks/2021/feb/03/starwars_7",
+      author: {
+        "@type": "Organization",
+        "name": "realfact_7",
+        "url": "https://realfact.com"
+      },
+      media_authenticity_category: "TransformedContent",
+      original_media_context_description: "Star Wars Ipsum",
+      item_reviewed: {
+        "@type": "MediaReviewItem",
+        "embeddedTextCaption": "Your droids. They’ll have to wait outside. We don’t want them here. Listen, why don’t you wait out by the speeder. We don’t want any trouble.",
+        "originalMediaLink": "https://www.foobar.com/1",
+        "appearance": {
+          "@type": "ImageObjectSnapshot",
+          "sha256sum": ["8bb6caeb301b85cddc7b67745a635bcda939d17044d9bcf31158ef5e9f8ff072"],
+          "accessedOnUrl": "https://www.facebook.com/photo.php?fbid=10217541425752089&set=a.1391489831857&type=3",
+          "archivedAt": "https://archive.is/dfype"
+        }
+      },
+      archive_item: archive_items[0]
+    )
+
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    scrape.fulfill(zorki_image_post)
+
+    assert_not_nil scrape.archive_item.posted_at
+    assert_equal scrape.archive_item.posted_at, scrape.archive_item.archivable_item.posted_at
+
+    assert_equal scrape.archive_item.submitter, scrape.user
+    assert scrape.archive_item.private
+  end
+
+  test "emails are sent when a scrape is fulfilled for a MyVault" do
+    scrape = Scrape.create!({
+      url: "https://www.instagram.com/p/CBcqOkyDDH8/",
+      scrape_type: :instagram,
+      user: users(:user)
+    })
+
+    FactCheckOrganization.create(name: "realfact_7", url: "https://realfact.com")
+
+    MediaReview.create(
+      original_media_link: "https://www.instagram.com/p/CBcqOkyDDH8/",
+      date_published: "2021-02-03",
+      url: "https://www.realfact.com/factchecks/2021/feb/03/starwars_7",
+      author: {
+        "@type": "Organization",
+        "name": "realfact_7",
+        "url": "https://realfact.com"
+      },
+      media_authenticity_category: "TransformedContent",
+      original_media_context_description: "Star Wars Ipsum",
+      item_reviewed: {
+        "@type": "MediaReviewItem",
+        "embeddedTextCaption": "Your droids. They’ll have to wait outside. We don’t want them here. Listen, why don’t you wait out by the speeder. We don’t want any trouble.",
+        "originalMediaLink": "https://www.foobar.com/1",
+        "appearance": {
+          "@type": "ImageObjectSnapshot",
+          "sha256sum": ["8bb6caeb301b85cddc7b67745a635bcda939d17044d9bcf31158ef5e9f8ff072"],
+          "accessedOnUrl": "https://www.facebook.com/photo.php?fbid=10217541425752089&set=a.1391489831857&type=3",
+          "archivedAt": "https://archive.is/dfype"
+        }
+      },
+      archive_item: archive_items[0]
+    )
+
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+
+    assert_emails 1 do
+      scrape.fulfill(zorki_image_post)
+    end
+  end
+
+  test "emails are sent when a scrape is removed for a MyVault" do
+    scrape = Scrape.create!({
+      url: "https://www.instagram.com/p/CBcqOkyDDH8/",
+      scrape_type: :instagram,
+      user: users(:user)
+    })
+
+    response = [{ "status": "removed" }.stringify_keys] # responses come in with string not symbols so to simulate that this happens
+
+    assert_emails 1 do
+      scrape.fulfill(response)
+    end
+  end
+
+  test "emails are sent when a scrape errors for a MyVault" do
+    scrape = Scrape.create!({
+      url: "https://www.instagram.com/p/CBcqOkyDDH8/",
+      scrape_type: :instagram,
+      user: users(:user)
+    })
+
+    response = [{ "status": "error" }.stringify_keys] # responses come in with string not symbols so to simulate that this happens
+    assert_emails 1 do
+      scrape.fulfill(response)
+    end
+  end
+
+
+  test "emails are not sent when a scrape is fulfilled for a MyVault without a user" do
+    scrape = Scrape.create!({
+      url: "https://www.instagram.com/p/CBcqOkyDDH8/",
+      scrape_type: :instagram,
+    })
+
+    FactCheckOrganization.create(name: "realfact_7", url: "https://realfact.com")
+
+    MediaReview.create(
+      original_media_link: "https://www.instagram.com/p/CBcqOkyDDH8/",
+      date_published: "2021-02-03",
+      url: "https://www.realfact.com/factchecks/2021/feb/03/starwars_7",
+      author: {
+        "@type": "Organization",
+        "name": "realfact_7",
+        "url": "https://realfact.com"
+      },
+      media_authenticity_category: "TransformedContent",
+      original_media_context_description: "Star Wars Ipsum",
+      item_reviewed: {
+        "@type": "MediaReviewItem",
+        "embeddedTextCaption": "Your droids. They’ll have to wait outside. We don’t want them here. Listen, why don’t you wait out by the speeder. We don’t want any trouble.",
+        "originalMediaLink": "https://www.foobar.com/1",
+        "appearance": {
+          "@type": "ImageObjectSnapshot",
+          "sha256sum": ["8bb6caeb301b85cddc7b67745a635bcda939d17044d9bcf31158ef5e9f8ff072"],
+          "accessedOnUrl": "https://www.facebook.com/photo.php?fbid=10217541425752089&set=a.1391489831857&type=3",
+          "archivedAt": "https://archive.is/dfype"
+        }
+      },
+      archive_item: archive_items[0]
+    )
+
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+
+    assert_emails 0 do
+      scrape.fulfill(zorki_image_post)
+    end
+  end
+
+  test "emails are not sent when a scrape is removed for a MyVault without a user" do
+    scrape = Scrape.create!({
+      url: "https://www.instagram.com/p/CBcqOkyDDH8/",
+      scrape_type: :instagram,
+      user: users(:user)
+    })
+
+    response = [{ "status": "removed" }.stringify_keys] # responses come in with string not symbols so to simulate that this happens
+
+    assert_emails 1 do
+      scrape.fulfill(response)
+    end
+  end
+
+  test "emails are not sent when a scrape errors for a MyVault without a user" do
+    scrape = Scrape.create!({
+      url: "https://www.instagram.com/p/CBcqOkyDDH8/",
+      scrape_type: :instagram,
+      user: users(:user)
+    })
+
+    response = [{ "status": "error" }.stringify_keys] # responses come in with string not symbols so to simulate that this happens
+    assert_emails 1 do
+      scrape.fulfill(response)
+    end
   end
 end
