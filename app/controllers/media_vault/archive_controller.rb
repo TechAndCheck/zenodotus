@@ -21,16 +21,14 @@ class MediaVault::ArchiveController < MediaVaultController
     end
 
     # Here we need to see if we're on a personal archive page, and limit if so to the one's this person owns.
-    where_hash = { posted_at: from_date...to_date }
-    not_hash = {}
-    if params[:personal_archive].present?
-      where_hash[:submitter_id] = current_user.id
+    if params[:myvault].present?
+      archive_items = current_user.archive_items
+      @myvault = true
     else
-      where_hash[:submitter_id] = nil
+      archive_items = @organization.nil? ? ArchiveItem.publically_viewable : @organization.archive_items.publically_viewable
     end
 
-    archive_items = @organization.nil? ? ArchiveItem : @organization.archive_items
-    archive_items = archive_items.where(where_hash).where.not(not_hash).includes(:media_review, { archivable_item: [:author, :images, :videos] }).order(posted_at: :desc)
+    archive_items = archive_items.where({ posted_at: from_date...to_date }).includes(:media_review, { archivable_item: [:author, :images, :videos] }).order(posted_at: :desc)
 
     @pagy_items, @archive_items = pagy_array( # This is just `pagy(` when we get it back to and ActiveRecord collection
       archive_items,
@@ -47,13 +45,12 @@ class MediaVault::ArchiveController < MediaVaultController
     @fact_check_organizations.sort_by! { |fco| fco.name&.downcase }
     @fact_check_organizations = @fact_check_organizations.map { |fco| [fco.name, fco.id] }
 
-
     # TODO ##################################
     # Redirect to status page
     # Make sure to include email instructions
     ########################################
 
-
+    @render_empty = true unless params[:render_empty].present? && params[:render_empty] = false
 
     respond_to do | format |
       format.html { render "index" }
@@ -117,7 +114,7 @@ class MediaVault::ArchiveController < MediaVaultController
 
     # WOOOOO
     respond_to do |format|
-      flash.now[:success] = { title: "Request Successfully Queued", body: "We will notify you via email when the request is done processing.<br>This may take a while depending on the size of the current queue.".html_safe }
+      flash.now[:success] = { title: "Request Successfully Queued", body: "We will notify you via email when the request is done processing.<br>This may take awhile depending on the size of the current queue.".html_safe }
 
       format.turbo_stream do
         render turbo_stream: [

@@ -63,7 +63,16 @@ class Scrape < ApplicationRecord
   end
 
   sig { void }
-  def send_email
+  def send_completion_email
+    if self.user.present?
+      if self.removed
+        ScrapeMailer.with(url: self.url, user: self.user).scrape_removed_email.deliver_later
+      elsif self.error
+        ScrapeMailer.with(url: self.url, user: self.user).scrape_error_email.deliver_later
+      else
+        ScrapeMailer.with(url: self.url, user: self.user).scrape_complete_email.deliver_later
+      end
+    end
   end
 
   sig { params(response: Array).void }

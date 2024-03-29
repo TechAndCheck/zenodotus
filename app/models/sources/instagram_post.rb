@@ -141,6 +141,7 @@ class Sources::InstagramPost < ApplicationRecord
         videos_attributes: video_attributes
       }
 
+
       ArchiveItem.create!(archivable_item: Sources::InstagramPost.create!(hash), submitter: user,
                           screenshot_attributes: screenshot_attributes)
     end

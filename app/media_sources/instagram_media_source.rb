@@ -42,8 +42,8 @@ private
   sig { params(url: String).returns(T::Boolean) }
   def self.validate_instagram_post_url(url)
     self.valid_host_name.each do |host_name|
-      return true if /#{host_name}\/(?:p|reel|tv)\/([\w]+)/.match?(url)
-      return true if /#{host_name}\/[\w]+\/(?:p|reel|tv)\/([\w]+)/.match?(url)
+      return true if /#{host_name}\/(?:p|reel|tv)\/([\w-]+)/.match?(url)
+      return true if /#{host_name}\/[\w]+\/(?:p|reel|tv)\/([\w-]+)/.match?(url)
     end
 
     raise InvalidInstagramPostUrlError, "Instagram url #{url} does not have the standard url format"
@@ -58,10 +58,10 @@ private
   # @return [String] the id from the url or [Nil]
   sig { params(url: String).returns(T.nilable(String)) }
   def self.extract_instagram_id_from_url(url)
-    found_matches = /https:\/\/[www.]*instagram.com\/(?:p|reel|tv)\/([\w]+)/.match(url)
+    found_matches = /https:\/\/[www.]*instagram.com\/(?:p|reel|tv)\/([\w-]+)/.match(url)
     return found_matches[1] unless found_matches.nil?
 
-    found_matches = /https:\/\/[www.]*instagram.com\/[\w]+\/(?:p|reel|tv)\/([\w]+)/.match(url)
+    found_matches = /https:\/\/[www.]*instagram.com\/[\w]+\/(?:p|reel|tv)\/([\w-]+)/.match(url)
     return found_matches[1] unless found_matches.nil?
 
     raise InvalidInstagramPostUrlError, "Instagram url #{url} does not have the standard url format"
