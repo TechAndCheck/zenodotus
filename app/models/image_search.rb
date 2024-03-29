@@ -94,27 +94,34 @@ class ImageSearch < ApplicationRecord
 
   sig { params(dhash: String).returns(String) }
   def sql(dhash)
-    sql = "SELECT * FROM image_hashes INNER JOIN archive_items ON archive_items.id = image_hashes.archive_item_id  WHERE levenshtein(dhash, '#{dhash}') < 20"
+    sql = %{SELECT DISTINCT ON (archive_items.archivable_item_id) *
+            FROM image_hashes
+            INNER JOIN archive_items
+            ON archive_items.id = image_hashes.archive_item_id
+            WHERE levenshtein(dhash, '#{dhash}') < 20
+            AND private = #{self.private}
+            }
 
     if self.private
-      sql += " AND submitter_id = '#{self.user.id}'"
+      sql = "#{sql} AND submitter_id = '#{self.user.id}'"
     end
 
-    sql += " AND private = #{self.private} ORDER BY levenshtein(dhash, '#{dhash}');"
-
-    sql
+    "#{sql} ORDER BY archive_items.archivable_item_id, levenshtein(dhash, '#{dhash}');"
   end
 
   sig { params(dhash: String).returns(String) }
   def raw_sql(dhash)
-    raw_sql = "SELECT *, levenshtein(dhash, '#{dhash}') FROM image_hashes INNER JOIN archive_items ON archive_items.id = image_hashes.archive_item_id  WHERE levenshtein(dhash, '#{dhash}') < 20"
+    inner_query = %{SELECT DISTINCT ON (archive_items.archivable_item_id) *, levenshtein(dhash, '#{dhash}')
+                    FROM image_hashes
+                    INNER JOIN archive_items ON archive_items.id = image_hashes.archive_item_id
+                    WHERE levenshtein(dhash, '#{dhash}') < 20
+                    AND private = #{self.private}
+                  }
 
     if self.private
-      raw_sql += " AND submitter_id = '#{self.user.id}'"
+      inner_query = "#{inner_query} AND submitter_id = '#{self.user.id}'"
     end
 
-    raw_sql += " AND private = #{self.private} ORDER BY levenshtein(dhash, '#{dhash}');"
-
-    raw_sql
+    "SELECT * FROM ( #{inner_query} ) t ORDER BY archivable_item_id, levenshtein(dhash, '#{dhash}');"
   end
 end

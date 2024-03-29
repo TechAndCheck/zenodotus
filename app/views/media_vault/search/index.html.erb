@@ -16,7 +16,6 @@
 	</div>
 
 	<% if (@results || []).any? %>
-
 		<% if @author_results.try(:any?) %>
 			<h2 class="search-results__title"><%= pluralize(@author_results.length, "matching author") %> found<%= " in your MyVault" if @myvault %>:</h2>
 			<div class="search-results search-results--authors">
