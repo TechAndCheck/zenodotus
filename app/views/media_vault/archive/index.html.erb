@@ -8,12 +8,14 @@
 		<div>
 			<h2><%= @myvault ? "MyVault:" : "Recently-archived media:" %></h2>
 		</div>
+		<% if Flipper.enabled?(:adhoc, current_user) %>
 		<div>
 			<%= link_to media_vault_archive_add_path, class: "btn btn--naked icon-prefixed", data: { turbo_stream: 'modal' } do %>
 				<%= use_svg "plus", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
 				<span>Save A Post</span>
 			<% end %>
 		</div>
+		<% end %>
 	</div>
 
 	<% show = !@organization.nil? || !@from_date.nil? || !@to_date.nil? %>

@@ -21,7 +21,7 @@ class MediaVault::ArchiveController < MediaVaultController
     end
 
     # Here we need to see if we're on a personal archive page, and limit if so to the one's this person owns.
-    if params[:myvault].present?
+    if params[:myvault].present? && Flipper.enabled?(:adhoc, current_user)
       archive_items = current_user.archive_items
       @myvault = true
     else
