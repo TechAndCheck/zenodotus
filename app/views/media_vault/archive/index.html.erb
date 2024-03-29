@@ -6,7 +6,13 @@
 	<%# Make this change dpeending on if we're in MyVault or not %>
 	<div class="flex justify-between flex-col md:flex-row lg:flex-row">
 		<div>
-			<h2><%= @myvault ? "MyVault:" : "Recently-archived media:" %></h2>
+			<h2>
+				<% if @myvault %>
+					MyVault&nbsp;<span style="font-size: 1.5rem; vertical-align: text-top; color: gray;" class="super">Beta</span>:
+				<% else %>
+					Recently-archived media:
+				<% end %>
+			</h2>
 		</div>
 		<% if Flipper.enabled?(:adhoc, current_user) %>
 		<div>
