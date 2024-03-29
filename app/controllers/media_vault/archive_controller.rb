@@ -114,7 +114,7 @@ class MediaVault::ArchiveController < MediaVaultController
 
     # WOOOOO
     respond_to do |format|
-      flash.now[:success] = { title: "Request Successfully Queued", body: "We will notify you via email when the request is done processing.<br>This may take awhile depending on the size of the current queue.".html_safe }
+      flash.now[:success] = { title: "Request Successfully Queued", body: "We will notify you via email when the request is done processing.<br>This may take a while depending on the size of the current queue.".html_safe }
 
       format.turbo_stream do
         render turbo_stream: [
