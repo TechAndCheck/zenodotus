@@ -4,6 +4,7 @@ class MediaVault::MediaController < MediaVaultController
   sig { void }
   def show
     @archive_item = ArchiveItem.find(params[:id])
+    @myvault = @archive_item.private
   end
 
   # Exports JSON-formatted metadata about a piece of media

@@ -97,8 +97,11 @@
             <%= link_to media_vault_medium_path(archive_item_self.archive_item) do %>
               <div class="archive-item__download__link">View media detail</div>
             <% end %>
-            <%= link_to media_vault_export_media_metadata_path(archive_item_self.archive_item.id) do %>
-              <div class="archive-item__download__link">Download media metadata</div>
+
+            <% unless @myvault %>
+                <%= link_to media_vault_export_media_metadata_path(archive_item_self.archive_item.id) do %>
+                  <div class="archive-item__download__link">Download media metadata</div>
+                <% end %>
             <% end %>
         </div>
     </div>
