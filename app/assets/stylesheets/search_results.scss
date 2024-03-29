@@ -6,6 +6,8 @@
 .search-results {
 	@extend .masonry;
 
+	flex-flow: column-reverse wrap-reverse;
+
 	margin-bottom: clamp(1rem, 5vw, 5rem);
 	&:last-child {
 		margin-bottom: 0;
