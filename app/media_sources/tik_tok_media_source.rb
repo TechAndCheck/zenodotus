@@ -42,7 +42,7 @@ private
   sig { params(url: String).returns(T::Boolean) }
   def self.validate_tiktok_post_url(url)
     self.valid_host_name.each do |host_name|
-      return true if /#{host_name}\/@[\w]+\/video\/[0-9]+/.match?(url)
+      return true if /https:\/\/#{host_name}\/@[\w.-]+\/video\/[0-9]+/.match?(url)
     end
 
     raise InvalidTikTokPostUrlError, "TikTok url #{url} does not have the standard url format"

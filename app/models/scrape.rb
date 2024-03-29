@@ -66,9 +66,9 @@ class Scrape < ApplicationRecord
   def send_completion_email
     if self.user.present?
       if self.removed
-        ScrapeMailer.with(url: self.url, user: self.user).scrape_removed_email.deliver_later
+        ScrapeMailer.with(url: self.url, user: self.user, scrape_id: self.id).scrape_removed_email.deliver_later
       elsif self.error
-        ScrapeMailer.with(url: self.url, user: self.user).scrape_error_email.deliver_later
+        ScrapeMailer.with(url: self.url, user: self.user, scrape_id: self.id).scrape_error_email.deliver_later
       else
         ScrapeMailer.with(url: self.url, user: self.user).scrape_complete_email.deliver_later
       end
