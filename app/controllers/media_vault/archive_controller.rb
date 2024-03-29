@@ -1,10 +1,7 @@
 # typed: strict
 
 class MediaVault::ArchiveController < MediaVaultController
-  before_action :authenticate_super_user!, only: [
-    :add,
-    :submit_url,
-  ]
+  before_action :authenticate_super_user!, only: []
 
   skip_before_action :authenticate_user_and_setup!, only: :scrape_result_callback
   skip_before_action :must_be_media_vault_user, only: :scrape_result_callback
@@ -15,7 +12,7 @@ class MediaVault::ArchiveController < MediaVaultController
   sig { void }
   def index
     from_date = "0000-01-01"
-    to_date = Date.today.to_s
+    to_date = (Date.today + 1).to_s
 
     unless params[:organization_id].blank? && params[:from_date].blank? && params[:to_date].blank?
       @organization = FactCheckOrganization.find(params[:organization_id]) if params[:organization_id].present?
@@ -23,10 +20,17 @@ class MediaVault::ArchiveController < MediaVaultController
       to_date = params[:to_date] if params[:to_date].present?
     end
 
-    archive_items = @organization.nil? ? ArchiveItem : @organization.archive_items
-    archive_items = archive_items.where(posted_at: from_date...to_date).includes(:media_review, { archivable_item: [:author, :images, :videos] }).order(posted_at: :desc)
+    # Here we need to see if we're on a personal archive page, and limit if so to the one's this person owns.
+    if params[:myvault].present?
+      archive_items = current_user.archive_items
+      @myvault = true
+    else
+      archive_items = @organization.nil? ? ArchiveItem.publically_viewable : @organization.archive_items.publically_viewable
+    end
 
-    @pagy_archive_items, @archive_items = pagy_array( # This is just `pagy(` when we get it back to and ActiveRecord collection
+    archive_items = archive_items.where({ posted_at: from_date...to_date }).includes(:media_review, { archivable_item: [:author, :images, :videos] }).order(posted_at: :desc)
+
+    @pagy_items, @archive_items = pagy_array( # This is just `pagy(` when we get it back to and ActiveRecord collection
       archive_items,
       page_param: :p,
       items: ARCHIVE_ITEMS_PER_PAGE
@@ -34,12 +38,19 @@ class MediaVault::ArchiveController < MediaVaultController
 
     # Set these variables if we want to
     @from_date = from_date unless from_date == "0000-01-01"
-    @to_date = to_date unless to_date == Date.today.to_s && from_date == "0000-01-01"
+    @to_date = to_date unless to_date == (Date.today + 1).to_s && from_date == "0000-01-01"
 
     # Yes, this is inefficient...
     @fact_check_organizations = ArchiveItem.all.collect { |item| item.media_review&.media_review_author }.uniq.compact
     @fact_check_organizations.sort_by! { |fco| fco.name&.downcase }
     @fact_check_organizations = @fact_check_organizations.map { |fco| [fco.name, fco.id] }
+
+    # TODO ##################################
+    # Redirect to status page
+    # Make sure to include email instructions
+    ########################################
+
+    @render_empty = true unless params[:render_empty].present? && params[:render_empty] = false
 
     respond_to do | format |
       format.html { render "index" }
@@ -48,7 +59,13 @@ class MediaVault::ArchiveController < MediaVaultController
 
   # A form for submitting URLs
   sig { void }
-  def add; end
+  def add
+    respond_to do |format|
+      # Just a heads up, note that you have to properly render `turbo_stream`
+      format.turbo_stream { render turbo_stream: turbo_stream.replace("modal", partial: "media_vault/archive/add") }
+      format.html { redirect_to media_vault_dashboard_path }
+    end
+  end
 
   # A class representing the allowed params into the `submit_url` endpoint
   class SubmitUrlParams < T::Struct
@@ -56,6 +73,7 @@ class MediaVault::ArchiveController < MediaVaultController
   end
 
   # Entry point for submitting a URL for archiving
+  # Good lord this is an unweidly method, but there's a lot of angles
   #
   # @params {url_to_archive} the url to pull in
   sig { void }
@@ -63,48 +81,77 @@ class MediaVault::ArchiveController < MediaVaultController
     typed_params = TypedParams[SubmitUrlParams].new.extract!(params)
     url = typed_params.url_to_archive
     object_model = ArchiveItem.model_for_url(url)
-    begin
-      object_model.create_from_url!(url, current_user)
-    rescue StandardError => e
+
+    # If there's no object_model then we don't have that URL
+    if object_model.nil?
       respond_to do |format|
-        error = "#{e.class}: #{e.message}"
-        format.turbo_stream { render turbo_stream: [
-          turbo_stream.replace("modal", partial: "media_vault/archive/add", locals: { error: error }),
-        ] }
-        format.html { redirect_to media_vault_dashboard_path }
+        format.turbo_stream { render turbo_stream: turbo_stream.update("modal", partial: "media_vault/archive/add", locals: { error: "Unfortunately we do not currently support archiving of links from this URL" }) }
+        format.html do
+          flash.now[:error] = { title: "Error Submitting Request", body: "Unfortunately we do not currently support archiving of links from this URL" }
+          redirect_to media_vault_dashboard_path
+        end
       end
+
       return
     end
 
+    # Try to start the scrape, otherwise... error out again
+    begin
+      object_model.create_from_url(url, current_user)
+    rescue StandardError => e
+      Honeybadger.notify(e)
+
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.update("modal", partial: "media_vault/archive/add", locals: { error: "An unexpected error has been raised submitting your request. We've been notified and will be looking into it shortly." }) }
+        format.html do
+          flash.now[:error] = { title: "Error Submitting Request", body: "An unexpected error has been raised submitting your request. We've been notified and will be looking into it shortly." }
+          redirect_to media_vault_dashboard_path
+        end
+      end
+
+      return
+    end
+
+    # WOOOOO
     respond_to do |format|
-      flash.now[:success] = "Successfully archived your link!"
-      # TODO: Turbo-updating the archive items doesn't currently seem to work.
-      #       Leaving it alone for now since this is an admin-only function anyway.
+      flash.now[:success] = { title: "Request Successfully Queued", body: "We will notify you via email when the request is done processing.<br>This may take awhile depending on the size of the current queue.".html_safe }
+
       format.turbo_stream do
-        @pagy_archive_items, @archive_items = pagy(
-          ArchiveItem.includes(:media_review, { archivable_item: [:author, :images, :videos] }).order(posted_at: :desc),
-          page_param: :p,
-          items: ARCHIVE_ITEMS_PER_PAGE
-        )
         render turbo_stream: [
           turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash }),
-          turbo_stream.replace("modal", partial: "media_vault/archive/add", locals: { render_empty: true }),
-          turbo_stream.update(
-            "archived_items",
-            partial: "media_vault/archive/archive_items",
-            locals: { archive_items: @archive_items }
-          ),
-          # TODO: In addition to none of the Turbo-updating working, updating the paginator fails
-          # because the `pagy/nav` partial can't be found despite being directly from the docs:
-          # https://ddnexus.github.io/pagy/how-to.html#use-it-in-your-app
-          # turbo_stream.update(
-          #   "archived_items_pagination",
-          #   partial: "pagy/nav",
-          #   locals: { pagy: @pagy_archive_items }
-          # )
+          turbo_stream.replace("modal", html: '<turbo-frame id="modal"></turbo-frame>'.html_safe), # The html is there so they can archive another right away
         ]
       end
       format.html { redirect_to media_vault_dashboard_path }
+    end
+  end
+
+  # A status page for ad hoc archives
+  sig { void }
+  def status
+    scrapes = Scrape.where(user: current_user).order(created_at: :desc)
+
+    @pagy_items, @scrapes = pagy_array( # This is just `pagy(` when we get it back to and ActiveRecord collection
+          scrapes,
+          page_param: :p,
+          items: ARCHIVE_ITEMS_PER_PAGE
+        )
+  end
+
+  # Restart the scrape
+  sig { void }
+  def restart_scrape
+    scrape = Scrape.find(params[:scrape_id])
+    scrape.enqueue
+
+    respond_to do |format|
+      flash.now[:success] = { title: "Scrape Restarted", body: "Your scrape has been restarted and will be processed shortly." }
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace("flash", partial: "layouts/flashes/turbo_flashes", locals: { flash: flash })
+        ]
+      end
+      format.html { redirect_to media_vault_status_path }
     end
   end
 

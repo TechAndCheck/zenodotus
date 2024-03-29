@@ -27,8 +27,8 @@ class ImageSearch < ApplicationRecord
     8
   end
 
-  sig { params(media_item: T.any(ActionDispatch::Http::UploadedFile, Tempfile, File), current_user: User).returns(ImageSearch) }
-  def self.create_with_media_item(media_item, current_user)
+  sig { params(media_item: T.any(ActionDispatch::Http::UploadedFile, Tempfile, File), current_user: User, private: T::Boolean).returns(ImageSearch) }
+  def self.create_with_media_item(media_item, current_user, private = false)
     mime = IO.popen(
       ["file", "--brief", "--mime-type", media_item.path],
       in: :close, err: :close
@@ -36,9 +36,9 @@ class ImageSearch < ApplicationRecord
 
     search =  case mime.split("/").first
               when "video"
-                ImageSearch.create!({ video: media_item, user: current_user })
+                ImageSearch.create!({ video: media_item, user: current_user, private: private })
               when "image"
-                ImageSearch.create!({ image: media_item, user: current_user })
+                ImageSearch.create!({ image: media_item, user: current_user, private: private })
               else
                 raise "Invalid media uploaded."
     end
@@ -56,8 +56,12 @@ class ImageSearch < ApplicationRecord
     if self.image.nil? == false
       # Currently we run the query twice (speed at our scale is quite easy)
       # We do this so we can get the proper distance in the result
-      image_hashes = ImageHash.find_by_sql("SELECT * FROM image_hashes WHERE levenshtein(dhash, '#{self.dhashes.first}') < 20 ORDER BY levenshtein(dhash, '#{self.dhashes.first}');")
-      image_hashes_raw = ImageHash.connection.select_all("SELECT *, levenshtein(dhash, '#{self.dhashes.first}') FROM image_hashes WHERE levenshtein(dhash, '#{self.dhashes.first}') < 20 ORDER BY levenshtein(dhash, '#{self.dhashes.first}');")
+
+      sql = sql(self.dhashes.first)
+      raw_sql = raw_sql(self.dhashes.first)
+
+      image_hashes = ImageHash.find_by_sql(sql)
+      image_hashes_raw = ImageHash.connection.select_all(raw_sql)
 
       images = image_hashes.map.with_index do |image_hash, index|
         { image: image_hash.archive_item, distance: image_hashes_raw[index]["levenshtein"] }
@@ -69,8 +73,11 @@ class ImageSearch < ApplicationRecord
       video_hashes = []
       video_hashes_raw = []
       self.dhashes.each do |dhash|
-        video_hashes += ImageHash.find_by_sql("SELECT * FROM image_hashes WHERE levenshtein(dhash, '#{dhash["dhash"]}') < 20 ORDER BY levenshtein(dhash, '#{dhash["dhash"]}');")
-        video_hashes_raw += ImageHash.connection.select_all("SELECT *, levenshtein(dhash, '#{dhash["dhash"]}') FROM image_hashes WHERE levenshtein(dhash, '#{dhash["dhash"]}') < 20 ORDER BY levenshtein(dhash, '#{dhash["dhash"]}');")
+        sql = sql(dhash["dhash"])
+        raw_sql = raw_sql(dhash["dhash"])
+
+        video_hashes += ImageHash.find_by_sql(sql)
+        video_hashes_raw += ImageHash.connection.select_all(raw_sql)
       end
 
       videos = video_hashes.map.with_index do |video_hash, index|
@@ -83,5 +90,31 @@ class ImageSearch < ApplicationRecord
 
       videos
     end
+  end
+
+  sig { params(dhash: String).returns(String) }
+  def sql(dhash)
+    sql = "SELECT * FROM image_hashes INNER JOIN archive_items ON archive_items.id = image_hashes.archive_item_id  WHERE levenshtein(dhash, '#{dhash}') < 20"
+
+    if self.private
+      sql += " AND submitter_id = '#{self.user.id}'"
+    end
+
+    sql += " AND private = #{self.private} ORDER BY levenshtein(dhash, '#{dhash}');"
+
+    sql
+  end
+
+  sig { params(dhash: String).returns(String) }
+  def raw_sql(dhash)
+    raw_sql = "SELECT *, levenshtein(dhash, '#{dhash}') FROM image_hashes INNER JOIN archive_items ON archive_items.id = image_hashes.archive_item_id  WHERE levenshtein(dhash, '#{dhash}') < 20"
+
+    if self.private
+      raw_sql += " AND submitter_id = '#{self.user.id}'"
+    end
+
+    raw_sql += " AND private = #{self.private} ORDER BY levenshtein(dhash, '#{dhash}');"
+
+    raw_sql
   end
 end

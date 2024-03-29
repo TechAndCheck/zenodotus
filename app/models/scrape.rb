@@ -17,6 +17,7 @@ class Scrape < ApplicationRecord
 
   has_one :archive_item, dependent: :destroy
   belongs_to :media_review, dependent: nil, optional: true
+  belongs_to :user, optional: true
 
   after_create :send_notification
 
@@ -61,6 +62,19 @@ class Scrape < ApplicationRecord
     ActionCable.server.broadcast("scrapes_channel", { scrapes_count: Scrape.where(fulfilled: false, error: nil).count })
   end
 
+  sig { void }
+  def send_completion_email
+    if self.user.present?
+      if self.removed
+        ScrapeMailer.with(url: self.url, user: self.user).scrape_removed_email.deliver_later
+      elsif self.error
+        ScrapeMailer.with(url: self.url, user: self.user).scrape_error_email.deliver_later
+      else
+        ScrapeMailer.with(url: self.url, user: self.user).scrape_complete_email.deliver_later
+      end
+    end
+  end
+
   sig { params(response: Array).void }
   def fulfill(response)
     logger.info "\n*******************************"
@@ -103,27 +117,23 @@ class Scrape < ApplicationRecord
                                             taken_down: nil) if media_review_item.nil?
 
     unless removed || errored
-      archive_item = ArchiveItem.model_for_url(self.url).create_from_hash(response)
+      archive_item = ArchiveItem.model_for_url(self.url).create_from_hash(response, self.user)
       archive_item = archive_item.empty? ? nil : archive_item.first
-
-      # debugger unless archive_item.nil?
-
-      # archive_item&.update!({ posted_at: archive_item.archiveable_item.posted_at })
     end
 
     unless media_review_item.nil?
       media_review_item.update!({ taken_down: removed, archive_item_id: archive_item&.id })
-    else
-      logger.info "----------------------------------"
-      logger.info "No MediaReview. This is certainly an error"
-      logger.info "----------------------------------"
     end
 
     self.update!({ fulfilled: true, removed: removed, archive_item: archive_item, error: errored })
 
     # Update any channels listening to the scrape count
     self.send_notification
+
+    # Send the completion email or whatever if necessary
+    self.send_completion_email
   rescue StandardError => e
+    logger.error "Error fulfilling scrape: #{e}"
     Honeybadger.notify(e, context: {
       id: self.id,
       url: self.url,

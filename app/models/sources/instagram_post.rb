@@ -3,8 +3,15 @@
 class Sources::InstagramPost < ApplicationRecord
   include ArchivableItem
   include PgSearch::Model
+  include Scrapable
 
-  multisearchable against: :text
+  multisearchable(
+    against: :text,
+    additional_attributes: -> (post) { {
+      private: post.archive_item.nil? ? false : post.archive_item.private, # Messy but meh
+      user_id: post.archive_item&.users&.map(&:id)
+    } }
+  )
 
   has_many :images, foreign_key: :instagram_post_id, class_name: "MediaModels::Images::InstagramImage", dependent: :destroy
   accepts_nested_attributes_for :images, allow_destroy: true
@@ -50,16 +57,13 @@ class Sources::InstagramPost < ApplicationRecord
     Sources::InstagramPost.create_from_zorki_hash(zorki_response, user).first
   end
 
-  # Spawns an ActiveJob tasked with creating an +ArchiveItem+ from a +url+ as a string
+  # Returns the scrape type for the +Scrapable+ concernt
   #
   # @!scope class
-  # @params url String a string of a url
-  # @params user User: the user creating an ArchiveItem
-  # returns ScrapeJob
-  sig { params(url: String, user: T.nilable(User), media_review: T.nilable(MediaReview)).returns(ScrapeJob) }
-  def self.create_from_url(url, user = nil, media_review: nil)
-    scrape = Scrape.create!({ url: url, scrape_type: MediaSource::ScrapeType::Instagram.serialize, media_review: media_review })
-    scrape.enqueue
+  # @returns [MediaSource::ScrapeType] the type of scrape that this class is
+  sig { returns(MediaSource::ScrapeType) }
+  def self.scrape_type
+    MediaSource::ScrapeType::Instagram
   end
 
   # An alias for create_from_zorki_hash painted with a generic name so it can be called in a model agnostic fashion
@@ -136,6 +140,7 @@ class Sources::InstagramPost < ApplicationRecord
         images_attributes: image_attributes,
         videos_attributes: video_attributes
       }
+
 
       ArchiveItem.create!(archivable_item: Sources::InstagramPost.create!(hash), submitter: user,
                           screenshot_attributes: screenshot_attributes)

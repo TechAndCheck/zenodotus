@@ -134,6 +134,14 @@ elements, but the examples will just use `<button>`.
 	&.btn--naked {
 		--btn--border-color: transparent;
 
+		&.btn--modal-close {
+			padding: calc(var(--btn--padding--vertical)*0.8) calc(var(--btn--padding--horizontal)*0.6);
+			&:hover {
+				--btn--background-color: #{color.adjust(shared.$color--dark, $alpha: -0.5)};
+				--btn--color: white;
+			}
+		}
+
 		&.disabled {
 			--btn--color: gray;
 			--btn--background-color: transparent;

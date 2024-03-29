@@ -11,7 +11,7 @@ class User < ApplicationRecord
   has_many :webauthn_credentials, dependent: :destroy
 
   has_many :api_keys, dependent: :delete_all
-  has_many :archive_items, foreign_key: :submitter_id, dependent: :nullify
+  # has_many :archive_items, foreign_key: :submitter_id, dependent: :nullify
 
   has_many :image_searches, dependent: :destroy
   has_many :text_searches, dependent: :destroy
@@ -24,6 +24,9 @@ class User < ApplicationRecord
   has_many :applicants, foreign_key: :reviewer_id, dependent: :nullify
 
   has_many :corpus_downloads, dependent: :nullify
+
+  has_many :archive_items_users, dependent: :destroy, class_name: "ArchiveItemUser"
+  has_many :archive_items, through: :archive_items_users
 
   validates :name, presence: true
   validates :email, presence: true
