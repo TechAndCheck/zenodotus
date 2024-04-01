@@ -98,7 +98,7 @@
                 <%= link_to media_vault_medium_path(archive_item_self.archive_item) do %>
                   <div class="archive-item__download__link">View media detail</div>
                 <% end %>
-            <% elsif archive_item_self.archive_item.private %>
+            <% elsif archive_item_self.archive_item.private && archive_item_self.archive_item.scrape&.url %>
                 <div class="archive-item__metadatum__label">Post URL</div>
                 <div class="archive-item__metadatum__value break-all">
                     <%= link_to archive_item_self.archive_item.scrape.url, archive_item_self.archive_item.scrape.url, {rel: "noreferrer noopener", target: "_blank"} %>

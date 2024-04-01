@@ -11,7 +11,6 @@ class MediaVault::MediaControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-
   setup do
     host! Figaro.env.MEDIA_VAULT_HOST
   end
@@ -67,13 +66,87 @@ class MediaVault::MediaControllerTest < ActionDispatch::IntegrationTest
   #   assert json.has_key?("archivable_item")
   # end
 
-  # TODO: Make this test work by ensuring we have ArchiveItem fixtures
-  # test "can view individual piece of media" do
-  #   sign_in users(:media_vault_user)
+  test "can view individual piece of media" do
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    Sources::InstagramPost.create_from_zorki_hash(zorki_image_post).first
 
-  #   archive_item = ArchiveItem.first
+    sign_in users(:media_vault_user)
+    archive_item = ArchiveItem.first
 
-  #   get media_vault_medium_path(archive_item)
-  #   assert_response :success
-  # end
+    get media_vault_medium_path(archive_item)
+    assert_response :success
+  end
+
+  test "can not view media that is private and owned by the user" do
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    Sources::InstagramPost.create_from_zorki_hash(zorki_image_post).first
+
+    archive_item = ArchiveItem.first
+    archive_item.update!(private: true)
+    archive_item.users << users(:media_vault_user)
+
+    sign_in users(:media_vault_user)
+
+    get media_vault_medium_path(archive_item)
+    assert_response :success
+  end
+
+
+  test "can not view media that is private but owned by someone else" do
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    Sources::InstagramPost.create_from_zorki_hash(zorki_image_post).first
+
+    archive_item = ArchiveItem.first
+    archive_item.update!(private: true)
+    archive_item.users << users(:user)
+
+    sign_in users(:media_vault_user)
+
+    get media_vault_medium_path(archive_item)
+    assert_response :redirect
+  end
+
+  test "can delete media I own" do
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    Sources::InstagramPost.create_from_zorki_hash(zorki_image_post).first
+
+    archive_item = ArchiveItem.first
+    archive_item.update!(private: true)
+    archive_item.users << users(:media_vault_user)
+
+    sign_in users(:media_vault_user)
+
+    delete media_vault_medium_path(archive_item)
+    assert_redirected_to media_vault_dashboard_path(myvault: true)
+    assert_equal "MyVault item successfully deleted.", flash[:success]
+  end
+
+  test "cannot delete media I do not own" do
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    Sources::InstagramPost.create_from_zorki_hash(zorki_image_post).first
+
+    archive_item = ArchiveItem.first
+    archive_item.update!(private: true)
+    archive_item.users << users(:user)
+
+    sign_in users(:media_vault_user)
+
+    delete media_vault_medium_path(archive_item)
+    assert_redirected_to media_vault_dashboard_path
+    assert_equal "You do not have permission to view this item.", flash[:error]
+  end
+
+  test "cannot delete non-private media" do
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    Sources::InstagramPost.create_from_zorki_hash(zorki_image_post).first
+
+    archive_item = ArchiveItem.first
+    archive_item.users << users(:media_vault_user)
+
+    sign_in users(:media_vault_user)
+
+    delete media_vault_medium_path(archive_item)
+    assert_redirected_to media_vault_dashboard_path
+    assert_equal "You do not have permission to delete this item.", flash[:error]
+  end
 end

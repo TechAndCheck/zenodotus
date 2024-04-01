@@ -1,0 +1,14 @@
+<div class="archive-item archive-item--boxed">
+  <div class="archive-item__inner">
+    <div class="author__display-name">
+      Tools:
+    </div>
+    <br />
+    <div class="grid grid-cols-2 grid-flow-row gap-4">
+      <%# <a href="#" class="btn btn--outline btn--lg">
+        <span>Download</span>
+       %></a>
+      <%= link_to "Delete From MyVault" , media_vault_medium_path(@archive_item), class: "btn btn--outline btn--reversed-subtle btn--lg", data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } %>
+    </div>
+  </div>
+</div>

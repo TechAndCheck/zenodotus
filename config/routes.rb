@@ -100,7 +100,8 @@ Rails.application.routes.draw do
       post "search_by_media", to: "search#search_by_media", as: "search_by_media"
 
       get "authors/:platform/:id", to: "authors#show", as: "author"
-      resources :media, only: [:show]
+      resources :media, only: [:show, :destroy]
+
       get "media/download_metadata/:id", to: "media#export_metadata", as: "export_media_metadata"
     end
   end

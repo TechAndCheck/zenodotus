@@ -14,4 +14,7 @@
 	<br />
 	<%= render partial: "media_vault/media/archive_item_metadata",
 						 locals: { archive_item: @archive_item } unless @archive_item.media_review.nil? %>
+
+	<%= render(partial: "media_vault/media/archive_item_actions",
+						 locals: { archive_item: @archive_item }) if @myvault %>
 </div>
