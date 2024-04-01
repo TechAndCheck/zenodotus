@@ -86,6 +86,8 @@ class ImageSearch < ApplicationRecord
     end
   end
 
+
+  # TODO: Add paging
   sig { params(dhash: String).returns(String) }
   def raw_sql(dhash)
     inner_query = %{SELECT DISTINCT ON (archive_items.archivable_item_id) *, levenshtein(dhash, '#{dhash}')
@@ -99,7 +101,7 @@ class ImageSearch < ApplicationRecord
       inner_query = "#{inner_query} AND submitter_id = '#{self.user.id}'"
     end
 
-    sql = "SELECT archive_item_id, levenshtein FROM ( #{inner_query} LIMIT 20 ) t ORDER BY levenshtein;"
+    sql = "SELECT archive_item_id, levenshtein FROM ( #{inner_query} ) t ORDER BY levenshtein LIMIT 20;"
     sql = sql.split("\n").map(&:strip).join(" ")
 
     Rails.logger.info("\n**********************************************************************")
