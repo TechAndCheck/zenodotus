@@ -6,9 +6,11 @@
 
 <div class="content content--md content--center">
 	<%= render partial: "media_vault/media/archive_item",
-						 locals: { **@archive_item.normalized_attrs_for_views,
-						 boxed: true,
-						 myvault: @myvault } %>
+						locals: { **@archive_item.normalized_attrs_for_views,
+						boxed: true,
+						myvault: @myvault,
+						single_page: true
+						} %>
 	<br />
 	<%= render partial: "media_vault/media/archive_item_metadata",
 						 locals: { archive_item: @archive_item } unless @archive_item.media_review.nil? %>

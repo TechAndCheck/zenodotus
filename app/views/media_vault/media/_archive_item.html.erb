@@ -94,8 +94,10 @@
             <% end %>
         </div>
         <div class="flex items-center flex-col">
-            <%= link_to media_vault_medium_path(archive_item_self.archive_item) do %>
-              <div class="archive-item__download__link">View media detail</div>
+            <% unless defined?(single_page) && single_page == true %>
+                <%= link_to media_vault_medium_path(archive_item_self.archive_item) do %>
+                  <div class="archive-item__download__link">View media detail</div>
+                <% end %>
             <% end %>
 
             <% unless archive_item_self.archive_item.private %>
