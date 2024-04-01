@@ -56,6 +56,8 @@ class MediaVault::AuthorsController < MediaVaultController
                                                       .where(archivable_item_type: "Sources::#{@platform[:archive_item_model_name]}", private: true)
                                                       .select { |i| i.send(@platform[:archive_item_model_name].underscore).author == @author })
 
+    @show_download_button = @archive_items.any? { |archive_item| !archive_item.private }
+
     respond_to do |format|
       format.html do; end
       format.json do

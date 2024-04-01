@@ -38,6 +38,7 @@ admin = User.create!({
   confirmed_at: Time.now,
 })
 admin.add_role :admin
+Flipper.enable_actor(:adhoc, admin)
 
 Applicant.create!([
   # This applicant is a fresh, unconfirmed applicant.
