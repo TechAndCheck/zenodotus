@@ -100,6 +100,12 @@ class ImageSearch < ApplicationRecord
     end
 
     sql = "SELECT archive_item_id, levenshtein FROM ( #{inner_query} LIMIT 20 ) t ORDER BY levenshtein;"
-    sql.split("\n").map(&:strip).join(" ")
+    sql = sql.split("\n").map(&:strip).join(" ")
+
+    if Rails.env.production? && Figaro.AUTH_BASE_HOST == "staging.factcheckinsights.org"
+      Rails.logger.debug(sql)
+    end
+
+    sql
   end
 end
