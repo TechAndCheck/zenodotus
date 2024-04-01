@@ -54,34 +54,28 @@ class ImageSearch < ApplicationRecord
   sig { returns(T::Array[T::Hash[ArchiveItem, Float]]) }
   def run
     if self.image.nil? == false
-      # Currently we run the query twice (speed at our scale is quite easy)
-      # We do this so we can get the proper distance in the result
-
-      sql = sql(self.dhashes.first)
+      # Currently we run two queries, the first gets raw, then we change that into proper objects
       raw_sql = raw_sql(self.dhashes.first)
 
-      image_hashes = ImageHash.find_by_sql(sql)
-      image_hashes_raw = ImageHash.connection.select_all(raw_sql)
+      archive_items_raw = ArchiveItem.connection.select_all(raw_sql)
+      archive_items = ArchiveItem.find(archive_items_raw.rows.map(&:first))
 
-      images = image_hashes.map.with_index do |image_hash, index|
-        { image: image_hash.archive_item, distance: image_hashes_raw[index]["levenshtein"] }
+      images = archive_items.map.with_index do |archive_item, index|
+        { image: archive_item, distance: archive_items_raw[index]["levenshtein"] }
       end
 
       images
     else
       # For videos we have to loop
-      video_hashes = []
-      video_hashes_raw = []
-      self.dhashes.each do |dhash|
-        sql = sql(dhash["dhash"])
+      archive_items_raw = self.dhashes.flat_map do |dhash|
         raw_sql = raw_sql(dhash["dhash"])
-
-        video_hashes += ImageHash.find_by_sql(sql)
-        video_hashes_raw += ImageHash.connection.select_all(raw_sql)
+        ArchiveItem.connection.select_all(raw_sql).rows
       end
 
-      videos = video_hashes.map.with_index do |video_hash, index|
-        { video: video_hash.archive_item, distance: video_hashes_raw[index]["levenshtein"] }
+      archive_items = ArchiveItem.find(archive_items_raw.map(&:first))
+
+      videos = archive_items.map.with_index do |archive_item, index|
+        { video: archive_item, distance: archive_items_raw[index][1] }
       end
 
       # Videos are now sorted by distance, but we want to only keep the shortest distance
@@ -90,23 +84,6 @@ class ImageSearch < ApplicationRecord
 
       videos
     end
-  end
-
-  sig { params(dhash: String).returns(String) }
-  def sql(dhash)
-    sql = %{SELECT DISTINCT ON (archive_items.archivable_item_id) *
-            FROM image_hashes
-            INNER JOIN archive_items
-            ON archive_items.id = image_hashes.archive_item_id
-            WHERE levenshtein(dhash, '#{dhash}') < 20
-            AND private = #{self.private}
-            }
-
-    if self.private
-      sql = "#{sql} AND submitter_id = '#{self.user.id}'"
-    end
-
-    "#{sql} ORDER BY archive_items.archivable_item_id, levenshtein(dhash, '#{dhash}');"
   end
 
   sig { params(dhash: String).returns(String) }
@@ -122,6 +99,7 @@ class ImageSearch < ApplicationRecord
       inner_query = "#{inner_query} AND submitter_id = '#{self.user.id}'"
     end
 
-    "SELECT * FROM ( #{inner_query} ) t ORDER BY archivable_item_id, levenshtein(dhash, '#{dhash}');"
+    sql = "SELECT archive_item_id, levenshtein FROM ( #{inner_query} LIMIT 20 ) t ORDER BY levenshtein;"
+    sql.split("\n").map(&:strip).join(" ")
   end
 end
