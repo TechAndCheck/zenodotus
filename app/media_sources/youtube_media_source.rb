@@ -8,7 +8,7 @@ class YoutubeMediaSource < MediaSource
   # @return [String] or [Array] of [String] of valid host names
   sig { override.returns(T::Array[String]) }
   def self.valid_host_name
-    ["www.youtube.com", "youtube.com", "youtu.be"]
+    ["www.youtube.com", "youtube.com", "youtu.be", "m.youtube.com"]
   end
 
   # Validate that the url is a direct link to a Youtube video

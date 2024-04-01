@@ -29,4 +29,11 @@ class YoutubeMediaSourceTest < ActiveSupport::TestCase
     youtube_post_hash = YoutubeMediaSource.extract("https://www.youtube.com/watch?v=Df7UtQTFUMQ", MediaSource::ScrapeType::Youtube, true)
     assert_not youtube_post_hash.empty?
   end
+
+  test "valid hosts all work" do
+    hosts = ["www.youtube.com", "youtube.com", "youtu.be", "m.youtube.com"]
+    hosts.each do |host|
+      assert YoutubeMediaSource.validate_youtube_post_url("https://#{host}/watch?v=Df7UtQTFUMQ")
+    end
+  end
 end
