@@ -102,7 +102,9 @@ class ImageSearch < ApplicationRecord
     sql = "SELECT archive_item_id, levenshtein FROM ( #{inner_query} LIMIT 20 ) t ORDER BY levenshtein;"
     sql = sql.split("\n").map(&:strip).join(" ")
 
-    Rails.logger.debug(sql)
+    Rails.logger.info("\n**********************************************************************")
+    Rails.logger.info(sql)
+    Rails.logger.info("**********************************************************************\n")
 
     sql
   end
