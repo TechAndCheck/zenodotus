@@ -5,7 +5,10 @@ class AddUrlToArchiveItem < ActiveRecord::Migration[7.0]
 
     ArchiveItem.all.each do |archive_item|
       archive_item.update!(url: archive_item.archivable_item.url)
+    rescue Shrine::FileNotFound
+      next
     end
+
 
     change_column_null :archive_items, :url, true
   end
