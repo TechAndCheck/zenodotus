@@ -19,7 +19,7 @@ class ArchiveItem < ApplicationRecord
   has_many :archive_items_users, dependent: :destroy, class_name: "ArchiveItemUser"
   has_many :users, through: :archive_items_users
 
-  before_create :update_posted, :set_user_for_archivable_item, :set_private_flag
+  before_create :update_posted, :set_user_for_archivable_item, :set_private_flag, :add_url_to_self
   after_save -> { self.archivable_item.update_pg_search_document }
 
   # Yes, default scopes are usually a code smell, but the *vast* majority of the time we don't want to include
@@ -42,6 +42,10 @@ class ArchiveItem < ApplicationRecord
 
   def promote_to_public
     self.update(private: false)
+  end
+
+  def add_url_to_self
+    self.url = self.archivable_item.url
   end
 
   # Begins the Scrape process that will allow us to create an ArchiveItem

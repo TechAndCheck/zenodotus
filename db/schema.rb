@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_29_133544) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_02_171227) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -74,7 +74,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_29_133544) do
     t.uuid "scrape_id"
     t.datetime "posted_at"
     t.boolean "private", default: false, null: false
+    t.string "url"
     t.index ["submitter_id"], name: "index_archive_items_on_submitter_id"
+    t.index ["url"], name: "index_archive_items_on_url"
   end
 
   create_table "archive_items_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

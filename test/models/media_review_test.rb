@@ -166,7 +166,7 @@ class MediaReviewTest < ActiveSupport::TestCase
 
   test "does not get created if the organization is not in our list" do
     media_review_kwargs = @media_review_kwargs.deep_dup
-    media_review_kwargs[:author]["url"] = "https://www.fake.com"
+    media_review_kwargs[:author][:url] = "https://www.fake.com"
 
     media_review = MediaReview.create(media_review_kwargs)
     assert_predicate media_review.errors, :any?

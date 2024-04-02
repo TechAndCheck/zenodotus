@@ -181,4 +181,11 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
     url = "https://www.tiktok.com/@guess/video/7091753416032128299"
     assert_equal Sources::TikTokPost, ArchiveItem.model_for_url(url)
   end
+
+  test "a url is added to the archive item" do
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    archive_item = Sources::InstagramPost.create_from_zorki_hash(zorki_image_post).first
+    assert_not_nil archive_item.url
+    assert_equal "https://www.instagram.com/p/CBcqOkyDDH8/", archive_item.url
+  end
 end

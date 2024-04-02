@@ -19,7 +19,7 @@ class MediaReview < ApplicationRecord
     # See if there's a ClaimReviewAuthor already
     host = URI.parse(media_review.author["url"]).host
     matching_hosts = FactCheckOrganization.where(host_name: host).order(:name)
-    self.media_review_author = matching_hosts.first unless matching_hosts.empty?
+    self.media_review_author = matching_hosts.first
   end
 
   def media_review_author_must_be_recognized
@@ -63,8 +63,6 @@ class MediaReview < ApplicationRecord
 
       # Now, if there's no ArchiveItem, try to find one and put it in
       if mr.archive_item.nil?
-        # NOTE: ArchiveItem does not, indeed, have a `url`
-        # We'll want to probably add the url to the archive_item
         archive_item = ArchiveItem.find_by(url: mr.media_url)
         mr.archive_item = archive_item unless archive_item.nil?
         mr.save!

@@ -170,6 +170,14 @@ class Sources::Tweet < ApplicationRecord
     twitter_id
   end
 
+  # Returns a reconstructed url as a +string+ since we don't store the full url in the database
+  #
+  # @returns a string of the url
+  sig { returns(String) }
+  def url
+    "https://twitter.com/#{author.handle}/status/#{twitter_id}"
+  end
+
   # Normalized representation of this archivable item for use in the view template.
   #
   # @returns Hash of normalized attributes.

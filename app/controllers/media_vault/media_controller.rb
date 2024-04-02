@@ -13,7 +13,6 @@ class MediaVault::MediaController < MediaVaultController
     end
   end
 
-
   sig { void }
   def verify_ownership
     unless current_user
