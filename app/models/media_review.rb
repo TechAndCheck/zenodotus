@@ -7,6 +7,7 @@ class MediaReview < ApplicationRecord
   belongs_to :archive_item, optional: true, class_name: "ArchiveItem"
   belongs_to :media_review_author, optional: true, class_name: "FactCheckOrganization"
   has_many :claim_reviews, foreign_key: :media_review_id, class_name: "ClaimReview", dependent: :destroy
+  has_one :scrape, dependent: :destroy
 
   validates :author, presence: true
   validates :date_published, presence: true

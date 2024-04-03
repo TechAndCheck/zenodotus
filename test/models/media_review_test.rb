@@ -181,4 +181,15 @@ class MediaReviewTest < ActiveSupport::TestCase
     scrape = Scrape.order(:created_at).last
     assert scrape.media_review == media_review
   end
+
+  test "starting a scrape attaches the correct scrape to the media review" do
+    FactCheckOrganization.create(name: "realfact_5", url: "https://realfact.com")
+
+    media_review = MediaReview.create!(**@media_review_kwargs)
+    media_review.start_scrape
+
+    scrape = Scrape.order(:created_at).last
+    assert_equal media_review, scrape.media_review
+    assert_equal scrape, media_review.scrape
+  end
 end
