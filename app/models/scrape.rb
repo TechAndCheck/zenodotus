@@ -32,14 +32,17 @@ class Scrape < ApplicationRecord
   # This does it synchronously. If you're calling this you probably mean to call `enqueue`
   sig { returns(Hash) }
   def perform
-    params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: self.url, callback_id: self.id }
+    params = { url: { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: self.url, callback_id: self.id } }
 
     # Move this to the Scrape model so they're easily resubmittable
     response = Typhoeus.get(
       Figaro.env.HYPATIA_SERVER_URL,
       followlocation: true,
-      params: params
+      params: params,
+      ssl_verifypeer: false,
+      ssl_verifyhost: 0
     )
+
 
     json_error_response = JSON.parse(response.body)
     if response.code != 200
