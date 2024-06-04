@@ -3,8 +3,8 @@
 
 api_key: "<%= ENV['HONEYBADGER_API_KEY'] %>"
 
-# The environment your app is running in.
-env: "<%= Rails.env %>"
+# The environment your app is running in. We can also set it in the environment variables for statging
+env: "<%= ENV['HONEYBADGER_ENV'] || Rails.env %>"
 
 # The absolute path to your project folder.
 root: "<%= Rails.root.to_s %>"
