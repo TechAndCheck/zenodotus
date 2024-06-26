@@ -47,4 +47,13 @@ class TwitterMediaSourceTest < ActiveSupport::TestCase
       TwitterMediaSource.send(:extract_tweet_id_from_url, "https://twitter.com/")
     end
   end
+
+  def test_valid_url_returns_id
+    assert_equal "20", TwitterMediaSource.send(:extract_tweet_id_from_url, "https://twitter.com/jack/status/20")
+    assert_equal "20", TwitterMediaSource.send(:extract_tweet_id_from_url, "https://www.twitter.com/jack/status/20")
+    assert_equal "20", TwitterMediaSource.send(:extract_tweet_id_from_url, "https://mobile.twitter.com/jack/status/20")
+    assert_equal "20", TwitterMediaSource.send(:extract_tweet_id_from_url, "https://x.com/jack/status/20")
+    assert_equal "20", TwitterMediaSource.send(:extract_tweet_id_from_url, "https://www.x.com/jack/status/20")
+    assert_equal "20", TwitterMediaSource.send(:extract_tweet_id_from_url, "https://mobile.x.com/jack/status/20")
+  end
 end

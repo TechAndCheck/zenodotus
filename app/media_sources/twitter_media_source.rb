@@ -8,7 +8,7 @@ class TwitterMediaSource < MediaSource
   # @return [String] or [Array] of [String] of valid host names
   sig { override.returns(T::Array[String]) }
   def self.valid_host_name
-    ["www.twitter.com", "twitter.com", "mobile.twitter.com"]
+    ["www.twitter.com", "twitter.com", "mobile.twitter.com", "x.com", "www.x.com", "mobile.x.com"]
   end
 
   # Initialize the object and capture the screenshot automatically.
