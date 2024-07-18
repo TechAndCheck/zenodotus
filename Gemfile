@@ -236,3 +236,8 @@ gem "amazing_print"
 gem "flipper", "~> 1.2"
 
 gem "flipper-active_record", "~> 1.2"
+
+# Scraping management
+gem "activegraph" # For example, see https://rubygems.org/gems/activegraph/versions for the latest versions
+gem "neo4j-ruby-driver"
+gem "neo4j-rake_tasks"

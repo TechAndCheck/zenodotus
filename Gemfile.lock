@@ -121,6 +121,13 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    activegraph (11.4.0)
+      activemodel (>= 4.0)
+      activesupport (>= 4.0)
+      i18n (!= 1.8.8)
+      neo4j-ruby-driver (>= 4.4.1)
+      orm_adapter (~> 0.5.0)
+      sorted_set
     activejob (7.0.8)
       activesupport (= 7.0.8)
       globalid (>= 0.3.6)
@@ -149,6 +156,12 @@ GEM
       capybara (~> 3.13, < 4)
       websocket-driver (>= 0.6.5)
     ast (2.4.2)
+    async (2.14.1)
+      console (~> 1.25, >= 1.25.2)
+      fiber-annotation
+      io-event (~> 1.6, >= 1.6.5)
+    async-io (1.43.2)
+      async
     awrence (1.2.1)
     aws-eventstream (1.2.0)
     aws-partitions (1.637.0)
@@ -203,8 +216,12 @@ GEM
       activesupport (>= 4.2.0)
     commander (4.6.0)
       highline (~> 2.0.0)
-    concurrent-ruby (1.2.2)
+    concurrent-ruby (1.3.3)
     connection_pool (2.4.1)
+    console (1.25.2)
+      fiber-annotation
+      fiber-local (~> 1.1)
+      json
     content_disposition (1.0.0)
     cose (1.3.0)
       cbor (~> 0.5.9)
@@ -253,7 +270,13 @@ GEM
       concurrent-ruby (~> 1.1)
       webrick (~> 1.7)
       websocket-driver (>= 0.6, < 0.8)
-    ffi (1.16.3)
+    ffi (1.17.0-arm64-darwin)
+    ffi (1.17.0-x86_64-darwin)
+    ffi (1.17.0-x86_64-linux-gnu)
+    fiber-annotation (0.2.0)
+    fiber-local (1.1.0)
+      fiber-storage
+    fiber-storage (0.1.2)
     figaro (1.2.0)
       thor (>= 0.14.0, < 2)
     flipper (1.2.2)
@@ -274,12 +297,13 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
-    i18n (1.14.1)
+    i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     importmap-rails (1.1.5)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
     io-console (0.6.0)
+    io-event (1.6.5)
     irb (1.8.1)
       rdoc
       reline (>= 0.3.8)
@@ -330,12 +354,22 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2022.0105)
     mini_mime (1.1.5)
-    minitest (5.19.0)
+    minitest (5.24.1)
     minitest-hooks (1.5.0)
       minitest (> 5.3)
     msgpack (1.5.6)
     multi_json (1.15.0)
     murmurhash3 (0.1.7)
+    neo4j-rake_tasks (0.7.19)
+      os
+      rake
+      ruby-progressbar
+      rubyzip (>= 1.1.7)
+    neo4j-ruby-driver (4.4.5)
+      activesupport (>= 5.2.0)
+      async-io
+      connection_pool
+      zeitwerk (>= 2.1.10)
     net-http-digest_auth (1.4.1)
     net-http-persistent (4.0.2)
       connection_pool (~> 2.2)
@@ -439,7 +473,7 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rbcat (0.2.2)
-    rbtree (0.4.5)
+    rbtree (0.4.6)
     rdoc (6.5.0)
       psych (>= 4.0.0)
     redis (4.8.1)
@@ -514,7 +548,7 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    set (1.0.3)
+    set (1.1.0)
     sidekiq (6.5.12)
       connection_pool (>= 2.2.5, < 3)
       rack (~> 2.0)
@@ -654,7 +688,7 @@ GEM
       nokogiri (~> 1.8)
     yard (0.9.28)
       webrick (~> 1.7.0)
-    zeitwerk (2.6.11)
+    zeitwerk (2.6.16)
 
 PLATFORMS
   arm64-darwin-21
@@ -663,6 +697,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  activegraph
   amazing_print
   aws-sdk-s3
   birdsong!
@@ -697,6 +732,8 @@ DEPENDENCIES
   mechanize
   memory_profiler
   minitest-hooks
+  neo4j-rake_tasks
+  neo4j-ruby-driver
   os
   pagy (~> 5.6)
   pg (~> 1.1)

@@ -1,0 +1,13 @@
+development:
+  url: neo4j://localhost:7687
+
+test:
+  url: neo4j://localhost:7687
+
+production:
+  url:
+    - neo4j://core1:7687
+    - neo4j://core2:7687
+    - neo4j://core3:7687
+  username: RAILS_ENV["NEO4J_USERNAME"]
+  password: RAILS_ENV["NEO4J_PASSWORD"]
