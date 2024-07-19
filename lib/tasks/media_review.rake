@@ -66,10 +66,10 @@ namespace :media_review do
 
     # Get all media review that's images
     # Go through all the media review
-      # output the high res image to the folder
-      # save the line to the CSV
+    # output the high res image to the folder
+    # save the line to the CSV
 
-    image_archive_items = ArchiveItem.publically_viewable.select {|ai| !ai.images.empty? }
+    image_archive_items = ArchiveItem.publically_viewable.select { |ai| !ai.images.empty? }
     progress_bar = ProgressBar.create(title: "Media Review Items", total: MediaReview.count)
 
     # Create a CSV object
@@ -84,14 +84,11 @@ namespace :media_review do
         next if media_review.nil?
         author_name = media_review.claim_reviews.empty? ? "" : media_review.claim_reviews.first.author["name"]
 
-        csv << [archive_item.id, media_review.media_url,  media_review.date_published,
-                media_review.media_authenticity_category_humanized, author_name,
-                media_review.url]
-
         archive_item.images.each_with_index do |image, index|
+          file_name = "#{archive_item.id}-#{index + 1}"
           begin
             image.image.download do |tempfile|
-              object = Aws::S3::Object.new(bucket_name, archive_item.id)
+              object = Aws::S3::Object.new(bucket_name, file_name)
               object.upload_file(tempfile.path)
             end
           rescue Shrine::FileNotFound
@@ -99,7 +96,7 @@ namespace :media_review do
             next
           end
 
-          csv << ["#{archive_item.id}-#{index}", media_review.media_url,  media_review.date_published,
+          csv << [file_name, media_review.media_url,  media_review.date_published,
           media_review.media_authenticity_category_humanized, author_name,
           media_review.url]
         end
