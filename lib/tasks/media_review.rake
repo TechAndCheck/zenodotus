@@ -89,9 +89,11 @@ namespace :media_review do
                 media_review.url]
 
         archive_item.images.each_with_index do |image, index|
-          image.image.download do |tempfile|
-            object = Aws::S3::Object.new(bucket_name, archive_item.id)
-            object.upload_file(tempfile.path)
+          begin
+            image.image.download do |tempfile|
+              object = Aws::S3::Object.new(bucket_name, archive_item.id)
+              object.upload_file(tempfile.path)
+            end
           rescue Shrine::FileNotFound
             # eat it
             next
