@@ -88,11 +88,18 @@ namespace :media_review do
                 media_review.media_authenticity_category_humanized, author_name,
                 media_review.url]
 
-        archive_item.images.each do |image|
+        archive_item.images.each_with_index do |image, index|
           image.image.download do |tempfile|
             object = Aws::S3::Object.new(bucket_name, archive_item.id)
             object.upload_file(tempfile.path)
+          rescue Shrine::FileNotFound
+            # eat it
+            next
           end
+
+          csv << ["#{archive_item.id}-#{index}", media_review.media_url,  media_review.date_published,
+          media_review.media_authenticity_category_humanized, author_name,
+          media_review.url]
         end
 
         progress_bar.increment
