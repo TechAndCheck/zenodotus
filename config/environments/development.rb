@@ -74,6 +74,7 @@ Rails.application.configure do
 
   config.hosts << Figaro.env.FACT_CHECK_INSIGHTS_HOST
   config.hosts << Figaro.env.MEDIA_VAULT_HOST
+  config.hosts << Figaro.env.PUBLIC_LINK_HOST
 
   # Kept for testing later when we change loggers
   #
@@ -82,4 +83,6 @@ Rails.application.configure do
   #   logger.formatter = config.log_formatter
   #   config.logger    = ActiveSupport::TaggedLogging.new(logger)
   # # end
+
+  config.force_ssl = true
 end

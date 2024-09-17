@@ -15,6 +15,9 @@ Figaro.require_keys("AUTH_BASE_HOST") # This is used by MFA as the site id
 Figaro.require_keys("MAIL_DOMAIN")
 Figaro.require_keys("MAILGUN_API_KEY")
 
+# Public links
+Figaro.require_keys("PUBLIC_LINK_HOST")
+
 if Figaro.env.USE_S3_DEV_TEST == "true" || Rails.env == "production"
   Figaro.require_keys("AWS_REGION")
   Figaro.require_keys("AWS_S3_BUCKET_NAME")

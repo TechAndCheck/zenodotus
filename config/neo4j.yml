@@ -1,13 +1,22 @@
 development:
-  url: neo4j://localhost:7687
+  url: neo4j://0.0.0.0:7687
+  username: neo4j
+  password: password
+
+# test:
+#   url: neo4j://0.0.0.0:7687
+#   username: neo4j
+#   password: password
 
 test:
-  url: neo4j://localhost:7687
+  url: bolt://44.211.243.72:7687
+  username: neo4j
+  password: IlUCKEFtABfAjx9MIsZsgiVRqWpBHxcfmRJuCNfI9Vk
 
 production:
   url:
-    - neo4j://core1:7687
-    - neo4j://core2:7687
-    - neo4j://core3:7687
+    - neo4j://0.0.0.0:7687
+    - neo4j://0.0.0.0:7687
+    - neo4j://0.0.0.0:7687
   username: RAILS_ENV["NEO4J_USERNAME"]
   password: RAILS_ENV["NEO4J_PASSWORD"]

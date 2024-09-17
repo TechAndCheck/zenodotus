@@ -2,79 +2,93 @@
 
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-
-  root "application#index"
-
-
-  # This generates only the session and confirmation-related Devise URLs.
-  devise_for :users,
-             skip: :all,
-             only: [
-               :sessions,
-               :confirmations,
-               :registrations,
-               :passwords
-             ],
-             controllers: {
-               sessions: "users/sessions",
-               confirmations: "users/confirmations",
-           }
-
-
-  scope "users/sign_in/mfa" do
-    devise_scope :user do
-      get "/", to: "users/sessions#mfa_validation", as: "mfa_validation"
-      get "/webauthn", to: "users/sessions#begin_mfa_webauthn_validation", as: "begin_mfa_webauthn_validation"
-      post "/webauthn", to: "users/sessions#finish_mfa_webauthn_validation", as: "finish_mfa_webauthn_validation"
-      post "/totp", to: "users/sessions#finish_mfa_totp_validation", as: "finish_mfa_totp_validation"
-      get "/webauthn/use_recovery_code", to: "users/sessions#mfa_use_recovery_code", as: "mfa_use_recovery_code"
-      post "/webauthn/use_recovery_code", to: "users/sessions#mfa_validate_recovery_code", as: "mfa_validate_recovery_code"
+  constraints host: Figaro.env.PUBLIC_LINK_HOST do
+    # constraints(lambda { |request| request.host == Figaro.env.PUBLIC_LINK_HOST }) do
+    scope module: "public_access", as: "public_access" do
+      root "media#index"
+      get "/media/:public_id", to: "media#show", as: "media"
     end
   end
 
-  get "about", to: "application#about"
-  get "contact", to: "application#contact"
-  get "privacy", to: "application#privacy", as: "privacy"
-  get "terms", to: "application#terms", as: "terms"
+  # constraints(lambda { |request| [Figaro.env.FACT_CHECK_INSIGHTS_HOST, Figaro.env.MEDIA_VAULT_HOST].include?(request.host) }) do
+  available_hosts = [Figaro.env.FACT_CHECK_INSIGHTS_HOST, Figaro.env.MEDIA_VAULT_HOST]
+  available_hosts << "www.example.com" if Rails.env.test? # Rail's default host for tests is www.example.com
 
-  scope "/apply" do
-    get "/", to: "applicants#new", as: "new_applicant"
-    post "/", to: "applicants#create", as: "applicants"
-    get "/confirm", to: "applicants#confirm", as: "applicant_confirm"
-    get "/confirm/sent", to: "applicants#confirmation_sent", as: "applicant_confirmation_sent"
-    get "/confirm/done", to: "applicants#confirmed", as: "applicant_confirmed"
-  end
+  constraints host: available_hosts do
+    root "application#index"
 
-  namespace "admin" do
-    root action: "dashboard"
+    # This generates only the session and confirmation-related Devise URLs.
+    devise_for :users,
+              skip: :all,
+              only: [
+                :sessions,
+                :confirmations,
+                :registrations,
+                :passwords
+              ],
+              controllers: {
+                sessions: "users/sessions",
+                confirmations: "users/confirmations",
+            }
 
-    namespace "jobs_status" do
-      root action: "index"
-      get "scrapes"
-      get "active_jobs"
-      post "clear_all_jobs", as: "clear_all_jobs"
-      post "resubmit_all_unfulfilled_scrape", as: "resubmit_all_unfulfilled_scrape"
-      delete ":id", action: "delete_scrape", as: "delete"
-      post "resubmit/:id", action: "resubmit_scrape", as: "resubmit"
+
+    scope "users/sign_in/mfa" do
+      devise_scope :user do
+        get "/", to: "users/sessions#mfa_validation", as: "mfa_validation"
+        get "/webauthn", to: "users/sessions#begin_mfa_webauthn_validation", as: "begin_mfa_webauthn_validation"
+        post "/webauthn", to: "users/sessions#finish_mfa_webauthn_validation", as: "finish_mfa_webauthn_validation"
+        post "/totp", to: "users/sessions#finish_mfa_totp_validation", as: "finish_mfa_totp_validation"
+        get "/webauthn/use_recovery_code", to: "users/sessions#mfa_use_recovery_code", as: "mfa_use_recovery_code"
+        post "/webauthn/use_recovery_code", to: "users/sessions#mfa_validate_recovery_code", as: "mfa_validate_recovery_code"
+      end
     end
 
-    resources :applicants, only: [:index, :show]
-    post "applicants/:id/approve", to: "applicants#approve", as: "applicant_approve"
-    post "applicants/:id/reject", to: "applicants#reject", as: "applicant_reject"
-    post "applicants/:id/update", to: "applicants#update", as: "applicant_update"
-    delete "applicants/:id", to: "applicants#delete", as: "applicant_delete"
+    get "about", to: "application#about"
+    get "contact", to: "application#contact"
+    get "privacy", to: "application#privacy", as: "privacy"
+    get "terms", to: "application#terms", as: "terms"
 
-    # post "web_scrapes/scrape_selected", action: "web_scrapes#scrape_selected", as: "scrape_selected"
-
-    resources :web_scrapes, only: [:index, :new, :create, :destroy] do
-      post :handle_form, on: :collection
-      post "scrape", action: "scrape_now", as: "scrape"
+    scope "/apply" do
+      get "/", to: "applicants#new", as: "new_applicant"
+      post "/", to: "applicants#create", as: "applicants"
+      get "/confirm", to: "applicants#confirm", as: "applicant_confirm"
+      get "/confirm/sent", to: "applicants#confirmation_sent", as: "applicant_confirmation_sent"
+      get "/confirm/done", to: "applicants#confirmed", as: "applicant_confirmed"
     end
 
-    resources :fact_check_organizations, only: [:index]
+    namespace "admin" do
+      root action: "dashboard"
+
+      namespace "jobs_status" do
+        root action: "index"
+        get "scrapes"
+        get "active_jobs"
+        post "clear_all_jobs", as: "clear_all_jobs"
+        post "resubmit_all_unfulfilled_scrape", as: "resubmit_all_unfulfilled_scrape"
+        delete ":id", action: "delete_scrape", as: "delete"
+        post "resubmit/:id", action: "resubmit_scrape", as: "resubmit"
+      end
+
+      resources :applicants, only: [:index, :show]
+      post "applicants/:id/approve", to: "applicants#approve", as: "applicant_approve"
+      post "applicants/:id/reject", to: "applicants#reject", as: "applicant_reject"
+      post "applicants/:id/update", to: "applicants#update", as: "applicant_update"
+      delete "applicants/:id", to: "applicants#delete", as: "applicant_delete"
+
+      # post "web_scrapes/scrape_selected", action: "web_scrapes#scrape_selected", as: "scrape_selected"
+
+      resources :web_scrapes, only: [:index, :new, :create, :destroy] do
+        post :handle_form, on: :collection
+        post "scrape", action: "scrape_now", as: "scrape"
+      end
+
+      resources :fact_check_organizations, only: [:index]
+    end
   end
 
-  constraints host: Figaro.env.FACT_CHECK_INSIGHTS_HOST do
+  available_hosts = [Figaro.env.FACT_CHECK_INSIGHTS_HOST]
+  available_hosts << "www.example.com" if Rails.env.test? # Rail's default host for tests is www.example.com
+  constraints host: available_hosts do
     scope module: "fact_check_insights", as: "fact_check_insights" do
       root "application#index"
       get "download"
@@ -84,7 +98,9 @@ Rails.application.routes.draw do
     end
   end
 
-  constraints host: Figaro.env.MEDIA_VAULT_HOST do
+  available_hosts = [Figaro.env.MEDIA_VAULT_HOST]
+  available_hosts << "www.example.com" if Rails.env.test? # Rail's default host for tests is www.example.com
+  constraints host: available_hosts do
     scope module: "media_vault", as: "media_vault" do
       root "application#index"
 

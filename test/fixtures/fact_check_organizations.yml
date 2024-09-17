@@ -11,3 +11,8 @@
 #
 # two: {}
 # column: value
+
+fullfact:
+  name: Full Fact
+  url: "https://fullfact.org"
+  host_name: "fullfact.org"

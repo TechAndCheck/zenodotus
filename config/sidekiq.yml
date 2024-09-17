@@ -5,20 +5,23 @@ development:
     - [zenodotus_development_default, 2]
     - zenodotus_development_scrapes
     - zenodotus_development_web_scrapes
+    - zenodotus_development_web_scrapes_graph_update
 test:
   :queues:
     - [zenodotus_test_urgent, 3]
     - [zenodotus_test_default, 2]
     - zenodotus_test_scrapes
     - zenodotus_test_web_scrapes
+    - zenodotus_test_web_scrapes_graph_update
 production:
   :concurrency: 6
   :queues:
     - [zenodotus_production_urgent, 3]
     - [zenodotus_production_default, 2]
     - zenodotus_production_scrapes
+    - zenodotus_production_web_scrapes
+    - zenodotus_production_web_scrapes_graph_update
 :verbose: true
 :timeout: 25
-
 # note: the queue for scraping of web sites for ClaimReview is not set here, but instead is in the Procfile
 # so that it doesn't overcrowd itself (otherwise scraping blocks the queues)

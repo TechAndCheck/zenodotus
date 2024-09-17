@@ -1,0 +1,32 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the "{}" from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+one:
+  name: "Example Site"
+  url: "https://www.example.com"
+  created_at: "2021-01-01 00:00:00"
+  updated_at: "2021-01-01 00:00:00"
+
+two:
+  name: "Example Site2"
+  url: "https://www.example2.com"
+  starting_url: "https://example2.com/latest"
+  created_at: "2021-01-01 00:00:00"
+  updated_at: "2021-01-01 00:00:00"
+
+politifact:
+  name: "Politifact"
+  url: "https://www.politifact.com"
+  starting_url: "https://www.politifact.com/factchecks/list/"
+  created_at: "2021-01-01 00:00:00"
+  updated_at: "2021-01-01 00:00:00"
+
+fullfact:
+  name: "Full Fact"
+  url: "https://fullfact.org"
+  starting_url: "https://fullfact.org/online/pope-francis-not-appointed-klaus-schwab-universal-bishop/"
+  created_at: "2021-01-01 00:00:00"
+  updated_at: "2021-01-01 00:00:00"

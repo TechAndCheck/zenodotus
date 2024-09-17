@@ -67,4 +67,5 @@ Rails.application.configure do
   config.hosts << "www.example.com"
   config.hosts << Figaro.env.FACT_CHECK_INSIGHTS_HOST
   config.hosts << Figaro.env.MEDIA_VAULT_HOST
+  config.hosts << Figaro.env.PUBLIC_LINK_HOST
 end

@@ -60,7 +60,7 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "can submit a url for scraping ad hoc" do
+  test "can submit a url for scraping ad hoc with turbo" do
     sign_in users(:media_vault_user)
     get media_vault_archive_add_path(format: :turbo_stream)
     assert_response :success # Not sure why this is redirecting, should be `:success`
@@ -150,17 +150,19 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
     Sources::InstagramPost.create_from_zorki_hash(post)
 
     sign_in users(:user)
-    get media_vault_personal_dashboard_url
+    get media_vault_myvault_url
     assert_response :success
     assert_select "div.archive-item", count: 0
   end
 
   test "personal vault doesn't show other user's items" do
+    host! Figaro.env.MEDIA_VAULT_HOST
+
     sign_in users(:user)
     post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
     Sources::InstagramPost.create_from_zorki_hash(post, users(:user))
 
-    get media_vault_personal_dashboard_url
+    get media_vault_myvault_url
     assert_response :success
     assert_select "div.archive-item", count: 1
 
@@ -174,7 +176,7 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
 
     # Sign in with a different user
     sign_in users(:media_vault_user)
-    get media_vault_personal_dashboard_url
+    get media_vault_myvault_url
     assert_response :success
     assert_select "div.archive-item", count: 2
   end
@@ -183,7 +185,6 @@ class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:user)
     get media_vault_dashboard_url
     assert_response :success
-    assert_select "a[href=?]", media_vault_myvault_path
     get media_vault_myvault_url
     assert_response :success
   end

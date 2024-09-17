@@ -42,7 +42,5 @@ module Zenodotus
     }
 
     config.force_ssl = true
-
-    # config.neo4j.driver.url = 'bolt://localhost:7687'
   end
 end

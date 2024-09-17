@@ -4,20 +4,41 @@
         if media.try(:image_url)
             thumbnail_image_url = media.image_url
             full_size_href = media.image_url
+        %>
+        <a
+            class="archive-item__body-media__thumbnail"
+            style="background-image:url('<%= thumbnail_image_url %>')"
+            title="Click to view full-size version of media"
+            href="<%= full_size_href %>"
+            target="_blank"
+            rel="noopener noreferrer"
+        ></a>
+        <%
         elsif media.try(:video_url)
-            thumbnail_image_url = media.video_derivatives[:preview].url
-            full_size_href = media.video_url
+            # thumbnail_image_url = media.video_derivatives[:preview].url
+            # full_size_href = media.video_url
+            %>
+            <figure class="archive-item__body-media__thumbnail preview content-center">
+                <video
+                    width="100%"
+                    height="auto"
+                    poster="<%= media.video_derivatives[:preview].url %>"
+                    preload="none"
+                    controls
+                >
+                    <source src="<%= media.video_url %>" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <% if media.try(:video_type) == "animated_gif" %>
+                    <figcaption class="archive-item__body-media__video-caption">
+                        GIF
+                    </figcaption>
+                <% end %>
+            </figure>
+            <%
         else
             next
         end
     %>
-    <a
-        class="archive-item__body-media__thumbnail"
-        style="background-image:url('<%= thumbnail_image_url %>')"
-        title="Click to view full-size version of media"
-        href="<%= full_size_href %>"
-        target="_blank"
-        rel="noopener noreferrer"
-    ></a>
 <% end %>
 </div>

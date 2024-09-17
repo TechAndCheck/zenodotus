@@ -22,7 +22,8 @@
 
 	<body id="page--<%= @site[:shortname] %>--<%= @page_id || controller.action_name %>" class="site--<%= @site[:shortname]%>">
 		<div id="site-wrapper">
-			<%= render "layouts/#{@site[:shortname]}/header", { locals: { myvault: @myvault }} %>
+		    <% layout_folder = @site[:public_access] ? "public_access" : @site[:shortname] %>
+			<%= render "layouts/#{layout_folder}/header", { locals: { myvault: @myvault }} %>
 			<div id="site-main">
 				<!--
 					This DIV allows the next element to be `.contain`
@@ -35,7 +36,7 @@
 					</div>
 				</div>
 			</div>
-			<%= render "layouts/#{@site[:shortname]}/footer" %>
+			<%= render "layouts/#{layout_folder}/footer" %>
 		</div>
 		<%= render "layouts/svg_library" %>
 	</body>
