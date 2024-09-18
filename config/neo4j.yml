@@ -9,14 +9,12 @@ development:
 #   password: password
 
 test:
-  url: bolt://44.211.243.72:7687
-  username: neo4j
-  password: IlUCKEFtABfAjx9MIsZsgiVRqWpBHxcfmRJuCNfI9Vk
+  url: RAISE_ENV["NEO4J_URL"]
+  username: RAILS_ENV["NEO4J_USERNAME"]
+  password: RAILS_ENV["NEO4J_PASSWORD"]
 
 production:
   url:
-    - neo4j://0.0.0.0:7687
-    - neo4j://0.0.0.0:7687
-    - neo4j://0.0.0.0:7687
+    - RAILS_ENV["NEO4J_URL"]
   username: RAILS_ENV["NEO4J_USERNAME"]
   password: RAILS_ENV["NEO4J_PASSWORD"]
