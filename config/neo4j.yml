@@ -9,11 +9,11 @@ development:
 #   password: password
 
 test:
-  url: RAISE_ENV["NEO4J_URL"]
-  username: RAILS_ENV["NEO4J_USERNAME"]
-  password: RAILS_ENV["NEO4J_PASSWORD"]
+  url: ENV["NEO4J_URL"]
+  username: ENV["NEO4J_USERNAME"]
+  password: ENV["NEO4J_PASSWORD"]
 
 production:
-  url: RAILS_ENV["NEO4J_URL"]
-  username: RAILS_ENV["NEO4J_USERNAME"]
-  password: RAILS_ENV["NEO4J_PASSWORD"]
+  url: ENV["NEO4J_URL"]
+  username: ENV["NEO4J_USERNAME"]
+  password: ENV["NEO4J_PASSWORD"]
