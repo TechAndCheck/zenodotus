@@ -29,6 +29,12 @@ if Figaro.env.USE_S3_DEV_TEST == "true" || Rails.env == "production"
   Figaro.require_keys("AWS_SECRET_ACCESS_KEY")
 end
 
+if Rails.env == "production"
+  Figaro.require_keys("MEMCACHIER_SERVERS")
+  Figaro.require_keys("MEMCACHIER_USERNAME")
+  Figaro.require_keys("MEMCACHIER_PASSWORD")
+end
+
 if Figaro.env.HONEYBADGER_API_KEY.blank? == false
   Figaro.require_keys("HONEYBADGER_API_KEY_GOOGLE_CHECK_IN_ADDRESS")
   Figaro.require_keys("HONEYBADGER_API_KEY_CSV_JSON_GENERATION_ADDRESS")
