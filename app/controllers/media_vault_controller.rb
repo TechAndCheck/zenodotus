@@ -15,13 +15,19 @@ class MediaVaultController < ApplicationController
   # We don't route to this URL directly.
   # Instead, `application#index` renders its template without a redirect.
   sig { void }
-  def index; end
+  def index
+    @page_metadata = { title: "Home", description: "Media Vault Home" }
+  end
 
   sig { void }
-  def guide; end
+  def guide
+    @page_metadata = { title: "Guide", description: "Media Vault Guide" }
+  end
 
   sig { void }
-  def optout; end
+  def optout
+    @page_metadata = { title: "Optout", description: "Media Vault Optout" }
+  end
 
 protected
 

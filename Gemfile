@@ -255,3 +255,6 @@ gem "flipper-active_record", "~> 1.2"
 gem "async", "2.12.0"
 gem "activegraph" # For example, see https://rubygems.org/gems/activegraph/versions for the latest versions
 gem "neo4j-ruby-driver"
+
+# We want to manage our meta tags for publically available pages
+gem "meta-tags"

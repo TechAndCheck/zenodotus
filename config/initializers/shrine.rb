@@ -52,3 +52,4 @@ Shrine.plugin :tempfile
 Shrine.plugin :derivatives
 Shrine.plugin :keep_files if ENV["STAGING"]
 Shrine.plugin :remote_url, max_size: 20 * 1024 * 1024 # 20MB
+Shrine.plugin :download_endpoint, prefix: "media/vault", host: "https://#{Figaro.env.PUBLIC_LINK_HOST}"

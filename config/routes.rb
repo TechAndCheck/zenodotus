@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     scope module: "public_access", as: "public_access" do
       root "media#index"
       get "/media/:public_id", to: "media#show", as: "media"
+      mount Shrine.download_endpoint => "/media/vault"
     end
   end
 

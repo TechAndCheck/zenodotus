@@ -23,6 +23,9 @@ class ApplicationController < ActionController::Base
         organizations: organization_count,
         countries: country_count,
       }
+      @page_metadata = { title: "Home", description: "Fact Check Insights Home" }
+    else
+      @page_metadata = { title: "Home", description: "Media Vault Home" }
     end
 
     render "#{@site[:shortname]}/index"

@@ -182,6 +182,6 @@ class ArchiveItem < ApplicationRecord
   # @returns String the public link to the archive item
   sig { returns(String) }
   def public_link
-    "http://#{ENV["PUBLIC_LINK_HOST"]}/media/#{self.public_id}"
+    "https://#{ENV["PUBLIC_LINK_HOST"]}/media/#{self.public_id}"
   end
 end

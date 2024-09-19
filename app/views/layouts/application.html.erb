@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title><%= make_title_tag_content(@title_tag) %></title>
+		<!-- <title><%# make_title_tag_content(@title_tag) %></title> -->
+		<%= render partial: "layouts/open_graph_meta_tags", locals: { site_title: make_title_tag_content(@title_tag), metadata: @page_metadata } %>
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		<%= csrf_meta_tags %>
 		<%= csp_meta_tag %>
