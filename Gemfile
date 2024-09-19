@@ -258,3 +258,4 @@ gem "neo4j-ruby-driver"
 
 # Caching
 gem "actionpack-action_caching"
+gem "dalli" # For memcached caching
