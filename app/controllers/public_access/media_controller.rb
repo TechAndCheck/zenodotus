@@ -1,4 +1,6 @@
 class PublicAccess::MediaController < ApplicationController
+  caches_action :index, :show
+
   sig { void }
   def index
     @page_metadata = { title: "Archive", description: "Archive" }
