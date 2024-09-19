@@ -18,6 +18,10 @@ Figaro.require_keys("MAILGUN_API_KEY")
 # Public links
 Figaro.require_keys("PUBLIC_LINK_HOST")
 
+Figaro.require_keys("NEO4J_URL")
+Figaro.require_keys("NEO4J_USERNAME")
+Figaro.require_keys("NEO4J_PASSWORD")
+
 if Figaro.env.USE_S3_DEV_TEST == "true" || Rails.env == "production"
   Figaro.require_keys("AWS_REGION")
   Figaro.require_keys("AWS_S3_BUCKET_NAME")
