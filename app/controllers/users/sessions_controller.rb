@@ -60,6 +60,7 @@ class Users::SessionsController < Devise::SessionsController
 
     @user = User.find(user_id)
     raise MFAValidationError if @user.nil?
+    @page_metadata = { title: "Login", description: "Login" }
   rescue MFAValidationError
     flash[:notice] = "You do not have access to the previous page"
     redirect_to new_user_session_path

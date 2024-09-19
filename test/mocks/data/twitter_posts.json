@@ -20,18 +20,18 @@
             "profile_image_url": "https://pbs.twimg.com/profile_images/964530436050440194/_Vt9ECcg.jpg",
             "url": ""
           },
-          "aws_image_keys":null,
+          "aws_image_keys": null,
           "aws_screenshot_key": "twitter_screenshot_4024c5b2-041e-47db-a407-4e1320cc0011.png",
-          "aws_video_key":null,
-          "aws_video_preview_key":null,
+          "aws_video_key": null,
+          "aws_video_preview_key": null,
           "created_at": "2021-05-27T14:27:18+00:00",
-          "image_files":[],
+          "image_files": [],
           "language": "en",
           "object_type": "twitter",
-          "screenshot_file":null,
+          "screenshot_file": null,
           "text": "UPDATE: Acela Train 2155 is currently operating approx. 50min late due to speed restrictions. An on-time section of Acela Train 2155 will operate between NYP &amp; Washington (WAS). Customers on board the late section of Acela Train 2155 will be accommodated on Train 171 at NYP.",
-          "video_file":null,
-          "video_preview_image":null
+          "video_file": null,
+          "video_preview_image": null
         }
       }
     ]
@@ -57,7 +57,9 @@
             "profile_image_url": "https://pbs.twimg.com/profile_images/1520352405409435649/SBuAOkgQ.jpg",
             "url": "https://t.co/uIRTP5ykSx"
           },
-          "aws_image_keys": ["twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg"],
+          "aws_image_keys": [
+            "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg"
+          ],
           "aws_screenshot_key": "twitter_screenshot_4024c5b2-041e-47db-a407-4e1320cc0011.png",
           "aws_video_key": null,
           "aws_video_preview_key": null,
@@ -68,7 +70,7 @@
           "screenshot_file": null,
           "text": "Thanks to everyone who guessed! This is the bristles on our Electric Broom, which is open for viewing at the New York Auto Show until April 24. See our mini collection truck too! https://t.co/R2KSnaxJ35",
           "video_file": null,
-          "video_preview_image":null
+          "video_preview_image": null
         }
       }
     ]
@@ -78,7 +80,7 @@
     "scrape_result": [
       {
         "id": "1258817692448051200",
-        "post":{
+        "post": {
           "id": "1258817692448051200",
           "author": {
             "username": "JoeBiden",
@@ -96,8 +98,12 @@
           },
           "aws_image_keys": null,
           "aws_screenshot_key": "twitter_screenshot_4024c5b2-041e-47db-a407-4e1320cc0011.png",
-          "aws_video_key": ["twitter_media_1337c0bb-288b-4fdf-a8cd-e3cc88eddd89.mp4"],
-          "aws_video_preview_key": ["twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg"],
+          "aws_video_key": [
+            "twitter_media_1337c0bb-288b-4fdf-a8cd-e3cc88eddd89.mp4"
+          ],
+          "aws_video_preview_key": [
+            "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg"
+          ],
           "created_at": "2020-05-08T17:55:00+00:00",
           "image_files": [],
           "language": "en",
@@ -105,7 +111,7 @@
           "screenshot_file": null,
           "text": "Wouldn't it be nice to have a president who listens to someone other than himself? https://t.co/IN2Wtpacc4",
           "video_file": null,
-          "video_preview_image":null
+          "video_preview_image": null
         }
       }
     ]
@@ -131,7 +137,9 @@
             "profile_image_url": "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
             "url": "https://t.co/MV9tpZYgLm"
           },
-          "aws_image_keys": ["twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg"],
+          "aws_image_keys": [
+            "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg"
+          ],
           "aws_screenshot_key": "twitter_screenshot_4024c5b2-041e-47db-a407-4e1320cc0011.png",
           "aws_video_key": null,
           "aws_video_preview_key": null,
@@ -163,10 +171,10 @@
             "username": "jack",
             "created_at": "2006-03-21T20:50:14+00:00",
             "description": "#bitcoin",
-            "followers_count":6430360,
-            "following_count":4581,
+            "followers_count": 6430360,
+            "following_count": 4581,
             "id": "12",
-            "location":null,
+            "location": null,
             "name": "jack",
             "aws_profile_image_key": "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
             "profile_image": null,
@@ -178,7 +186,7 @@
           "aws_video_key": null,
           "aws_video_preview_key": null,
           "created_at": "2006-03-21T20:50:14+00:00",
-          "image_files":[],
+          "image_files": [],
           "language": "en",
           "object_type": "twitter",
           "screenshot_file": null,
@@ -190,7 +198,7 @@
     ]
   },
   "https://twitter.com/POTUS/status/1430341234472669188": {
-    "scrape_id":null,
+    "scrape_id": null,
     "scrape_result": [
       {
         "id": "1430341234472669188",
@@ -227,11 +235,11 @@
     ]
   },
   "https://twitter.com/ggreenwald/status/1430523746457112578": {
-    "scrape_id":null,
+    "scrape_id": null,
     "scrape_result": [
       {
         "id": "1430523746457112578",
-        "post":{
+        "post": {
           "id": "1430523746457112578",
           "author": {
             "username": "ggreenwald",
@@ -264,7 +272,7 @@
     ]
   },
   "https://twitter.com/bidenfoundation/status/1121446608040755200": {
-    "scrape_id":null,
+    "scrape_id": null,
     "scrape_result": [
       {
         "id": "1121446608040755200",
@@ -301,7 +309,7 @@
     ]
   },
   "https://twitter.com/POTUS/status/1428115295756066824": {
-    "scrape_id":null,
+    "scrape_id": null,
     "scrape_result": [
       {
         "id": "1428115295756066824",
@@ -332,7 +340,7 @@
           "screenshot_file": null,
           "text": "We will not sit by as Governors try to block or intimidate educators protecting kids against COVID-19.\\n \\nThis isn’t about politics. This is about keeping our kids safe and taking on this virus together.",
           "video_file": null,
-          "video_preview_image":null
+          "video_preview_image": null
         }
       }
     ]
@@ -358,7 +366,7 @@
             "profile_image_url": "https://pbs.twimg.com/profile_images/1520352405409435649/SBuAOkgQ.jpg",
             "url": "https://t.co/uIRTP5ykSx"
           },
-          "aws_image_keys":[
+          "aws_image_keys": [
             "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
             "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
             "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg"
@@ -383,33 +391,36 @@
     "scrape_result": [
       {
         "id": "1094999286281048070",
-        "post":{"id": "1094999286281048070",
-          "author":{
+        "post": {
+          "id": "1094999286281048070",
+          "author": {
             "username": "Citruscrush",
             "aws_profile_image_key": "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
             "created_at": "2011-03-06T11:16:10+00:00",
             "description": "Free Julian Assange \\nUNDER THE SHELTER OF EACH OTHER PEOPLE SURVIVE",
-            "followers_count":4814,
-            "following_count":5334,
+            "followers_count": 4814,
+            "following_count": 5334,
             "id": "261643368",
             "location": "UK",
             "name": "Ula the Gardener #FreePalestine #CorbynForever",
-            "profile_image":null,
+            "profile_image": null,
             "profile_image_url": "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg",
             "url": ""
           },
-          "aws_image_keys":["twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg"],
+          "aws_image_keys": [
+            "twitter_media_ee5a3752-942b-432d-9a35-d6b89984777f.jpg"
+          ],
           "aws_screenshot_key": "twitter_screenshot_4024c5b2-041e-47db-a407-4e1320cc0011.png",
-          "aws_video_key":null,
-          "aws_video_preview_key":null,
+          "aws_video_key": null,
+          "aws_video_preview_key": null,
           "created_at": "2019-02-11T16:39:08+00:00",
-          "image_files":null,
+          "image_files": null,
           "language": "en",
           "object_type": "twitter",
-          "screenshot_file":null,
+          "screenshot_file": null,
           "text": "Evil Mega mass murderer Lynn Rothschild and her eating babies decor. How conscious are you? What is a few trillion dollars of currency and devil eating baby art to you? https://t.co/cVZIGjpExc",
-          "video_file":null,
-          "video_preview_image":null
+          "video_file": null,
+          "video_preview_image": null
         }
       }
     ]
@@ -435,9 +446,7 @@
             "profile_image_url": "https://pbs.twimg.com/profile_images/1487585957037715462/vV1GI0IH.jpg",
             "url": "https://t.co/0CrHZfVI4m"
           },
-          "aws_image_keys": [
-            "91725ea7-31a0-4a80-855f-de910626a8bd.png"
-          ],
+          "aws_image_keys": ["91725ea7-31a0-4a80-855f-de910626a8bd.png"],
           "aws_screenshot_key": "twitter_screenshot_6c226f00-4b56-4138-9b3f-8108d6e736a2.png",
           "aws_video_key": null,
           "aws_video_preview_key": null,
@@ -476,12 +485,8 @@
           },
           "aws_image_keys": null,
           "aws_screenshot_key": "twitter_screenshot_5f6ed317-5410-422c-a19d-91eacce21e61.png",
-          "aws_video_key": [
-            "3875fecb-bba8-498d-b9c0-f76fc3833a3a.mp4"
-          ],
-          "aws_video_preview_key": [
-            "525c3fe7-e03e-4fa2-bba5-3c39c98cc653.jpg"
-          ],
+          "aws_video_key": ["3875fecb-bba8-498d-b9c0-f76fc3833a3a.mp4"],
+          "aws_video_preview_key": ["525c3fe7-e03e-4fa2-bba5-3c39c98cc653.jpg"],
           "created_at": "2022-10-11T18:32:37+00:00",
           "image_files": [],
           "language": "en",
@@ -517,12 +522,45 @@
           },
           "aws_image_keys": null,
           "aws_screenshot_key": "twitter_screenshot_1084a609-1130-49b3-882d-b32016893a3b.png",
-          "aws_video_key": [
-            "d6e963d2-ead0-47f0-b108-a18829688ada.mp4"
-          ],
-          "aws_video_preview_key": [
-            "8be9cc31-fb34-428a-ab73-5090fd4a113a.jpg"
-          ],
+          "aws_video_key": ["d6e963d2-ead0-47f0-b108-a18829688ada.mp4"],
+          "aws_video_preview_key": ["8be9cc31-fb34-428a-ab73-5090fd4a113a.jpg"],
+          "created_at": "2021-07-12T19:35:40+00:00",
+          "image_files": [],
+          "language": "en",
+          "object_type": "twitter",
+          "screenshot_file": null,
+          "text": "The American Jobs Plan includes a 100% clean power by 2035 goal. Now we need to fight to get that over the finish line in Congress.\n\nIn the words of the great @RevYearwood: \"Let's Go Get Us A Clean Electricity Standard!\"\n\nNew @degreespod just dropped! https://t.co/8c7YUzXCrw https://t.co/BLnPIQZRoE",
+          "video_file": null,
+          "video_preview_image": null
+        }
+      }
+    ]
+  },
+  "https://twitter.com/leahstokes_mixed_media/status/1414669810739281920": {
+    "scrape_id": null,
+    "scrape_result": [
+      {
+        "id": "1414669810739281920",
+        "post": {
+          "id": "1414669810739281920",
+          "author": {
+            "username": "leahstokes",
+            "aws_profile_image_key": "0cc3c39f-e87d-4622-914d-994cdf638db3.jpg",
+            "created_at": "2009-02-13T17:59:45+00:00",
+            "description": "Prof climate + energy policy @UCSBpolisci. Author Short Circuiting Policy. Alum @MIT @Columbia @UofT. Host @degreespod. Advise @RewiringAmerica @EvergreenAction",
+            "followers_count": 90635,
+            "following_count": 4188,
+            "id": "20790580",
+            "location": "Santa Barbara, CA, USA",
+            "name": "Dr. Leah Stokes",
+            "profile_image": null,
+            "profile_image_url": "https://pbs.twimg.com/profile_images/1178726402348089346/SfKuDe36.jpg",
+            "url": "https://t.co/7JBNkZs75h"
+          },
+          "aws_image_keys": ["91725ea7-31a0-4a80-855f-de910626a8bd.png"],
+          "aws_screenshot_key": "twitter_screenshot_1084a609-1130-49b3-882d-b32016893a3b.png",
+          "aws_video_key": ["d6e963d2-ead0-47f0-b108-a18829688ada.mp4"],
+          "aws_video_preview_key": ["8be9cc31-fb34-428a-ab73-5090fd4a113a.jpg"],
           "created_at": "2021-07-12T19:35:40+00:00",
           "image_files": [],
           "language": "en",

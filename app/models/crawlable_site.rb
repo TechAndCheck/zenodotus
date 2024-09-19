@@ -1,10 +1,10 @@
-class ScrapableSite < ApplicationRecord
+class CrawlableSite < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   validates :url, presence: true, uniqueness: true
 
   def scrape(time_to_wait = 0.minutes)
     # Kick off a job
-    ScrapeFactCheckSiteJob.set(wait: time_to_wait).perform_later(scrapable_site: self)
+    ScrapeFactCheckSiteJob.set(wait: time_to_wait).perform_later(crawlable_site: self)
   end
 
   # This is only for testing, do NOT use in production, it's blocking. That's bad
@@ -14,11 +14,15 @@ class ScrapableSite < ApplicationRecord
     logger.info "Use `.scrape` instead of `.scrape!`"
     logger.info "\n\nTrust Chris on this."
     logger.info "*************************STOP************************************************"
-    ScrapeFactCheckSiteJob.perform_now(scrapable_site: self)
+    ScrapeFactCheckSiteJob.perform_now(crawlable_site: self)
   end
 
   def url_to_scrape
     self.starting_url.nil? ? self.url : self.starting_url
+  end
+
+  def url_host_name
+    URI(url).host
   end
 
   def set_last_run_to_now

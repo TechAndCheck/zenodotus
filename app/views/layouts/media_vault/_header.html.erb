@@ -31,46 +31,46 @@
 				<% end %>
 			</ol>
 		<% end %>
-		<ol id="site-nav__account" class="site-nav__links">
-			<% if user_signed_in? %>
+  		<ol id="site-nav__account" class="site-nav__links">
+ 			<% if user_signed_in? %>
 				<li id="site-nav__account-menu-wrapper">
-					<%= link_to account_path, id: "site-nav__account-name", class: "btn icon-prefixed", data: { action: "site-nav#toggleAccountMenu" } do %>
-						<%= use_svg "user-circle", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
-						<span><%= current_user.name %></span>
-					<% end %>
-					<ol id="site-nav__account-menu" class="site-nav__links">
-						<li>
-							<%= link_to fact_check_insights_root_url, class: "btn btn--naked icon-prefixed" do %>
-									<%= use_svg "switch-lr", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
+   					<%= link_to account_path, id: "site-nav__account-name", class: "btn icon-prefixed", data: { action: "site-nav#toggleAccountMenu" } do %>
+  						<%= use_svg "user-circle", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
+  						<span><%= current_user.name %></span>
+   					<% end %>
+   					<ol id="site-nav__account-menu" class="site-nav__links">
+  						<li>
+ 							<%= link_to fact_check_insights_root_url, class: "btn btn--naked icon-prefixed" do %>
+   									<%= use_svg "switch-lr", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
 								<span><%= "Switch to #{SiteDefinitions::FACT_CHECK_INSIGHTS[:title]}" %></span>
-							<% end %>
-						</li>
-						<% if current_user.is_admin? %>
-							<li>
+ 							<% end %>
+  						</li>
+  						<% if current_user.is_admin? %>
+ 							<li>
 								<%= link_to admin_root_path, class: "btn btn--naked icon-prefixed" do %>
-									<%= use_svg "bolt", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
-									<span>Admin</span>
+   									<%= use_svg "bolt", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
+   									<span>Admin</span>
 								<% end %>
-							</li>
-						<% end %>
-						<li>
-							<%= link_to account_path, class: "btn btn--naked icon-prefixed" do %>
+ 							</li>
+  						<% end %>
+  						<li>
+ 							<%= link_to account_path, class: "btn btn--naked icon-prefixed" do %>
 								<%= use_svg "settings", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
 								<span>Settings</span>
-							<% end %>
-						</li>
-						<li>
-							<%= button_to destroy_user_session_path, class: "btn btn--naked btn--danger icon-prefixed", method: :delete do %>
+ 							<% end %>
+  						</li>
+  						<li>
+ 							<%= button_to destroy_user_session_path, class: "btn btn--naked btn--danger icon-prefixed", method: :delete do %>
 								<%= use_svg "power", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
 								<span>Logout</span>
-							<% end %>
-						</li>
-					</ol>
+ 							<% end %>
+  						</li>
+   					</ol>
 				</li>
-			<% else %>
+ 			<% else %>
 				<li><%= link_to "Request access", new_applicant_path, class: "btn" %></li>
 				<li><%= link_to "Log in", new_user_session_path, class: "btn btn--reversed" %></li>
-			<% end %>
-		</ol>
+ 			<% end %>
+  		</ol>
 	</nav>
 </header>

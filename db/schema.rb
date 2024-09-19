@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_02_171227) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_09_210745) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -75,6 +75,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_02_171227) do
     t.datetime "posted_at"
     t.boolean "private", default: false, null: false
     t.string "url"
+    t.string "public_id", null: false
+    t.index ["public_id"], name: "index_archive_items_on_public_id", unique: true
     t.index ["submitter_id"], name: "index_archive_items_on_submitter_id"
     t.index ["url"], name: "index_archive_items_on_url"
   end
@@ -111,6 +113,30 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_02_171227) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_corpus_downloads_on_user_id"
+  end
+
+  create_table "crawlable_sites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "url", null: false
+    t.string "starting_url"
+    t.datetime "last_run"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "last_run_time"
+    t.integer "number_of_claims_found", default: 0, null: false
+    t.datetime "last_heartbeat_at"
+    t.datetime "last_run_finished_at"
+  end
+
+  create_table "crawler_runs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "starting_url", null: false
+    t.string "host_name", null: false
+    t.datetime "started_at", precision: nil
+    t.datetime "finished_at", precision: nil
+    t.integer "number_of_pages_scraped", default: 0, null: false
+    t.integer "number_of_new_claims_found", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "facebook_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -285,19 +311,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_02_171227) do
     t.datetime "updated_at", null: false
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource"
-  end
-
-  create_table "scrapable_sites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.string "url", null: false
-    t.string "starting_url"
-    t.datetime "last_run"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "last_run_time"
-    t.integer "number_of_claims_found", default: 0, null: false
-    t.datetime "last_heartbeat_at"
-    t.datetime "last_run_finished_at"
   end
 
   create_table "scrapes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

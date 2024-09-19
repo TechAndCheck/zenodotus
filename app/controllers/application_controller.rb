@@ -23,6 +23,9 @@ class ApplicationController < ActionController::Base
         organizations: organization_count,
         countries: country_count,
       }
+      @page_metadata = { title: "Home", description: "Fact Check Insights Home" }
+    else
+      @page_metadata = { title: "Home", description: "Media Vault Home" }
     end
 
     render "#{@site[:shortname]}/index"
@@ -189,7 +192,12 @@ protected
   sig { params(origin: String).returns(WebAuthn::RelyingParty) }
   def relying_party(origin)
     uri = URI(origin)
-    unless uri.host == Figaro.env.FACT_CHECK_INSIGHTS_HOST || uri.host == Figaro.env.MEDIA_VAULT_HOST
+
+    allowed_hosts = [ Figaro.env.FACT_CHECK_INSIGHTS_HOST,
+                      Figaro.env.MEDIA_VAULT_HOST,
+                      Figaro.env.PUBLIC_LINK_HOST ]
+
+    unless allowed_hosts.include?(uri.host)
       raise "Invalid origin host #{uri.scheme}://#{uri.host}"
     end
 

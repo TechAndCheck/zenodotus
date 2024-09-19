@@ -1,4 +1,4 @@
-<%= form_with(model: @scrapable_site,
+<%= form_with(model: @crawlable_site,
     url: admin_web_scrapes_path,
     class: "form"
   ) do |f| %>
@@ -21,7 +21,7 @@
         <%= f.text_field(
           :name,
           required: true) %>
-        <%= errors_for_field(@scrapable_site, :name) %>
+        <%= errors_for_field(@crawlable_site, :name) %>
         <div class="field__description">The name of the organization (required)</div>
       </div>
       <div class="field__wrapper--input">
@@ -31,7 +31,7 @@
         <%= f.text_field(
           :url,
           required: true) %>
-        <%= errors_for_field(@scrapable_site, :url) %>
+        <%= errors_for_field(@crawlable_site, :url) %>
         <div class="field__description">This is the base url for the site (required)</div>
       </div>
       <div class="field__wrapper--input">
@@ -41,8 +41,8 @@
         <%= f.text_field(
           :starting_url,
           required: false) %>
-        <%= errors_for_field(@scrapable_site, :starting_url) %>
-        <div class="field__description">If you want the scraper to start somewhere else (such as an index page) type it here. Otherwise "Url" above will be the starting point. (optional)</div>
+        <%= errors_for_field(@crawlable_site, :starting_url) %>
+        <div class="field__description">If you want the crawler to start somewhere else (such as an index page) type it here. Otherwise "Url" above will be the starting point. (optional)</div>
       </div>
     </div>
   </fieldset>

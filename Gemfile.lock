@@ -108,6 +108,8 @@ GEM
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.2.0)
+    actionpack-action_caching (1.2.2)
+      actionpack (>= 4.0.0)
     actiontext (7.0.8)
       actionpack (= 7.0.8)
       activerecord (= 7.0.8)
@@ -121,6 +123,13 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    activegraph (11.4.0)
+      activemodel (>= 4.0)
+      activesupport (>= 4.0)
+      i18n (!= 1.8.8)
+      neo4j-ruby-driver (>= 4.4.1)
+      orm_adapter (~> 0.5.0)
+      sorted_set
     activejob (7.0.8)
       activesupport (= 7.0.8)
       globalid (>= 0.3.6)
@@ -149,6 +158,12 @@ GEM
       capybara (~> 3.13, < 4)
       websocket-driver (>= 0.6.5)
     ast (2.4.2)
+    async (2.12.0)
+      console (~> 1.25, >= 1.25.2)
+      fiber-annotation
+      io-event (~> 1.6)
+    async-io (1.43.2)
+      async
     awrence (1.2.1)
     aws-eventstream (1.2.0)
     aws-partitions (1.637.0)
@@ -203,8 +218,12 @@ GEM
       activesupport (>= 4.2.0)
     commander (4.6.0)
       highline (~> 2.0.0)
-    concurrent-ruby (1.2.2)
+    concurrent-ruby (1.3.3)
     connection_pool (2.4.1)
+    console (1.27.0)
+      fiber-annotation
+      fiber-local (~> 1.1)
+      json
     content_disposition (1.0.0)
     cose (1.3.0)
       cbor (~> 0.5.9)
@@ -217,6 +236,7 @@ GEM
     cuprite (0.14.2)
       capybara (~> 3.0)
       ferrum (~> 0.12.0)
+    dalli (3.2.8)
     dartsass-rails (0.4.0)
       railties (>= 6.0.0)
     date (3.3.3)
@@ -253,7 +273,13 @@ GEM
       concurrent-ruby (~> 1.1)
       webrick (~> 1.7)
       websocket-driver (>= 0.6, < 0.8)
-    ffi (1.16.3)
+    ffi (1.17.0-arm64-darwin)
+    ffi (1.17.0-x86_64-darwin)
+    ffi (1.17.0-x86_64-linux-gnu)
+    fiber-annotation (0.2.0)
+    fiber-local (1.1.0)
+      fiber-storage
+    fiber-storage (0.1.2)
     figaro (1.2.0)
       thor (>= 0.14.0, < 2)
     flipper (1.2.2)
@@ -274,12 +300,13 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
-    i18n (1.14.1)
+    i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     importmap-rails (1.1.5)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
     io-console (0.6.0)
+    io-event (1.6.5)
     irb (1.8.1)
       rdoc
       reline (>= 0.3.8)
@@ -298,9 +325,11 @@ GEM
       rexml
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
+    language_server-protocol (3.17.0.3)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
+    logger (1.6.0)
     loofah (2.21.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -330,12 +359,17 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2022.0105)
     mini_mime (1.1.5)
-    minitest (5.19.0)
+    minitest (5.24.1)
     minitest-hooks (1.5.0)
       minitest (> 5.3)
     msgpack (1.5.6)
     multi_json (1.15.0)
     murmurhash3 (0.1.7)
+    neo4j-ruby-driver (4.4.5)
+      activesupport (>= 5.2.0)
+      async-io
+      connection_pool
+      zeitwerk (>= 2.1.10)
     net-http-digest_auth (1.4.1)
     net-http-persistent (4.0.2)
       connection_pool (~> 2.2)
@@ -383,6 +417,7 @@ GEM
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
     polyfill (1.9.0)
+    prism (0.30.0)
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -426,6 +461,7 @@ GEM
     rails-settings-cached (2.9.2)
       activerecord (>= 5.0.0)
       railties (>= 5.0.0)
+    rails_refactor (1.4.6)
     railties (7.0.8)
       actionpack (= 7.0.8)
       activesupport (= 7.0.8)
@@ -439,7 +475,9 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rbcat (0.2.2)
-    rbtree (0.4.5)
+    rbs (3.5.2)
+      logger
+    rbtree (0.4.6)
     rdoc (6.5.0)
       psych (>= 4.0.0)
     redis (4.8.1)
@@ -496,9 +534,15 @@ GEM
       rubocop-rails (~> 2.0)
     rubocop-sorbet (0.6.11)
       rubocop (>= 0.90.0)
+    ruby-lsp (0.17.11)
+      language_server-protocol (~> 3.17.0)
+      prism (>= 0.29.0, < 0.31)
+      rbs (>= 3, < 4)
+      sorbet-runtime (>= 0.5.10782)
     ruby-progressbar (1.13.0)
-    ruby-vips (2.1.4)
+    ruby-vips (2.2.2)
       ffi (~> 1.12)
+      logger
     ruby_jard (0.3.1)
       byebug (>= 9.1, < 12.0)
       pry (~> 0.13.0)
@@ -514,7 +558,7 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    set (1.0.3)
+    set (1.1.0)
     sidekiq (6.5.12)
       connection_pool (>= 2.2.5, < 3)
       rack (~> 2.0)
@@ -571,6 +615,8 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
+    sslocal (0.1.1)
+    stackprof (0.2.26)
     stimulus-rails (1.1.0)
       railties (>= 6.0.0)
     streamio-ffmpeg (3.0.2)
@@ -602,6 +648,7 @@ GEM
       whenever
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
+    test-prof (1.4.1)
     thor (1.2.2)
     tilt (2.3.0)
     timeout (0.4.0)
@@ -654,7 +701,7 @@ GEM
       nokogiri (~> 1.8)
     yard (0.9.28)
       webrick (~> 1.7.0)
-    zeitwerk (2.6.11)
+    zeitwerk (2.6.16)
 
 PLATFORMS
   arm64-darwin-21
@@ -663,7 +710,10 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  actionpack-action_caching
+  activegraph
   amazing_print
+  async (= 2.12.0)
   aws-sdk-s3
   birdsong!
   blueprinter
@@ -675,6 +725,7 @@ DEPENDENCIES
   comma (~> 4.7.0)
   country_select (~> 8.0)
   curb!
+  dalli
   dartsass-rails (~> 0.4.0)
   debug
   decombobulate!
@@ -697,15 +748,17 @@ DEPENDENCIES
   mechanize
   memory_profiler
   minitest-hooks
+  neo4j-ruby-driver
   os
   pagy (~> 5.6)
   pg (~> 1.1)
   pg_search (~> 2.3.5)
   pry-byebug
   puma (~> 5.0)
-  rack-mini-profiler (~> 2.0)
+  rack-mini-profiler
   rails (~> 7.0.8)
   rails-settings-cached (~> 2.9)
+  rails_refactor
   rake
   redis (~> 4.0)
   rolify (~> 6.0)
@@ -717,6 +770,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rails_config
   rubocop-sorbet
+  ruby-lsp
   ruby-progressbar
   ruby_jard
   rubyzip
@@ -731,11 +785,14 @@ DEPENDENCIES
   sorted_set
   spring
   sprockets-rails
+  sslocal
+  stackprof
   stimulus-rails
   streamio-ffmpeg
   tailwindcss-rails (~> 2.0)
   tanakai
   terrapin
+  test-prof (~> 1.0)
   tmuxinator
   turbo-rails
   typhoeus

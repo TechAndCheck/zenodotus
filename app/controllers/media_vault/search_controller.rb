@@ -35,6 +35,8 @@ class MediaVault::SearchController < MediaVaultController
       @query = typed_params.q
       search_by_media_search_id(typed_params.msid, private: @myvault)
     end
+
+    @page_metadata = { title: "Search", description: "Search Results" }
   end
 
   # Search for archived items using a piece of media.
@@ -52,6 +54,7 @@ class MediaVault::SearchController < MediaVaultController
 
     @media_search = ImageSearch.create_with_media_item(typed_params.media, current_user, @myvault)
     @query = typed_params.q
+    @page_metadata = { title: "Search", description: "Search Results" }
 
     respond_to do |format|
       format.turbo_stream do

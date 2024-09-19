@@ -108,4 +108,15 @@ class TweetTest < ActiveSupport::TestCase
     archive_item = Sources::Tweet.create_from_birdsong_hash(birdsong_tweet_video).first
     assert_not_nil archive_item.tweet.videos.first.video_derivatives[:preview]
   end
+
+  test "can handle mixed media messages" do
+    birdsong_tweet_video = TwitterMediaSource.extract("https://twitter.com/leahstokes_mixed_media/status/1414669810739281920", MediaSource::ScrapeType::Twitter, true)["scrape_result"]
+    archive_item = Sources::Tweet.create_from_birdsong_hash(birdsong_tweet_video).first
+    assert_not_nil archive_item.tweet.videos.first.video_derivatives[:preview]
+
+    assert_not archive_item.image_hashes.empty?
+    archive_item.image_hashes.each do |hash|
+      assert_not_nil hash.dhash
+    end
+  end
 end

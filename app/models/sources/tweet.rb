@@ -50,7 +50,6 @@ class Sources::Tweet < ApplicationRecord
   # returns ArchiveItem with type Tweet that has been saved to the database
   sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
   def self.create_from_url!(url, user = nil)
-    # debugger
     tweet_response = TwitterMediaSource.extract(url, MediaSource::ScrapeType::Twitter, true)
     tweet_response = tweet_response["scrape_result"] unless tweet_response.nil?
     raise "Invalid Twitter url #{url}" if tweet_response.nil?
@@ -108,10 +107,6 @@ class Sources::Tweet < ApplicationRecord
           downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(key)
           { image: File.open(downloaded_path, binmode: true) }
         end
-      elsif birdsong_tweet["aws_video_key"].present?
-        # Right now we only support one video per tweet, but Hypatia returns an array
-        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(birdsong_tweet["aws_video_key"].first)
-        video_attributes = [ { video: File.open(downloaded_path, binmode: true) } ]
       else
         # Backwards compatibility for if Hypatia sends over files in Base64
         unless birdsong_tweet["image_files"].nil?
@@ -123,13 +118,19 @@ class Sources::Tweet < ApplicationRecord
             image_attribute
           end
         end
+      end
 
-        unless birdsong_tweet["video_file"].nil?
-          tempfile = Tempfile.new(binmode: true)
-          tempfile.write(Base64.decode64(birdsong_tweet["video_file"]))
-          video_attributes = [{ video: File.open(tempfile.path, binmode: true) }]
-          tempfile.close!
-        end
+      if birdsong_tweet["aws_video_key"].present?
+        # Right now we only support one video per tweet, but Hypatia returns an array
+        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(birdsong_tweet["aws_video_key"].first)
+        video_attributes = [ { video: File.open(downloaded_path, binmode: true) } ]
+      end
+
+      unless birdsong_tweet["video_file"].nil?
+        tempfile = Tempfile.new(binmode: true)
+        tempfile.write(Base64.decode64(birdsong_tweet["video_file"]))
+        video_attributes = [{ video: File.open(tempfile.path, binmode: true) }]
+        tempfile.close!
       end
 
       # image_attributes = birdsong_tweet.image_file_names.map do |image_file_name|

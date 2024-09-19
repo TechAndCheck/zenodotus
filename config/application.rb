@@ -1,6 +1,7 @@
 require_relative "boot"
 
 require "rails/all"
+require "active_graph/railtie"
 
 if defined?(Rails::Server) && Rails.env.development?
   require "debug/open_nonstop"
@@ -23,6 +24,7 @@ module Zenodotus
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
     config.eager_load_paths << Rails.root.join("lib/utilities")
+    config.eager_load_paths << Rails.root.join("app/models/graphs/scraper_history")
     config.action_view.form_with_generates_remote_forms = false
     config.active_job.queue_adapter = :sidekiq
 

@@ -19,7 +19,7 @@ class ArchiveItem < ApplicationRecord
   has_many :archive_items_users, dependent: :destroy, class_name: "ArchiveItemUser"
   has_many :users, through: :archive_items_users
 
-  before_create :update_posted, :set_user_for_archivable_item, :set_private_flag, :add_url_to_self
+  before_create :update_posted, :set_user_for_archivable_item, :set_private_flag, :add_url_to_self, :set_public_id
   after_save -> { self.archivable_item.update_pg_search_document }
 
   # Yes, default scopes are usually a code smell, but the *vast* majority of the time we don't want to include
@@ -30,6 +30,10 @@ class ArchiveItem < ApplicationRecord
   # This will have to come later when you're not pulling 3 all nighters before a ChopTop... Chris
   def set_user_for_archivable_item
     self.users << self.submitter unless self.submitter.nil? || self.users.include?(self.submitter)
+  end
+
+  def set_public_id
+    self.public_id = SecureRandom.uuid
   end
 
   def update_posted
@@ -171,5 +175,13 @@ class ArchiveItem < ApplicationRecord
       **self.archivable_item.normalized_attrs_for_views,
       archived_at: self.created_at
     }
+  end
+
+  # A function to create a url for a pulic link to the archive item
+  #
+  # @returns String the public link to the archive item
+  sig { returns(String) }
+  def public_link
+    "https://#{ENV["PUBLIC_LINK_HOST"]}/media/#{self.public_id}"
   end
 end

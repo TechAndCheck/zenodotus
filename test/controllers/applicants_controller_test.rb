@@ -4,7 +4,7 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   test "can access the apply page while logged out" do
-    get new_applicant_path
+    get new_applicant_url
     assert_response :success
   end
 
@@ -13,12 +13,12 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
 
     sign_in user
 
-    get new_applicant_path
+    get new_applicant_url
     assert_response :redirect
   end
 
   test "creates an applicant" do
-    post applicants_path(applicant: {
+    post applicants_url(applicant: {
       name: "Jane Doe",
       email: "applicant@example.com",
       use_case: "Journalism?",
@@ -26,22 +26,22 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
     })
 
     assert Applicant.find_by(email: "applicant@example.com")
-    assert_redirected_to applicant_confirmation_sent_path
+    assert_redirected_to applicant_confirmation_sent_url
   end
 
   test "redirects to confirmation sent page after creation" do
-    post applicants_path(applicant: {
+    post applicants_url(applicant: {
       name: "Jane Doe",
       email: "applicant@example.com",
       use_case: "Journalism?",
       accepted_terms: "1",
     })
 
-    assert_redirected_to applicant_confirmation_sent_path
+    assert_redirected_to applicant_confirmation_sent_url
   end
 
   test "returns a bad request if validations fails during creation" do
-    post applicants_path(applicant: {
+    post applicants_url(applicant: {
       name: "Jane Doe",
     })
 
@@ -51,7 +51,7 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
   test "should not allow applying with existing user email" do
     user = users(:user)
 
-    post applicants_path(applicant: {
+    post applicants_url(applicant: {
       name: "Jane Doe",
       email: user.email,
       use_case: "Journalism?",
@@ -64,7 +64,7 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
   test "should not allow applying with existing user email in different case" do
     user = users(:user)
 
-    post applicants_path(applicant: {
+    post applicants_url(applicant: {
       name: "Jane Doe",
       email: user.email.upcase,
       use_case: "Journalism?",
@@ -78,7 +78,7 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
     email_upcase = "APPLICANT@EXAMPLE.COM"
     email_downcase = email_upcase.downcase
 
-    post applicants_path(applicant: {
+    post applicants_url(applicant: {
       name: "Jane Doe",
       email: email_upcase,
       use_case: "Journalism?",
@@ -93,7 +93,7 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should default the site source to Insights" do
-    post applicants_path(applicant: {
+    post applicants_url(applicant: {
       name: "Jane Doe",
       email: "applicant-insights@example.com",
       use_case: "Journalism?",
@@ -107,7 +107,7 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
   test "can record that an applicant came from the Vault application page" do
     host! Figaro.env.MEDIA_VAULT_HOST
 
-    post applicants_path(applicant: {
+    post applicants_url(applicant: {
       name: "Jane Doe",
       email: "applicant-vault@example.com",
       use_case: "Journalism?",
@@ -123,7 +123,7 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
 
     assert_not applicant.confirmed?
 
-    get applicant_confirm_path(email: applicant[:email], token: applicant[:confirmation_token])
+    get applicant_confirm_url(email: applicant[:email], token: applicant[:confirmation_token])
 
     applicant.reload
     assert_predicate applicant, :confirmed?
@@ -134,7 +134,7 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
 
     assert_predicate applicant, :confirmed?
 
-    get applicant_confirm_path(email: applicant[:email], token: applicant[:confirmation_token])
+    get applicant_confirm_url(email: applicant[:email], token: applicant[:confirmation_token])
 
     applicant.reload
     assert_redirected_to("http://www.example.com/apply/confirm/done")

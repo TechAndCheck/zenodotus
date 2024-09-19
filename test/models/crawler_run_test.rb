@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ScrapeFactCheckSiteJobTest < ActiveJob::TestCase
+class CrawlerRunTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -1,16 +1,16 @@
 class Admin::WebScrapesController < AdminController
   def index
-    @sites = ScrapableSite.all.order(:name)
+    @sites = CrawlableSite.all.order(:name)
   end
 
   def new
-    @scrapable_site = ScrapableSite.new
+    @crawlable_site = CrawlableSite.new
   end
 
   def create
-    @scrapable_site = ScrapableSite.new(scrapable_site_params)
+    @crawlable_site = CrawlableSite.new(crawlable_site_params)
 
-    if @scrapable_site.save
+    if @crawlable_site.save
       redirect_to new_admin_web_scrape_path, notice: "Successfully added new scrapable web site"
     else
       render :new, status: :unprocessable_entity
@@ -18,14 +18,14 @@ class Admin::WebScrapesController < AdminController
   end
 
   def destroy
-    scrapable_site = ScrapableSite.find(params[:web_scrape_id])
+    crawlable_site = CrawlableSite.find(params[:web_scrape_id])
 
-    if scrapable_site.nil?
+    if crawlable_site.nil?
       redirect_back_or_to admin_web_scrapes_path, error: "No scrape with that ID found, this is a bad bug. Please report it."
     end
 
 
-    if scrapable_site.delete
+    if crawlable_site.delete
       redirect_back_or_to admin_web_scrapes_path, notice: "Successfully deleted web site"
     else
       redirect_back_or_to admin_web_scrapes_path, error: "Something went wrong deleting. Please report this."
@@ -46,8 +46,8 @@ class Admin::WebScrapesController < AdminController
   end
 
   def scrape_now
-    scrapable_site = ScrapableSite.find(params[:web_scrape_id])
-    scrapable_site.scrape
+    crawlable_site = CrawlableSite.find(params[:web_scrape_id])
+    crawlable_site.scrape
     redirect_back_or_to admin_web_scrapes_path, notice: "Successfully scheduled new scrape to run immediately"
   end
 
@@ -57,7 +57,7 @@ private
     return "No block given" unless block_given?
     success_count = 0
     site_ids&.each do |site_id|
-      site = ScrapableSite.find(site_id)
+      site = CrawlableSite.find(site_id)
       unless site.nil?
         block.call(site)
         success_count += 1
@@ -77,8 +77,8 @@ private
     flash[:success] = "Successfully deleted #{success_count} scrape organizations"
   end
 
-  def scrapable_site_params
-    params.require(:scrapable_site).permit(
+  def crawlable_site_params
+    params.require(:crawlable_site).permit(
       :name,
       :url,
       :starting_url,

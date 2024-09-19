@@ -4,11 +4,8 @@
 # model remove the "{}" from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one:
-  name: "Example Site"
-  url: "https://www.example.com"
-
-two:
-  name: "Example Site2"
-  url: "https://www.example.com"
-  starting_url: "https://example.com/latest"
+# one: {}
+# column: value
+#
+# two: {}
+# column: value

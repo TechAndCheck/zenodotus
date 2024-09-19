@@ -54,6 +54,11 @@ group :development, :test do
   gem "hotwire-livereload" # Live reload for JS, HTML and CSS devlopment
 
   gem "memory_profiler"
+
+  gem "ruby-lsp"
+  gem "rack-mini-profiler"
+
+  gem "stackprof"
 end
 
 group :development do
@@ -61,7 +66,6 @@ group :development do
   gem "web-console", ">= 4.1.0"
   # Display performance information such as SQL time and flame graphs for each request in your browser.
   # Can be configured to work on production as well see: https://github.com/MiniProfiler/rack-mini-profiler/blob/master/README.md
-  gem "rack-mini-profiler", "~> 2.0"
   gem "listen", "~> 3.3"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem "spring"
@@ -82,11 +86,18 @@ group :development do
 
   # Brakeman checks for security vulnerabilities
   gem "brakeman", require: false
+
+  # Renaming stuff is annoying
+  gem "rails_refactor"
+
+  # SSL Management for local development
+  gem "sslocal"
 end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
   gem "capybara", ">= 3.26"
+  gem "test-prof", "~> 1.0"
 end
 
 gem "selenium-webdriver"
@@ -236,3 +247,15 @@ gem "amazing_print"
 gem "flipper", "~> 1.2"
 
 gem "flipper-active_record", "~> 1.2"
+
+# Scraping management
+
+# This is a reversion to fix a bug because async was apparently massively updated in a
+# point release and it breaks neo4j-ruby-driver
+gem "async", "2.12.0"
+gem "activegraph" # For example, see https://rubygems.org/gems/activegraph/versions for the latest versions
+gem "neo4j-ruby-driver"
+
+# Caching
+gem "actionpack-action_caching"
+gem "dalli" # For memcached caching

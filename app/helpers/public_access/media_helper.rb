@@ -1,0 +1,2 @@
+module PublicAccess::MediaHelper
+end

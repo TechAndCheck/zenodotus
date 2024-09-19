@@ -52,6 +52,8 @@ class MediaVault::ArchiveController < MediaVaultController
 
     @render_empty = true unless params[:render_empty].present? && params[:render_empty] = false
 
+    @page_metadata = { title: "Dashboard", description: "Media Vault Dashboard" }
+
     respond_to do | format |
       format.html { render "index" }
     end

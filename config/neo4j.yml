@@ -1,0 +1,19 @@
+development:
+  url: neo4j://0.0.0.0:7687
+  username: neo4j
+  password: password
+
+# test:
+#   url: neo4j://0.0.0.0:7687
+#   username: neo4j
+#   password: password
+
+test:
+  url: <%= ENV.fetch("NEO4J_URL") %>
+  username: <%= ENV.fetch("NEO4J_USERNAME") %>
+  password: <%= ENV.fetch("NEO4J_PASSWORD") %>
+
+production:
+  url: <%= ENV.fetch("NEO4J_URL") %>
+  username: <%= ENV.fetch("NEO4J_USERNAME") %>
+  password: <%= ENV.fetch("NEO4J_PASSWORD") %>
