@@ -47,6 +47,15 @@ GIT
     decombobulate (0.1.4)
 
 GIT
+  remote: https://github.com/cguess/ollama-ai
+  revision: f60cc91853bde6d81e4e4e357ff5620a05be4049
+  specs:
+    ollama-ai (1.3.0)
+      faraday (~> 2.10)
+      faraday-typhoeus (~> 1.1)
+      typhoeus (~> 1.4, >= 1.4.1)
+
+GIT
   remote: https://github.com/cguess/zorki
   revision: e2e452206a2fdcf5d4c11b383606be4c76d3cbfa
   specs:
@@ -72,14 +81,6 @@ GIT
   revision: 13144ec5d50ffea0460298cc5de8a0b33db78d22
   specs:
     curb (1.0.5)
-
-PATH
-  remote: ../../ollama-ai
-  specs:
-    ollama-ai (1.3.0)
-      faraday (~> 2.10)
-      faraday-typhoeus (~> 1.1)
-      typhoeus (~> 1.4, >= 1.4.1)
 
 GEM
   remote: https://rubygems.org/

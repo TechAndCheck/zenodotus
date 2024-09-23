@@ -261,5 +261,5 @@ gem "actionpack-action_caching"
 gem "dalli" # For memcached caching
 
 # OLLama categorization
-gem "ollama-ai", path: "~/Repositories/ollama-ai"
+gem "ollama-ai", git: "https://github.com/cguess/ollama-ai"
 gem "acts-as-taggable-on" # For caegorization
