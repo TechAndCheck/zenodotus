@@ -7,7 +7,7 @@ module Categorizable
   # AVAILABLE_CATEGORIES = %w[Politics Sports Entertainment Technology]
   CATEGORIZE_PROMPT = "Using this list of categories: #{@@archive_categories.join(",")}\ categorize the\
   following statment into the\
-  categories, ordering them by most relevant. Return only the category names separated by commas and nothing else: "
+  categories, ordering them by most relevant. If there are no matches respond with no text at all. Return only the category names separated by commas and nothing else: "
 
   class_methods do
     def property_to_categorize(property = nil, &block)
@@ -35,7 +35,7 @@ module Categorizable
       new_categories = new_categories[0..3] if new_categories.length > 4
 
       new_categories.each do |category|
-        self.category_list.add(category) # if @@archive_categories.include?(category)
+        self.category_list.add(category) if @@archive_categories.include?(category)
       end
     end
 
