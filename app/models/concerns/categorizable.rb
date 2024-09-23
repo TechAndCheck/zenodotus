@@ -31,7 +31,7 @@ module Categorizable
           stream: false }
       )
 
-      categories = result.first["response"].strip.split("\n").map(&:strip)
+      categories = result.first["response"].strip.split(",").map(&:strip)
       categories.each do |category|
         self.category_list.add(category) if @@archive_categories.include?(category)
       end
