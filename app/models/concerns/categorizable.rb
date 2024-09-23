@@ -53,7 +53,7 @@ private
 
   def categorize_prompt
     content_to_categorize_final = content_to_categorize
-    return if content_to_categorize_final.empty?
+    return if content_to_categorize_final&.empty?
 
     "#{CATEGORIZE_PROMPT} \"#{content_to_categorize_final}\""
   end
