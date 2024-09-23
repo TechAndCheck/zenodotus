@@ -1,4 +1,4 @@
 OLLAMA_CLIENT = Ollama.new(
-  credentials: { address: "https://ollama-grigori.ngrok-free.app", basic_auth: "zeno:qEWF0jRDWwp#rAEmQuR" },
+  credentials: { address: Figaro.env.OLLAMA_URL, basic_auth: "zeno:#{Figaro.env.OLLAMA_PASSWORD}" },
   options: { server_sent_events: false }
 )

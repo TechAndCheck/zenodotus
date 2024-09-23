@@ -39,3 +39,6 @@ if Figaro.env.HONEYBADGER_API_KEY.blank? == false
   Figaro.require_keys("HONEYBADGER_API_KEY_GOOGLE_CHECK_IN_ADDRESS")
   Figaro.require_keys("HONEYBADGER_API_KEY_CSV_JSON_GENERATION_ADDRESS")
 end
+
+Figaro.require_keys("OLLAMA_URL")
+Figaro.require_keys("OLLAMA_PASSWORD")
