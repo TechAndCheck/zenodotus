@@ -30,6 +30,7 @@ class ArchiveItem < ApplicationRecord
   has_many :users, through: :archive_items_users
 
   before_create :update_posted, :set_user_for_archivable_item, :set_private_flag, :add_url_to_self, :set_public_id
+  after_create :categorize!
   after_save -> { self.archivable_item.update_pg_search_document }
 
   # Yes, default scopes are usually a code smell, but the *vast* majority of the time we don't want to include

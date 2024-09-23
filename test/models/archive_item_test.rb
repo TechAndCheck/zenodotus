@@ -195,4 +195,10 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
     archive_item.categorize!
     assert_equal "Entertainment", archive_item.categories.first.name
   end
+
+  test "automatically categorized on create" do
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    archive_item = Sources::InstagramPost.create_from_zorki_hash(zorki_image_post).first
+    assert_equal "Entertainment", archive_item.categories.first.name
+  end
 end
