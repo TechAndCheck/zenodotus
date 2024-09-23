@@ -2,6 +2,16 @@
 
 class ArchiveItem < ApplicationRecord
   include Dhashable
+  include Categorizable # Automatically adds acts_as_taggable_on(:categories) to the model
+
+  property_to_categorize do
+    if self.archivable_item.is_a?(Sources::YoutubePost)
+      logger.info "Skipping cause it's YouTube"
+      ""
+    else
+      self.archivable_item.text
+    end
+  end # This is the property that will be used to categorize the model instance
 
   delegated_type :archivable_item, types: %w[Sources::Tweet Sources::InstagramPost Sources::FacebookPost Sources::YoutubePost Sources::TikTokPost]
   delegate :service_id, to: :archivable_item

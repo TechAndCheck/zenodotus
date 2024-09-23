@@ -30,7 +30,12 @@ module Dhashable
       media_item = self.attachment_type == :image ? media_item.image : media_item.video
 
       # TODO: refactor this so it's all the same, since it *mostly* is
-      media_item.open
+      begin
+        media_item.open
+      rescue Shrine::FileNotFound
+        next
+      end
+
       tempfile_path = media_item.tempfile.path
 
       dhashes = nil

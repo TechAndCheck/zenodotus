@@ -188,4 +188,11 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
     assert_not_nil archive_item.url
     assert_equal "https://www.instagram.com/p/CBcqOkyDDH8/", archive_item.url
   end
+
+  test "can categorize an archive item" do
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    archive_item = Sources::InstagramPost.create_from_zorki_hash(zorki_image_post).first
+    archive_item.categorize!
+    assert_equal "Entertainment", archive_item.categories.first.name
+  end
 end
