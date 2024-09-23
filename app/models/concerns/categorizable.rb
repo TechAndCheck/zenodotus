@@ -6,8 +6,8 @@ module Categorizable
 
   # AVAILABLE_CATEGORIES = %w[Politics Sports Entertainment Technology]
   CATEGORIZE_PROMPT = "Using this list of categories: #{@@archive_categories.join(",")}\ categorize the\
-  following statment into at most five of the\
-  categories. Return only the category names separated by commas and nothing else: "
+  following statment into the\
+  categories, ordering them by most relevant. Return only the category names separated by commas and nothing else: "
 
   class_methods do
     def property_to_categorize(property = nil, &block)
@@ -31,15 +31,22 @@ module Categorizable
           stream: false }
       )
 
-      categories = result.first["response"].strip.split(",").map(&:strip)
-      categories.each do |category|
-        self.category_list.add(category) if @@archive_categories.include?(category)
+      new_categories = result.first["response"].strip.split(",").map(&:strip)
+      new_categories = categories[0..4] if categories.length > 5
+
+      new_categories.each do |category|
+        self.category_list.add(category) # if @@archive_categories.include?(category)
       end
     end
 
     def categorize!
+      # First we remove all the categories on the ArchiveItem
+      self.categories.each { |category| self.category_list.remove(category.name) }
+      self.save!
+      self.reload
+
       self.categorize
-      self.save
+      self.save!
       self.reload
     end
   end
