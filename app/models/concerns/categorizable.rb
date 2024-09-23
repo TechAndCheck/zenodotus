@@ -41,11 +41,15 @@ module Categorizable
 
     def categorize!
       # First we remove all the categories on the ArchiveItem
-      self.categories.each { |category| self.category_list.remove(category.name) }
-      self.save!
-      self.reload
+      clear_categories!
 
       self.categorize
+      self.save!
+      self.reload
+    end
+
+    def clear_categories!
+      self.categories.each { |category| self.category_list.remove(category.name) }
       self.save!
       self.reload
     end
