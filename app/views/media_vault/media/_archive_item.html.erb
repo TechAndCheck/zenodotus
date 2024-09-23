@@ -112,14 +112,12 @@
             <% end %>
         </div>
     </div>
-    <div class="flex flex-col">
-        <div class="w-auto space-x-4 mt-5">
-            <% archive_item_self.archive_item.categories.pluck(:name).each do |category| %>
-                <span class="border-4 text-gray-800 font-medium px-5 py-1.5 rounded-lg">
-                    <%= category %>
-                </span>
-            <% end %>
-        </div>
+    <div class="flex flex-row space-x-4 space-y-4 max-w-full flex-wrap">
+        <% archive_item_self.archive_item.categories.pluck(:name).each do |category| %>
+            <div class="border-4 text-gray-800 font-medium px-5 py-1.5 rounded-lg">
+                <%= category.chomp %>
+            </div>
+        <% end %>
     </div>
   </div>
 </div>
