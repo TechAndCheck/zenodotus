@@ -32,7 +32,7 @@ module Categorizable
       )
 
       new_categories = result.first["response"].strip.split(",").map(&:strip)
-      new_categories = new_categories[0..4] if new_categories.length > 5
+      new_categories = new_categories[0..3] if new_categories.length > 4
 
       new_categories.each do |category|
         self.category_list.add(category) # if @@archive_categories.include?(category)
