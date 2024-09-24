@@ -26,7 +26,7 @@ module Categorizable
       return if prompt.nil?
 
       result = OLLAMA_CLIENT.generate(
-        { model: "gemma2",
+        { model: "llama3.1",
           prompt: prompt,
           stream: false }
       )
