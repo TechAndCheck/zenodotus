@@ -13,5 +13,7 @@ namespace :categorize do
         next
       end
     end
+
+    Rails.cache.clear
   end
 end
