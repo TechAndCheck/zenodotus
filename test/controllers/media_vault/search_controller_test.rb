@@ -107,7 +107,6 @@ class MediaVault::SearchControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-
   test "can search media for public posts" do
     Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CHdIkUVBz3C/", users(:media_vault_user))
     Sources::YoutubePost.create_from_url!("https://www.youtube.com/watch?v=Df7UtQTFUMQ", users(:media_vault_user))
@@ -130,6 +129,19 @@ class MediaVault::SearchControllerTest < ActionDispatch::IntegrationTest
         assert_not result[:video].private
       end
     end
+  end
+
+  test "can search Google Fact Check Explorer for test" do
+    sign_in users(:media_vault_user)
+    image_file = File.open("test/mocks/media/insulin-injection-3.jpg", binmode: true)
+    media_search = ImageSearch.create_with_media_item(image_file, users(:media_vault_user), false)
+
+    get media_vault_search_path(msid: media_search.id, private: false)
+
+    # TODO: Check if google results are being returned, probably by fixing up the view
+    # and then checking the response for the google results
+    # assert_select "div#google-fact-check-explorer-results"
+    assert_response :success
   end
 
   test "A url with nothing in a url search fails properly" do

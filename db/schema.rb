@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_19_223511) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_28_173524) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -206,6 +206,22 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_19_223511) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["feature_key", "key", "value"], name: "index_flipper_gates_on_feature_key_and_key_and_value", unique: true
+  end
+
+  create_table "google_search_results", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "text"
+    t.string "claimant"
+    t.datetime "claim_date"
+    t.string "url"
+    t.datetime "review_date"
+    t.string "rating"
+    t.string "title"
+    t.string "language_code"
+    t.string "publisher_name"
+    t.string "publisher_site"
+    t.string "image_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "image_hashes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

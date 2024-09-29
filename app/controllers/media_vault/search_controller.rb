@@ -6,11 +6,14 @@ class MediaVault::SearchController < MediaVaultController
     const :msid, T.nilable(String) # Media Search ID
     const :private, T.nilable(T::Boolean)
   end
+
   class MediaSearchParams < T::Struct
     const :media, ActionDispatch::Http::UploadedFile
     const :q, T.nilable(String)
     const :private, T.nilable(T::Boolean)
   end
+
+  # Search for
 
   sig { void }
   def index
@@ -67,12 +70,19 @@ class MediaVault::SearchController < MediaVaultController
     end
   end
 
+  def google_image_link
+    google_image_id = params[:google_image_id]
+    google_image = GoogleSearchResult.find(google_image_id)
+
+    send_data google_image.public_image_url
+  end
+
 private
 
   sig { params(id: String, private: T::Boolean).void }
   def search_by_media_search_id(id, private: false)
     @media_search = ImageSearch.find(id)
-    @results = @media_search.run
+    @results, @google_results = @media_search.run
     @post_results = @results.filter_map { |result|
       result.has_key?(:image) ? result[:image] : (
         result.has_key?(:video) ? result[:video] : nil

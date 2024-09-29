@@ -15,32 +15,59 @@
 		<% end %>
 	</div>
 
-	<% if (@results || []).any? %>
-		<% if @author_results.try(:any?) %>
-			<h2 class="search-results__title">
-				<%= pluralize(@author_results.length, "matching author") %> found<% if @myvault %> in your MyVault&nbsp;<span style="font-size: 1.5rem; vertical-align: text-top; color: gray;" class="super">Beta</span><% end %>
-			</h2>
-			<div class="search-results search-results--authors">
-				<% @author_results.each do |author| %>
-					<%= link_to media_vault_author_path(author, platform: author.platform), class: "search-result" do %>
-						<%= render partial: "media_vault/authors/author_info/#{underscore_author_model(author)}", locals: { author: author } %>
-					<% end %>
-				<% end %>
+	<% if defined?(@media_search) %>
+	    <div class="grid grid-cols-2 divide-neutral-200 divide-x-2">
+			<div>
+            <% if @post_results.any? %>
+          		<h2 class="search-results__title">
+         			<%= pluralize(@post_results.length, "matching MediaVault post") %> found<% if @myvault %> in your MyVault&nbsp;<span style="font-size: 1.5rem; vertical-align: text-top; color: gray;" class="super">Beta</span><% end %>:
+          		</h2>
+          		<div class="search-results search-results--posts archive-items archive-items--boxed-items archive-items--masonry media">
+         			<% @post_results.each do |post| %>
+            				<%= render partial: "media_vault/media/archive_item", locals: { preview: true, **post.normalized_attrs_for_views } %>
+         			<% end %>
+          		</div>
+           	<% end %>
+	        </div>
+			<div class="pl-4">
+                <h2 class="search-results__title">
+         			<%= pluralize(@post_results.length, "matching Fact Check Explorer result") %> found:
+          		</h2>
+          		<div class="search-results search-results--posts archive-items archive-items--boxed-items archive-items--masonry media">
+         			<% @google_results.each do |post| %>
+          				<%= render partial: "media_vault/search/google_search_result", locals: { search_result: post } %>
+         			<% end %>
+          		</div>
 			</div>
-		<% end %>
-
-		<% if @post_results.any? %>
-			<h2 class="search-results__title">
-				<%= pluralize(@post_results.length, "matching post") %> found<% if @myvault %> in your MyVault&nbsp;<span style="font-size: 1.5rem; vertical-align: text-top; color: gray;" class="super">Beta</span><% end %>:
-			</h2>
-			<div class="search-results search-results--posts archive-items archive-items--boxed-items archive-items--masonry">
-				<% @post_results.each do |post| %>
-					<%= render partial: "media_vault/media/archive_item", locals: { preview: true, **post.normalized_attrs_for_views } %>
-				<% end %>
-			</div>
-		<% end %>
-
+	    </div>
 	<% else %>
-		<h1 class="text--center">No results found<%= " in your MyVault" if @myvault %>.</h1>
-	<% end %>
+    	<% if (@results || []).any? %>
+    		<% if @author_results.try(:any?) %>
+    			<h2 class="search-results__title">
+    				<%= pluralize(@author_results.length, "matching author") %> found<% if @myvault %> in your MyVault&nbsp;<span style="font-size: 1.5rem; vertical-align: text-top; color: gray;" class="super">Beta</span><% end %>
+    			</h2>
+    			<div class="search-results search-results--authors">
+    				<% @author_results.each do |author| %>
+    					<%= link_to media_vault_author_path(author, platform: author.platform), class: "search-result" do %>
+    						<%= render partial: "media_vault/authors/author_info/#{underscore_author_model(author)}", locals: { author: author } %>
+    					<% end %>
+    				<% end %>
+    			</div>
+    		<% end %>
+
+    		<% if @post_results.any? %>
+    			<h2 class="search-results__title">
+    				<%= pluralize(@post_results.length, "matching post") %> found<% if @myvault %> in your MyVault&nbsp;<span style="font-size: 1.5rem; vertical-align: text-top; color: gray;" class="super">Beta</span><% end %>:
+    			</h2>
+    			<div class="search-results search-results--posts archive-items archive-items--boxed-items archive-items--masonry">
+    				<% @post_results.each do |post| %>
+    					<%= render partial: "media_vault/media/archive_item", locals: { preview: true, **post.normalized_attrs_for_views } %>
+    				<% end %>
+    			</div>
+    		<% end %>
+
+    	<% else %>
+    		<h1 class="text--center">No results found<%= " in your MyVault" if @myvault %>.</h1>
+    	<% end %>
+    <% end %>
 </div>

@@ -4,33 +4,38 @@
 @use "typography";
 
 .search-results {
-	@extend .masonry;
+    @extend .masonry;
 
-	flex-flow: column-reverse wrap-reverse;
+    flex-flow: column-reverse wrap-reverse;
 
-	margin-bottom: clamp(1rem, 5vw, 5rem);
-	&:last-child {
-		margin-bottom: 0;
-	}
+    margin-bottom: clamp(1rem, 5vw, 5rem);
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    &.media {
+        flex-direction: column;
+        margin-right: 1rem;
+    }
 }
 
 .search-results__title {
-	@extend .h4;
+    @extend .h4;
 }
 
 .search-result {
-	@extend .box;
-	text-decoration: none;
-	width: 100%;
-	transition-property: transform;
-	transition-duration: 100ms;
+    @extend .box;
+    text-decoration: none;
+    width: 100%;
+    transition-property: transform;
+    transition-duration: 100ms;
 
-	&:hover {
-		transform: scale(1.03);
-	}
+    &:hover {
+        transform: scale(1.03);
+    }
 }
 
 .search-input-media {
-	max-width: shared.$screen-xs-ceiling;
-	margin: 0 auto;
+    max-width: shared.$screen-xs-ceiling;
+    margin: 0 auto;
 }

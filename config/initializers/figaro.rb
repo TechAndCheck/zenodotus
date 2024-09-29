@@ -42,3 +42,4 @@ end
 
 Figaro.require_keys("OLLAMA_URL")
 Figaro.require_keys("OLLAMA_PASSWORD")
+Figaro.require_keys("FACTCHECK_TOOLS_API_KEY")
