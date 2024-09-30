@@ -6,7 +6,13 @@ class GoogleSearchResult < ApplicationRecord
       hydra.queue(request)
       hydra.run
 
-      request.response.body
+      image_data = request.response.body
+
+      if image_data.empty?
+        image_data = File.read(Rails.root.join("app", "assets", "images", "icons", "image-placeholder.png"))
+      end
+
+      image_data
     end
   end
 

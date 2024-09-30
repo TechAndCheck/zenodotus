@@ -161,13 +161,17 @@ private
     results = response_body["results"].map { |google_object| GoogleSearchResult.from_api_response(google_object["claim"]) }
 
     hydra = Typhoeus::Hydra.hydra
-    requests = results.map { |result| Typhoeus::Request.new(result.url, followlocation: true) }
+    requests = results.map { |result| Typhoeus::Request.new(
+      result.url, followlocation: true,
+      headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15" }
+    ) }
     requests.each { |request| hydra.queue(request) }
     hydra.run
 
     requests.each_with_index.map do |request, index|
       image_elements = Nokogiri::HTML.parse(request.response.body).xpath('//meta[@property="og:image"]')
-      results[index].update(image_url: image_elements.first&.values[1])
+      image_url = image_elements.first.values[1] unless image_elements.empty?
+      results[index].update(image_url: image_url)
     end
 
     results
