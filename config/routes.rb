@@ -115,6 +115,7 @@ Rails.application.routes.draw do
 
       get "search", to: "search#index", as: "search"
       post "search_by_media", to: "search#search_by_media", as: "search_by_media"
+      get "search_image/:google_image_id", to: "search#google_image_link", as: "google_image_link"
 
       get "authors/:platform/:id", to: "authors#show", as: "author"
       resources :media, only: [:show, :destroy]

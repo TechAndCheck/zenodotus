@@ -7,6 +7,38 @@
 # may speed this up since we can throw a huge instance at a very short-lived process?
 
 class ImageSearch < ApplicationRecord
+  # class GoogleSearchResult
+  #   # TODO: Move this to a active record model instead
+  #   attr_reader :text, :claimant, :claim_date, :url, :review_date, :rating, :language_code, :publisher_name, :publisher_site, :title
+  #   attr_accessor :image_url
+
+  #   def initialize(google_object)
+  #     @text = google_object["text"]
+  #     @claimant = google_object["claimant"]
+  #     @claim_date = DateTime.parse(google_object["claimDate"]) unless google_object["claimDate"].nil?
+  #     @url = google_object["claimReview"].first["url"]
+  #     @review_date = DateTime.parse(google_object["claimReview"].first["reviewDate"]) unless google_object["claimReview"].first["reviewDate"].nil?
+  #     @rating = google_object["claimReview"].first["textualRating"]
+  #     @title = google_object["claimReview"].first["title"]
+  #     @language_code = google_object["claimReview"].first["languageCode"]
+  #     @publisher_name = google_object["claimReview"].first["publisher"]["name"]
+  #     @publisher_site = google_object["claimReview"].first["publisher"]["site"]
+  #     @image_url = nil
+  #   end
+
+  #   def image_file
+  #     Rails.cache.fetch("#{@url}/#{@image_url}", expires_in: 30.seconds) do
+  #       hydra = Typhoeus::Hydra.hydra
+  #       request = Typhoeus::Request.new(@image_url, followlocation: true) }
+  #       hydra.queue(request)
+  #       hydra.run
+
+  #       request.response.body
+  #     end
+  #   end
+  # end
+
+
   include ImageUploader::Attachment(:image) # adds an `image` virtual attribute
   include VideoUploader::Attachment(:video)
 
@@ -18,6 +50,9 @@ class ImageSearch < ApplicationRecord
     # We only want to create the derivatives once (since you know, it's a media archive we don't
     # want them to change)
     self.video_derivatives! unless self.video.nil?
+  end
+
+  before_save do
   end
 
   # Implemented for Dhashable to find so that only certain number of frames of video are hashed
@@ -64,7 +99,8 @@ class ImageSearch < ApplicationRecord
         { image: archive_item, distance: archive_items_raw[index]["levenshtein"] }
       end
 
-      images
+      archive_final_items = images
+      google_items = search_google_by_media(self.image_url)
     else
       # For videos we have to loop
       archive_items_raw = self.dhashes.flat_map do |dhash|
@@ -81,9 +117,11 @@ class ImageSearch < ApplicationRecord
       # Videos are now sorted by distance, but we want to only keep the shortest distance
       # Probably can get this into the sql above
       videos.uniq! { |video_hash| video_hash[:video] }
-
-      videos
+      archive_final_items = videos
+      google_items = search_google_by_media(self.video_derivatives[:preview].url)
     end
+
+    [archive_final_items, google_items]
   end
 
 
@@ -109,5 +147,46 @@ class ImageSearch < ApplicationRecord
     Rails.logger.info("**********************************************************************\n")
 
     sql
+  end
+
+private
+
+  sig { params(image_url: String).returns(T::Array[GoogleSearchResult]) }
+  def search_google_by_media(image_url)
+    request = build_google_search_request(image_url, image: true)
+    response = request.run
+    response_body = JSON.parse(response.response_body)
+
+    return [] if response_body["results"].nil?
+    results = response_body["results"].map { |google_object| GoogleSearchResult.from_api_response(google_object["claim"]) }
+
+    hydra = Typhoeus::Hydra.hydra
+    requests = results.map { |result| Typhoeus::Request.new(
+      result.url, followlocation: true,
+      headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15" }
+    ) }
+    requests.each { |request| hydra.queue(request) }
+    hydra.run
+
+    requests.each_with_index.map do |request, index|
+      image_elements = Nokogiri::HTML.parse(request.response.body).xpath('//meta[@property="og:image"]')
+      image_url = image_elements.first.values[1] unless image_elements.empty?
+      results[index].update(image_url: image_url)
+    end
+
+    results
+  end
+
+  sig { params(query: String, image: T::Boolean).returns(Typhoeus::Request) }
+  def build_google_search_request(query, image: false)
+    url = "https://factchecktools.googleapis.com/v1alpha1/claims:imageSearch"
+    params = { imageUri: query, key: Figaro.env.FACTCHECK_TOOLS_API_KEY }
+
+    Typhoeus::Request.new(
+      url,
+      method: :get,
+      params: params,
+      headers: { Accept: "text/html" }
+    )
   end
 end

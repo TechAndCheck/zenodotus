@@ -188,4 +188,26 @@ class ArchiveItemTest < ActionDispatch::IntegrationTest
     assert_not_nil archive_item.url
     assert_equal "https://www.instagram.com/p/CBcqOkyDDH8/", archive_item.url
   end
+
+  test "can categorize an archive item" do
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    archive_item = Sources::InstagramPost.create_from_zorki_hash(zorki_image_post).first
+    archive_item.categorize!
+    assert_equal "Politics", archive_item.categories.first.name
+  end
+
+  test "automatically categorized on create" do
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    archive_item = Sources::InstagramPost.create_from_zorki_hash(zorki_image_post).first
+    assert_equal "Politics", archive_item.categories.first.name
+  end
+
+  test "can remove categories" do
+    zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CHdIkUVBz3C/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    archive_item = Sources::InstagramPost.create_from_zorki_hash(zorki_image_post).first
+    assert archive_item.categories.count.positive?
+
+    archive_item.clear_categories!
+    assert_equal 0, archive_item.categories.count
+  end
 end

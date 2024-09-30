@@ -259,3 +259,7 @@ gem "neo4j-ruby-driver"
 # Caching
 gem "actionpack-action_caching"
 gem "dalli" # For memcached caching
+
+# OLLama categorization
+gem "ollama-ai", git: "https://github.com/cguess/ollama-ai", branch: "basic-auth"
+gem "acts-as-taggable-on" # For caegorization

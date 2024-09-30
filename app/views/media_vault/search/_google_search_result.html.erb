@@ -1,0 +1,23 @@
+<div
+    class="archive-item"
+    data-publishing-platform="<%# publishing_platform_shortname %>"
+    data-controller="media-vault--archive"
+    data-media-vault--archive-caption-collapse-mode-value="<%# caption_is_collapsable ? 'collapsed' : 'static' %>"
+>
+  <div class="archive-item__metadatum__label archive-item__inner flex gap-4 flex-row">
+    <img class="w-24 h-24 rounded-full object-cover" src="<%= media_vault_google_image_link_url(search_result.id) %>" alt="Rounded avatar">
+    <div class="flex flex-col gap-2">
+        <div class="flex flex-row gap-4">
+            <div>
+                <div class="font-semibold">Claim By <%= search_result.claimant.nil? ? "A Post" : search_result.claimant %>:</div>
+                <div><%= search_result.text %></div>
+            </div>
+        </div>
+
+        <div class="font-semibold"><%= search_result.publisher_name %> rating: <span><%= search_result.rating %></span></div>
+        <div><%= link_to search_result.title, search_result.url %></div>
+        <% date_to_show = search_result.review_date.nil? ? search_result.claim_date : search_result.review_date %>
+        <div style="color: #777;" class="text-sm"><span class="font-semibold">Reviewed:</span> <%=  date_to_show.strftime("%-d %b %Y") %></div>
+    </div>
+  </div>
+</div>

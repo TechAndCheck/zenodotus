@@ -9,7 +9,8 @@
 						locals: { **@archive_item.normalized_attrs_for_views,
 						boxed: true,
 						myvault: @myvault,
-						single_page: true
+						single_page: true,
+						public: true
 						} %>
 	<br />
 	<%= render partial: "media_vault/media/archive_item_metadata",
