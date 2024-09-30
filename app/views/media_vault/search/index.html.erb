@@ -31,7 +31,7 @@
 	        </div>
 			<div class="pl-4">
                 <h2 class="search-results__title">
-         			<%= pluralize(@post_results.length, "matching Fact Check Explorer result") %> found:
+         			<%= pluralize(@google_results.length, "matching Fact Check Explorer result") %> found:
           		</h2>
           		<div class="search-results search-results--posts archive-items archive-items--boxed-items archive-items--masonry media">
          			<% @google_results.each do |post| %>
