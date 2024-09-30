@@ -157,6 +157,7 @@ private
     response = request.run
     response_body = JSON.parse(response.response_body)
 
+    return [] if response_body["results"].nil?
     results = response_body["results"].map { |google_object| GoogleSearchResult.from_api_response(google_object["claim"]) }
 
     hydra = Typhoeus::Hydra.hydra
@@ -166,7 +167,7 @@ private
 
     requests.each_with_index.map do |request, index|
       image_elements = Nokogiri::HTML.parse(request.response.body).xpath('//meta[@property="og:image"]')
-      results[index].update(image_url: image_elements.first.values[1])
+      results[index].update(image_url: image_elements.first&.values[1])
     end
 
     results
