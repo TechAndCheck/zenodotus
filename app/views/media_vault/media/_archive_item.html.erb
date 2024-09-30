@@ -114,17 +114,21 @@
     </div>
     <%# Just a note that this logic makes no sense, but whatever %>
     <% if defined?(single_page) && single_page == true && (!defined?(public) || !public) %>
-    <div class="flex flex-row space-x-2 space-y-2 max-w-full flex-wrap">
-        <% archive_item_self.archive_item.categories.pluck(:name).each do |category| %>
-            <div class="mt-2 border-4 text-gray-800 font-medium px-5 py-1.5 rounded-lg">
-                <%= category.chomp %>
-            </div>
-        <% end %>
+    <div class="flex flex-col gap-0">
+        <div class="flex flex-row space-x-2 space-y-2 max-w-full flex-wrap">
+            <% archive_item_self.archive_item.categories.pluck(:name).each do |category| %>
+                <div class="mt-2 border-4 text-gray-800 font-medium px-5 py-1.5 rounded-lg">
+                    <%= category.chomp %>
+                </div>
+            <% end %>
+        </div>
+        <% if archive_item_self.archive_item.categories.count.positive? %>
         <div class="archive-item__metadata">
             <div class="archive-item__metadatum__label">
-                Categories are provided by AI models and will be refined
+                Categories are provided by AI models and will be refined.
             </div>
         </div>
+        <% end %>
     </div>
     <% end %>
   </div>
