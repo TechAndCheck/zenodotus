@@ -361,9 +361,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_28_173524) do
   create_table "taggings", force: :cascade do |t|
     t.bigint "tag_id"
     t.string "taggable_type"
-    t.bigint "taggable_id"
+    t.uuid "taggable_id"
     t.string "tagger_type"
-    t.bigint "tagger_id"
+    t.uuid "tagger_id"
     t.string "context", limit: 128
     t.datetime "created_at", precision: nil
     t.string "tenant", limit: 128
