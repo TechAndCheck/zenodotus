@@ -44,7 +44,7 @@ module Dhashable
       when :image
         dhashes = [Eikon.dhash_for_image(tempfile_path)]
       when :video
-        frame_count = self.methods.include?(:limit_video_frames_hashed) ? self.limit_video_frames_hashed : 1
+        frame_count = self.methods.include?(:limit_video_frames_hashed) ? self.limit_video_frames_hashed : 0
         dhashes = Eikon.dhash_for_video(tempfile_path, frame_count).map { |dhash| dhash[:dhash] }
       end
 
