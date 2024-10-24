@@ -1,5 +1,5 @@
 class PublicAccess::MediaController < ApplicationController
-  caches_action :index, :show, expires_in: 30.seconds
+  caches_action :index, :show, expires_in: 1.day
 
   sig { void }
   def index
