@@ -5,11 +5,17 @@
             thumbnail_image_url = media.image_url
             full_size_href = media.image_url
         %>
-        <a
+        <!-- <a
             class="archive-item__body-media__thumbnail"
             style="background-image:url('<%= thumbnail_image_url %>')"
             title="Click to view full-size version of media"
             href="<%= full_size_href %>"
+            target="_blank"
+            rel="noopener noreferrer"
+        ></a> -->
+        <a
+            class="archive-item__body-media__thumbnail cursor-default"
+            style="background-image:url('<%= thumbnail_image_url %>')"
             target="_blank"
             rel="noopener noreferrer"
         ></a>
