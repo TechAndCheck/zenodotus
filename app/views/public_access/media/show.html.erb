@@ -11,11 +11,11 @@
 						myvault: @myvault,
 						single_page: true,
 						public: true
-						} %>
+						}, cached: true %>
 	<br />
-	<%= render partial: "media_vault/media/archive_item_metadata",
+	<%= render partial: "media_vault/media/archive_item_metadata", cached: true,
 						 locals: { archive_item: @archive_item } unless @archive_item.media_review.nil? %>
 
-	<%= render(partial: "media_vault/media/archive_item_actions",
+	<%= render(partial: "media_vault/media/archive_item_actions", cached: true,
 						 locals: { archive_item: @archive_item }) if @myvault %>
 </div>
