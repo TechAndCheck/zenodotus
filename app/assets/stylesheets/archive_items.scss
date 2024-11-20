@@ -81,8 +81,12 @@ just to examine the template files unless/until we capture it better here.
 
 	.author {
 		--author--external-spacing: var(--archive-item--internal-spacing);
-		--author--profile-image-size: var(--archive-item--author-profile-image-size);
-		--author--profile-image-gap: var(--archive-item--author-profile-image-gap);
+		--author--profile-image-size: var(
+			--archive-item--author-profile-image-size
+		);
+		--author--profile-image-gap: var(
+			--archive-item--author-profile-image-gap
+		);
 		--author--name-font-size: 1.4rem;
 
 		margin-top: 0;
@@ -90,7 +94,10 @@ just to examine the template files unless/until we capture it better here.
 
 	@media screen and (min-width: shared.$screen-lg-floor) {
 		&:not(.archive-item--boxed):not(.archive-items--boxed-items &) {
-			--archive-item--body-indentation: calc(var(--archive-item--author-profile-image-size) + var(--archive-item--author-profile-image-gap));
+			--archive-item--body-indentation: calc(
+				var(--archive-item--author-profile-image-size) +
+					var(--archive-item--author-profile-image-gap)
+			);
 		}
 	}
 }
@@ -100,7 +107,9 @@ just to examine the template files unless/until we capture it better here.
 	.archive-item--boxed & {
 		@extend .box;
 		--box--external-spacing: 0;
-		--box--internal-spacing: calc(var(--archive-item--internal-spacing) * 2);
+		--box--internal-spacing: calc(
+			var(--archive-item--internal-spacing) * 2
+		);
 	}
 }
 
@@ -131,7 +140,8 @@ just to examine the template files unless/until we capture it better here.
 	}
 }
 
-.archive-item[data-media-vault--archive-caption-collapse-mode-value="collapsed"] .archive-item__body-caption-content {
+.archive-item[data-media-vault--archive-caption-collapse-mode-value="collapsed"]
+	.archive-item__body-caption-content {
 	--collapsed-lines-of-text: 3;
 
 	overflow: hidden;
@@ -141,13 +151,15 @@ just to examine the template files unless/until we capture it better here.
 	it seems that line-clamp acts unexpectedly when there are multiple children of the clamped
 	element. So, for now max-height is unversal and all clamping really gets us is the ellipsis.
 	*/
-	max-height: calc(1em * shared.$line-height--base * var(--collapsed-lines-of-text));
+	max-height: calc(
+		1em * shared.$line-height--base * var(--collapsed-lines-of-text)
+	);
 
 	@supports (-webkit-line-clamp: 2) {
 		display: -webkit-box;
 		-webkit-line-clamp: var(--collapsed-lines-of-text);
 		-webkit-box-orient: vertical;
-   }
+	}
 }
 
 .archive-item__body-caption-toggler {
@@ -207,7 +219,6 @@ just to examine the template files unless/until we capture it better here.
 .archive-item__body-media__thumbnail {
 	aspect-ratio: 1;
 	border-radius: var(--archive-item--image-border-radius);
-	overflow: hidden;
 	background-position: top center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -235,17 +246,23 @@ just to examine the template files unless/until we capture it better here.
 	}
 
 	.icon-prefixed {
-		--icon-gap: calc(var(--archive-item--metadata-font-size) * var(--archive-item--metadata-line-height) / 2);
+		--icon-gap: calc(
+			var(--archive-item--metadata-font-size) *
+				var(--archive-item--metadata-line-height) / 2
+		);
 
 		.icon {
-			--icon-size: calc(var(--archive-item--metadata-font-size) * var(--archive-item--metadata-line-height) * 2);
+			--icon-size: calc(
+				var(--archive-item--metadata-font-size) *
+					var(--archive-item--metadata-line-height) * 2
+			);
 			align-self: flex-start;
 		}
 	}
 }
 
 div.archive-item__download__link {
-  font-weight: 400;
+	font-weight: 400;
 }
 
 a.archive-item__metadatum {
