@@ -59,6 +59,9 @@ group :development, :test do
   gem "rack-mini-profiler"
 
   gem "stackprof"
+
+  # An LSP
+  gem "solargraph"
 end
 
 group :development do
@@ -80,9 +83,6 @@ group :development do
 
   # We use Yard for all of our documentation
   gem "yard", require: false
-
-  # An LSP
-  gem "solargraph"
 
   # Brakeman checks for security vulnerabilities
   gem "brakeman", require: false

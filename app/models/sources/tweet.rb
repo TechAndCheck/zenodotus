@@ -120,10 +120,12 @@ class Sources::Tweet < ApplicationRecord
         end
       end
 
-      if birdsong_tweet["aws_video_key"].present?
+      if birdsong_tweet["aws_video_keys"].present?
         # Right now we only support one video per tweet, but Hypatia returns an array
-        downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(birdsong_tweet["aws_video_key"].first)
-        video_attributes = [ { video: File.open(downloaded_path, binmode: true) } ]
+        video_attributes = birdsong_tweet["aws_video_keys"].map do |key|
+          downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(key)
+          { video: File.open(downloaded_path, binmode: true) }
+        end
       end
 
       unless birdsong_tweet["video_file"].nil?
