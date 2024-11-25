@@ -3,10 +3,13 @@
 require "bcrypt"
 
 class User < ApplicationRecord
+  include Devise::JWT::RevocationStrategies::JTIMatcher
+
   rolify
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :trackable, :lockable, :confirmable
+         :trackable, :lockable, :confirmable, :jwt_authenticatable,
+         jwt_revocation_strategy: self
 
   has_many :webauthn_credentials, dependent: :destroy
 
@@ -201,6 +204,11 @@ private
     return SiteDefinitions::MEDIA_VAULT if self.is_media_vault_user?
 
     SiteDefinitions::FACT_CHECK_INSIGHTS
+  end
+
+  # Necessary I guess? Maybe?
+  def jwt_payload
+    # super.merge('foo' => 'bar')
   end
 end
 

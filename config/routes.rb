@@ -138,6 +138,10 @@ Rails.application.routes.draw do
       get "download", to: "archive#export_archive_data", as: "download"
       post "scrape_result_callback", to: "archive#scrape_result_callback", as: "scrape_result_callback"
     end
+
+    scope "api", format: :json do
+      get "/submit", to: "api#submit", as: "api_submit"
+    end
   end
 
   scope "/account" do

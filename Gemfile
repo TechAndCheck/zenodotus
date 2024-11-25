@@ -165,6 +165,9 @@ gem "json_schemer"
 # Devise is used for authentication and user management
 gem "devise", "~> 4.8.0"
 
+# Used for Chrome plugin authentication
+gem "devise-jwt"
+
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
 
