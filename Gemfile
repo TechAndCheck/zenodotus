@@ -176,8 +176,6 @@ gem "turbo-rails"
 
 gem "sprockets-rails", require: "sprockets/railtie"
 
-# Jard is an improvement on Byebug
-gem "ruby_jard"
 gem "pry-byebug"
 
 # Add the ability to load `.env` files on launch
