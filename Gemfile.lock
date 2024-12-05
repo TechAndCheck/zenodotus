@@ -69,6 +69,18 @@ GIT
       typhoeus
 
 GIT
+  remote: https://github.com/neo4jrb/activegraph
+  revision: 6d892820668cd8c6519bdc7202b32c22de0385d9
+  tag: v11.5.0.beta.2
+  specs:
+    activegraph (11.5.0.beta.2)
+      activemodel (>= 7)
+      i18n (!= 1.8.8)
+      neo4j-ruby-driver (>= 4.4.1, < 5)
+      orm_adapter (>= 0.5.0)
+      sorted_set
+
+GIT
   remote: https://github.com/shrinerb/shrine
   revision: 708a7960670a2620d8dd1e5f6bfa766da1439420
   branch: master
@@ -86,79 +98,84 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    actioncable (7.0.8)
-      actionpack (= 7.0.8)
-      activesupport (= 7.0.8)
+    actioncable (7.1.5)
+      actionpack (= 7.1.5)
+      activesupport (= 7.1.5)
       nio4r (~> 2.0)
       websocket-driver (>= 0.6.1)
-    actionmailbox (7.0.8)
-      actionpack (= 7.0.8)
-      activejob (= 7.0.8)
-      activerecord (= 7.0.8)
-      activestorage (= 7.0.8)
-      activesupport (= 7.0.8)
+      zeitwerk (~> 2.6)
+    actionmailbox (7.1.5)
+      actionpack (= 7.1.5)
+      activejob (= 7.1.5)
+      activerecord (= 7.1.5)
+      activestorage (= 7.1.5)
+      activesupport (= 7.1.5)
       mail (>= 2.7.1)
       net-imap
       net-pop
       net-smtp
-    actionmailer (7.0.8)
-      actionpack (= 7.0.8)
-      actionview (= 7.0.8)
-      activejob (= 7.0.8)
-      activesupport (= 7.0.8)
+    actionmailer (7.1.5)
+      actionpack (= 7.1.5)
+      actionview (= 7.1.5)
+      activejob (= 7.1.5)
+      activesupport (= 7.1.5)
       mail (~> 2.5, >= 2.5.4)
       net-imap
       net-pop
       net-smtp
-      rails-dom-testing (~> 2.0)
-    actionpack (7.0.8)
-      actionview (= 7.0.8)
-      activesupport (= 7.0.8)
-      rack (~> 2.0, >= 2.2.4)
+      rails-dom-testing (~> 2.2)
+    actionpack (7.1.5)
+      actionview (= 7.1.5)
+      activesupport (= 7.1.5)
+      nokogiri (>= 1.8.5)
+      racc
+      rack (>= 2.2.4)
+      rack-session (>= 1.0.1)
       rack-test (>= 0.6.3)
-      rails-dom-testing (~> 2.0)
-      rails-html-sanitizer (~> 1.0, >= 1.2.0)
+      rails-dom-testing (~> 2.2)
+      rails-html-sanitizer (~> 1.6)
     actionpack-action_caching (1.2.2)
       actionpack (>= 4.0.0)
-    actiontext (7.0.8)
-      actionpack (= 7.0.8)
-      activerecord (= 7.0.8)
-      activestorage (= 7.0.8)
-      activesupport (= 7.0.8)
+    actiontext (7.1.5)
+      actionpack (= 7.1.5)
+      activerecord (= 7.1.5)
+      activestorage (= 7.1.5)
+      activesupport (= 7.1.5)
       globalid (>= 0.6.0)
       nokogiri (>= 1.8.5)
-    actionview (7.0.8)
-      activesupport (= 7.0.8)
+    actionview (7.1.5)
+      activesupport (= 7.1.5)
       builder (~> 3.1)
-      erubi (~> 1.4)
-      rails-dom-testing (~> 2.0)
-      rails-html-sanitizer (~> 1.1, >= 1.2.0)
-    activegraph (11.4.0)
-      activemodel (>= 4.0)
-      activesupport (>= 4.0)
-      i18n (!= 1.8.8)
-      neo4j-ruby-driver (>= 4.4.1)
-      orm_adapter (~> 0.5.0)
-      sorted_set
-    activejob (7.0.8)
-      activesupport (= 7.0.8)
+      erubi (~> 1.11)
+      rails-dom-testing (~> 2.2)
+      rails-html-sanitizer (~> 1.6)
+    activejob (7.1.5)
+      activesupport (= 7.1.5)
       globalid (>= 0.3.6)
-    activemodel (7.0.8)
-      activesupport (= 7.0.8)
-    activerecord (7.0.8)
-      activemodel (= 7.0.8)
-      activesupport (= 7.0.8)
-    activestorage (7.0.8)
-      actionpack (= 7.0.8)
-      activejob (= 7.0.8)
-      activerecord (= 7.0.8)
-      activesupport (= 7.0.8)
+    activemodel (7.1.5)
+      activesupport (= 7.1.5)
+    activerecord (7.1.5)
+      activemodel (= 7.1.5)
+      activesupport (= 7.1.5)
+      timeout (>= 0.4.0)
+    activestorage (7.1.5)
+      actionpack (= 7.1.5)
+      activejob (= 7.1.5)
+      activerecord (= 7.1.5)
+      activesupport (= 7.1.5)
       marcel (~> 1.0)
-      mini_mime (>= 1.1.0)
-    activesupport (7.0.8)
+    activesupport (7.1.5)
+      base64
+      benchmark (>= 0.3)
+      bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
+      connection_pool (>= 2.2.5)
+      drb
       i18n (>= 1.6, < 2)
+      logger (>= 1.4.2)
       minitest (>= 5.1)
+      mutex_m
+      securerandom (>= 0.3)
       tzinfo (~> 2.0)
     acts-as-taggable-on (11.0.0)
       activerecord (>= 7.0, < 8.0)
@@ -195,8 +212,10 @@ GEM
     aws-sigv4 (1.5.1)
       aws-eventstream (~> 1, >= 1.0.2)
     backport (1.2.0)
+    base64 (0.2.0)
     bcrypt (3.1.18)
-    benchmark (0.3.0)
+    benchmark (0.4.0)
+    bigdecimal (3.1.8)
     bindata (2.4.14)
     bindex (0.8.1)
     blueprinter (0.25.3)
@@ -205,7 +224,7 @@ GEM
     brakeman (6.1.2)
       racc
     builder (3.2.4)
-    bullet (7.0.3)
+    bullet (8.0.0)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     byebug (11.1.3)
@@ -221,7 +240,7 @@ GEM
     capybara-mechanize (1.13.0)
       capybara (>= 3.0.0, < 4)
       mechanize (~> 2.8.5)
-    cbor (0.5.9.6)
+    cbor (0.5.9.8)
     chronic (0.10.2)
     chunky_png (1.4.0)
     climate_control (0.2.0)
@@ -231,9 +250,9 @@ GEM
       activesupport (>= 4.2.0)
     commander (4.6.0)
       highline (~> 2.0.0)
-    concurrent-ruby (1.3.3)
+    concurrent-ruby (1.3.4)
     connection_pool (2.4.1)
-    console (1.27.0)
+    console (1.29.0)
       fiber-annotation
       fiber-local (~> 1.1)
       json
@@ -252,7 +271,7 @@ GEM
     dalli (3.2.8)
     dartsass-rails (0.4.0)
       railties (>= 6.0.0)
-    date (3.3.3)
+    date (3.4.1)
     debug (1.8.0)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
@@ -272,6 +291,7 @@ GEM
       railties (>= 3.2)
     down (5.4.1)
       addressable (~> 2.8)
+    drb (2.2.1)
     e2mmap (0.1.0)
     eikon (0.1.12)
       mutex_m
@@ -279,7 +299,6 @@ GEM
       sorbet-runtime (>= 0.5.9204)
       terrapin (~> 0.6.0)
     erubi (1.12.0)
-    erubis (2.7.0)
     ethon (0.16.0)
       ffi (>= 1.15.0)
     faraday (2.12.0)
@@ -302,7 +321,7 @@ GEM
     fiber-annotation (0.2.0)
     fiber-local (1.1.0)
       fiber-storage
-    fiber-storage (0.1.2)
+    fiber-storage (1.0.0)
     figaro (1.2.0)
       thor (>= 0.14.0, < 2)
     flipper (1.2.2)
@@ -324,13 +343,13 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
-    i18n (1.14.5)
+    i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     importmap-rails (1.1.5)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
     io-console (0.6.0)
-    io-event (1.6.5)
+    io-event (1.7.4)
     irb (1.8.1)
       rdoc
       reline (>= 0.3.8)
@@ -339,7 +358,7 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jmespath (1.6.1)
-    json (2.6.2)
+    json (2.9.0)
     json_schemer (2.0.0)
       hana (~> 1.3)
       regexp_parser (~> 2.0)
@@ -353,7 +372,7 @@ GEM
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    logger (1.6.1)
+    logger (1.6.2)
     loofah (2.21.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -364,7 +383,7 @@ GEM
       net-smtp
     mailgun-ruby (1.2.5)
       rest-client (>= 2.0.2)
-    marcel (1.0.2)
+    marcel (1.0.4)
     matrix (0.4.2)
     mechanize (2.8.5)
       addressable (~> 2.8)
@@ -378,18 +397,19 @@ GEM
       webrick (~> 1.7)
       webrobots (~> 0.1.2)
     memory_profiler (1.0.1)
-    method_source (1.0.0)
+    method_source (1.1.0)
     mime-types (3.4.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2022.0105)
     mini_mime (1.1.5)
-    minitest (5.24.1)
+    mini_portile2 (2.8.8)
+    minitest (5.25.4)
     minitest-hooks (1.5.0)
       minitest (> 5.3)
     msgpack (1.5.6)
     multi_json (1.15.0)
     murmurhash3 (0.1.7)
-    mutex_m (0.2.0)
+    mutex_m (0.3.0)
     neo4j-ruby-driver (4.4.5)
       activesupport (>= 5.2.0)
       async-io
@@ -400,22 +420,19 @@ GEM
     net-http-digest_auth (1.4.1)
     net-http-persistent (4.0.2)
       connection_pool (~> 2.2)
-    net-imap (0.4.1)
+    net-imap (0.5.1)
       date
       net-protocol
     net-pop (0.1.2)
       net-protocol
-    net-protocol (0.2.1)
+    net-protocol (0.2.2)
       timeout
-    net-smtp (0.4.0)
+    net-smtp (0.5.0)
       net-protocol
     netrc (0.11.0)
     nio4r (2.5.9)
-    nokogiri (1.15.4-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.15.4-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.15.4-x86_64-linux)
+    nokogiri (1.15.4)
+      mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     oauth (0.5.14)
     oj (3.16.1)
@@ -445,7 +462,7 @@ GEM
       websocket-driver (>= 0.2.0)
     polyfill (1.9.0)
     prism (0.30.0)
-    pry (0.13.1)
+    pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
     pry-byebug (3.10.1)
@@ -462,22 +479,27 @@ GEM
     rack (2.2.8)
     rack-mini-profiler (2.3.4)
       rack (>= 1.2.0)
+    rack-session (1.0.2)
+      rack (< 3)
     rack-test (2.1.0)
       rack (>= 1.3)
-    rails (7.0.8)
-      actioncable (= 7.0.8)
-      actionmailbox (= 7.0.8)
-      actionmailer (= 7.0.8)
-      actionpack (= 7.0.8)
-      actiontext (= 7.0.8)
-      actionview (= 7.0.8)
-      activejob (= 7.0.8)
-      activemodel (= 7.0.8)
-      activerecord (= 7.0.8)
-      activestorage (= 7.0.8)
-      activesupport (= 7.0.8)
+    rackup (1.0.1)
+      rack (< 3)
+      webrick
+    rails (7.1.5)
+      actioncable (= 7.1.5)
+      actionmailbox (= 7.1.5)
+      actionmailer (= 7.1.5)
+      actionpack (= 7.1.5)
+      actiontext (= 7.1.5)
+      actionview (= 7.1.5)
+      activejob (= 7.1.5)
+      activemodel (= 7.1.5)
+      activerecord (= 7.1.5)
+      activestorage (= 7.1.5)
+      activesupport (= 7.1.5)
       bundler (>= 1.15.0)
-      railties (= 7.0.8)
+      railties (= 7.1.5)
     rails-dom-testing (2.2.0)
       activesupport (>= 5.0.0)
       minitest
@@ -489,13 +511,14 @@ GEM
       activerecord (>= 5.0.0)
       railties (>= 5.0.0)
     rails_refactor (1.4.6)
-    railties (7.0.8)
-      actionpack (= 7.0.8)
-      activesupport (= 7.0.8)
-      method_source
+    railties (7.1.5)
+      actionpack (= 7.1.5)
+      activesupport (= 7.1.5)
+      irb
+      rackup (>= 1.0.0)
       rake (>= 12.2)
-      thor (~> 1.0)
-      zeitwerk (~> 2.5)
+      thor (~> 1.0, >= 1.2.2)
+      zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.0.6)
     rb-fsevent (0.11.2)
@@ -575,13 +598,14 @@ GEM
     safe_type (1.1.1)
     safety_net_attestation (0.4.0)
       jwt (~> 2.0)
+    securerandom (0.4.0)
     selenium-devtools (0.118.0)
       selenium-webdriver (~> 4.2)
     selenium-webdriver (4.13.1)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    set (1.1.0)
+    set (1.1.1)
     sidekiq (6.5.12)
       connection_pool (>= 2.2.5, < 3)
       rack (~> 2.0)
@@ -610,8 +634,8 @@ GEM
       thor (~> 1.0)
       tilt (~> 2.0)
       yard (~> 0.9, >= 0.9.24)
-    sorbet (0.5.10460)
-      sorbet-static (= 0.5.10460)
+    sorbet (0.5.11681)
+      sorbet-static (= 0.5.11681)
     sorbet-coerce (0.7.0)
       polyfill (~> 1.8)
       safe_type (~> 1.1, >= 1.1.1)
@@ -623,10 +647,8 @@ GEM
       sorbet-coerce (>= 0.2.6)
       sorbet-runtime (>= 0.5.9892)
     sorbet-runtime (0.5.11604)
-    sorbet-static (0.5.10460-universal-darwin-19)
-    sorbet-static (0.5.10460-universal-darwin-21)
-    sorbet-static (0.5.10460-universal-darwin-22)
-    sorbet-static (0.5.10460-x86_64-linux)
+    sorbet-static (0.5.11681-universal-darwin)
+    sorbet-static (0.5.11681-x86_64-linux)
     sorted_set (1.0.3)
       rbtree
       set (~> 1.0)
@@ -672,12 +694,12 @@ GEM
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
     test-prof (1.4.1)
-    thor (1.2.2)
+    thor (1.3.2)
     tilt (2.3.0)
-    timeout (0.4.0)
-    tmuxinator (3.0.5)
-      erubis (~> 2.6)
-      thor (~> 1.2.1)
+    timeout (0.4.2)
+    tmuxinator (3.3.3)
+      erubi (~> 1.7)
+      thor (~> 1.3.0)
       xdg (~> 2.2, >= 2.2.5)
     tpm-key_attestation (0.11.0)
       bindata (~> 2.4)
@@ -724,17 +746,19 @@ GEM
       nokogiri (~> 1.8)
     yard (0.9.28)
       webrick (~> 1.7.0)
-    zeitwerk (2.6.16)
+    zeitwerk (2.7.1)
 
 PLATFORMS
+  arm64-darwin
   arm64-darwin-21
   arm64-darwin-22
+  arm64-darwin-24
   x86_64-darwin-19
   x86_64-linux
 
 DEPENDENCIES
   actionpack-action_caching
-  activegraph
+  activegraph!
   acts-as-taggable-on
   amazing_print
   async (= 2.12.0)
@@ -746,6 +770,7 @@ DEPENDENCIES
   bullet
   byebug
   capybara (>= 3.26)
+  cbor (= 0.5.9.8)
   comma (~> 4.7.0)
   country_select (~> 8.0)
   curb!
@@ -781,7 +806,7 @@ DEPENDENCIES
   pry-byebug
   puma (~> 5.0)
   rack-mini-profiler
-  rails (~> 7.0.8)
+  rails (~> 7.1)
   rails-settings-cached (~> 2.9)
   rails_refactor
   rake
@@ -829,7 +854,7 @@ DEPENDENCIES
   zorki!
 
 RUBY VERSION
-   ruby 3.1.4p223
+   ruby 3.3.6p108
 
 BUNDLED WITH
    2.4.14
