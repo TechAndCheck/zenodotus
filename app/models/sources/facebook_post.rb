@@ -105,6 +105,11 @@ class Sources::FacebookPost < ApplicationRecord
       if forki_post["aws_image_keys"].present?
         downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(forki_post["aws_image_keys"])
         image_attributes = [ { image: File.open(downloaded_path, binmode: true) } ]
+      elsif forki_post["aws_video_keys"].present?
+        video_attributes = forki_post["aws_video_keys"].map do |key|
+          downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(key)
+          { video: File.open(downloaded_path, binmode: true) }
+        end
       elsif forki_post["aws_video_key"].present?
         downloaded_path = AwsS3Downloader.download_file_in_s3_received_from_hypatia(forki_post["aws_video_key"])
         video_attributes = [ { video: File.open(downloaded_path, binmode: true) } ]

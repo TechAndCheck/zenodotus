@@ -1,13 +1,13 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.1.4"
+ruby "3.3.6"
 
 gem "rake"
 gem "blueprinter"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "~> 7.0.8"
+gem "rails", "~> 7.1"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 # Use Puma as the app server
@@ -110,6 +110,7 @@ gem "webdrivers"
 
 # The production runtime for sorbet
 gem "sorbet-runtime"
+gem "cbor", "0.5.9.8"
 
 # Rails specific features for Sorbet
 gem "sorbet-rails"
@@ -179,8 +180,6 @@ gem "turbo-rails"
 
 gem "sprockets-rails", require: "sprockets/railtie"
 
-# Jard is an improvement on Byebug
-gem "ruby_jard"
 gem "pry-byebug"
 
 # Add the ability to load `.env` files on launch
@@ -256,7 +255,8 @@ gem "flipper-active_record", "~> 1.2"
 # This is a reversion to fix a bug because async was apparently massively updated in a
 # point release and it breaks neo4j-ruby-driver
 gem "async", "2.12.0"
-gem "activegraph" # For example, see https://rubygems.org/gems/activegraph/versions for the latest versions
+# Note, v12beta.2 is the latest version of activegraph BUT does not work with the latest version of neo4j-ruby-driver
+gem "activegraph", git: 'https://github.com/neo4jrb/activegraph', tag: 'v11.5.0.beta.2' # For example, see https://rubygems.org/gems/activegraph/versions for the latest versions
 gem "neo4j-ruby-driver"
 
 # Caching

@@ -43,7 +43,6 @@ class Scrape < ApplicationRecord
       ssl_verifyhost: 0
     )
 
-
     json_error_response = JSON.parse(response.body)
     if response.code != 200
       if response.code == 400 && json_error_response.nil? == false && json_error_response["code"] == 10
@@ -112,6 +111,7 @@ class Scrape < ApplicationRecord
         errored = true # For later in case the option for `status` could be something else
       end
     end
+    # debugger
 
     # Process everything correctly now that we know it's not removed
     media_review_item = self.media_review
@@ -134,7 +134,7 @@ class Scrape < ApplicationRecord
     self.send_notification
 
     # Send the completion email or whatever if necessary
-    self.send_completion_email
+    SendScrapeEmailJob.perform_later(self)
   rescue StandardError => e
     logger.error "Error fulfilling scrape: #{e}"
     Honeybadger.notify(e, context: {
