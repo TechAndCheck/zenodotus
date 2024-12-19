@@ -9,6 +9,7 @@ class User < ApplicationRecord
          :trackable, :lockable, :confirmable
 
   has_many :webauthn_credentials, dependent: :destroy
+  has_many :user_remote_keys, dependent: :destroy
 
   has_many :api_keys, dependent: :delete_all
   # has_many :archive_items, foreign_key: :submitter_id, dependent: :nullify
@@ -191,6 +192,24 @@ class User < ApplicationRecord
   def can_access_media_vault?
     self.is_admin? || self.is_media_vault_user?
   end
+
+  def valid_remote_key
+    remote_key = self.user_remote_keys.find_by(user: self, expires_at: Time.now..Float::INFINITY)
+    remote_key || self.rotate_remote_key
+  end
+
+  def valid_remote_key?(remote_key)
+    self.valid_remote_key&.hashed_remote_key == ZenoEncryption.hash_string(remote_key)
+  end
+
+  def expire_remote_key
+    self.valid_remote_key&.expire_now
+  end
+
+  def rotate_remote_key
+    self.user_remote_keys.create!(user: self) # This will expire all other keys
+  end
+
 
 private
 

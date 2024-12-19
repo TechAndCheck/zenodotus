@@ -6,6 +6,7 @@ class MediaVaultController < ApplicationController
     :privacy,
     :optout,
   ]
+
   before_action :must_be_media_vault_user, except: [
     :terms,
     :privacy,

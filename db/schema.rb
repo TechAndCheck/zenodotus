@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_28_173524) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_13_021724) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -20,6 +20,49 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_28_173524) do
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "applicant_status", ["approved", "rejected"]
   create_enum "scrape_type", ["instagram", "facebook", "twitter", "youtube", "tiktok"]
+
+  create_table "ahoy_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "visit_id"
+    t.uuid "user_id"
+    t.string "name"
+    t.jsonb "properties"
+    t.datetime "time"
+    t.index ["name", "time"], name: "index_ahoy_events_on_name_and_time"
+    t.index ["properties"], name: "index_ahoy_events_on_properties", opclass: :jsonb_path_ops, using: :gin
+    t.index ["user_id"], name: "index_ahoy_events_on_user_id"
+    t.index ["visit_id"], name: "index_ahoy_events_on_visit_id"
+  end
+
+  create_table "ahoy_visits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "visit_token"
+    t.string "visitor_token"
+    t.uuid "user_id"
+    t.string "ip"
+    t.text "user_agent"
+    t.text "referrer"
+    t.string "referring_domain"
+    t.text "landing_page"
+    t.string "browser"
+    t.string "os"
+    t.string "device_type"
+    t.string "country"
+    t.string "region"
+    t.string "city"
+    t.float "latitude"
+    t.float "longitude"
+    t.string "utm_source"
+    t.string "utm_medium"
+    t.string "utm_term"
+    t.string "utm_content"
+    t.string "utm_campaign"
+    t.string "app_version"
+    t.string "os_version"
+    t.string "platform"
+    t.datetime "started_at"
+    t.index ["user_id"], name: "index_ahoy_visits_on_user_id"
+    t.index ["visit_token"], name: "index_ahoy_visits_on_visit_token", unique: true
+    t.index ["visitor_token", "started_at"], name: "index_ahoy_visits_on_visitor_token_and_started_at"
+  end
 
   create_table "api_keys", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "hashed_api_key"
@@ -89,6 +132,62 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_28_173524) do
     t.index ["archive_item_id", "user_id"], name: "index_archive_items_users_on_archive_item_id_and_user_id", unique: true
     t.index ["archive_item_id"], name: "index_archive_items_users_on_archive_item_id"
     t.index ["user_id"], name: "index_archive_items_users_on_user_id"
+  end
+
+  create_table "blazer_audits", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "query_id"
+    t.text "statement"
+    t.string "data_source"
+    t.datetime "created_at"
+    t.index ["query_id"], name: "index_blazer_audits_on_query_id"
+    t.index ["user_id"], name: "index_blazer_audits_on_user_id"
+  end
+
+  create_table "blazer_checks", force: :cascade do |t|
+    t.bigint "creator_id"
+    t.bigint "query_id"
+    t.string "state"
+    t.string "schedule"
+    t.text "emails"
+    t.text "slack_channels"
+    t.string "check_type"
+    t.text "message"
+    t.datetime "last_run_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["creator_id"], name: "index_blazer_checks_on_creator_id"
+    t.index ["query_id"], name: "index_blazer_checks_on_query_id"
+  end
+
+  create_table "blazer_dashboard_queries", force: :cascade do |t|
+    t.bigint "dashboard_id"
+    t.bigint "query_id"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dashboard_id"], name: "index_blazer_dashboard_queries_on_dashboard_id"
+    t.index ["query_id"], name: "index_blazer_dashboard_queries_on_query_id"
+  end
+
+  create_table "blazer_dashboards", force: :cascade do |t|
+    t.bigint "creator_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["creator_id"], name: "index_blazer_dashboards_on_creator_id"
+  end
+
+  create_table "blazer_queries", force: :cascade do |t|
+    t.bigint "creator_id"
+    t.string "name"
+    t.text "description"
+    t.text "statement"
+    t.string "data_source"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["creator_id"], name: "index_blazer_queries_on_creator_id"
   end
 
   create_table "claim_reviews", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -476,6 +575,23 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_28_173524) do
     t.index ["tweet_id"], name: "index_twitter_videos_on_tweet_id"
   end
 
+  create_table "user_remote_keys", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "hashed_remote_key", null: false
+    t.datetime "expires_at"
+    t.datetime "last_used_at"
+    t.string "last_used_ip"
+    t.string "last_used_user_agent"
+    t.string "last_used_referer"
+    t.string "last_used_origin"
+    t.string "last_used_path"
+    t.string "last_used_method"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hashed_remote_key"], name: "index_user_remote_keys_on_hashed_remote_key", unique: true
+    t.index ["user_id"], name: "index_user_remote_keys_on_user_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -501,6 +617,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_28_173524) do
     t.string "hashed_recovery_codes", default: [], null: false, array: true
     t.string "totp_secret"
     t.boolean "totp_confirmed", default: false
+    t.uuid "remote_key_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -586,6 +703,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_28_173524) do
   add_foreign_key "text_searches", "users"
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"
+  add_foreign_key "user_remote_keys", "users"
   add_foreign_key "webauthn_credentials", "users"
   add_foreign_key "youtube_videos", "youtube_posts"
 end

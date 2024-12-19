@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
+  before_action :check_for_login_and_remote_token, only: [:new]
   before_action :must_be_logged_out, only: [:new]
   before_action :authenticate_user_and_setup!, except: [:create]
 
@@ -22,9 +23,9 @@ class Users::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
-  # def new
-  #   super
-  # end
+  def new
+    super
+  end
 
   # POST /resource/sign_in
   # We patch this so that instead of logging the user in we check that they exist and then move to the 2FA page
@@ -75,10 +76,11 @@ class Users::SessionsController < Devise::SessionsController
     user = User.find(user_id)
     raise MFAValidationError if user.nil?
 
-    typed_params = TypedParams[FinishTotpValidationParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
 
     raise MFAValidationError unless user.validate_totp_login_code(typed_params.totpCode)
     sign_in(user)
+
     respond_to do |format|
       format.json { render json: { authentication_status: "success" } }
     end
@@ -126,7 +128,9 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def finish_mfa_webauthn_validation
-    typed_params = TypedParams[FinishWebauthnValidationParams].new.extract!(params)
+    # The reason this is an OpenStruct is to easily migrated from old TypedParams style
+    # TODO: Either figure out how to type it or just use regular hash params
+    typed_params = OpenStruct.new(params)
 
     webauthn_credential = WebAuthn::Credential.from_get(typed_params.publicKeyCredential)
 
@@ -154,8 +158,17 @@ class Users::SessionsController < Devise::SessionsController
 
       # Continue with successful sign in or 2FA verification...
       sign_in(user)
-      respond_to do |format|
-        format.json { render json: { authentication_status: "success" } }
+
+      if session[:token]
+        current_user.rotate_remote_key.remote_key # Not sure this is necesary
+        render json: {
+                authentication_status: "success",
+                redirect: remote_token_path
+        }
+      else
+        respond_to do |format|
+          format.json { render json: { authentication_status: "success" } }
+        end
       end
     rescue WebAuthn::SignCountVerificationError => e
       # Cryptographic verification of the authenticator data succeeded, but the signature counter was less then or equal
@@ -200,7 +213,7 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def mfa_validate_recovery_code
-    typed_params = TypedParams[FinishRecoverCodeValidationParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
 
     # Get the user from the session or go bye bye
     user_id = session[:mfa_validate_user]

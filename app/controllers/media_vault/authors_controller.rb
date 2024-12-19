@@ -41,7 +41,7 @@ class MediaVault::AuthorsController < MediaVaultController
 
   sig { void }
   def show
-    typed_params = TypedParams[AuthorParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
 
     raise UnsupportedPlatform unless AUTHOR_PLATFORM_DEFINITIONS.has_key?(typed_params.platform.to_sym)
     @platform = AUTHOR_PLATFORM_DEFINITIONS[typed_params.platform.to_sym]

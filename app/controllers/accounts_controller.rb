@@ -28,7 +28,7 @@ class AccountsController < ApplicationController
     :finish_webauthn_setup,
     :start_totp_setup,
     :finish_totp_setup,
-    :clear_mfa
+    :clear_mfa,
   ]
 
   before_action :must_be_logged_out, only: [
@@ -85,7 +85,7 @@ class AccountsController < ApplicationController
   sig { void }
   def new
     begin
-      typed_params = TypedParams[SetupAccountParams].new.extract!(params)
+      typed_params = OpenStruct.new(params)
     rescue ActionController::BadRequest
       raise InvalidTokenError
     end
@@ -99,7 +99,7 @@ class AccountsController < ApplicationController
 
   sig { void }
   def create
-    typed_params = TypedParams[CreateAccountParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
 
     @reset_password_token = typed_params.reset_password_token
     @user = User.reset_password_by_token({
@@ -192,7 +192,7 @@ class AccountsController < ApplicationController
 
   sig { void }
   def finish_webauthn_setup
-    typed_params = TypedParams[FinishWebauthnSetupParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
 
     begin
       begin
@@ -309,7 +309,7 @@ class AccountsController < ApplicationController
 
   sig { void }
   def send_password_reset_email
-    typed_params = TypedParams[ResetPasswordParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
     email = typed_params.email.downcase
     @user = User.find_by(email: email)
     @user.send_reset_password_instructions unless @user.nil?
@@ -322,7 +322,7 @@ class AccountsController < ApplicationController
 
   sig { void }
   def change_password
-    typed_params = TypedParams[ChangePasswordParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
 
     current_user.reset_password(typed_params.password, typed_params.password_confirmation)
     # For some reason, despite having the settings correct, changing the password logs the user out
@@ -345,7 +345,7 @@ class AccountsController < ApplicationController
 
   sig { void }
   def change_email
-    typed_params = TypedParams[ChangeEmailParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
 
     if typed_params.email.downcase != typed_params.email_confirmation.downcase
       flash.now[:alert] = "Email addresses did not match. Please try again."
@@ -366,7 +366,7 @@ class AccountsController < ApplicationController
 
   sig { void }
   def destroy_mfa_device
-    typed_params = TypedParams[DeleteMFADeviceParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
 
     # Verify that they're not deleting the last device
     if current_user.webauthn_credentials.count == 1 && current_user.totp_confirmed == false
@@ -417,7 +417,7 @@ class AccountsController < ApplicationController
 
   sig { void }
   def destroy_account
-    typed_params = TypedParams[DestroyAccountParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
 
     if current_user.valid_password?(typed_params.password_for_deletion)
       current_user.destroy
@@ -435,6 +435,11 @@ class AccountsController < ApplicationController
 
   sig { void }
   def admin; end
+
+  sig { void }
+  def remote_token
+    @remote_token = current_user.rotate_remote_key.remote_key
+  end
 
 private
 
