@@ -7,7 +7,7 @@ gem "rake"
 gem "blueprinter"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "~> 7.1"
+gem "rails", "~> 7.2"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 # Use Puma as the app server
@@ -62,11 +62,13 @@ group :development, :test do
 
   # An LSP
   gem "solargraph"
+
+  gem "tapioca", require: false
 end
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-  gem "web-console", ">= 4.1.0"
+  gem "web-console", ">= 4.2.0"
   # Display performance information such as SQL time and flame graphs for each request in your browser.
   # Can be configured to work on production as well see: https://github.com/MiniProfiler/rack-mini-profiler/blob/master/README.md
   gem "listen", "~> 3.3"
@@ -111,9 +113,6 @@ gem "webdrivers"
 # The production runtime for sorbet
 gem "sorbet-runtime"
 gem "cbor", "0.5.9.8"
-
-# Rails specific features for Sorbet
-gem "sorbet-rails"
 
 # For validating URL, the fork adds array of urls validation as well (yes, the difference in URL
 # and gem name is on purpose)
@@ -164,10 +163,7 @@ gem "ruby-progressbar"
 gem "json_schemer"
 
 # Devise is used for authentication and user management
-gem "devise", "~> 4.8.0"
-
-# Used for Chrome plugin authentication
-gem "devise-jwt"
+gem "devise", "~> 4.9"
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
@@ -256,7 +252,7 @@ gem "flipper-active_record", "~> 1.2"
 # point release and it breaks neo4j-ruby-driver
 gem "async", "2.12.0"
 # Note, v12beta.2 is the latest version of activegraph BUT does not work with the latest version of neo4j-ruby-driver
-gem "activegraph", git: 'https://github.com/neo4jrb/activegraph', tag: 'v11.5.0.beta.2' # For example, see https://rubygems.org/gems/activegraph/versions for the latest versions
+gem "activegraph", git: "https://github.com/neo4jrb/activegraph", tag: "v11.5.0.beta.2" # For example, see https://rubygems.org/gems/activegraph/versions for the latest versions
 gem "neo4j-ruby-driver"
 
 # Caching

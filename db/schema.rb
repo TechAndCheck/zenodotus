@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_21_005151) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_13_021724) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -575,6 +575,23 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_21_005151) do
     t.index ["tweet_id"], name: "index_twitter_videos_on_tweet_id"
   end
 
+  create_table "user_remote_keys", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "hashed_remote_key", null: false
+    t.datetime "expires_at"
+    t.datetime "last_used_at"
+    t.string "last_used_ip"
+    t.string "last_used_user_agent"
+    t.string "last_used_referer"
+    t.string "last_used_origin"
+    t.string "last_used_path"
+    t.string "last_used_method"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hashed_remote_key"], name: "index_user_remote_keys_on_hashed_remote_key", unique: true
+    t.index ["user_id"], name: "index_user_remote_keys_on_user_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -600,10 +617,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_21_005151) do
     t.string "hashed_recovery_codes", default: [], null: false, array: true
     t.string "totp_secret"
     t.boolean "totp_confirmed", default: false
-    t.string "jti", null: false
+    t.uuid "remote_key_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
     t.index ["webauthn_id"], name: "index_users_on_webauthn_id", unique: true
@@ -687,6 +703,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_21_005151) do
   add_foreign_key "text_searches", "users"
   add_foreign_key "twitter_images", "tweets"
   add_foreign_key "twitter_videos", "tweets"
+  add_foreign_key "user_remote_keys", "users"
   add_foreign_key "webauthn_credentials", "users"
   add_foreign_key "youtube_videos", "youtube_posts"
 end

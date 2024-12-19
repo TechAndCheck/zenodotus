@@ -22,7 +22,7 @@ class ApplicantsController < ApplicationController
     begin
       # Verify the types of the values provided in the request.
       # TODO: Actually use the output of this, if possible.
-      TypedParams[CreateApplicantParams].new.extract!(applicant_params)
+      OpenStruct.new(applicant_params)
     rescue ActionController::BadRequest
       @applicant = Applicant.new # Needed for form rendering
       generic_create_error && return
@@ -72,7 +72,7 @@ class ApplicantsController < ApplicationController
     begin
       # Verify the types of the values provided in the request.
       # TODO: Actually use the output of this, if possible.
-      TypedParams[ConfirmApplicantEmailParams].new.extract!(confirm_params)
+      OpenStruct.new(confirm_params)
     rescue ActionController::BadRequest
       render(:confirmation_not_found, status: :bad_request) && return
     end

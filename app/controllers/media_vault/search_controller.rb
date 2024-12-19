@@ -17,7 +17,7 @@ class MediaVault::SearchController < MediaVaultController
 
   sig { void }
   def index
-    typed_params = TypedParams[SearchParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
 
     @myvault = typed_params.private.nil? ? false : typed_params.private
 
@@ -50,7 +50,7 @@ class MediaVault::SearchController < MediaVaultController
   # requests). Thus, we only run the search within this action for the Turbo requests.
   sig { params(private: T.nilable(T::Boolean)).void }
   def search_by_media(private: false)
-    typed_params = TypedParams[MediaSearchParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
 
     @myvault = typed_params.private.nil? ? false : typed_params.private
 

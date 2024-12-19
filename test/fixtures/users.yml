@@ -16,7 +16,6 @@ user:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
   totp_confirmed: true
-  jti: "1234567890"
   roles:
     - fact_check_insights_user
     - media_vault_user
@@ -27,7 +26,6 @@ new_user:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
   totp_confirmed: true
-  jti: "2345678901"
   roles:
     - new_user
     - fact_check_insights_user
@@ -38,7 +36,6 @@ fact_check_insights_user:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
   totp_confirmed: true
-  jti: "3456789012"
   roles:
     - fact_check_insights_user
 
@@ -48,7 +45,6 @@ media_vault_user:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
   totp_confirmed: true
-  jti: "4567890123"
   roles:
     - fact_check_insights_user
     - media_vault_user
@@ -59,7 +55,6 @@ user_no_totp:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.now %>
   roles: admin
-  jti: "5678901234"
 
 admin:
   name: "Admin's Name"
@@ -68,4 +63,3 @@ admin:
   confirmed_at: <%= Time.now %>
   totp_confirmed: true
   roles: admin
-  jti: "6789012345"

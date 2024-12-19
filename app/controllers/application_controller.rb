@@ -163,6 +163,31 @@ protected
     true
   end
 
+  sig { void }
+  def authenticate_user_from_remote_key!
+    remote_key = params["auth_key"]
+    if remote_key.blank?
+      render json: {
+        error: "Unauthorized credentials, please check your Remote Key"
+      }, status: :unauthorized
+      return false
+    end
+
+    user_remote_key = UserRemoteKey.find_by_remote_key(remote_key)
+
+    if !user_remote_key || user_remote_key.expired?
+      render json: {
+        error: "Unauthorized credentials, please check your Remote Key"
+      }, status: :unauthorized
+      return false
+    elsif user_remote_key.key_valid?
+      user_remote_key.update_with_use(request)
+      sign_in(user_remote_key.user, store: false)
+    end
+
+    true
+  end
+
   sig { returns(T::Boolean) }
   def authenticate_super_user
     # First we make sure they're logged in at all, this also sets the current user so we can check it
@@ -179,6 +204,17 @@ protected
     unless current_user.is_admin?
       redirect_back_or_to "/", allow_other_host: false, flash: { error: "You don’t have permission to access that page." }
     end
+  end
+
+  sig { void }
+  def check_for_login_and_remote_token
+    return true unless params["token"] == "true" || session[:token] = true
+
+    if current_user
+      redirect_to(remote_token_path) && return
+    end
+
+    true
   end
 
   sig { returns(String) }

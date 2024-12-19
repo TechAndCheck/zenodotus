@@ -84,3 +84,6 @@ Layout/EmptyLinesAroundAccessModifier:
 
 Style/HashSyntax:
   EnforcedShorthandSyntax: "never"
+
+Performance/OpenStruct:
+  Enabled: false

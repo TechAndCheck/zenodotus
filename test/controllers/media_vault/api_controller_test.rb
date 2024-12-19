@@ -1,5 +1,4 @@
 require "test_helper"
-require "devise/jwt/test_helpers"
 
 class MediaVault::ArchiveControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers

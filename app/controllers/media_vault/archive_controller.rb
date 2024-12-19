@@ -80,7 +80,8 @@ class MediaVault::ArchiveController < MediaVaultController
   # @params {url_to_archive} the url to pull in
   sig { void }
   def submit_url
-    typed_params = TypedParams[SubmitUrlParams].new.extract!(params)
+    # Note that this is also done in the `api_controller.rb` file, so if you make changes do it there too
+    typed_params = OpenStruct.new(params)
     url = typed_params.url_to_archive
     object_model = ArchiveItem.model_for_url(url)
 

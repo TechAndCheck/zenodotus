@@ -189,4 +189,27 @@ class UserTest < ActiveSupport::TestCase
 
     assert_equal false, user.validate_totp_login_code("123456")
   end
+
+  test "can get valid remote key" do
+    user = users(:user)
+    remote_key = user.valid_remote_key
+    assert remote_key.key_valid?
+  end
+
+  test "can expire remote key" do
+    user = users(:user)
+    remote_key = user.valid_remote_key
+    user.expire_remote_key
+    remote_key.reload
+    assert_not remote_key.key_valid?
+  end
+
+  test "can rotate key" do
+    user = users(:user)
+    remote_key = user.valid_remote_key
+    user.rotate_remote_key
+    remote_key.reload
+    assert_not remote_key.key_valid?
+    assert user.valid_remote_key.key_valid?
+  end
 end

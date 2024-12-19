@@ -20,7 +20,7 @@ class Admin::ApplicantsController < AdminController
 
   sig { void }
   def update
-    typed_params = TypedParams[UpdateParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
     user = Applicant.find(typed_params.id).user
     raise "Applicant doesn't have a user" if user.nil?
 

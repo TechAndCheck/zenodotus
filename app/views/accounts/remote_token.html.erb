@@ -1,0 +1,28 @@
+<% @title_tag = "sAuthentication" %>
+
+<div class="box box--sm box--miniform">
+	<div class="mb-5">
+		You can now close this window and return to your previous page.
+	</div>
+
+	<script>
+		// Send messsage to Chrome extension to save the token
+		// The ID of the extension we want to talk to.
+		const extensionId = 'gmonfeekmmpegokpfbgohfhkkkllejhe';
+
+		// Check if extension is installed
+		if (chrome && chrome.runtime) {
+				console.log('Extension installed and enabled <%= @token %>');
+		  // Make a request:
+		  chrome.runtime.sendMessage(
+		    extensionId,
+		    {
+		      token: '<%= @remote_token %>'
+		    },
+		    (response) => {
+		      if (!response.success) handleError(url);
+		    }
+		  );
+		}
+	</script>
+</div>

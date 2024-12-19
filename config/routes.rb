@@ -32,7 +32,6 @@ Rails.application.routes.draw do
                 confirmations: "users/confirmations",
             }
 
-
     scope "users/sign_in/mfa" do
       devise_scope :user do
         get "/", to: "users/sessions#mfa_validation", as: "mfa_validation"
@@ -140,7 +139,8 @@ Rails.application.routes.draw do
     end
 
     scope "api", format: :json do
-      get "/submit", to: "api#submit", as: "api_submit"
+      get "/check_if_logged_in", to: "api#check_if_logged_in", as: "api_check_if_logged_in"
+      post "/submit", to: "api#submit", as: "api_submit"
     end
   end
 
@@ -151,6 +151,7 @@ Rails.application.routes.draw do
     post "/destroy_account", to: "accounts#destroy_account", as: "destroy_account"
     get "/setup/(:token)", to: "accounts#new", as: "new_account"
     post "/setup", to: "accounts#create", as: "create_account"
+    get "/remote_token", to: "accounts#remote_token", as: "remote_token"
 
     scope "/mfa" do
       delete "/totp", to: "accounts#destroy_totp_device", as: "destroy_totp_device"

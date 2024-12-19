@@ -13,7 +13,7 @@ class Admin::JobsStatusController < AdminController
   # Index function. Makes available an instance variable containing jobs queue details
   sig { void }
   def index
-    typed_params = TypedParams[JobsParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
 
     scrapes_for_page_number(typed_params.active_scrapes_page) # set the variables for scrapes
     jobs_count # set the variables for jobs
@@ -21,7 +21,7 @@ class Admin::JobsStatusController < AdminController
 
   sig { void }
   def scrapes
-    typed_params = TypedParams[JobsParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
 
     scrapes_for_page_number(typed_params.active_scrapes_page) # set the variables for scrapes
     render partial: "admin/jobs_status/scrapes", layout: false
@@ -42,7 +42,7 @@ class Admin::JobsStatusController < AdminController
   # Resubmits a scrape to Hypatia
   sig { void }
   def resubmit_scrape
-    typed_params = TypedParams[ResubmitScrapeParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
 
     scrape = Scrape.find(typed_params.id)
     scrape.update!({ error: true })
@@ -80,7 +80,7 @@ class Admin::JobsStatusController < AdminController
 
   sig { void }
   def delete_scrape
-    typed_params = TypedParams[ResubmitScrapeParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
     @scrape = Scrape.find(typed_params.id)
     return if @scrape.nil?
 

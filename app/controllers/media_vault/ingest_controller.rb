@@ -121,7 +121,7 @@ class MediaVault::IngestController < MediaVaultController
   sig { void }
   def submit_review
     # TODO: Spin off an active job to handle this
-    typed_params = TypedParams[SubmitReviewParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
     review_json = JSON.parse(typed_params.review_json)
     external_unique_id = typed_params.external_unique_id
 
@@ -163,7 +163,7 @@ class MediaVault::IngestController < MediaVaultController
   # UNUSED!!!!!!
   sig { void }
   def submit_media_review_source
-    typed_params = TypedParams[SubmitReviewSourceParams].new.extract!(params)
+    typed_params = OpenStruct.new(params)
     mediareview_array = find_media_review_in_page(typed_params.url)
 
     # Some notes for when this is implemented (currently turning it off in testing until we build it)
