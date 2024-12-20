@@ -160,7 +160,7 @@ class Users::SessionsController < Devise::SessionsController
       sign_in(user)
 
       if session[:token]
-        session[:token] = nil
+        session.delete(:token)
         render json: {
                 authentication_status: "success",
                 redirect: remote_token_path # The token is rotated when the page is visited
