@@ -160,10 +160,9 @@ class Users::SessionsController < Devise::SessionsController
       sign_in(user)
 
       if session[:token]
-        current_user.rotate_remote_key.remote_key # Not sure this is necesary
         render json: {
                 authentication_status: "success",
-                redirect: remote_token_path
+                redirect: remote_token_path # The token is rotated when the page is visited
         }
       else
         respond_to do |format|

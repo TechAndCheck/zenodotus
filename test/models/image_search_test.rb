@@ -72,6 +72,8 @@ class ImageSearchTest < ActiveSupport::TestCase
     results = private_image_search.run
 
     assert_equal 2, results.count
+    results = results.first
+    assert_equal 2, results.count
 
     results.each do |result|
       assert result[:image].private

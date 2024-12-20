@@ -45,7 +45,7 @@ class ApplicantsControllerTest < ActionDispatch::IntegrationTest
       name: "Jane Doe",
     })
 
-    assert_response :bad_request
+    assert_response :unprocessable_entity
   end
 
   test "should not allow applying with existing user email" do

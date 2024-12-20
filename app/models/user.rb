@@ -194,8 +194,7 @@ class User < ApplicationRecord
   end
 
   def valid_remote_key
-    remote_key = self.user_remote_keys.find_by(user: self, expires_at: Time.now..Float::INFINITY)
-    remote_key || self.rotate_remote_key
+    self.user_remote_keys.find_by(user: self, expires_at: Time.now..Float::INFINITY)
   end
 
   def valid_remote_key?(remote_key)

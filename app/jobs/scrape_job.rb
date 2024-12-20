@@ -17,12 +17,12 @@ class ScrapeJob < ApplicationJob
   end
 
   def perform(scrape)
-    puts "Beginning to scrape #{scrape.url} @ #{Time.now}"
+    logger.info "Beginning to scrape #{scrape.url} @ #{Time.now}"
     scrape.perform
 
     # We don't throw errors here anymore, they're handled in the Scrape model so that the scrape
     # can be properly marked
-    puts "Done submitting scrape for #{scrape.url} @ #{Time.now}"
+    logger.info "Done submitting scrape for #{scrape.url} @ #{Time.now}"
   end
 
   def get_sidekiq_queue

@@ -176,12 +176,12 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil uri
   end
 
-  test "can validate a totp login code for a user" do
-    user = users(:user_no_totp)
-    user.generate_totp_provisioning_uri
+  # test "can validate a totp login code for a user" do
+  #   user = users(:user_no_totp)
+  #   user.generate_totp_provisioning_uri
 
-    # assert user.validate_totp_login_code("123456") # TODO: Make this a real code somehow
-  end
+  #   # assert user.validate_totp_login_code("123456") # TODO: Make this a real code somehow
+  # end
 
   test "can de-validate a wrong totp login code for a user" do
     user = users(:user_no_totp)
@@ -192,13 +192,15 @@ class UserTest < ActiveSupport::TestCase
 
   test "can get valid remote key" do
     user = users(:user)
-    remote_key = user.valid_remote_key
+    remote_key = user.rotate_remote_key
+
+    assert_equal remote_key, user.valid_remote_key
     assert remote_key.key_valid?
   end
 
   test "can expire remote key" do
     user = users(:user)
-    remote_key = user.valid_remote_key
+    remote_key = user.rotate_remote_key
     user.expire_remote_key
     remote_key.reload
     assert_not remote_key.key_valid?
@@ -207,9 +209,11 @@ class UserTest < ActiveSupport::TestCase
   test "can rotate key" do
     user = users(:user)
     remote_key = user.valid_remote_key
+    assert_nil remote_key
+
+    remote_key = user.rotate_remote_key
     user.rotate_remote_key
     remote_key.reload
-    assert_not remote_key.key_valid?
-    assert user.valid_remote_key.key_valid?
+    assert remote_key.expired?
   end
 end

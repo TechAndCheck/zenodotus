@@ -98,7 +98,8 @@ class MediaVault::SearchControllerTest < ActionDispatch::IntegrationTest
       assert_response :success
 
       results = media_search.run
-
+      assert_equal 2, results.count
+      results = results.first
       assert_equal 2, results.count
 
       results.each do |result|
@@ -122,7 +123,8 @@ class MediaVault::SearchControllerTest < ActionDispatch::IntegrationTest
       assert_response :success
 
       results = media_search.run
-
+      assert_equal 2, results.count
+      results = results.first
       assert_equal 1, results.count
 
       results.each do |result|

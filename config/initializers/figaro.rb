@@ -43,3 +43,5 @@ end
 Figaro.require_keys("OLLAMA_URL")
 Figaro.require_keys("OLLAMA_PASSWORD")
 Figaro.require_keys("FACTCHECK_TOOLS_API_KEY")
+
+Figaro.require_keys("VIPS_WARNING") # This should always be set to "0" so that the logs are not spammed with ICPT warnings

@@ -20,6 +20,7 @@ class MediaVault::SearchController < MediaVaultController
     typed_params = OpenStruct.new(params)
 
     @myvault = typed_params.private.nil? ? false : typed_params.private
+    @myvault = typed_params.private == "true" ? true : false if typed_params.private.is_a?(String)
 
     if params.has_key?(:q) && typed_params.msid.nil?
       # Check if the query is a url, if so, try to download it
@@ -30,7 +31,6 @@ class MediaVault::SearchController < MediaVaultController
       rescue URI::InvalidURIError; end # Do nothing, just do a regular text search
 
       @uri = nil # We set this so we can show the proper search field if the url was passed in
-
       search_by_text(typed_params.q, private: @myvault)
     end
 
@@ -53,7 +53,7 @@ class MediaVault::SearchController < MediaVaultController
     typed_params = OpenStruct.new(params)
 
     @myvault = typed_params.private.nil? ? false : typed_params.private
-
+    @myvault = typed_params.private == "true" ? true : false if typed_params.private.is_a?(String)
 
     @media_search = ImageSearch.create_with_media_item(typed_params.media, current_user, @myvault)
     @query = typed_params.q
@@ -94,7 +94,6 @@ private
   sig { params(query: String, private: T.nilable(T::Boolean)).void }
   def search_by_text(query, private: false)
     @query = query
-
     search = TextSearch.create!(query: @query, user: current_user, private: private)
     @results = search.run
 

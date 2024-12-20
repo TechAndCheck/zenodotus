@@ -1,0 +1,1 @@
+FFMPEG.logger = Rails.logger

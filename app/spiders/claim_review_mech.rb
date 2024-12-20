@@ -88,7 +88,7 @@ class ClaimReviewMech < Mechanize
 
       claims_found = find_schema_review(page, node_stub)
       new_claims_found += claims_found
-      puts "Found claims: #{claims_found} for url #{node_stub.url}"
+      logger.info "Found claims: #{claims_found} for url #{node_stub.url}"
 
       # Increment the number of claims linked for all pages that link to this
       crawler_page.crawled_pages_in.each do |in_page|
