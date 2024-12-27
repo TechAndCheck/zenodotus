@@ -208,7 +208,7 @@ protected
 
   sig { void }
   def check_for_login_and_remote_token
-    return true unless params["token"] == "true" || session[:token] = true
+    return true unless params["token"] == "true" || session[:token] == true
 
     if current_user
       redirect_to(remote_token_path) && return

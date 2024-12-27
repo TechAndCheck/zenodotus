@@ -71,6 +71,7 @@ module HypatiaMock
   # @param media_url [String] the media post URL to return a mock Hypatia response for
   # @return nil
   def self.ensure_media_url_is_mocked(mock_data, media_url)
+    media_url = media_url.is_a?(String) ? media_url : media_url[:url]
     unless mock_data.has_key?(media_url)
       raise RuntimeError, "URL #{media_url}, was not caught by the Typhoeus testing mock. Please use an already mocked URL in your test or update the mock with this URL."
     end

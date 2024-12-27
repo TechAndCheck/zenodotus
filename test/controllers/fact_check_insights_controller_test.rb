@@ -128,9 +128,8 @@ class FactCheckInsightsControllerTest < ActionDispatch::IntegrationTest
   test "cannot download data from the Vault hostname" do
     host! Figaro.env.MEDIA_VAULT_HOST
 
-    assert_raises ActionController::RoutingError do
-      get fact_check_insights_download_path(format: :json)
-    end
+    get fact_check_insights_download_path(format: :json)
+    assert_response :not_found
   end
 
   test "downloading a file creates a corpus_download record" do

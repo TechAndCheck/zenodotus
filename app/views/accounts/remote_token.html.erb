@@ -8,7 +8,7 @@
 	<script>
 		// Send messsage to Chrome extension to save the token
 		// The ID of the extension we want to talk to.
-		const extensionId = 'gmonfeekmmpegokpfbgohfhkkkllejhe';
+		const extensionId = '<%= Figaro.env.CHROME_EXTENSION_ID %>';
 
 		// Check if extension is installed
 		if (chrome && chrome.runtime) {

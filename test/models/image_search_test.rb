@@ -37,8 +37,9 @@ class ImageSearchTest < ActiveSupport::TestCase
     Sources::InstagramPost.create_from_url!("https://www.instagram.com/p/CZ3_P6FrtMO/", users(:user))
     results = @image_search.run
 
-    assert_equal 3, results.count
+    assert_equal 3, results.first.count
 
+    results = results.first
     results.each do |result|
       assert_not result[:image].private
     end
@@ -105,6 +106,7 @@ class ImageSearchTest < ActiveSupport::TestCase
 
     assert_equal 2, results.count
 
+    results = results[0]
     results.each do |result|
       assert_not result[:video].private
     end
@@ -134,6 +136,8 @@ class ImageSearchTest < ActiveSupport::TestCase
     results = ImageSearch.create!(video: video_file, user: users(:user), private: true).run
 
     assert_equal 2, results.count
+
+    results = results.first
 
     results.each do |result|
       assert result[:video].private

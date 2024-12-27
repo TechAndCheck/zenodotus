@@ -121,7 +121,9 @@ class MediaVault::IngestController < MediaVaultController
   sig { void }
   def submit_review
     # TODO: Spin off an active job to handle this
-    typed_params = OpenStruct.new(params)
+    typed_params = OpenStruct.new(request.params)
+    raise ApiErrors::JSONParseException.new(typed_params.to_s) unless typed_params.review_json.is_a?(String)
+
     review_json = JSON.parse(typed_params.review_json)
     external_unique_id = typed_params.external_unique_id
 
@@ -142,7 +144,7 @@ class MediaVault::IngestController < MediaVaultController
     end
 
     render(json: response_payload, status: response_payload.has_key?(:error) ? 400 : 200)
-  rescue JSON::ParserError
+  rescue JSON::ParserError, ApiErrors::JSONParseException
     response_payload = {
       error_code: ApiErrors::JSONParseError.code,
       error: ApiErrors::JSONParseError.message,

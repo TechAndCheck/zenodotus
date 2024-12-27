@@ -37,9 +37,10 @@ class Admin::ApplicantsControllerTest < ActionDispatch::IntegrationTest
     applicant = applicants(:new)
 
     assert_not applicant.confirmed?
-    assert_raises Applicant::UnconfirmedError do
-      post admin_applicant_approve_path(id: applicant[:id])
-    end
+
+    post admin_applicant_approve_path(id: applicant[:id])
+    assert_response :precondition_failed
+
     applicant.reload
     assert_not applicant.approved?
   end
@@ -48,9 +49,9 @@ class Admin::ApplicantsControllerTest < ActionDispatch::IntegrationTest
     applicant = applicants(:approved)
 
     assert_predicate applicant, :approved?
-    assert_raises Applicant::StatusChangeError do
-      post admin_applicant_reject_path(id: applicant[:id])
-    end
+    post admin_applicant_reject_path(id: applicant[:id])
+    assert_response :precondition_failed
+
     applicant.reload
     assert_not applicant.rejected?
   end

@@ -324,7 +324,9 @@ class ScrapeTest < ActiveSupport::TestCase
     zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
 
     assert_emails 1 do
-      scrape.fulfill(zorki_image_post)
+      perform_enqueued_jobs do
+        scrape.fulfill(zorki_image_post)
+      end
     end
   end
 
@@ -338,7 +340,9 @@ class ScrapeTest < ActiveSupport::TestCase
     response = [{ "status": "removed" }.stringify_keys] # responses come in with string not symbols so to simulate that this happens
 
     assert_emails 1 do
-      scrape.fulfill(response)
+      perform_enqueued_jobs do
+        scrape.fulfill(response)
+      end
     end
   end
 
@@ -351,7 +355,9 @@ class ScrapeTest < ActiveSupport::TestCase
 
     response = [{ "status": "error" }.stringify_keys] # responses come in with string not symbols so to simulate that this happens
     assert_emails 1 do
-      scrape.fulfill(response)
+      perform_enqueued_jobs do
+        scrape.fulfill(response)
+      end
     end
   end
 
@@ -392,7 +398,9 @@ class ScrapeTest < ActiveSupport::TestCase
     zorki_image_post = InstagramMediaSource.extract("https://www.instagram.com/p/CBcqOkyDDH8/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
 
     assert_emails 0 do
-      scrape.fulfill(zorki_image_post)
+      perform_enqueued_jobs do
+        scrape.fulfill(zorki_image_post)
+      end
     end
   end
 
@@ -406,7 +414,9 @@ class ScrapeTest < ActiveSupport::TestCase
     response = [{ "status": "removed" }.stringify_keys] # responses come in with string not symbols so to simulate that this happens
 
     assert_emails 1 do
-      scrape.fulfill(response)
+      perform_enqueued_jobs do
+        scrape.fulfill(response)
+      end
     end
   end
 
@@ -419,7 +429,9 @@ class ScrapeTest < ActiveSupport::TestCase
 
     response = [{ "status": "error" }.stringify_keys] # responses come in with string not symbols so to simulate that this happens
     assert_emails 1 do
-      scrape.fulfill(response)
+      perform_enqueued_jobs do
+        scrape.fulfill(response)
+      end
     end
   end
 end

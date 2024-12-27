@@ -24,6 +24,10 @@ class Users::SessionsController < Devise::SessionsController
 
   # GET /resource/sign_in
   def new
+    if params[:token] == "true"
+      session[:token] = true
+    end
+
     super
   end
 

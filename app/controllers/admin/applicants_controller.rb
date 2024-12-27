@@ -35,11 +35,16 @@ class Admin::ApplicantsController < AdminController
   def approve
     @applicant = Applicant.find(review_params[:id])
 
-    @applicant.approve(
-      reviewer: current_user,
-      review_note: review_params[:review_note],
-      review_note_internal: review_params[:review_note_internal],
-    )
+    begin
+      @applicant.approve(
+        reviewer: current_user,
+        review_note: review_params[:review_note],
+        review_note_internal: review_params[:review_note_internal],
+      )
+    rescue Applicant::UnconfirmedError
+      flash[:error] = "Applicant has not confirmed their email address."
+      return redirect_to admin_applicants_path, status: :precondition_failed
+    end
 
     user = User.create_from_applicant(@applicant)
     user.send_setup_instructions
@@ -52,11 +57,16 @@ class Admin::ApplicantsController < AdminController
   def reject
     @applicant = Applicant.find(review_params[:id])
 
-    @applicant.reject(
-      reviewer: current_user,
-      review_note: review_params[:review_note],
-      review_note_internal: review_params[:review_note_internal],
-    )
+    begin
+      @applicant.reject(
+        reviewer: current_user,
+        review_note: review_params[:review_note],
+        review_note_internal: review_params[:review_note_internal],
+      )
+    rescue Applicant::StatusChangeError
+      flash[:error] = "Applicant has already been approved."
+      return redirect_to admin_applicants_path, status: :precondition_failed
+    end
 
     flash[:success] = "Applicant has been rejected."
     redirect_to admin_applicants_path

@@ -3,3 +3,4 @@ This is especially true in testing and with neo4jrb migrations. Anyways, we're n
 
 - `rm -r /opt/homebrew/var/neo4j/data/`
 - `neo4j-admin dbms set-initial-password <password>`
+- `rake neo4j:migrate`

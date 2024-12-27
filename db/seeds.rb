@@ -21,24 +21,24 @@ module S3OverRide
 end
 AwsS3Downloader.singleton_class.prepend(S3OverRide)
 
-# Role.create!([
-#   { name: "new_user" },
-#   { name: "fact_check_insights_user" },
-#   { name: "media_vault_user" },
-#   { name: "admin" },
-# ])
+Role.create!([
+  { name: "new_user" },
+  { name: "fact_check_insights_user" },
+  { name: "media_vault_user" },
+  { name: "admin" },
+])
 
-# easy_password = "password123"
+easy_password = "password123"
 
-# # Super-admin account; no applicant necessary.
-# admin = User.create!({
-#   name: "Admin",
-#   email: "admin@example.com",
-#   password: easy_password,
-#   confirmed_at: Time.now,
-# })
-# admin.add_role :admin
-# Flipper.enable_actor(:adhoc, admin)
+# Super-admin account; no applicant necessary.
+admin = User.create!({
+  name: "Admin",
+  email: "admin@example.com",
+  password: easy_password,
+  confirmed_at: Time.now,
+})
+admin.add_role :admin
+Flipper.enable_actor(:adhoc, admin)
 
 # Applicant.create!([
 #   # This applicant is a fresh, unconfirmed applicant.
