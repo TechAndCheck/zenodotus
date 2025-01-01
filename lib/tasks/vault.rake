@@ -17,7 +17,7 @@ namespace :vault do
     items = date.present? ? ArchiveItem.where("created_at >= ?", date) : ArchiveItem.all
 
     items.map do |item|
-      if item.images.empty? && item.videos.empty? && item.scrape.present? && item.scrape.status != "removed" && item.scrape.status != "error"
+      if item.images.empty? && item.videos.empty? && item.scrape.present? && item.scrape.fulfilled
         puts "Resubmitting #{item.id} for processing"
         item.scrape.enqueue
       end
