@@ -1,12 +1,12 @@
 <div class="flex" data-controller="account">
   <div id="nav" class="account-page__sidebar">
-    <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="accountSettings">Settings</a>
-    <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="textSearchHistory">Text searches</a>
-    <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="imageSearchHistory">Image searches</a>
+    <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="accountSettings"><%= t("account_admin.settings") %></a>
+    <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="textSearchHistory"><%= t("account_admin.text_searches") %></a>
+    <a class="block" href="javascript:;" data-action="account#toggleView" data-account-id-param="imageSearchHistory"><%= t("account_admin.image_searches") %></a>
   </div>
   <div id="settings" class="account-page__main-content">
     <div data-account-target="updateAccountSection" id="accountSettings" class="account-page__section">
-      <h2>Update account details</h2>
+      <h2><%= t("account_admin.update_account_details") %></h2>
 			<div class="account-page__box-container account-page__box-container--update-account-container">
 				<%= render "change_password" %>
 				<%= render "change_email" %>
@@ -19,11 +19,11 @@
       </div>
 		</div>
     <div data-account-target="textSearchHistorySection" id="textSearchHistory" class="account-page__section" hidden=true>
-      <h2>Text Search History:</h2>
+      <h2><%= t("account_admin.text_search_history") %></h2>
       <div>
 				<div class="account-page__box-container">
 					<% if @text_searches.empty? %>
-						<h3>No results found</h3>
+						<h3><%= t("account_admin.no_results_found") %></h3>
 					<% else %>
 						<% split_searches_by_date(@text_searches).each do |date, searches| %>
 							<%= render partial: "text_search_history_box", locals: { date: date, searches: searches } %>
@@ -35,11 +35,11 @@
     </div>
 
     <div data-account-target="imageSearchHistorySection" id="imageSearchHistory" class="account-page__section" hidden=true>
-      <h2>Image Search History:</h2>
+      <h2><%= t("account_admin.image_search_history") %></h2>
       <div>
 				<div class="account-page__box-container">
 					<% if @image_searches.empty? %>
-						<h3>No results found</h3>
+						<h3><%= t("account_admin.no_results_found") %></h3>
 					<% else %>
 						<% @image_searches.each_with_index do |search, index| %>
 							<%= render partial: "image_search_history_box", locals: { search: search, index: index } %>

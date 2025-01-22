@@ -1,0 +1,19 @@
+en:
+  settings:
+    mfa:
+      title: "Gestionar MFA"
+      description: "Gestione sus claves y métodos de autenticación de múltiples factores a continuación"
+      webauthn_section_title: "Claves Webauthn/Hardware"
+      enable_webauthn: "Habilitar clave Webauthn/Hardware"
+      credential_name: "Nombre de la credencial"
+      created_at: "Creado el"
+      delete_device: "Eliminar dispositivo"
+      delete_device_confirm: "¿Eliminar el dispositivo de autenticación llamado '%{name}'?"
+      add_webauthn: "Agregar clave Webauthn/Hardware"
+      totp_section_title: "Autenticación TOTP basada en aplicación"
+      totp_enabled: "TOTP habilitado"
+      remove_totp: "Eliminar autenticación TOTP"
+      remove_totp_confirm: "¿Eliminar su cuenta TOTP basada en aplicación?"
+      add_totp: "Agregar autenticación TOTP de aplicación"
+    image_search_history:
+      search_date: "Fecha de búsqueda"

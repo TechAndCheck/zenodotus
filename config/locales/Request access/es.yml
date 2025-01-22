@@ -1,0 +1,36 @@
+es:
+  request_access:
+    request_access: "Solicitar acceso"
+    access_to_the_site: "El acceso al sitio requiere la aprobación del equipo de Duke Reporters' Lab. La aprobación generalmente se determina en un plazo de aproximadamente una semana. Cuanto más detalle puedas proporcionar sobre quién eres y cómo planeas usar los datos, mejor. Si tienes alguna pregunta,"
+    please_get_in_touch: "no dudes en contactarnos.."
+    your_name: "Tu nombre *"
+    email_address: "Correo electrónico *"
+    youll_need_to_confirm: "Deberás confirmar esta dirección de correo electrónico antes que podamos procesar tu solicitud."
+    how_do_you_plan_to_use_the_data: "¿Cómo planeas utilizar los datos? *"
+    organization_affiliation: "Organización/Afiliación"
+    if_any: "(si tienes)"
+    if_you_will_be_using: "Si utilizarás estos datos principalmente en nombre de una organización, como tu empleador o universidad, por favor indícalo."
+    what_is_your_primary_role: "¿Cuál es tu rol principal?"
+    fact-checker_researcher_etc: "Verificador de datos, investigador, etc."
+    where_are_you_located: "¿Dónde te encuentras?"
+    accept_the: "Aceptar los"
+    terms_and_conditions: "términos y condiciones *"
+    submit_request: "Enviar solicitud"
+    email_confirmed:
+      email_confirmed: "Email confirmado"
+      email_address_confirmed: "Dirección de correo electrónico confirmada."
+      thanks_for_confirming: "Gracias por confirmar su dirección de correo electrónico. Hemos recibido su solicitud de acceso y nos pondremos en contacto con usted."
+      return_to_home: "Volver a la página de inicio"
+    confirm_email:
+      confirm_email: "Confirmar email"
+      next_confirm_your: "A continuación, confirma tu dirección de correo electrónico."
+      we_received_your_application: "Hemos recibido su solicitud, pero antes de evaluarla necesitamos que confirme su dirección de correo electrónico. Compruebe su bandeja de entrada y siga el enlace de confirmación que aparece en el mensaje que acabamos de enviarle."
+    not_found:
+      page_title: "Confirmación no encontrada"
+      error_title: "No se pudo encontrar la confirmación de correo electrónico."
+      error_message: "No podemos confirmar su dirección de correo electrónico, ya sea porque el enlace que hizo clic no tiene un token de confirmación válido o porque la dirección ya ha sido confirmada."
+    confirmation_error:
+      page_title: "Error de confirmación"
+      error_title: "No se pudo confirmar el correo electrónico."
+      error_message_html: "Lo sentimos, no pudimos confirmar su dirección de correo electrónico. Por favor, intente nuevamente o %{contact_link} para obtener más ayuda."
+      contact_link_text: "contáctenos"

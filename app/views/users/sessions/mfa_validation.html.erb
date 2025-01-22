@@ -3,12 +3,12 @@
 <div class="box box--sm box--miniform">
   <!-- TODO: customize depending on the insights/vault split -->
   <p>
-    To continue your log in, authenticate with your previously registered two factor authentication method.
+    <%= t("login.to_continue_your_log_in_authenticate_with_two_factor_authentication") %>
   </p>
   <%= render "validate_mfa_webauthn" if @user.webauthn_credentials.count.positive? %>
   <%= render "validate_mfa_totp" if @user.totp_confirmed %>
   <p>
-    If you've lost your key or your device is unavailable, you can
-    <%= link_to "use a backup code here", mfa_use_recovery_code_path %>
+    <%= t("login.if_youve_lost_your_key_or_are_on_a_different") %>
+    <%= link_to t("login.use_a_backup"), mfa_use_recovery_code_path %>
   </p>
 </div>

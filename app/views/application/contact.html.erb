@@ -3,8 +3,8 @@
 <div class="full-bleed flex flex-col items-stetch lg:items-center lg:flex-row-reverse gap-24 p-10 lg:p-20">
 	<div class="lg:basis-2/4">
 		<div class="max-w-2xl">
-			<h1>Let's stay in touch</h1>
-			<p class="b1">For questions about the <%= @site[:title] %> data, please email us at <%= mail_to "hello@factcheckinsights.org" %>.</p>
+			<h1><%= t("contact.lets_stay_in_touch") %></h1>
+			<p class="b1"><%= t("contact.for_questions_about_the_mediavault_data_please_email", site: @site[:title]) %> <%= mail_to "hello@factcheckinsights.org" %>.</p>
 			<p class="b2"><%= render partial: "#{@site[:shortname]}/optout_instructions" %></p>
 		</div>
 	</div>

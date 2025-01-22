@@ -1,0 +1,9 @@
+es:
+  save_a_post:
+    save_a_post: "Guardar una publicación"
+    archive_a_url: "Archiva la URL de una publicación de redes sociales en tu MyVault"
+    archive: "Archivar"
+    request_successfully_queued: "Solicitud enviada con éxito"
+    we_will_notify_you: "Te notificaremos por correo electrónico cuando la solicitud haya sido procesada."
+    this_may_take_a_while: "Esto puede tardar un tiempo dependiendo del tamaño de la cola de solicitudes."
+    unfortunately_we_do_not: "Lamentablemente, no podemos archivar enlaces desde esta URL en este momento."

@@ -1,8 +1,8 @@
 <div class="account-page__box account-update-box" data-controller="delete-account">
 	<div class="account-page__box--settings__header">
-		<h3>Delete account</h3>
+		<h3><%= t("account_admin.delete_password.delete_password") %></h3>
 		<p>
-			To delete your account, enter your password below, then accept the browser alert.
+			<%= t("account_admin.delete_password.to_delete_your_account") %>
 		</p>
 	</div>
 	<div class="account-page__box--settings__form">
@@ -21,14 +21,13 @@
 					"data-delete-account-target": "passwordInput",
 					autofocus: true,
 					autocomplete: "new-password",
-					placeholder: "Password",
+					placeholder: t("account_admin.delete_password.password"),
 					class: "input input--email") %>
 			</div>
 
 			<div class="actions">
-				<%= f.submit "Delete my account", class: "btn btn--submit" %>
+				<%= f.submit t("account_admin.delete_password.delete_my_account"), class: "btn btn--submit" %>
 			</div>
 		<% end %>
 	</div>
 </div>
-

@@ -1,13 +1,13 @@
 <div class="alert alert--error" role="alert">
   <div class="alert__message flex flex-col">
     <div class="font-bold text-lg">
-      Error:
+      <%= t("2fa.error.error") %>:
     </div>
     <div>
-      There was an error saving your two-factor token, please refresh the page and try again
+    	<%= t("2fa.error.there_was_an_error_saving_two_factor_token") %>
     </div>
     <div>
-      <br>If this continues to not work please contact us for assistance
+      <br><%= t("2fa.error.if_this_continues_to_not_work") %>
     </div>
 
     <% if defined?(error) && !error.nil? %>

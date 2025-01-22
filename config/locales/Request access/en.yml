@@ -1,0 +1,36 @@
+en:
+  request_access:
+    request_access: "Request access"
+    access_to_the_site: "Access to the site requires approval by the Duke Reporters’ Lab team. Approval is usually determined within approximately one week. The more detail you can provide about who you are and how you want to use the data, the better. If you have any questions,"
+    please_get_in_touch: "please get in touch."
+    your_name: "Your name *"
+    email_address: "Email address *"
+    youll_need_to_confirm: "You’ll need to confirm this email address before we process your application."
+    how_do_you_plan_to_use_the_data: "How do you plan to use the data? *"
+    organization_affiliation: "Organization affiliation"
+    if_any: "(if any)"
+    if_you_will_be_using: "If you will be using this data primarily on behalf of an organization — such as your employer or university — please let us know."
+    what_is_your_primary_role: "What is your primary role?"
+    fact-checker_researcher_etc: "Fact-checker, researcher, etc."
+    where_are_you_located: "Where are you located?"
+    accept_the: "Accept the"
+    terms_and_conditions: "Accept the terms and conditions *"
+    submit_request: "Submit request"
+    email_confirmed:
+      email_confirmed: "Email confirmed"
+      email_address_confirmed: "Email address confirmed."
+      thanks_for_confirming: "Thanks for confirming your email address. Your request for access has been received, and we’ll be in touch."
+      return_to_home: "Return to home"
+    confirm_email:
+      confirm_email: "Confirm email"
+      next_confirm_your: "Next, confirm your email address."
+      we_received_your_application: "We received your application, but before we evaluate it, we need you to confirm your email address. Please check your inbox and follow the confirmation link in the message we just sent."
+    not_found:
+      page_title: "Confirmation not found"
+      error_title: "Email confirmation could not be found."
+      error_message: "We cannot confirm your email address, either because the link you clicked does not have a valid confirmation token or because the address has already been confirmed."
+    confirmation_error:
+      page_title: "Confirmation error"
+      error_title: "Email could not be confirmed."
+      error_message_html: "Sorry, we could not confirm your email address. Please try again, or %{contact_link} for more help."
+      contact_link_text: "contact us"

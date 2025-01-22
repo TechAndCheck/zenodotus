@@ -1,0 +1,3 @@
+en:
+  after_request_access:
+    we_received_your_application: "We received your application, but before we evaluate it, we need you to confirm your email address. Please check your inbox and follow the confirmation link in the message we just sent."

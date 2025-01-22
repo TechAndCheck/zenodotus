@@ -18,11 +18,11 @@
 		<% if user_signed_in? %>
 			<ol id="site-nav__primary" class="site-nav__links">
 				<% if current_user.can_access_media_vault? %>
-					<li><%= link_to media_vault_dashboard_path, class: "btn btn--naked" do %><span>Dashboard</span><% end %></li>
+					<li><%= link_to media_vault_dashboard_path, class: "btn btn--naked" do %><span><%= t("layout.header.dashboard") %></span><% end %></li>
 					<% if Flipper.enabled?(:adhoc, current_user) %>
 						<li><%= link_to media_vault_myvault_path, class: "btn btn--naked" do %><span>MyVault&nbsp;<span style="font-size: .7rem; vertical-align: text-top;" class="super">Beta</span></span><% end %></li>
 					<% end %>
-					<li><%= link_to media_vault_guide_path, class: "btn btn--naked" do %><span>Guide<span class="hideable"> to MediaVault</span></span><% end %></li>
+					<li><%= link_to media_vault_guide_path, class: "btn btn--naked" do %><span><%= t("layout.header.guide") %><span class="hideable"> <%= t("layout.header.to") %> MediaVault</span></span><% end %></li>
 					<li class="site-nav__search">
 						<%= render partial: "media_vault/search/search_box", locals: { myvault: @myvault } %>
 					</li>
@@ -42,34 +42,34 @@
   						<li>
  							<%= link_to fact_check_insights_root_url, class: "btn btn--naked icon-prefixed" do %>
    									<%= use_svg "switch-lr", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
-								<span><%= "Switch to #{SiteDefinitions::FACT_CHECK_INSIGHTS[:title]}" %></span>
+								<span><%= t("layout.header.switch_to", title: SiteDefinitions::FACT_CHECK_INSIGHTS[:title]) %></span>
  							<% end %>
   						</li>
   						<% if current_user.is_admin? %>
  							<li>
 								<%= link_to admin_root_path, class: "btn btn--naked icon-prefixed" do %>
    									<%= use_svg "bolt", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
-   									<span>Admin</span>
+   									<span><%= t("layout.header.admin") %></span>
 								<% end %>
  							</li>
   						<% end %>
   						<li>
  							<%= link_to account_path, class: "btn btn--naked icon-prefixed" do %>
 								<%= use_svg "settings", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
-								<span>Settings</span>
+								<span><%= t("layout.header.settings") %></span>
  							<% end %>
   						</li>
   						<li>
  							<%= button_to destroy_user_session_path, class: "btn btn--naked btn--danger icon-prefixed", method: :delete do %>
 								<%= use_svg "power", svg_attrs: { class: "icon icon--lg", aria: { hidden: true } } %>
-								<span>Logout</span>
+								<span><%= t("layout.header.logout") %></span>
  							<% end %>
   						</li>
    					</ol>
 				</li>
  			<% else %>
-				<li><%= link_to "Request access", new_applicant_path, class: "btn" %></li>
-				<li><%= link_to "Log in", new_user_session_path, class: "btn btn--reversed" %></li>
+				<li><%= link_to  t("layout.header.request_access"), new_applicant_path, class: "btn" %></li>
+				<li><%= link_to t("layout.header.log_in"), new_user_session_path, class: "btn btn--reversed" %></li>
  			<% end %>
   		</ol>
 	</nav>

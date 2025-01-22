@@ -3,24 +3,24 @@
 <div class="box box--sm box--miniform">
   <!-- TODO: customize depending on the insights/vault split -->
   <p>
-    To continue your log in, authenticate with a previously unused recovery code.
+    <%= t.("login.to_continue_your_log_in_authenticate_with_a_previously_unused_recovery_code") %>
   </p>
   <div data-controller="webauthn-login" class="mb-5">
     <div data-webauthn-login-target="lock" class="setup_mfa--lock"></div>
     <input
       type="text"
-      placeholder="Recovery code"
+      placeholder="<%= t("login.recovery_code") %>"
       class="mb-5"
       data-webauthn-login-target="recoveryCode">
     <button
       data-action="click->webauthn-login#authenticateRecoveryCode"
       data-webauthn-login-target="authenicateButton"
       class="btn btn--lg">
-      Click Here To Login
+      <%= t("login.click_here_to_login") %>
     </button>
   </div>
   <p>
-    If you've lost your key or are on a different device, you can
-    <%= link_to "use a backup code here", mfa_use_recovery_code_path %>
+    <%= t("login.if_youve_lost_your_key_or_are_on_a_different") %>
+    <%= link_to t("login.use_a_backup"), mfa_use_recovery_code_path %>
   </p>
 </div>

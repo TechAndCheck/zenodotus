@@ -1,12 +1,12 @@
 <% @title_tag = "About Us" %>
 
 <div class="mx-auto text-center max-w-xs py-10 lg:py-20">
-	<h1>Who are we, in fact?</h1>
+	<h1><%= t("about.who_are_we") %></h1>
 </div>
 
 <div class="b2 mx-auto max-w-2xl">
-	<p>The Duke Reporters’ Lab is a center for journalism research in the Sanford School of Public Policy, part of the DeWitt Wallace Center for Media & Democracy. Our core projects focus on fact-checking, and we also do occasional research about trust in the news media and other topics. The Reporters’ Lab led the development of the ClaimReview and MediaReview tagging systems through an open process that involved the global fact-checking community, Google, Bing and Jigsaw.</p>
-	<p>The Lab is funded by the Knight Chair endowment as well as grants from Knight Foundation, the Google News Initiative, the Facebook Journalism Project and Craig Newmark.</p>
+	<p><%= t("about.the_duke_reporters_lab_is_a_center_for_journalism_research") %></p>
+	<p><%= t("about.the_lab_is_funded") %></p>
 </div>
 
 <div id="section--about-team" class="py-10 lg:py-20">
@@ -15,8 +15,8 @@
 			<div class="team-member__photo-wrapper">
 				<%= image_tag "team/bill.jpg", size: "300x300", class: "team-member__photo", alt: "Bill Adair" %>
 			</div>
-			<h4 class="team-member__name">Bill Adair</h4>
-			<p class="team-member__bio">Bill Adair is the Knight Professor for the Practice of Journalism and Public Policy at Duke University and the director of the Duke Reporters’ Lab. He is the creator of Pulitzer Prize-winning website PolitiFact and worked for 24 years as a reporter and editor at the Tampa Bay Times. He is the author of The Mystery of Flight 427: Inside a Crash Investigation.</p>
+			<h4 class="team-member__name"><%= t("about.bill_adair") %></h4>
+			<p class="team-member__bio"><%= t("about.bill_adair_is_the_knight_professor") %></p>
 			<ul class="team-member__contact">
 				<li><%= email_link_to "bill.adair@duke.edu" %></li>
 				<li><%= twitter_link_to "BillAdairDuke" %></li>
@@ -24,21 +24,10 @@
 		</li>
 		<li class="team-member">
 			<div class="team-member__photo-wrapper">
-				<%= image_tag "team/mark.jpg", size: "300x300", class: "team-member__photo", alt: "Mark Stencel" %>
-			</div>
-			<h4 class="team-member__name">Mark Stencel</h4>
-			<p class="team-member__bio">Mark Stencel is NPR’s former managing editor for digital news and co-author of The Goat Must Be Fed, a 2014 Duke Reporters’ Lab study on obstacles to newsroom innovation. He previously held senior editing and executive positions at the Washington Post and Congressional Quarterly, and was a reporter for the the News & Observer in Raleigh-Durham, N.C.</p>
-			<ul class="team-member__contact">
-				<li><%= email_link_to "mark.stencel@duke.edu" %></li>
-				<li><%= twitter_link_to "MarkStencel" %></li>
-			</ul>
-		</li>
-		<li class="team-member">
-			<div class="team-member__photo-wrapper">
 				<%= image_tag "team/chris.jpg", size: "300x300", class: "team-member__photo", alt: "Christopher Guess" %>
 			</div>
-			<h4 class="team-member__name">Christopher Guess</h4>
-			<p class="team-member__bio">Christopher Guess is the lead technologist for the Reporters’ Lab.</p>
+			<h4 class="team-member__name"><%= t("about.christopher_guess") %></h4>
+			<p class="team-member__bio"><%= t("about.christopher_guess_is_the_lead_technologist_for_the_reporters_lab") %></p>
 			<ul class="team-member__contact">
 				<li><%= email_link_to "christopher.guess@duke.edu" %></li>
 				<li><%= twitter_link_to "cguess" %></li>
@@ -48,8 +37,8 @@
 			<div class="team-member__photo-wrapper">
 				<%= image_tag "team/erica.jpg", size: "300x300", class: "team-member__photo", alt: "Erica Ryan" %>
 			</div>
-			<h4 class="team-member__name">Erica Ryan</h4>
-			<p class="team-member__bio">Erica Ryan is the project manager for the Reporters’ Lab.</p>
+			<h4 class="team-member__name"><%= t("about.erica_ryan") %></h4>
+			<p class="team-member__bio"><%= t("about.erica_ryan_is_the_project_manager_for_the_reporters_lab") %></p>
 			<ul class="team-member__contact">
 				<li><%= email_link_to "elryan@gmail.com" %></li>
 				<li><%= twitter_link_to "ericalryan" %></li>
@@ -59,12 +48,14 @@
 			<div class="team-member__photo-wrapper">
 				<%= image_tag "team/joel.jpg", size: "300x300", class: "team-member__photo", alt: "Joel Luther" %>
 			</div>
-			<h4 class="team-member__name">Joel Luther</h4>
-			<p class="team-member__bio">Joel Luther is the ClaimReview and MediaReview Research and Outreach Coordinator in the Reporters’ Lab.</p>
+			<h4 class="team-member__name"><%= t("about.joel_luther") %></h4>
+			<p class="team-member__bio"><%= t("about.joel_luther_is_the_claimreview") %></p>
 			<ul class="team-member__contact">
 				<li><%= email_link_to "joel.luther@duke.edu" %></li>
 			</ul>
 		</li>
+    <li class="team-member">
+    </li>
     <li class="team-member">
     </li>
 	</ul>

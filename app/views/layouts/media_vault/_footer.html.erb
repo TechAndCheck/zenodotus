@@ -2,8 +2,13 @@
 	<div id="site-footer__about">
 		<%= link_to use_svg("media-vault-logo", title: "MediaVault", svg_attrs: { id: "site-footer__logo", width: 180, height: 77, role: "img" }), root_path %>
 		<div id="site-footer__legal">
-			<p><%= link_to "MediaVault", root_path %> is a project of the <%= link_to "Duke Reporters’ Lab", "https://reporterslab.org/" %>. It is an archive of images, videos and memes that have been analyzed by reputable fact-checking organizations from around the world.</p>
-			<p>© <%= link_to "Duke Reporters’ Lab", "https://reporterslab.org/" %> 2022. The compilation of this data is licensed under <%= link_to "CC BY", "https://creativecommons.org/licenses/by/4.0/" %>.</p>
+			<p><%= t("layouts.footer.is_a_project_of",
+									media_review_link: link_to("MediaVault", root_path),
+									reporters_lab_link: link_to("Duke Reporters’ Lab", "https://reporterslab.org/") %></p>
+			<p><%= t("layouts.footer.copyright",
+									reporters_lab_link: link_to("Duke Reporters’ Lab", "https://reporterslab.org/"),
+									current_year: Date.today.strftime("%Y"),
+					 				createive_commons_link: link_to("CC BY", "https://creativecommons.org/licenses/by/4.0/") %></p>
 		</div>
 	</div>
 

@@ -1,0 +1,25 @@
+en:
+  settings:
+    mfa:
+      title: "Manage MFA"
+      description: "Manage your multi-factor authentication keys and methods below"
+      webauthn_section_title: "Webauthn/Hardware Keys"
+      enable_webauthn: "Enable Webauthn/Hardware Key"
+      credential_name: "Credential Name"
+      created_at: "Created At"
+      delete_device: "Delete Device"
+      delete_device_confirm: "Delete authentication device named '%{name}'?"
+      add_webauthn: "Add Webauthn/Hardware Key"
+      totp_section_title: "App-Based TOTP Authentication"
+      totp_enabled: "TOTP Enabled"
+      remove_totp: "Remove TOTP Authentication"
+      remove_totp_confirm: "Remove your app-based TOTP account?"
+      add_totp: "Add App TOTP Authentication"
+    image_search_history:
+      search_date: "Search date"
+    change_email:
+      title: "Change email"
+      instructions: "To change your email, fill out the form below."
+      new_email: "New email"
+      confirm_email: "Confirm new email"
+      button: "Change my email"

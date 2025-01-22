@@ -1,0 +1,11 @@
+es:
+  dashboard:
+    dashboard: "Panel de control"
+    myvault_beta: "MyVault Beta"
+    guide_to_mediavault: "Guía de MediaVault"
+    drag_and_drop: "Arrastra y suelta imágenes o videos para buscar por medio"
+    you_can_also_search: "También puedes buscar por texto o URL de medios"
+    search: "Buscar"
+    switch_to_fact-check_insights: "Cambiar a Fact-Check Insights"
+    settings: "Configuración"
+    logout: "Cerrar sesión"

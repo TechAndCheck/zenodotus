@@ -1,7 +1,7 @@
 <div data-controller="webauthn-login" class="mb-5">
   <div data-webauthn-login-target="error"></div>
 
-  Enter the six digit code from your authenticator app below
+  <%= t("2fa.enter_the_six_digit_code") %>
   <div class="flex flex-col lg:basis-1/2 items-center mt-8">
   <div class="basis-1/2">
     <input type="text" data-webauthn-login-target="totpCode">
@@ -11,8 +11,7 @@
       data-action="click->webauthn-login#authenticateTotp"
       data-webauthn-login-target="authenicateButton"
       class="btn btn--lg">
-      Click Here To Authenticate With Your Authentication App
+      <%= t("2fa.click_here_to_authenticate_app") %>
     </button>
   </div>
 </div>
-

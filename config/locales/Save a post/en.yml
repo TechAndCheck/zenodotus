@@ -1,0 +1,9 @@
+en:
+  save_a_post:
+    save_a_post: "Save a post"
+    archive_a_url: "Archive a URL of a social media post to your MyVault"
+    archive: "Archive"
+    request_successfully_queued: "Request Successfully Queued"
+    we_will_notify_you: "We will notify you via email when the request is done processing."
+    this_may_take_a_while: "This may take a while depending on the size of the current queue."
+    unfortunately_we_do_not: "Unfortunately we do not currently support archiving of links from this URL"

@@ -4,7 +4,7 @@
 		<div class="icon-prefixed">
 			<%= use_svg "magnifying-glass", svg_attrs: { class: "icon", aria: { hidden: true } } %>
 			<div class="archive-item__metadatum">
-					<div class="image-search-history-box__metadatum__title">Search date</div>
+					<div class="image-search-history-box__metadatum__title"><%= t("settings.image_search_history.search_date") %></div>
 					<time
 							class="archive-item__metadatum__value"
 							datetime="<%= search.created_at.iso8601 %>"

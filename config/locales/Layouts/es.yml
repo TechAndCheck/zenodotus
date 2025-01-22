@@ -1,0 +1,25 @@
+es:
+  layouts:
+    footer:
+      is_a_project_of: "%{media_review_link} es un proyecto del %{reporters_lab_link}. Es un archivo de imágenes, videos y memes que han sido analizados por organizaciones verificadoras de hechos acreditadas de todo el mundo."
+      copyright: "© %{reporters_lab_link} %{current_year}. La compilación de estos datos está licenciada bajo %{createive_commons_link}."
+      dashboard: "Panel de control"
+      guide_to_the_data: "Guía de datos"
+      request_access_tbd: "Solicitar acceso (próximamente)"
+      request_access: "Solicitar acceso"
+      log_in: "Iniciar sesión"
+      about: "Acerca de"
+      contact: "Contacto"
+      terms_and_conditions: "Términos y condiciones"
+      privacy_policy: "Política de privacidad"
+      opt_out: "Darse de baja"
+    header:
+      dashboard: "Panel de control"
+      guide: "Guía"
+      to: "a"
+      switch_to: "Cambiar a %{title}"
+      admin: "Administración"
+      settings: "Configuración"
+      logout: "Cerrar sesión"
+      request_access: "Solicitar acceso"
+      log_in: "Iniciar sesión"

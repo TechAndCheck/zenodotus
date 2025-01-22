@@ -1,9 +1,8 @@
-<% @title_tag = "Confirmation error" %>
-
+<% @title_tag = t('request_access.confirmation_error.page_title') %>
 <div class="box box--lg box--message">
-	<h4 class="box__title icon-prefixed">
-		<%= use_svg "x-circle-outline", svg_attrs: { class: "icon icon--lg color--danger" } %>
-		<span>Email could not be confirmed.</span>
-	</h4>
-	<p>Sorry, we could not confirm your email address. Please try again, or <%= link_to "contact us", contact_path %> for more help.</p>
+  <h4 class="box__title icon-prefixed">
+    <%= use_svg "x-circle-outline", svg_attrs: { class: "icon icon--lg color--danger" } %>
+    <span><%= t('request_access.confirmation_error.error_title') %></span>
+  </h4>
+  <p><%= t('request_access.confirmation_error.error_message_html', contact_link: link_to(t('request_access.confirmation_error.contact_link_text'), contact_path)) %></p>
 </div>

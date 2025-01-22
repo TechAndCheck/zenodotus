@@ -1,24 +1,26 @@
 <div class="flex flex-col lg:basis-2/4 justify-center mb-8">
   <div class="lg:basis-2/4 b2">
-    <h3>App-Based TOTP Setup</h3>
+    <h3><%= t('2fa.totp_setup_title') %></h3>
     <p>
-      If you are using a browser that does not support Webauthn (mostly just Firefox) you can choose to use an authenticator app to generate a 2 factor authentication code for you instead.
+      <%= t('2fa.browser_compatibility_notice') %>
     </p>
   </div>
 </div>
-
 <div class="flex flex-col lg:basis-2/4 items-center mb-8">
   <img src="data:img/png;base64,<%= totp_qr_png %>" class="h-44 object-contain">
 </div>
-
 <div class="flex flex-col lg:basis-1/2 items-center mt-8">
   <div class="basis-1/2 mb-5 text-center">
-    Verify a code from your authenticator app in the text box<br>below to confirm everything's working.
+    <%= t('2fa.verification_instruction') %>
   </div>
   <div class="basis-1/2">
-    <input type="text" data-webauthn-target="totpSetupCode" placeholder="Verify Code...">
+    <input type="text"
+           data-webauthn-target="totpSetupCode"
+           placeholder="<%= t('2fa.verify_code_placeholder') %>">
   </div>
   <div class="basis-1/2 mt-4">
-    <button data-action="click->webauthn#finishTotpSetup" class="btn btn--lg">Finish TOTP Setup</button>
+    <button data-action="click->webauthn#finishTotpSetup" class="btn btn--lg">
+      <%= t('2fa.finish_setup_button') %>
+    </button>
   </div>
 </div>

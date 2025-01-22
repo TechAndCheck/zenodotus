@@ -2,39 +2,41 @@
 
 <div id="page--accounts--setup_mfa" class="content lg:flex lg:gap-20">
   <div class="lg:basis-2/4 b2">
-    <h2>Setting up Two-Factor Authentication</h2>
+    <h2><%= t('2fa.setup_title') %></h2>
     <p>
-      For security purposes we require two-factor authentication on all accounts. This ensures that
-      even if your password is compromised your data is secure from attackers trying to log into your
-      account.
+      <%= t('2fa.security_requirement') %>
     </p>
     <p>
-      We use a method of authentication known as Webauthn that will use your device/browser to create a passkey to identify you. Once you begin the process, your system will guide you through the necessary steps. After setup, you can return to the Settings page from your Fact-Check Insights account to add keys for additional devices.
+      <%= t('2fa.webauthn_explanation') %>
     </p>
     <p>
-      If you do not have the ability to use a Webauthn key, we also support app-based two-factor authentication via a code generator such as <a href="https://googleauthenticator.net">Google Authenticator</a> or <a href="https://authy.com/download/">Authy</a>.
+      <%= t('2fa.alternative_methods_html',
+            google_auth_link: link_to('Google Authenticator', 'https://googleauthenticator.net'),
+            authy_link: link_to('Authy', 'https://authy.com/download/')) %>
     </p>
     <p>
-      We do not support SMS-based two-factor authentication as it does not meet our standards for security.
+      <%= t('2fa.sms_notice') %>
     </p>
     <p>
-      If you have problems with setting up two-factor authentication, please contact <a href="mailto:hello@factcheckinsights.org">hello@factcheckinsights.org</a>.
+      <%= t('2fa.support_contact_html',
+            email_link: mail_to('hello@factcheckinsights.org')) %>
     </p>
   </div>
   <div class="lg:flex lg:flex-col lg:basis-2/4 mt-16 lg:mt-0" data-controller="webauthn"  data-webauthn-input-value="<%= { publicKey: @options }.to_json %>">
     <div data-webauthn-target="webauthnContainer">
       <div data-webauthn-target="lock" class="setup_mfa--lock"></div>
       <div class="flex justify-center text-center mb-5">
-        Give an optional nickname for this authentication device<br>("Main Yubikey", "Personal Phone", etc.)
+        <%= t("2fa.give_an_optional_nickname") %><br>
+        <%= t("2fa.nickname_examples") %>
       </div>
       <div class="flex justify-center">
         <input type="text" data-webauthn-target="nickname" placeholder="Device nickname">
       </div>
       <div data-webauthn-target="webauthnSetup" class="flex justify-center">
-        <button data-action="click->webauthn#beginWebauthnSetup" class="btn btn--lg mt-4">Start Passkey Setup</button>
+        <button data-action="click->webauthn#beginWebauthnSetup" class="btn btn--lg mt-4"><%= t("2fa.start_passkey_setup") %></button>
       </div>
       <div data-webauthn-target="totpSetup" class="flex justify-center mt-8">
-        <button data-action="click->webauthn#beginTotpSetup" class="btn btn--lg">Begin App-Based Setup Instead <i class="fas fa-arrow-right"></i></button>
+        <button data-action="click->webauthn#beginTotpSetup" class="btn btn--lg"><%= t("2fa.begin_app_based_setup") %> <i class="fas fa-arrow-right"></i></button>
       </div>
     </div>
   </div>

@@ -1,9 +1,9 @@
-<% @title_tag = "Confirm email" %>
+<% @title_tag = t("request_access.confirm_email.confirm_email") %>
 
 <div class="box box--lg box--message">
 	<h4 class="box__title icon-prefixed">
 		<%= use_svg "email-outline", svg_attrs: { class: "icon icon--lg color--success" } %>
-		<span>Next, confirm your email address.</span>
+		<span><%= t("request_access.confirm_email.next_confirm_your") %></span>
 	</h4>
-	<p>We received your application, but before we evaluate it, we need you to confirm your email address. Please check your inbox and follow the confirmation link in the message we just sent.</p>
+	<p><%= t("request_access.confirm_email.we_received_your_application") %></p>
 </div>

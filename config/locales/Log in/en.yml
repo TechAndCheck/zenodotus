@@ -1,0 +1,8 @@
+en:
+  login:
+    to_access_system: "To access the system, please log in below."
+    dont_have_an_account: "Don't have an account?"
+    email_address: "Email address"
+    password: "Password"
+    log_in: "Log in"
+    forgot_your_password_reset_it_here: "Forgot your password? Reset it here"

@@ -1,0 +1,3 @@
+es:
+  after_request_access:
+    we_received_your_application: "Hemos recibido tu solicitud, pero antes de poder evaluarla, necesitamos que confirmes tu correo electrónico. Por favor, mira tu bandeja de entrada y sigue el enlace de confirmación en el mensaje que te acabamos de enviar."

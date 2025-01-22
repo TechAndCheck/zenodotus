@@ -4,16 +4,16 @@
       Error:
     </div>
     <div>
-      There was an error validating your two-factor auth. Please try again below
+      <%= t("2fa.validation_error") %>
     </div>
     <div>
-      <br>If this continues to not work please contact us for assistance
+      <br><%= t("2fa.if_this_continues") %>
     </div>
 
     <% if defined?(error) && !error.nil? %>
     <br><hr><br>
     <div class="font-bold text-lg">
-      Error Message:
+      <%= t("2fa.error_message") %>
     </div>
     <div>
       <%= error %>

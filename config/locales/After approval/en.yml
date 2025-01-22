@@ -1,0 +1,8 @@
+en:
+  after_approval:
+    finish_setting_up: "Finish setting up your account"
+    your_request_to_access: "Your request to access the site has been approved! Please enter and confirm a password to continue setting up your account."
+    password: "Password"
+    confirm_password: "Confirm Password"
+    password_requirements: Your password should be between %{passsword_length_minimum} and %{password_length_maximum} characters long.
+    submit: "Submit"

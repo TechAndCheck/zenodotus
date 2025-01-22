@@ -1,10 +1,8 @@
 <div class="flex flex-col lg:basis-2/4 justify-center mb-8">
   <div class="lg:basis-2/4 b2">
-    <h3>Account Recovery Codes</h3>
+    <h3><%= t("2fa.account_recovery_codes") %></h3>
     <p>
-      These codes can each be used to recover your account should you lose your two-factor device.
-      Save these in a secure place, preferably offline. You will not be able to access them again
-      after leaving this page.
+    	<%= t("2fa.these_codes_can_each") %>
     </p>
   </div>
 </div>
@@ -19,6 +17,6 @@
 
 <div class="flex flex-col lg:basis-2/4 justify-center">
   <div class="flex justify-center">
-    <button data-action="click->webauthn#finishSetup" class="btn btn--lg">Complete Setup</button>
+    <button data-action="click->webauthn#finishSetup" class="btn btn--lg"><%= t("2fa.complete_setup") %></button>
   </div>
 </div>

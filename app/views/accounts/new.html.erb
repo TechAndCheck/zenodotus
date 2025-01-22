@@ -8,17 +8,17 @@
 	<fieldset class="fieldset">
 		<div class="fieldset__header">
 			<div class="fieldset__title">
-				Finish setting up your account
+				<%= t("after_approval.finish_setting up") %>
 			</div>
 			<div class="fieldset__description">
-				<p>Your request to access the site has been approved! Please enter and confirm a password to continue setting up your account.</p>
+				<p><%= t("after_approval.your_request_to_access") %></p>
 			</div>
 		</div>
 		<div class="fieldset__fields">
 			<div class="field__wrapper--input">
 				<%= f.label(
 					:password,
-					"Password *") %>
+					"#{t("after_approval.password")} *") %>
 				<%= f.password_field(
 					:password,
 					required: false) %>
@@ -29,20 +29,24 @@
 			<div class="field__wrapper--input">
 				<%= f.label(
 					:password_confirmation,
-					"Confirm password *") %>
+					"#{t("after_approval.confirm_password")} *") %>
 				<%= f.password_field(
 					:password_confirmation,
 					required: false) %>
 				<%= errors_for_field(
 					@user,
 					:password_confirmation) %>
-				<div class="field__description">Your password should be between <%= Devise.password_length.begin %> and <%= Devise.password_length.end %> characters long.</div>
+				<div class="field__description">
+					<%= t("after_approval.password_requirements",
+									passsword_length_minimum: Devise.password_length.begin,
+									password_length_maximum: Devise.password_length.end) %>
+				</div>
 			</div>
 		</div>
 	</fieldset>
 	<div class="form__align-with-fields">
 		<%= f.submit(
-			"Submit",
+			t("after_approval.submit"),
 			class: "btn btn--submit") %>
 	</div>
 <% end %>

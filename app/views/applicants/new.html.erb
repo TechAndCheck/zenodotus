@@ -1,4 +1,4 @@
-<% @title_tag = "Request access" %>
+<% @title_tag = t("request_access.request_access") %>
 
 <div class="content">
 	<%= form_with(
@@ -9,17 +9,17 @@
 		<fieldset class="fieldset">
 			<div class="fieldset__header">
 				<div class="fieldset__title h2">
-					Request access
+					<%= t("request_access.request_access") %>
 				</div>
 				<div class="fieldset__description">
-					<p class="b2">Access to the site requires approval by the Duke Reporters’ Lab team. Approval is usually determined within approximately one week. The more detail you can provide about who you are and how you want to use the data, the better. If you have any questions, please <%= link_to "get in touch", contact_path %>.</p>
+					<p class="b2"><%= t("request_access.access_to_the_site") %> <%= link_to t("request_access.please_get_in_touch"), contact_path %>.</p>
 				</div>
 			</div>
 			<div class="fieldset__fields">
 					<div class="field__wrapper--input">
 						<%= f.label(
 							:name,
-							"Your name *") %>
+							t("request_access.your_name")) %>
 						<%= f.text_field(
 							:name,
 							required: true) %>
@@ -30,7 +30,7 @@
 					<div class="field__wrapper--input">
 						<%= f.label(
 							:email,
-							"Email address *") %>
+							t("request_access.email_address")) %>
 						<%= f.email_field(
 							:email,
 							required: true,
@@ -39,12 +39,12 @@
 						<%= errors_for_field(
 							@applicant,
 							:email) %>
-						<div class="field__description">You’ll need to confirm this email address before we process your application.</div>
+						<div class="field__description"><%= t("request_access.youll_need_to_confirm") %></div>
 					</div>
 					<div class="field__wrapper--input">
 						<%= f.label(
 							:use_case,
-							"How do you plan to use the data? *") %>
+							t("request_access.how_do_you_plan_to_use_the_data")) %>
 						<%= f.text_area(
 							:use_case,
 							size: "50x3",
@@ -55,24 +55,24 @@
 					</div>
 					<div class="field__wrapper--input">
 						<%= f.label :affiliation do %>
-							Organization affiliation <span style="font-weight:normal">(if any)</span>
+							<%= t("request_access.organization_affiliation") %> <span style="font-weight:normal"><%= t("request_access.if_any") %></span>
 						<% end %>
 						<%= f.text_field :affiliation %>
-						<div class="field__description">If you will be using this data primarily on behalf of an organization — such as your employer or university — please let us know.</div>
+						<div class="field__description"><%= t("request_access.if_you_will_be_using") %></div>
 					</div>
 					<div class="field__wrapper--input">
 						<%= f.label(
 							:primary_role,
-							"What is your primary role?") %>
+							t("request_access.what_is_your_primary_role")) %>
 						<%= f.text_field(
 							:primary_role,
 							placeholder:
-							"Fact-checker, researcher, etc.") %>
+							t("request_access.fact-checker_researcher_etc")) %>
 					</div>
 					<div class="field__wrapper--input">
 						<%= f.label(
 							:country,
-							"Where are you located?") %>
+							t("request_access.where_are_you_located")) %>
 						<%= f.country_select(
 							:country,
 							include_blank: true) %>
@@ -86,7 +86,7 @@
 								:accepted_terms,
 								required: true ) %>
 							<%= f.label :accepted_terms do %>
-								Accept the <%= link_to "terms and conditions", terms_path, target: :_blank %> *
+								<%= t("request_access.accept_the") %> <%= link_to t("request_access.terms_and_conditions"), terms_path, target: :_blank %> *
 								<%= errors_for_field(
 									@applicant,
 									:accepted_terms,
@@ -98,7 +98,7 @@
 		</fieldset>
 		<div class="form__align-with-fields">
 			<%= f.submit(
-				"Submit request",
+				t("request_access.submit_request"),
 				class: "btn btn--submit") %>
 		</div>
 	<% end %>

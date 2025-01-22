@@ -1,13 +1,13 @@
 <div class="alert alert--error" role="alert">
   <div class="alert__message flex flex-col">
     <div class="font-bold text-lg">
-      Error:
+      <%= t('2fa.error.error') %>:
     </div>
     <div>
-      Invalid recovery code
+    	<%= t('2fa.error.invalid_recovery_code') %>:
     </div>
     <div>
-      <br>Recovery codes can only be used once. Please contact us if this error continues to happen.
+      <br><%= t('2fa.error.invalid_recovery_code_message') %>:
     </div>
   </div>
 </div>

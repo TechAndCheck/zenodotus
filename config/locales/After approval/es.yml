@@ -1,0 +1,8 @@
+es:
+  after_approval:
+    finish_setting_up: "Terminar de configurar su cuenta"
+    your_request_to_access: "¡Su solicitud de acceso al sitio ha sido aprobada! Por favor, introduzca y confirme una contraseña para continuar configurando su cuenta."
+    password: "Contraseña"
+    confirm_password: "Confirmar contraseña"
+    password_requirements: "Su contraseña debe tener entre %{passsword_length_minimum} y %{password_length_maximum} caracteres."
+    submit: "Enviar"

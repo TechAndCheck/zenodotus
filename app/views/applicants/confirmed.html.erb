@@ -1,10 +1,10 @@
-<% @title_tag = "Email confirmed" %>
+<% @title_tag = t("request_access.email_confirmed.email_confirmed") %>
 
 <div class="box box--lg box--message">
 	<h4 class="box__title icon-prefixed">
 		<%= use_svg "check-circle-outline", svg_attrs: { class: "icon icon--lg color--success" } %>
-		<span>Email address confirmed.</span>
+		<span><%= t("request_access.email_confirmed.email_address_confirmed" %></span>
 	</h4>
-	<p>Thanks for confirming your email address. Your request for access has been received, and we’ll be in touch.</p>
-	<p><%= link_to "Return to home →", root_path, class: "btn btn--reversed" %></p>
+	<p><%= t("request_access.email_confirmed.thanks_for_confirming") %></p>
+	<p><%= link_to "#{t("request_access.email_confirmed.return_to_home")} →", root_path, class: "btn btn--reversed" %></p>
 </div>

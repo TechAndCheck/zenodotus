@@ -1,0 +1,21 @@
+en:
+  account_admin:
+    settings: "Settings"
+    text_searches: "Text searches"
+    image_searches: "Image searches"
+    update_account_details: "Update account details"
+    text_search_history: "Text Search History:"
+    no_results_found: "No results found"
+    image_search_history: "Image Search History:"
+    change_password:
+      change_password: "Change password"
+      to_change_your_password: "To change your password, fill out the form below."
+      characters_minimum: "characters minimum"
+      new_password: "New password"
+      confirm_new_password: "Confirm new password"
+      change_my_password: "Change my password"
+    delete_password:
+      delete_account: "Delete account"
+      to_delete_your_account: "To delete your account, enter your password below, then accept the browser alert."
+      password: "Password"
+      delete_my_account: "Delete my account"
