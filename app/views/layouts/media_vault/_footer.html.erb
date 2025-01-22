@@ -4,11 +4,11 @@
 		<div id="site-footer__legal">
 			<p><%= t("layouts.footer.is_a_project_of",
 									media_review_link: link_to("MediaVault", root_path),
-									reporters_lab_link: link_to("Duke Reporters’ Lab", "https://reporterslab.org/") %></p>
+									reporters_lab_link: link_to("Duke Reporters’ Lab", "https://reporterslab.org/")).html_safe %></p>
 			<p><%= t("layouts.footer.copyright",
 									reporters_lab_link: link_to("Duke Reporters’ Lab", "https://reporterslab.org/"),
 									current_year: Date.today.strftime("%Y"),
-					 				createive_commons_link: link_to("CC BY", "https://creativecommons.org/licenses/by/4.0/") %></p>
+					 				createive_commons_link: link_to("CC BY", "https://creativecommons.org/licenses/by/4.0/")).html_safe %></p>
 		</div>
 	</div>
 
