@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_13_021724) do
+ActiveRecord::Schema[7.2].define(version: 2025_01_22_234626) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -618,6 +618,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_13_021724) do
     t.string "totp_secret"
     t.boolean "totp_confirmed", default: false
     t.uuid "remote_key_id"
+    t.string "locale"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

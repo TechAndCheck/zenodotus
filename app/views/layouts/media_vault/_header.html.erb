@@ -70,6 +70,16 @@
  			<% else %>
 				<li><%= link_to  t("layout.header.request_access"), new_applicant_path, class: "btn" %></li>
 				<li><%= link_to t("layout.header.log_in"), new_user_session_path, class: "btn btn--reversed" %></li>
+
+				<li class="site-nav__language-menu-wrapper">
+					<div class="btn" data-action="site-nav#toggleLanguageMenu">
+    				<span>Language</span>
+					</div
+					<ol id="site-nav__language-menu" class="site-nav__links">
+						<li><%= link_to "En", select_locale_path(locale: "en", current_path: request.env['REQUEST_URI'] ) %></li>
+						<li><%= link_to "Es", select_locale_path(locale: "es", current_path: request.env['REQUEST_URI'] ) %></li>
+					</ol>
+    		</ol>
  			<% end %>
   		</ol>
 	</nav>

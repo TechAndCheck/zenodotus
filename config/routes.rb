@@ -47,6 +47,7 @@ Rails.application.routes.draw do
     get "contact", to: "application#contact"
     get "privacy", to: "application#privacy", as: "privacy"
     get "terms", to: "application#terms", as: "terms"
+    get "select_locale/:locale", to: "application#select_locale", as: "select_locale"
 
     scope "/apply" do
       get "/", to: "applicants#new", as: "new_applicant"

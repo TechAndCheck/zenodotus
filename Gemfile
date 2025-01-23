@@ -94,6 +94,9 @@ group :development do
 
   # SSL Management for local development
   gem "sslocal"
+
+  # To manage some startups
+  gem "foreman"
 end
 
 group :test do

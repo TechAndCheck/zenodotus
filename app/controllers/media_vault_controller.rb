@@ -5,12 +5,14 @@ class MediaVaultController < ApplicationController
     :terms,
     :privacy,
     :optout,
+    :switch_locale,
   ]
 
   before_action :must_be_media_vault_user, except: [
     :terms,
     :privacy,
     :optout,
+    :switch_locale,
   ]
 
   # We don't route to this URL directly.

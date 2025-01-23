@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session, if: :json_request?, prepend: true
 
   before_action :set_site_from_host
+  around_action :switch_locale
 
   sig { void }
   def index
@@ -42,6 +43,13 @@ class ApplicationController < ActionController::Base
 
   sig { void }
   def terms; end
+
+  sig { void }
+  def select_locale
+    user.update!(locale: params[:locale]) if current_user
+    redirect_to("#{params[:current_path]}?locale=#{params[:locale]}",
+                    fallback_location: root_path(locale: params[:locale])) && return
+  end
 
   sig { params(user: User).returns(String) }
   def after_sign_in_path_for(user)
@@ -242,5 +250,13 @@ protected
       origin: "#{uri.scheme}://#{uri.host}", # Make sure that the url is the url we're on
       name: "FactCheck Insights/MediaVault"
     )
+  end
+
+  # sig { void }
+  def switch_locale(&action)
+    locale = params[:locale] || I18n.default_locale
+    locale = current_user.locale if current_user && !current_user.locale.blank?
+
+    I18n.with_locale(locale, &action)
   end
 end
