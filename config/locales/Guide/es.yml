@@ -10,7 +10,7 @@ es:
     for_more_information_about_claimreview: "Para más información sobre ClaimReview y MediaReview, visite"
     the_claimreview__project: "The ClaimReview Project."
     how_do_fact_checkers_assess_mediavault_content: "¿Cómo evalúan los verificadores de datos el contenido de MediaVault?"
-    fact-checking_organizations_around_the_world: "Las organizaciones globales de chequeo de datos utilizan sus propios sistemas para identificar y chequear posibles desinformaciones encontradas en internet. Sin embargo, cuando ingresan sus chequeos en MediaReview, utilizan un formato de calificación estandarizado para identificar si un medio ha sido manipulado. Estas calificaciones son:"
+    fact_checking_organizations_around_the_world: "Las organizaciones globales de chequeo de datos utilizan sus propios sistemas para identificar y chequear posibles desinformaciones encontradas en internet. Sin embargo, cuando ingresan sus chequeos en MediaReview, utilizan un formato de calificación estandarizado para identificar si un medio ha sido manipulado. Estas calificaciones son:"
     original: "Original"
     no_evidence_the_image_or_video: "No hay evidencia de que la imagen o video haya sido alterado o manipulado de manera engañosa, aunque aún puede contener afirmaciones falsas o engañosas."
     missing_context: "Falta de Contexto"
