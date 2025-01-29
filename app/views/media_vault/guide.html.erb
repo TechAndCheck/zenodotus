@@ -1,15 +1,15 @@
-<% @title_tag = "Guide to MediaVault" %>
+<% @title_tag = t("guide.what_is_mediavault") %>
 
 <div class="full-bleed-headline">
 	<div class="contain content">
-		<h2>What is MediaVault?</h2>
+		<h2><%= t("guide.what_is_mediavault") %></h2>
 	</div>
 </div>
 <div class="lg:flex lg:gap-20 lg:mb-0">
 	<div class="content lg:basis-2/4 b2">
-		<p class="b1">MediaVault is an unprecedented archive of images, videos and memes that have been analyzed by reputable fact-checking organizations from around the world.</p>
-		<p>Our cutting-edge system scrapes and stores content from social media platforms and other sources that would otherwise disappear completely if it is deleted or removed. With MediaVault, fact-checkers can preserve the content that they have fact-checked in its original form. That content then becomes searchable, so other fact-checkers can easily determine if a given image or video has been fact-checked before.</p>
-		<p>MediaVault provides long-term accessibility and durability for archiving, research and more rapid detection of misleading images and video.</p>
+		<p class="b1"><%= t("guide.mediavault_is_an_unprecedented_archive") %></p>
+		<p><%= t("guide.our_cutting_edge_system_scrapes") %></p>
+		<p><%= t("guide.mediavault_provides_long_term_accessibility") %></p>
 	</div>
 	<div class="hidden lg:flex lg:place-items-center lg:place-content-center lg:basis-2/4 lg:p-20 bg--media-vault">
 		<div class="masked-image masked-image--media-vault max-w-xs w-full">
@@ -20,25 +20,25 @@
 
 <div class="full-bleed-headline reversed">
 	<div class="contain content">
-		<h2>What descriptive data is included with MediaVault entries?</h2>
+		<h2><%= t("guide.what_descriptive_data_is_included_with_mediavault_entries") %></h2>
 	</div>
 </div>
 <div class="content">
 	<div class="lg:flex lg:gap-20 b2">
-		<p class="lg:basis-2/4">MediaVault entries are collected when fact-checkers use a tagging system known as MediaReview that allows them to identify whether a video, image, or meme has been manipulated. Fact-checkers provide basic information — for example, the URL where the piece of media was found, and the URL of their fact-checking article — as well as an assessment of whether the media was manipulated. (For more on these assessments, see “How do fact-checkers assess MediaVault content?” below.)</p>
-		<p class="lg:basis-2/4">Along with the MediaReview tagging data, most MediaVault entries also contain data from ClaimReview, a sibling to MediaReview used by fact-checkers to rate claims regardless of format. ClaimReview includes information about the statement being checked, the source of the claim, the location, the date, the conclusion the fact-checker reached about the statement’s veracity, and more.</p>
+		<p class="lg:basis-2/4"><%= t("guide.mediavault_entries_are_collected") %></p>
+		<p class="lg:basis-2/4"><%= t("guide.along_with_the_mediareview") %></p>
 	</div>
-	<p class="mt-10 text-center b1">For more information about ClaimReview and MediaReview, visit <%= link_to "The ClaimReview Project", "https://www.claimreviewproject.com/", class: "bg--blue" %>.</p>
+	<p class="mt-10 text-center b1"><%= t("guide.for_more_information_about_claimreview") %> <%= link_to t("guide.the_claimreview__project"), "https://www.claimreviewproject.com/", class: "bg--blue" %>.</p>
 </div>
 
 
 <div class="full-bleed-headline reversed">
 	<div class="contain content">
-		<h2>How do fact-checkers assess MediaVault content?</h2>
+		<h2><%= t("guide.how_do_fact_checkers_assess_mediavault_content") %></h2>
 	</div>
 </div>
 <div class="content">
-	<p class="b2">Fact-checking organizations around the world all use their own systems for identifying and checking potential misinformation found online. But when they enter their fact-checks into MediaReview, they use a standardized ratings format for identifying whether an individual piece of media has been manipulated. Those ratings are:</p>
+	<p class="b2"><%= t("guide.fact_checking_organizations_around_the_world") %></p>
 	<dl class="mt-20 grid grid-cols lg:grid-cols-3 lg:grid-rows-2 gap-10">
 		<div>
 			<dt class="h4">Original</dt>

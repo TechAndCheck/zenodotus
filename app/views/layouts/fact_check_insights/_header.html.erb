@@ -61,8 +61,8 @@
 					</ol>
 				</li>
 			<% else %>
-				<li><%= link_to "Request access", new_applicant_path, class: "btn" %></li>
-				<li><%= link_to "Log in", new_user_session_path, class: "btn btn--reversed" %></li>
+				<li><%= link_to t("layouts.header.request_access"), new_applicant_path, class: "btn" %></li>
+				<li><%= link_to t("layouts.header.log_in"), new_user_session_path, class: "btn btn--reversed" %></li>
 			<% end %>
 		</ol>
 	</nav>

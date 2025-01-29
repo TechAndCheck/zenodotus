@@ -16,8 +16,8 @@
 		<ol>
 			<% if user_signed_in? %>
 				<% if current_user.can_access_media_vault? %>
-					<li><%= link_to "Dashboard", media_vault_dashboard_path %></li>
-					<li><%= link_to "Guide to the Data", media_vault_guide_path %></li>
+					<li><%= link_to t("layouts.footer.dashboard"), media_vault_dashboard_path %></li>
+					<li><%= link_to t("layouts.footer.guide_to_the_data"), media_vault_guide_path %></li>
 				<% else %>
 					<li><%= t("layouts.footer.request_access_tbd") %></li>
 				<% end %>
