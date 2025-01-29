@@ -19,22 +19,22 @@
 					<li><%= link_to "Dashboard", media_vault_dashboard_path %></li>
 					<li><%= link_to "Guide to the Data", media_vault_guide_path %></li>
 				<% else %>
-					<li>(Request Access TBD)</li>
+					<li><%= t("layouts.footer.request_access_tbd") %></li>
 				<% end %>
 			<% else %>
-				<li><%= link_to "Request access", new_applicant_path %></li>
-				<li><%= link_to "Log in", new_user_session_path %></li>
+				<li><%= link_to t("layouts.footer.request_access"), new_applicant_path %></li>
+				<li><%= link_to t("layouts.footer.log_in"), new_user_session_path %></li>
 			<% end %>
-			<li><%= link_to "About", about_path %></li>
-			<li><%= link_to "Contact", contact_path %></li>
+			<li><%= link_to t("layouts.footer.about"), about_path %></li>
+			<li><%= link_to t("layouts.footer.contact"), contact_path %></li>
 		</ol>
 	</nav>
 
 	<nav id="site-footer__nav--secondary" class="site-footer__nav">
 		<ol>
-			<li><%= link_to "Terms and Conditions", terms_path %></li>
-			<li><%= link_to "Privacy Policy", privacy_path %></li>
-			<li><%= link_to "Opt Out", media_vault_optout_path %></li>
+			<li><%= link_to t("layouts.footer.terms_and_conditions"), terms_path %></li>
+			<li><%= link_to t("layouts.footer.privacy_policy"), privacy_path %></li>
+			<li><%= link_to t("layouts.footer.opt_out"), media_vault_optout_path %></li>
 			<%# <li><%= link_to "GitHub", "https://github.com/TechAndCheck/zenodotus/" %></li>
 			<li><%= link_to "Fact-Check Insights", fact_check_insights_root_url %></li>
 		</ol>

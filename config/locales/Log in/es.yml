@@ -5,4 +5,5 @@ es:
     email_address: "Correo electrónico"
     password: "Contraseña"
     log_in: "Iniciar sesión"
-    forgot_your_password_reset_it_here: "¿Olvidaste tu contraseña? Recupérala aquí"
+    forgot_your_password: "¿Olvidaste tu contraseña?"
+    reset_it_here: "Recupérala aquí"

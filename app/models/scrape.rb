@@ -15,6 +15,8 @@ class Scrape < ApplicationRecord
     twitter: "twitter", instagram: "instagram", facebook: "facebook", youtube: "youtube", tiktok: "tiktok"
     }, _prefix: true
 
+  enum initiated_from: [ "site", "plugin", "media_review" ]
+
   has_one :archive_item, dependent: :destroy
   belongs_to :media_review, dependent: nil, optional: true
   belongs_to :user, optional: true

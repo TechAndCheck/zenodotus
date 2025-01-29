@@ -5,4 +5,5 @@ en:
     email_address: "Email address"
     password: "Password"
     log_in: "Log in"
-    forgot_your_password_reset_it_here: "Forgot your password? Reset it here"
+    forgot_your_password: "Forgot your password?"
+    reset_it_here: "Reset it here"

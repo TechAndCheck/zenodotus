@@ -2,20 +2,20 @@
 
 <div class="content lg:flex lg:items-center lg:gap-20">
 	<div class="lg:basis-2/4 b2">
-		<h2>MediaVault is a unique and unprecedented tool in the fight against social media misinformation.</h2>
-		<p>Our cutting-edge system gathers manipulated images and videos shared around the world that have been analyzed by reputable fact-checking organizations. The MediaVault archive allows fact-checkers to maintain a vital portion of their work, and enables quicker research and identification of patterns used in misleading social media posts.</p>
-		<p>MediaVault is free for use by fact-checkers, journalists and others working to debunk misinformation shared online, but registration is required.</p>
+		<h2><%= t("home.mediavault_is_a_unique_and_unprecedented") %></h2>
+		<p><%= t("home.our_cutting-edge_system") %></p>
+		<p><%= t("home.mediavault_is_free") %></p>
 		<div class="btn-container">
 			<% if user_signed_in? %>
 				<% if current_user.can_access_media_vault? %>
-					<%= link_to "Go to the Dashboard", media_vault_dashboard_path, class: "btn btn--reversed btn--lg" %>
+					<%= link_to t("home.go_to_the_dashboard"), media_vault_dashboard_path, class: "btn btn--reversed btn--lg" %>
 				<% else %>
 					<%= render partial: "media_vault/request_access_instructions", locals: { button_class: "btn--lg" } %>
 				<% end %>
 			<% else %>
-				<%= link_to "Request Access", new_applicant_path, class: "btn btn--lg" %>
-				<span class="mx-2">or</span>
-				<%= link_to "Log In", new_user_session_path, class: "btn btn--reversed btn--lg" %>
+				<%= link_to t("home.request_access"), new_applicant_path, class: "btn btn--lg" %>
+				<span class="mx-2"><%= t("home.or") %></span>
+				<%= link_to t("home.log_in"), new_user_session_path, class: "btn btn--reversed btn--lg" %>
 			<% end %>
 		</div>
 	</div>

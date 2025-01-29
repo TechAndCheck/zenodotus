@@ -4,4 +4,6 @@ es:
     our_cutting-edge_system: "Nuestro sistema avanzado recopila imágenes y videos manipulados compartidos por todo el mundo que han sido analizados por reconocidas organizaciones de chequeo de datos. El archivo de MediaVault permite a los verificadores conservar una parte crucial de su trabajo y facilita una investigación más rápida, además de la identificación de patrones utilizados en publicaciones engañosas en las redes sociales."
     mediavault_is_free: "MediaVault es de uso gratuito para verificadores de datos, periodistas y otros profesionales que trabajan para desmentir la desinformación en internet, pero es necesario registrarse."
     go_to_the_dashboard: "Ir al Panel de Control"
-    request_access_or_log_in: "Solicitar acceso o Iniciar sesión"
+    request_access: "Solicitar acceso"
+    or: "o"
+    log_in: "Iniciar sesión"

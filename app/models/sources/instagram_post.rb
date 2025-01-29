@@ -50,9 +50,11 @@ class Sources::InstagramPost < ApplicationRecord
   # @params url String a string of a url
   # @params user User: the user creating an ArchiveItem
   # returns ArchiveItem with type InstagramPost that has been saved to the database
-  sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
-  def self.create_from_url!(url, user = nil)
-    zorki_response = InstagramMediaSource.extract(url, MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+  sig { params(url: String, user: T.nilable(User), initiated_from: Integer).returns(ArchiveItem) }
+  def self.create_from_url!(url, user = nil, initiated_from: nil)
+    raise "You have to start from somewhere.... (No inititated_from submitted)" if initiated_from.nil?
+
+    zorki_response = InstagramMediaSource.extract(url, MediaSource::ScrapeType::Instagram, true, initiated_from)["scrape_result"]
     raise "Error sending job to Zorki" unless zorki_response.respond_to?(:first) && zorki_response.first.has_key?("id")
     Sources::InstagramPost.create_from_zorki_hash(zorki_response, user).first
   end

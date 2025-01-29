@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_01_22_234626) do
+ActiveRecord::Schema[7.2].define(version: 2025_01_27_223102) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -438,6 +438,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_22_234626) do
     t.boolean "removed", default: false
     t.uuid "media_review_id"
     t.uuid "user_id"
+    t.integer "initiated_from"
     t.index ["media_review_id"], name: "index_scrapes_on_media_review_id"
   end
 

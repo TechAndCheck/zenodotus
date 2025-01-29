@@ -5,7 +5,7 @@ class Sources::TikTokPostTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
   def before_all
-    @@morris_video_post = TikTokMediaSource.extract("https://www.tiktok.com/@guess/video/7091753416032128299/", MediaSource::ScrapeType::Instagram, true)["scrape_result"]
+    @@morris_video_post = TikTokMediaSource.extract("https://www.tiktok.com/@guess/video/7091753416032128299/", MediaSource::ScrapeType::Instagram, true, initiated_from: 0)["scrape_result"]
   end
 
   def around

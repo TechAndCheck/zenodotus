@@ -2,5 +2,5 @@ en:
   contact:
     lets_stay_in_touch: "Let's stay in touch"
     for_questions_about_the_mediavault_data_please_email: "For questions about the %{site} data, please email us at "
-    if_youd_like_for_us_to_remove_your_organizations_data_from_the_dataset: "If you’d like for us to remove your organization’s data from the dataset,"
-    please_fill_out_this_email_form: "please fill out this email form."
+    if_youd_like_for_us_to_remove_your_organizations_data_from_the_dataset: "If you’d like for us to remove your organization’s data from the dataset, please"
+    please_fill_out_this_email_form: "fill out this email form."

@@ -48,9 +48,11 @@ class Sources::Tweet < ApplicationRecord
   # @params url String a string of a url
   # @params user The user adding the ArchiveItem
   # returns ArchiveItem with type Tweet that has been saved to the database
-  sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
-  def self.create_from_url!(url, user = nil)
-    tweet_response = TwitterMediaSource.extract(url, MediaSource::ScrapeType::Twitter, true)
+  sig { params(url: String, user: T.nilable(User), initiated_from: Integer).returns(ArchiveItem) }
+  def self.create_from_url!(url, user = nil, initiated_from: nil)
+    raise "You have to start from somewhere.... (No inititated_from submitted)" if initiated_from.nil?
+
+    tweet_response = TwitterMediaSource.extract(url, MediaSource::ScrapeType::Twitter, true, initiated_from)
     tweet_response = tweet_response["scrape_result"] unless tweet_response.nil?
     raise "Invalid Twitter url #{url}" if tweet_response.nil?
     raise "Error sending job to Hypatia" unless tweet_response.respond_to?(:first) && tweet_response.first.has_key?("id")

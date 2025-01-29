@@ -56,9 +56,11 @@ class Sources::FacebookPost < ApplicationRecord
   # @params url String a string of a url
   # @params user The user adding the ArchiveItem
   # returns ArchiveItem
-  sig { params(url: String, user: T.nilable(User)).returns(ArchiveItem) }
-  def self.create_from_url!(url, user = nil)
-    forki_response = FacebookMediaSource.extract(url, MediaSource::ScrapeType::Facebook, true)
+  sig { params(url: String, user: T.nilable(User), initiated_from: Integer).returns(ArchiveItem) }
+  def self.create_from_url!(url, user = nil, initiated_from: nil)
+    raise "You have to start from somewhere.... (No inititated_from submitted)" if initiated_from.nil?
+
+    forki_response = FacebookMediaSource.extract(url, MediaSource::ScrapeType::Facebook, true, initiated_from)
     raise "Error sending job to Forki" unless forki_response.has_key?("scrape_result") &&
         forki_response["scrape_result"].respond_to?(:first) &&
         forki_response["scrape_result"].first.has_key?("id")

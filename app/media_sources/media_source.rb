@@ -82,13 +82,15 @@ class MediaSource
   # @params force [Boolean] force Hypatia to not queue a request but to scrape immediately.
   #   Default: false
   # @returns [String or nil] the path of the screenshot if the screenshot was saved
-  sig { params(url: String, scrape_type: ScrapeType, force: T::Boolean, media_review: T.nilable(MediaReview)).returns(T.any(T.nilable(T::Boolean),  T::Hash[String, String])) }
-  def self.extract(url, scrape_type, force = false, media_review: nil)
+  sig { params(url: String, scrape_type: ScrapeType, force: T::Boolean, media_review: T.nilable(MediaReview), initiated_from: Integer).returns(T.any(T.nilable(T::Boolean),  T::Hash[String, String])) }
+  def self.extract(url, scrape_type, force = false, media_review: nil, initiated_from: nil)
+    raise "Must start somewhere... (No initiated_from indicated)" if initiated_from.nil?
+
     url = MediaSource.extract_post_url_if_needed(url)
     object = self.new(url)
 
     return nil if object.invalid_url
-    return object.retrieve_post!(scrape_type, media_review: media_review) if force
+    return object.retrieve_post!(scrape_type, media_review: media_review, initiated_from: initiated_from) if force
 
     object.retrieve_post(scrape_type, media_review: media_review)
   end
@@ -107,9 +109,15 @@ class MediaSource
   # Scrape the page by sending it to Hypatia and forcing the server to process the job immediately. Should only be used for tests
   #
   # @return [Hash]
-  sig { params(scrape_type: ScrapeType, media_review: T.nilable(MediaReview)).returns(Hash) }
-  def retrieve_post!(scrape_type, media_review: nil)
-    scrape = Scrape.create!({ url: @url, scrape_type: scrape_type.serialize, media_review: media_review })
+  sig { params(scrape_type: ScrapeType, media_review: T.nilable(MediaReview), initiated_from: Integer).returns(Hash) }
+  def retrieve_post!(scrape_type, media_review: nil, initiated_from: nil)
+    raise "You have to start from somehwere... (No initiated_from indicated)" if initiated_from.nil?
+
+    scrape = Scrape.create!({ url: @url,
+                              scrape_type: scrape_type.serialize,
+                              media_review: media_review,
+                              initiated_from: initiated_from
+                            })
 
     params = { auth_key: Figaro.env.HYPATIA_AUTH_KEY, url: @url, callback_id: scrape.id, force: true }
 

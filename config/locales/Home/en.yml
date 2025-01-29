@@ -4,4 +4,6 @@ en:
     our_cutting-edge_system: "Our cutting-edge system gathers manipulated images and videos shared around the world that have been analyzed by reputable fact-checking organizations. The MediaVault archive allows fact-checkers to maintain a vital portion of their work, and enables quicker research and identification of patterns used in misleading social media posts."
     mediavault_is_free: "MediaVault is free for use by fact-checkers, journalists and others working to debunk misinformation shared online, but registration is required."
     go_to_the_dashboard: "Go to the Dashboard"
-    request_access_or_log_in: "Request Access or Log In"
+    request_access: "Request Access"
+    "or": "or"
+    log_in: "Log In"

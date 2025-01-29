@@ -1,5 +1,6 @@
 es:
   contact:
     lets_stay_in_touch: "Mantengámonos en contacto"
-    for_questions_about_the_mediavault_data_please_email: "Para preguntas sobre los datos de MediaVault, por favor envíenos un correo a hello@factcheckinsights.org."
-    if_youd_like_for_us_to_remove_your_organizations_data_from_the_dataset_please_fill_out_this_email_form: "Si desea que eliminemos los datos de su organización de nuestra base de datos, por favor complete este formulario electrónico."
+    for_questions_about_the_mediavault_data_please_email: "Para preguntas sobre los datos de MediaVault, por favor envíenos un correo a "
+    if_youd_like_for_us_to_remove_your_organizations_data_from_the_dataset: "Si desea que eliminemos los datos de su organización de nuestra base de datos, por favor"
+    please_fill_out_this_email_form: "complete este formulario electrónico."
