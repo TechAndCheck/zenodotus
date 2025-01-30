@@ -41,63 +41,63 @@
 	<p class="b2"><%= t("guide.fact_checking_organizations_around_the_world") %></p>
 	<dl class="mt-20 grid grid-cols lg:grid-cols-3 lg:grid-rows-2 gap-10">
 		<div>
-			<dt class="h4">Original</dt>
-			<dd>No evidence the image or video has been misleadingly altered or manipulated, though it may still contain false or misleading claims.</dd>
+			<dt class="h4"><%= t("guide.original") %></dt>
+			<dd><%= t("guide.no_evidence_the_image_or_video") %></dd>
 		</div>
 		<div>
-			<dt class="h4">Missing Context</dt>
-			<dd>Presenting unaltered images or video in an inaccurate manner to mislead the viewer. For example, labeling with incorrect dates or locations. (An image or video rated “original” can also be missing context.)</dd>
+			<dt class="h4"><%= t("guide.missing_context") %></dt>
+			<dd><%= t("guide.presenting_unaltered_images_or_video") %></dd>
 		</div>
 		<div>
-			<dt class="h4">Cropped or Edited</dt>
-			<dd>Presenting a part of an image from a larger whole, or editing or rearranging a video, to mislead the viewer.</dd>
+			<dt class="h4"><%= t("guide.cropped_or_edited") %></dt>
+			<dd><%= t("guide.presenting_a_part_of_an_image_from_a") %></dd>
 		</div>
 		<div>
-			<dt class="h4">Transformed</dt>
-			<dd>Adding or deleting visual elements to give an image a different meaning with the intention to mislead, or manipulating video footage in ways such as changing speed, dubbing audio or altering visual elements. This rating includes deepfake videos.</dd>
+			<dt class="h4"><%= t("guide.transformed") %></dt>
+			<dd><%= t("guide.adding_or_deleting_visual_elements") %></dd>
 		</div>
 		<div>
-			<dt class="h4">Staged</dt>
-			<dd>An image or video that was created using actors or similarly contrived.</dd>
+			<dt class="h4"><%= t("guide.staged") %></dt>
+			<dd><%= t("guide.an_image_or_video_that_was_created_using_actors_or_similarly_contrived") %></dd>
 		</div>
 		<div>
-			<dt class="h4">Satire/Parody</dt>
-			<dd>An image or video that was created as political or humorous commentary and is presented in that context.</dd>
+			<dt class="h4"><%= t("guide.satire_parody") %></dt>
+			<dd><%= t("guide.an_image_or_video_that_was_created_as_political_or_humorous_commentary") %></dd>
 		</div>
 	</dl>
 </div>
 
 <div class="full-bleed-headline reversed">
 	<div class="contain content">
-		<h2>What is MyVault?</h2>
+		<h2><%= t("guide.what_is_myvault") %></h2>
 	</div>
 </div>
 <div class="content">
-	<p class="b2">MyVault is a new feature within MediaVault that allows you to privately archive images, videos, and memes even before you fact-check them. MyVault is currently in beta and we're rolling it out to small groups of users. Your MyVault is a private resource to you, and contents of MyVault are inaccessible to others and not visible on the Dashboard.</p>
+	<p class="b2"><%= t("guide.myvault_is_a_new_feature") %></p>
 	<dl class="mt-20 grid grid-cols lg:grid-cols-3 lg:grid-rows-2 gap-10">
 		<div>
-			<dt class="h4">How it Works</dt>
-			<dd>Once logged in, navigate to either the “Dashboard” or “MyVault” page and click the “Save A Post” link in the upper right corner of the page. Then, copy and paste the link of the post you wish to archive and click the “Archive” button.</dd>
+			<dt class="h4"><%= t("guide.how_it_works") %></dt>
+			<dd><%= t("guide.once_logged_in_navigate") %></dd>
 		</div>
 		<div>
-			<dt class="h4">What to Expect</dt>
-			<dd>We archive posts in the order in which they arrive in our queue. Depending on the size of our queue, archiving your post may take some time, but we’ll send you an email as soon as it’s complete.</dd>
+			<dt class="h4"><%= t("guide.what_to_expect") %></dt>
+			<dd><%= t("guide.we_archive_posts_in_the_order") %></dd>
 		</div>
 		<div>
-			<dt class="h4">Supported Platforms</dt>
-			<dd>We currently support archiving posts from Facebook, Instagram, YouTube and TikTok. If you have additional needs, please <%= link_to "reach out to us.", "mailto:hello@factcheckinsights.org", class: "bg--blue" %> We may add additional platforms based on demand.</dd>
+			<dt class="h4"><%= t("guide.supported_platforms") %></dt>
+			<dd><%= t("guide.we_currently_support_archiving", contact_link: link_to(t("guide.contact_us"), "mailto:hello@factcheckinsights.org", class: "bg--blue")).html_safe %></dd>
 		</div>
 		<div>
-			<dt class="h4">Accessible Search</dt>
-			<dd>You can easily search posts saved to your personal MyVault by navigating to the MyVault section of our website. Search works the same way as on our dashboard, either by text, image, or video.</dd>
+			<dt class="h4"><%= t("guide.accessible_search") %></dt>
+			<dd><%= t("guide.you_can_easily_search_posts") %></dd>
 		</div>
 		<div>
-			<dt class="h4">Important Reminder</dt>
-			<dd>We still recommend you make MediaReview and ClaimReview after fact-checking the media you’ve saved. This will allow the post to be added to the searchable archive for all fact-checkers using MediaVault. You’ll also still need to create ClaimReview to be eligible for rich snippets on Google Search and other platform highlights.</dd>
+			<dt class="h4"><%= t("guide.important_reminder") %></dt>
+			<dd><%= t("guide.we_still_recommend_you_make_mediareview") %></dd>
 		</div>
 		<div>
-			<dt class="h4">Coming Soon</dt>
-			<dd>We’re working to add collaborative tools like sharing posts with others in your organization and adding notes to a piece of media you’ve saved. Look for these in a future update to MediaVault.</dd>
+			<dt class="h4"><%= t("guide.coming_soon") %></dt>
+			<dd><%= t("guide.were_working_to_add_collaborative_tools") %></dd>
 		</div>
 	</dl>
 </div>
@@ -105,7 +105,7 @@
 <div class="full-bleed bg--media-vault">
 	<div class="contain">
 		<div class="content content--md">
-			<h2>How do I exclude my data from MediaVault?</h2>
+			<h2><%= t("guide.how_do_i_exclude_my_data_from_mediavault") %></h2>
 			<p class="b2"><%= render partial: "optout_instructions" %></p>
 		</div>
 	</div>
