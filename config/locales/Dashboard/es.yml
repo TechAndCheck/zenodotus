@@ -12,7 +12,7 @@ es:
     organization: "Organización"
     archive_a_url_of_a_social_media: "Archive a URL of a social media post to your MyVault"
     archive: "Archivo"
-    arcfhived: "Archivado"
+    archived: "Archivado"
     url_to_archive: "URL al archivo"
     published_on: "Publicado en"
     archived_at: "Archivado en"

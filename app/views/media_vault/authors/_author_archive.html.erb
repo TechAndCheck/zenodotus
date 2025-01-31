@@ -2,13 +2,13 @@
 	<div class="author-archive__header">
 		<h2 class="author-archive__title">
 			<span class="author-archive__title__archive-size"><%= @archive_items.length %></span>
-			<%= "item".pluralize(@archive_items.length) %>
-			archived
+			<%= t("authors.item").pluralize(@archive_items.length) %>
+			<%= t("authors.archived") %>
 		</h2>
 		<div class="author-archive__actions">
 			<% if @show_download_button %>
 				<%= link_to media_vault_author_path(@author, platform: @author.platform, format: :json), {
-					title: "Download user archive in JSON format",
+					title: t("authors.download_user_archive"),
 					class: "btn icon-prefixed",
 					download: true
 				} do %>
