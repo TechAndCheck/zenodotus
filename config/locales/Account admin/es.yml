@@ -1,0 +1,27 @@
+es:
+  account_admin:
+    settings: "Configuración"
+    text_searches: "Búsquedas de texto"
+    image_searches: "Búsquedas de imágenes"
+    update_account_details: "Actualizar detalles de cuenta"
+    text_search_history: "Historial de búsquedas de texto:"
+    no_results_found: "No se encontraron resultados"
+    image_search_history: "Historial de búsquedas de imágenes:"
+    change_password:
+      change_password: "Cambiar contraseña"
+      to_change_your_password: "Para cambiar su contraseña, complete el siguiente formulario."
+      characters_minimum: "caracteres mínimo"
+      new_password: "Nueva contraseña"
+      confirm_new_password: "Confirmar nueva contraseña"
+      change_my_password: "Cambiar mi contraseña"
+    change_email:
+      title: "Cambiar correo electrónico"
+      instructions: "Para cambiar tu correo electrónico, completa el formulario a continuación."
+      new_email: "Nuevo correo electrónico"
+      confirm_email: "Confirmar nuevo correo electrónico"
+      button: "Cambiar mi correo electrónico"
+    delete_password:
+      delete_account: "Eliminar cuenta"
+      to_delete_your_account: "Para eliminar su cuenta, introduzca su contraseña a continuación y luego acepte la alerta del navegador."
+      password: "Contraseña"
+      delete_my_account: "Eliminar mi cuenta"

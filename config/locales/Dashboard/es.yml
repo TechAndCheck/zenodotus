@@ -1,6 +1,6 @@
 es:
   dashboard:
-    recently-archived_media:: "Medios recientemente archivados:"
+    recently_archived_media: "Medios recientemente archivados:"
     show_filters: "Mostrar filtros"
     hide_filters: "Ocultar filtros"
     organization: "Organización"
@@ -9,6 +9,9 @@ es:
     filter: "Filtrar"
     clear_filters: "Borrar filtros"
     save_a_post: "Guardar una publicación"
+    archive_a_url_of_a_social_media: "Archive a URL of a social media post to your MyVault"
+    archive: "Archivo"
+    url_to_archive: "URL al archivo"
     published_on_twitter: "Publicado en Twitter"
     archived_at: "Archivado en"
     view_media_detail: "Ver detalles de los medio"

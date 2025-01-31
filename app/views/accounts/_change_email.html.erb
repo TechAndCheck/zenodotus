@@ -1,8 +1,8 @@
 <div class="account-page__box account-update-box" data-controller="change-email">
 	<div class="account-page__box--settings__header">
-		<h3><%= t("settings.change_email.title") %></h3>
+		<h3><%= t("account_admin.change_email.title") %></h3>
 		<p>
-			<%= t("settings.change_email.instructions") %>
+			<%= t("account_admin.change_email.instructions") %>
 		</p>
 	</div>
 	<div class="account-page__box--settings__form">
@@ -22,7 +22,7 @@
 					autofocus: true,
 					autocomplete: "new-email",
 					autocapitalize: "off",
-					placeholder: t("settings.change_email.new_email"),
+					placeholder: t("account_admin.change_email.new_email"),
 					class: "input input--email") %>
 			</div>
 
@@ -30,14 +30,14 @@
 				<%= f.text_field(
 					:email_confirmation,
 					"data-change-email-target": "emailConfirmationInput",
-					placeholder: t("seed_confirmation.confirm_email"),
+					placeholder: t("account_admin.change_email.confirm_email"),
 					autocomplete: "new-email",
 					autocapitalize: "off",
 					class: "input input--email") %>
 			</div>
 
 			<div class="actions">
-				<%= f.submit t("settings.change_email.button"), class: "btn btn--submit" %>
+				<%= f.submit t("account_admin.change_email.button"), class: "btn btn--submit" %>
 			</div>
 		<% end %>
 	</div>

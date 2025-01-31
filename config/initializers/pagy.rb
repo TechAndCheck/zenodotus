@@ -214,7 +214,8 @@ require "pagy/extras/array"
 # Pagy::I18n.load(locale: 'de')
 #
 # load the "de" locale defined in the custom file at :filepath:
-Pagy::I18n.load(locale: "en", filepath: Rails.root.join("config/locales/pagy.en.yml"))
+Pagy::I18n.load({ locale: "en", filepath: Rails.root.join("config/locales/pagy.en.yml") },
+                { locale: "es" })
 #
 # load the "de", "en" and "es" built-in locales:
 # (the first passed :locale will be used also as the default_locale)

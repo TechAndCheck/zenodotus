@@ -1,11 +1,11 @@
 <div data-controller="media-vault--archive" class="form form--filter">
 	<% if show %>
 	<button data-action="media-vault--archive#showFilters" data-media-vault--archive-target="filterWrapperToggle">
-		Hide Filters &nbsp;&nbsp;<span style="font-size: 0.5em">▲</span>
+		<%= t("dashboard.hide_filters") %> &nbsp;&nbsp;<span style="font-size: 0.5em">▲</span>
 	</button>
 	<% else %>
 	<button data-action="media-vault--archive#showFilters" data-media-vault--archive-target="filterWrapperToggle">
-		Show Filters &nbsp;&nbsp;<span style="font-size: 0.5em">▼</span>
+		<%= t("dashboard.show_filters") %> &nbsp;&nbsp;<span style="font-size: 0.5em">▼</span>
 	</button>
 	<% end %>
 	<div class="<%= show ? "": "hidden" %>" data-media-vault--archive-target="filterWrapper">
@@ -16,19 +16,19 @@
 
 			<% unless myvault %>
 			<div class="field field__wrapper--input">
-				<label>Filter</label>
-				<%= select_tag("org-filter", options_for_select(@fact_check_organizations, selected: organization_id), prompt: "Organization", "data-media-vault--archive-target": "organizationFilter") %>
+				<label><%= t("dashboard.filter") %></label>
+				<%= select_tag("org-filter", options_for_select(@fact_check_organizations, selected: organization_id), prompt: t("dashboard.organization"), "data-media-vault--archive-target": "organizationFilter") %>
 			</div>
 			<% end %>
 			<div class="field field__wrapper--input">
-				<label>From</label><%= date_field_tag("time-filter-start", time_filter_from, min: "1995-09-24", max: Date.today.to_s, "data-media-vault--archive-target": "fromDateFilter") %>
+				<label><%= t("dashboard.from") %></label><%= date_field_tag("time-filter-start", time_filter_from, min: "1995-09-24", max: Date.today.to_s, "data-media-vault--archive-target": "fromDateFilter") %>
 			</div>
 			<div class="field field__wrapper--input">
-				<label>To</label><%= date_field_tag("time-filter-start", time_filter_to,  min: "1995-09-24", max: Date.today.to_s, "data-media-vault--archive-target": "toDateFilter") %>
+				<label><%= t("dashboard.to") %></label><%= date_field_tag("time-filter-start", time_filter_to,  min: "1995-09-24", max: Date.today.to_s, "data-media-vault--archive-target": "toDateFilter") %>
 			</div>
 			<div class="actions">
-				<button class="btn btn--submit" data-action="media-vault--archive#filterResults">Filter</button>
-				<button class="btn btn--clear" data-action="media-vault--archive#clearFilters">Clear Filters</button>
+				<button class="btn btn--submit" data-action="media-vault--archive#filterResults"><%= t("dashboard.filter") %></button>
+				<button class="btn btn--clear" data-action="media-vault--archive#clearFilters"><%= t("dashboard.clear_filters") %></button>
 			</div>
 		</div>
 	</div>

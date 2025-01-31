@@ -14,6 +14,12 @@ en:
       new_password: "New password"
       confirm_new_password: "Confirm new password"
       change_my_password: "Change my password"
+    change_email:
+      title: "Change email"
+      instructions: "To change your email, fill out the form below."
+      new_email: "New email"
+      confirm_email: "Confirm new email"
+      button: "Change my email"
     delete_password:
       delete_account: "Delete account"
       to_delete_your_account: "To delete your account, enter your password below, then accept the browser alert."

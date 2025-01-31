@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session, if: :json_request?, prepend: true
 
   before_action :set_site_from_host
+  before_action { @pagy_locale = params[:locale] }
   around_action :switch_locale
 
   sig { void }

@@ -17,9 +17,3 @@ en:
       add_totp: "Add App TOTP Authentication"
     image_search_history:
       search_date: "Search date"
-    change_email:
-      title: "Change email"
-      instructions: "To change your email, fill out the form below."
-      new_email: "New email"
-      confirm_email: "Confirm new email"
-      button: "Change my email"

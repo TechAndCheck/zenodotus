@@ -8,7 +8,7 @@
         </button>
 
         <div class="modal--add_media--view--header pt-6 px-8">
-          Save A Post
+          <%= t("dashboard.save_a_post") %>
         </div>
 
         <div class="pb-6 pt-2 px-6">
@@ -19,12 +19,12 @@
           <%= form_with url: media_vault_archive_add_path, class: "form__field" do |f| %>
             <div class="search-box__form--text">
               <fieldset class="search-box__fieldset" data-media-vault--search-box-target="searchByTextFieldset" style="margin-right: 10%">
-                <%= f.label :url_to_archive, "URL To Archive", class: "search-box__form__label" %>
+                <%= f.label :url_to_archive, t("dashboard.url_to_archive"), class: "search-box__form__label" %>
                 <%= f.text_field :url_to_archive, class: "search-box__form__field", value: (@query if defined?(@query) && !@query.nil?), "data-media-vault--search-box-target": "searchByTextField" %>
-                <%= f.submit "Archive", class: "search-box__form__submit btn btn--reversed-subtle" %>
+                <%= f.submit t("dashboard.archive"), class: "search-box__form__submit btn btn--reversed-subtle" %>
               </fieldset>
               <div class="search-box__toggle-mode-message">
-                Archive a URL of a social media post to your MyVault
+                <%= t("dashboard.archive_a_url_of_a_social_media") %>
               </div>
             </div>
           <% end %>
