@@ -1,0 +1,5 @@
+en:
+  authors:
+    archived: "archivado"
+    download_user_archive: "Descargar archivo de usuario en formato JSON"
+    item: "artículo"
