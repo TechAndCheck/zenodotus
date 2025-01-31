@@ -13,7 +13,7 @@
             controls
         >
             <source src="<%= media.video_url %>" type="video/mp4">
-            Your browser does not support the video tag.
+            <%= t("video_media_detail.your_browser_does_not_support") %>
         </video>
         <% if media.try(:video_type) == "animated_gif" %>
             <figcaption class="archive-item__body-media__video-caption">

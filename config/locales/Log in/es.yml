@@ -7,3 +7,6 @@ es:
     log_in: "Iniciar sesión"
     forgot_your_password: "¿Olvidaste tu contraseña?"
     reset_it_here: "Recupérala aquí"
+    to_continue_your_log_in_authenticate_with_two_factor_authentication: "Para continuar con su inicio de sesión, autentifíquese con su autenticación de dos factores previamente configurada."
+    if_youve_lost_your_key_or_are_on_a_different: "Si has perdido tu clave o estás en otro ordenador, puedes %{use_key}"
+    use_a_backup_key: "utilizar una llave de seguridad"

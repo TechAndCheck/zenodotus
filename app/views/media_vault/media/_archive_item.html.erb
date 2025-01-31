@@ -60,9 +60,9 @@
                     class="archive-item__body-caption-toggler"
                     data-media-vault--archive-target="captionToggler"
                     data-action="media-vault--archive#toggleCaption"
-                    data-collapse-label="Collapse caption ↑"
-                    data-expand-label="Expand caption ↓"
-                >Expand caption ↓</button>
+                    data-collapse-label="<%= t("dashboard.collapse_caption") %> ↑"
+                    data-expand-label="<%= t("dashboard.expand_caption") %> ↓"
+                ><%= t("dashboard.expand_caption") %> ↓</button>
             <% end %>
         </div>
     </div>
@@ -72,7 +72,7 @@
             <div class="icon-prefixed">
               <%= use_svg publishing_platform_shortname, svg_attrs: { class: "icon", aria: { hidden: true } } %>
               <div class="archive-item__metadatum">
-                  <div class="archive-item__metadatum__label">Published on <%= publishing_platform_display_name %></div>
+                  <div class="archive-item__metadatum__label"><%= "#{t("dashboard.published_on")} #{publishing_platform_display_name}" %></div>
                   <time
                       class="archive-item__metadatum__value"
                       datetime="<%= published_at.iso8601 %>"
@@ -83,7 +83,7 @@
               </div>
             </div>
             <%= link_to media_vault_medium_path(archive_item_self.archive_item), class: "archive-item__metadatum" do %>
-                <div class="archive-item__metadatum__label">Archived</div>
+                <div class="archive-item__metadatum__label"><%= t("dashboard.archived") %></div>
                 <time
                     class="archive-item__metadatum__value"
                     datetime="<%= archived_at.iso8601 %>"
@@ -96,7 +96,7 @@
         <div class="flex items-center flex-col">
             <% if !defined?(single_page) || single_page == false %>
                 <%= link_to media_vault_medium_path(archive_item_self.archive_item) do %>
-                  <div class="archive-item__download__link">View media detail</div>
+                  <div class="archive-item__download__link"><%= t("dashboard.view_media_detail") %></div>
                 <% end %>
             <% elsif archive_item_self.archive_item.private && archive_item_self.archive_item.scrape&.url %>
                 <div class="archive-item__metadatum__label">Post URL</div>
@@ -107,7 +107,7 @@
 
             <% unless archive_item_self.archive_item.private %>
                 <%= link_to media_vault_export_media_metadata_path(archive_item_self.archive_item.id) do %>
-                  <div class="archive-item__download__link">Download media metadata</div>
+                  <div class="archive-item__download__link"><%= t("dashboard.download_media_metadata") %></div>
                 <% end %>
             <% end %>
         </div>
@@ -125,7 +125,7 @@
         <% if archive_item_self.archive_item.categories.count.positive? %>
         <div class="archive-item__metadata">
             <div class="archive-item__metadatum__label">
-                Categories are provided by AI models and will be refined.
+                <%= t("dashboard.categories_are_provided") %>
             </div>
         </div>
         <% end %>

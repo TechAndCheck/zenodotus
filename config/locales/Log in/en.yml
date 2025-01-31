@@ -7,3 +7,6 @@ en:
     log_in: "Log in"
     forgot_your_password: "Forgot your password?"
     reset_it_here: "Reset it here"
+    to_continue_your_log_in_authenticate_with_two_factor_authentication: "To continue your login in, authenticate with your previously setup two-factor authentication."
+    if_youve_lost_your_key_or_are_on_a_different: "If you have lost your key or are on a different computer, you can %{use_key}"
+    use_a_backup_key: "use a backup key"

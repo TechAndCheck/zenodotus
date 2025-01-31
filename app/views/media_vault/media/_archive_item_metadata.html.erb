@@ -1,30 +1,30 @@
 <div class="archive-item archive-item--boxed">
   <div class="archive-item__inner">
     <div class="author__display-name">
-      Additional MediaReview:
+      <%= t("view_media_detail.additional_mediareview") %>
     </div>
     <br />
     <div class="grid grid-cols-2 grid-flow-row gap-4">
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Media Link",
+                 locals: { label: t("view_media_detail.media_link"),
                  url: archive_item.media_review.media_url } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Original Media Link",
+                 locals: { label: t("view_media_detail.original_media_link"),
                  url: archive_item.media_review.original_media_link } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Media Authenticity Category",
+                 locals: { label: t("view_media_detail.media_authenticity_category"),
                  value: archive_item.media_review.media_authenticity_category_humanized } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Original Media Context Description",
+                 locals: { label: t("view_media_detail.original_media_context_description"),
                  value: archive_item.media_review.original_media_context_description } %>
       <%# render partial: "media_vault/media/archive_item_metadata_item",
                  locals: { label: "Taken Down?",
                  value: archive_item.media_review.taken_down ? "Yes" : "No" } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Date Published",
+                 locals: { label: t("view_media_detail.date_published"),
                  time: archive_item.media_review.date_published } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Fact Check URL",
+                 locals: { label: t("view_media_detail.fact_check_url"),
                  url: archive_item.media_review.url } %>
     </div>
   </div>
@@ -40,36 +40,36 @@
     <br />
     <div class="grid grid-cols-2 grid-flow-row gap-4">
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Claim",
+                 locals: { label: t("view_media_detail.claim"),
                  value: claim_review.claim_reviewed } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Rating",
+                 locals: { label: t("view_media_detail.rating"),
                  value: claim_review.review_rating["alternateName"] } %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Claimed by",
+                 locals: { label: t("view_media_detail.claimed_by"),
                  value: claim_review.item_reviewed.dig("author", "name") } %>
       <% rating_explanation = claim_review.review_rating["ratingExplanation"].nil? ? "" : claim_review.review_rating["ratingExplanation"] %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Rating Explanation",
+                 locals: { label: t("view_media_detail.rating_explanation"),
                  value: rating_explanation } %>
 
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Fact Check URL",
+                 locals: { label: t("view_media_detail.fact_check_url"),
                  url: claim_review.url } %>
 
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Claim appearance(s)",
+                 locals: { label: t("view_media_detail.claim_appearances"),
                  urls: claim_review.appearances } %>
 
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Claim Date",
+                 locals: { label: t("view_media_detail.claim_date"),
                  time: claim_review.item_reviewed["datePublished"] } %>
 
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Fact-checked by",
+                 locals: { label: t("view_media_detail.fact_checked_by"),
                  value: "#{claim_review.author["name"]} | #{claim_review.author["url"]}"} %>
       <%= render partial: "media_vault/media/archive_item_metadata_item",
-                 locals: { label: "Date Published",
+                 locals: { label: t("view_media_detail.date_published"),
                  time: claim_review.date_published } %>
     </div>
   </div>
