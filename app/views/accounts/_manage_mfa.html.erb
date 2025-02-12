@@ -22,7 +22,7 @@
               <% current_user.webauthn_credentials.each do |credential| %>
               <tr>
                 <td><%= credential.nickname %></td>
-                <td><%= credential.created_at.strftime("%Y-%m-%d %H:%M %Z") %></td>
+                <td><%= l(credential.created_at, "%Y-%m-%d %H:%M %Z") %></td>
                 <td><%= link_to t('settings.mfa.delete_device'),
                               destroy_mfa_device_path(credential.id),
                               data: {

@@ -1,11 +1,11 @@
 <div class="account-page__box">
-	<% records_date = searches.first.created_at.strftime("%-B %-d, %Y") %>
+	<% records_date = l(searches.first.created_at, "%-B %-d, %Y") %>
 	<h2><%= records_date %></h2>
 	<div class="text-search-history-box__data-div">
 		<% searches.each do |search| %>
 			<div>
 				<span class="text-search-history-box__data-div__time">
-					<%= search.created_at.strftime("%-I:%M %p") %>
+					<%= l(search.created_at, "%-I:%M %p") %>
 				</span>
 			</div>
 			<div>
@@ -14,4 +14,3 @@
 		<% end %>
 	</div>
 </div>
-
