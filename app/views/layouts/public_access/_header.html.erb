@@ -16,6 +16,6 @@
 </header>
 <% unless @archive_item.nil? %>
     <header id="site-nav--public-access" class="warning">
-        <%= image_tag("icons/warning-triangle.svg") %> This content was archived by a fact-checker on <%= @archive_item.created_at.strftime("%d %B %Y") %>. Please refer to related fact-checking to determine its accuracy.
+        <%= image_tag("icons/warning-triangle.svg") %> <%= t("public_media.this_content_was_archived", date: l(@archive_item.created_at, format: "%d %B %Y")) %>
     </header>
 <% end %>
