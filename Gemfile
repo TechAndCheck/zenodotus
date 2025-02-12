@@ -265,3 +265,6 @@ gem "dalli" # For memcached caching
 # OLLama categorization
 gem "ollama-ai", git: "https://github.com/cguess/ollama-ai", branch: "basic-auth"
 gem "acts-as-taggable-on" # For caegorization
+
+# Extra locales
+gem "rails-i18n", "~> 7.0.0"
