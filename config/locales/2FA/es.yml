@@ -7,6 +7,7 @@ es:
     to_continue_your_log_in_authenticate_with_a_previously_unused_recovery_code: "Para continuar tu inicio de sesión, verifica tu identidad con un código de recuperación no utilizado previamente."
     recovery_code: "Código de recuperación"
     click_here_to_login: "Haz clic aquí para iniciar sesión."
+    logging_in: "Iniciando sesión..."
     if_youve_lost_your_key_or_are_on_a_different: "Si has perdido tu clave o estás usando un dispositivo diferente, puedes "
     use_a_backup: "usar un código de recuperación aquí."
     enter_the_six_digit_code: "Introduzca a continuación el código de seis dígitos de su aplicación de autenticación"

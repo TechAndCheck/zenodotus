@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
 
   sig { void }
   def select_locale
-    user.update!(locale: params[:locale]) if current_user
+    current_user.update!(locale: params[:locale]) if current_user
     redirect_to("#{params[:current_path]}?locale=#{params[:locale]}",
                     fallback_location: root_path(locale: params[:locale])) && return
   end
@@ -255,9 +255,11 @@ protected
 
   # sig { void }
   def switch_locale(&action)
-    locale = params[:locale] || I18n.default_locale
-    locale = current_user.locale if current_user && !current_user.locale.blank?
+    locale = params[:locale] || cookies[:locale]
+    locale = current_user.locale if current_user && !current_user.locale.blank? && !locale
+    locale = I18n.default_locale unless locale
 
+    cookies.permanent[:locale] = locale
     I18n.with_locale(locale, &action)
   end
 end

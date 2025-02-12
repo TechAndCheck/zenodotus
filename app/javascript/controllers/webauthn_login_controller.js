@@ -20,7 +20,7 @@ export default class extends Controller {
 
   async connect() {
     // Check if we're actually encrypting, if not, don't allow setup to continue.
-    if (window.location.protocol != 'https:') {
+    if (window.location.protocol !== 'https:') {
       this.outputTarget.textContent = "Somehow you've visited an unencrypted version of this page, please contact us immediately to report this."
 
       this.webauthnSetupTarget.remove()
@@ -28,7 +28,8 @@ export default class extends Controller {
       return
     }
 
-    if (navigator.credentials == undefined) {
+    if (navigator.credentials === undefined) {
+      // eslint-disable-next-line max-len
       this.outputTarget.textContent = 'You are using an outdated or non-standard browser that does not support Webauthn, please click "Being App-Based Setup" below to continue.'
 
       this.webauthnSetupTarget.remove()
@@ -63,8 +64,9 @@ export default class extends Controller {
     const finishWebauthnResponseBody = await finishWebauthnResponse.text
     const finishedBodyJson = JSON.parse(finishWebauthnResponseBody)
 
-    if (finishedBodyJson.authentication_status == 'success') {
-      this.authenicateButtonTarget.textContent = 'Logging In...'
+    if (finishedBodyJson.authentication_status === 'success') {
+      this.authenicateButtonTarget.textContent = I18n.logging_in
+      // eslint-disable-next-line no-undef
       Turbo.visit('/', { action: 'replace' })
     } else {
       this.errorTarget.innerHTML = finishedBodyJson.errorPartial + this.errorTarget.innerHTML
@@ -72,7 +74,7 @@ export default class extends Controller {
   }
 
   async authenticateWebauthn() {
-    if (navigator.credentials == undefined) {
+    if (navigator.credentials === undefined) {
       alert(
         'Webauthn is not available. We only support modern browsers, please use Firefox, Safari, Chrome, or something similar',
       )
@@ -107,8 +109,8 @@ export default class extends Controller {
     const finishWebauthnResponseBody = await finishWebauthnResponse.text
     const finishedBodyJson = JSON.parse(finishWebauthnResponseBody)
 
-    if (finishedBodyJson.authentication_status == 'success') {
-      this.authenicateButtonTarget.textContent = 'Logging In...'
+    if (finishedBodyJson.authentication_status === 'success') {
+      this.authenicateButtonTarget.textContent = I18n.logging_in
       this.lockAnimation.play()
       await new Promise((r) => setTimeout(r, 2000))
 
@@ -117,6 +119,7 @@ export default class extends Controller {
         redirectPath = finishedBodyJson.redirect
       }
 
+      // eslint-disable-next-line no-undef
       Turbo.visit(redirectPath, { action: 'replace' })
     } else {
       this.lockTarget.innerHTML = finishedBodyJson.errorPartial + this.lockTarget.innerHTML
@@ -151,10 +154,11 @@ export default class extends Controller {
     const responseBody = await response.text
     const bodyJson = JSON.parse(responseBody)
 
-    if (bodyJson.authentication_status == 'success') {
-      this.authenicateButtonTarget.textContent = 'Logging In...'
+    if (bodyJson.authentication_status === 'success') {
+      this.authenicateButtonTarget.textContent = I18n.logging_in
       this.lockAnimation.play()
       await new Promise((r) => setTimeout(r, 2000))
+      // eslint-disable-next-line no-undef
       Turbo.visit('/', { action: 'replace' })
     } else {
       this.lockTarget.innerHTML = bodyJson.errorPartial + this.lockTarget.innerHTML

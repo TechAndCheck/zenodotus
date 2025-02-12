@@ -12,7 +12,7 @@
 		</div>
 		<div class="author__metadata">
 			<%= abbreviate_number(author.followers_count) %>
-			<%= "follower".pluralize(author.followers_count) %>
+			<%= t("search.follower").pluralize(author.followers_count) %>
 			•
 			<%= abbreviate_number(author.following_count) %>
 			following

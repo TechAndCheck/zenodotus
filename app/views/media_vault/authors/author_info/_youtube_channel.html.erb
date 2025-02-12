@@ -11,13 +11,13 @@
 		</div>
 		<div class="author__metadata">
 			<%= abbreviate_number(author.num_subscribers) %>
-			<%= "subscriber".pluralize(author.num_subscribers) %>
+			<%= t("search.subscriber").pluralize(author.num_subscribers) %>
 			•
 			<%= abbreviate_number(author.num_views) %>
-			<%= "view".pluralize(author.num_views) %>
+			<%= t("search.view").pluralize(author.num_views) %>
 			•
 			<%= abbreviate_number(author.num_videos) %>
-			<%= "video".pluralize(author.num_videos) %>
+			<%= t("search.video").pluralize(author.num_videos) %>
 		</div>
 		<div class="author__description">
 			<%= author.description %>
@@ -26,7 +26,7 @@
 			<span class="icon-prefixed">
 				<%= use_svg "calendar-outline", svg_attrs: { class: "icon icon--xl", aria: { hidden: true } } %>
 				<span>
-					Channel created on
+					<%= t("search.channel_created_on") %>
 					<time
 						datetime="<%= author.sign_up_date.iso8601 %>"
 						data-media-vault--author-target="timestamp"

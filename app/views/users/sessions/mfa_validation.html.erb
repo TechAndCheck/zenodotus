@@ -1,4 +1,8 @@
 <% @title_tag = "Log in" %>
+<%= javascript_tag do %>
+  window.I18n = <%= t("2fa").to_json.html_safe %>
+<% end %>
+
 
 <div class="box box--sm box--miniform">
   <!-- TODO: customize depending on the insights/vault split -->
@@ -8,7 +12,6 @@
   <%= render "validate_mfa_webauthn" if @user.webauthn_credentials.count.positive? %>
   <%= render "validate_mfa_totp" if @user.totp_confirmed %>
   <p>
-    <%= t("login.if_youve_lost_your_key_or_are_on_a_different") %>
-    <%= link_to t("login.use_a_backup"), mfa_use_recovery_code_path %>
+    <%= t("login.if_youve_lost_your_key_or_are_on_a_different", use_key: link_to(t("login.use_a_backup_key"), mfa_use_recovery_code_path)).html_safe %>
   </p>
 </div>

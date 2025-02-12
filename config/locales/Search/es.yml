@@ -1,9 +1,12 @@
 es:
   search:
-    matching_authors_found: "Se encontraron XX autores coincidentes"
-    matching_posts_found: "Se encontraron XX publicaciones coincidentes:"
+    matching_authors_found: "Se encontraron %{count} autore coincidentes"
+    matching_posts_found: "Se encontraron %{count} publicacione coincidentes:"
     followers: " seguidores"
     following: " siguiendo"
+    subscriber: "abonado"
+    view: "ver"
+    video: "vídeo"
     joined_xx_on_yy: "Se unió a XX el YY"
     likes: " me gusta"
     channel_created_on: "Canal creado"

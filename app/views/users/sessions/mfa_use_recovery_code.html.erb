@@ -20,7 +20,6 @@
     </button>
   </div>
   <p>
-    <%= t("login.if_youve_lost_your_key_or_are_on_a_different") %>
-    <%= link_to t("login.use_a_backup"), mfa_use_recovery_code_path %>
+    <%= t("login.if_youve_lost_your_key_or_are_on_a_different", use_key: link_to(t("login.use_a_backup_key"), mfa_use_recovery_code_path)).html_safe %>
   </p>
 </div>

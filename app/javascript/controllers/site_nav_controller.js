@@ -13,6 +13,8 @@ export default class extends Controller {
 
   toggleLanguageMenu = (event) => {
     event.preventDefault()
-    document.getElementById('site-nav__language').classList.toggle('open-language-menu')
+    console.log(document.getElementById('site-nav__language-menu').classList)
+    document.getElementById('site-nav__language-menu').classList.toggle('close-language-menu')
+    document.getElementById('site-nav__language-menu').classList.toggle('open-language-menu')
   }
 }

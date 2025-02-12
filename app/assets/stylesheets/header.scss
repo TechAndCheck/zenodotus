@@ -283,17 +283,12 @@
     }
 
     #site-nav__language-menu {
-        opacity: 0;
-        transform: translateY(-10px);
         transition-property: opacity, transform;
-        pointer-events: none;
 
         background-color: white;
         border: 1px solid black;
         padding: 0.5rem;
         position: absolute;
-        top: calc(100% + 0.25rem);
-        right: 0;
     }
 
     #site-nav__account-menu .btn {
@@ -312,7 +307,13 @@
         pointer-events: auto;
     }
 
-    .open-language-menu #site-nav__language-menu {
+    .close-language-menu {
+        opacity: 0;
+        transform: translateY(-10px);
+        pointer-events: none;
+    }
+
+    .open-language-menu {
 	    transform: translateY(0);
 	    opacity: 1;
 	    pointer-events: auto;

@@ -1,3 +1,7 @@
+<%= javascript_tag do %>
+  window.I18n["dashboard"] = <%= t("dashboard").to_json.html_safe %>
+<% end %>
+
 <div data-controller="media-vault--archive" class="form form--filter">
 	<% if show %>
 	<button data-action="media-vault--archive#showFilters" data-media-vault--archive-target="filterWrapperToggle">

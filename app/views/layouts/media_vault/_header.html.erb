@@ -66,19 +66,30 @@
  							<% end %>
   						</li>
    					</ol>
+   					<li class="site-nav__language-menu-wrapper">
+						<button class="btn" data-action="site-nav#toggleLanguageMenu">
+						<span><%= t("layouts.header.language") %></span>
+						</button>
+						<ol id="site-nav__language-menu" class="site-nav__links close-language-menu">
+							<% request_uri = request.env["REQUEST_URI"].gsub(/locale=[a-z]{2}/, "") %>
+							<li><%= link_to "En", select_locale_path(locale: "en", current_path: request_uri ) %></li>
+							<li><%= link_to "Es", select_locale_path(locale: "es", current_path: request_uri ) %></li>
+						</ol>
+					</li>
 				</li>
  			<% else %>
 				<li><%= link_to  t("layouts.header.request_access"), new_applicant_path, class: "btn" %></li>
 				<li><%= link_to t("layouts.header.log_in"), new_user_session_path, class: "btn btn--reversed" %></li>
-
-				<li class="site-nav__language-menu-wrapper">
-					<div class="btn" data-action="site-nav#toggleLanguageMenu">
-    				<span><%= t("layouts.header.language") %></span>
-					</div>
-					<ol id="site-nav__language-menu" class="site-nav__links">
-						<li><%= link_to "En", select_locale_path(locale: "en", current_path: request.env['REQUEST_URI'] ) %></li>
-						<li><%= link_to "Es", select_locale_path(locale: "es", current_path: request.env['REQUEST_URI'] ) %></li>
+				 <li class="site-nav__language-menu-wrapper">
+					<button class="btn" data-action="site-nav#toggleLanguageMenu">
+					<span><%= t("layouts.header.language") %></span>
+					</button>
+					<ol id="site-nav__language-menu" class="site-nav__links close-language-menu">
+						<% request_uri = request.env["REQUEST_URI"].gsub(/locale=[a-z]{2}/, "") %>
+						<li><%= link_to "En", select_locale_path(locale: "en", current_path: request_uri ) %></li>
+						<li><%= link_to "Es", select_locale_path(locale: "es", current_path: request_uri ) %></li>
 					</ol>
+				</li>
     		</ol>
  			<% end %>
   		</ol>

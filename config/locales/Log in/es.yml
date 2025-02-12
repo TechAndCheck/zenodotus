@@ -2,6 +2,7 @@ es:
   login:
     to_access_system: "Para acceder al sistema, conéctese a continuación."
     dont_have_an_account: "¿No tiene cuenta?"
+    request_one_here: "Slicite uno aquí"
     email_address: "Correo electrónico"
     password: "Contraseña"
     log_in: "Iniciar sesión"

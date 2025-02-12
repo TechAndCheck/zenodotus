@@ -7,6 +7,7 @@ en:
     to_continue_your_log_in_authenticate_with_a_previously_unused_recovery_code: "To continue your log in, authenticate with a previously unused recovery code."
     recovery_code: "Recovery code"
     click_here_to_login: "Click Here To Login"
+    logging_in: "Logging in..."
     if_youve_lost_your_key_or_are_on_a_different: "If you've lost your key or are on a different device, you can "
     use_a_backup: "use a backup code here"
     enter_the_six_digit_code: "Enter the six digit code from your authenticator app below"

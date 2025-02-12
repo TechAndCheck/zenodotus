@@ -11,10 +11,10 @@
 		</div>
 		<div class="author__metadata">
 			<%= abbreviate_number(author.followers_count) %>
-			<%= "follower".pluralize(author.followers_count) %>
+			<%= t("search.follower").pluralize(author.followers_count) %>
 			•
 			<%= abbreviate_number(author.likes_count) %>
-			<%= "like".pluralize(author.likes_count) %>
+			<%= t("search.like").pluralize(author.likes_count) %>
 		</div>
 		<div class="author__description">
 			<%= author.profile %>
