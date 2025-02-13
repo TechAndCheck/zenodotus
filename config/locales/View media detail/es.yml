@@ -1,5 +1,5 @@
 es:
-  video_media_detail:
+  view_media_detail:
     categories_are_provided_by_ai_models_and_will_be_refined: "Las categorías son proporcionadas por modelos de IA y serán refinadas."
     additional_mediareview: "MediaReview adicional:"
     media_link: "Enlace del medio"
