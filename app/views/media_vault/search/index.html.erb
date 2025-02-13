@@ -20,7 +20,7 @@
 			<div>
             <% if @post_results.any? %>
           		<h2 class="search-results__title">
-         			<%= pluralize(@post_results.length, t("search.matching_mediavault_posts_found", count: post_results.length)) %><% if @myvault %> in your MyVault&nbsp;<span style="font-size: 1.5rem; vertical-align: text-top; color: gray;" class="super">Beta</span><% end %>:
+         			<%= t("search.matching_mediavault_posts_found", count: post_results.length) %><% if @myvault %> in your MyVault&nbsp;<span style="font-size: 1.5rem; vertical-align: text-top; color: gray;" class="super">Beta</span><% end %>:
           		</h2>
           		<div class="search-results search-results--posts archive-items archive-items--boxed-items archive-items--masonry media">
          			<% @post_results.each do |post| %>
@@ -31,7 +31,7 @@
 	        </div>
 			<div class="pl-4">
                 <h2 class="search-results__title">
-         			<%= pluralize(@google_results.length, t("search.matching_fact_check_explorer_results_found", count: @google_results.length)) %>
+         			<%= t("search.matching_fact_check_explorer_results_found", count: @google_results.length) %>
           		</h2>
           		<div class="search-results search-results--posts archive-items archive-items--boxed-items archive-items--masonry media">
          			<% @google_results.each do |post| %>
@@ -44,7 +44,7 @@
     	<% if (@results || []).any? %>
     		<% if @author_results.try(:any?) %>
     			<h2 class="search-results__title">
-    				<%= pluralize(@author_results.length, t("search.matching_authors_found", count: @author_results.length)) %><% if @myvault %> <%= t("search.in_your") %> MyVault&nbsp;<span style="font-size: 1.5rem; vertical-align: text-top; color: gray;" class="super">Beta</span><% end %>
+    				<%= t("search.matching_authors_found", count: @author_results.length) %><% if @myvault %> <%= t("search.in_your") %> MyVault&nbsp;<span style="font-size: 1.5rem; vertical-align: text-top; color: gray;" class="super">Beta</span><% end %>
     			</h2>
     			<div class="search-results search-results--authors">
     				<% @author_results.each do |author| %>
@@ -57,7 +57,7 @@
 
     		<% if @post_results.any? %>
     			<h2 class="search-results__title">
-    				<%= pluralize(@post_results.length, t("search.matching_posts_found", count: @post_results.length)) %> <% if @myvault %> <%= t("search.in_your") %> MyVault&nbsp;<span style="font-size: 1.5rem; vertical-align: text-top; color: gray;" class="super">Beta</span><% end %>:
+    				<%= t("search.matching_posts_found", count: @post_results.length) %> <% if @myvault %> <%= t("search.in_your") %> MyVault&nbsp;<span style="font-size: 1.5rem; vertical-align: text-top; color: gray;" class="super">Beta</span><% end %>:
     			</h2>
     			<div class="search-results search-results--posts archive-items archive-items--boxed-items archive-items--masonry">
     				<% @post_results.each do |post| %>
