@@ -2,7 +2,7 @@ es:
   search:
     matching_authors_found: "Se encontraron %{count} autore coincidentes:"
     matching_posts_found: "Se encontraron %{count} publicacione coincidentes:"
-    followers: "seguidores"
+    follower: "seguidores"
     following: "siguiendo"
     subscriber: "abonado"
     view: "ver"
