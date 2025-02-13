@@ -1,6 +1,6 @@
 en:
   search:
-    matching_authors_found: "%{count} matching author found"
+    matching_authors_found: "%{count} matching author found:"
     matching_posts_found: "%{count} matching post found:"
     follower: "follower"
     subscriber: "subscriber"
@@ -13,8 +13,8 @@ en:
     your_uploaded_media: "Your uploaded media:"
     matching_mediavault_posts_found: "%{count} matching MediaVault posts found:"
     matching_fact_check_explorer_results_found: "%{count} matching Fact Check Explorer results found:"
-    no_results_found: "No results found."
-    no_results_found_in_your_myvault: "No results found in your MyVault."
+    no_results_found: "No results found"
+    no_results_found_in_your_myvault: "No results found in your MyVault"
     claim_by: "Claim By"
     a_post: "A Post"
     reviewed: "Reviewed"
