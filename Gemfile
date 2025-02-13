@@ -268,3 +268,4 @@ gem "acts-as-taggable-on" # For caegorization
 
 # Extra locales
 gem "rails-i18n", "~> 7.0.0"
+gem "devise-i18n"

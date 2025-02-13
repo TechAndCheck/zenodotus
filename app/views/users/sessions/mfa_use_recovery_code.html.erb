@@ -3,23 +3,20 @@
 <div class="box box--sm box--miniform">
   <!-- TODO: customize depending on the insights/vault split -->
   <p>
-    <%= t("login.to_continue_your_log_in_authenticate_with_a_previously_unused_recovery_code") %>
+    <%= t("2fa.to_continue_your_log_in_authenticate_with_a_previously_unused_recovery_code") %>
   </p>
   <div data-controller="webauthn-login" class="mb-5">
     <div data-webauthn-login-target="lock" class="setup_mfa--lock"></div>
     <input
       type="text"
-      placeholder="<%= t("login.recovery_code") %>"
+      placeholder="<%= t("2fa.recovery_code") %>"
       class="mb-5"
       data-webauthn-login-target="recoveryCode">
     <button
       data-action="click->webauthn-login#authenticateRecoveryCode"
       data-webauthn-login-target="authenicateButton"
       class="btn btn--lg">
-      <%= t("login.click_here_to_login") %>
+      <%= t("2fa.click_here_to_login") %>
     </button>
   </div>
-  <p>
-    <%= t("login.if_youve_lost_your_key_or_are_on_a_different", use_key: link_to(t("login.use_a_backup_key"), mfa_use_recovery_code_path)).html_safe %>
-  </p>
 </div>

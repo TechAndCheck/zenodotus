@@ -273,6 +273,8 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    devise-i18n (1.12.1)
+      devise (>= 4.9.0)
     diff-lcs (1.5.1)
     docile (1.4.0)
     domain_name (0.6.20240107)
@@ -785,6 +787,7 @@ DEPENDENCIES
   debug
   decombobulate!
   devise (~> 4.9)
+  devise-i18n
   dotenv-rails
   eikon
   ferrum (~> 0.11)
