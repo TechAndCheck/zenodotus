@@ -2,3 +2,5 @@ es:
   password_reset:
     to_begin: "Para comenzar con la recuperación de tu contraseña, ingresa tu correo electrónico a continuación. ¿Estás aquí por error? "
     login: "Inicia sesión"
+    email_address: "Correo electrónico"
+    reset: "reiniciar"

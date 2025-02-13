@@ -6,7 +6,7 @@
     <br />
     <div class="grid grid-cols-2 grid-flow-row gap-4">
         <label for="Public Link" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"><%= t("view_media_detail.public_link") %></label>
-        <div class="archive-item__metadatum__label col-auto"><%= t("view_media_details.public_link") %></div>
+        <div class="archive-item__metadatum__label col-auto"><%= t("view_media_detail.public_link") %></div>
         <div data-controller="media-vault--archive" class="col-span-3 grid grid-cols-9 gap-x-2">
             <input type="text" data-media-vault--archive-target="postLink" class="md:col-span-7 col-span-6 text-slate-500" value="<%= @archive_item.public_link %>" readonly />
             <button
@@ -15,7 +15,7 @@
                 data-action="click->media-vault--archive#copyPostLink"><%= t("view_media_detail.copy") %></button>
         </div>
       <% if @myvault %>
-          <%= link_to "Delete From MyVault" , media_vault_medium_path(@archive_item), class: "btn btn--outline btn--reversed-subtle btn--lg", data: { turbo_method: :delete, turbo_confirm: t("view_media_detail.are_you_sure") } %>
+          <%= link_to t("view_media_detail.delete_from_myvault") , media_vault_medium_path(@archive_item), class: "btn btn--outline btn--reversed-subtle btn--lg", data: { turbo_method: :delete, turbo_confirm: t("view_media_detail.are_you_sure") } %>
       <% end %>
     </div>
   </div>

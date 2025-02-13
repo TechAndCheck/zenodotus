@@ -2,3 +2,5 @@ en:
   password_reset:
     to_begin: "To begin the password reset process, please enter your email below. Here by mistake?"
     login: "Log in"
+    email_address: "Email address"
+    reset: "reset"
