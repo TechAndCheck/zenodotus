@@ -20,7 +20,7 @@
 			<div>
             <% if @post_results.any? %>
           		<h2 class="search-results__title">
-         			<%= t("search.matching_mediavault_posts_found", count: post_results.length) %><% if @myvault %> in your MyVault&nbsp;<span style="font-size: 1.5rem; vertical-align: text-top; color: gray;" class="super">Beta</span><% end %>:
+         			<%= t("search.matching_mediavault_posts_found", count: @post_results.length) %><% if @myvault %> in your MyVault&nbsp;<span style="font-size: 1.5rem; vertical-align: text-top; color: gray;" class="super">Beta</span><% end %>:
           		</h2>
           		<div class="search-results search-results--posts archive-items archive-items--boxed-items archive-items--masonry media">
          			<% @post_results.each do |post| %>

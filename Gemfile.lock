@@ -291,7 +291,7 @@ GEM
       ruby-vips (~> 2.1)
       sorbet-runtime (>= 0.5.9204)
       terrapin (~> 0.6.0)
-    erubi (1.13.0)
+    erubi (1.13.1)
     ethon (0.16.0)
       ffi (>= 1.15.0)
     faraday (2.12.0)
@@ -865,7 +865,7 @@ DEPENDENCIES
   zorki!
 
 RUBY VERSION
-   ruby 3.3.6p108
+   ruby 3.3.7p123
 
 BUNDLED WITH
    2.4.14
