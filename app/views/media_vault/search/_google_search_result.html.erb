@@ -17,7 +17,7 @@
         <div class="font-semibold"><%= search_result.publisher_name %> rating: <span><%= search_result.rating %></span></div>
         <div><%= link_to search_result.title, search_result.url %></div>
         <% date_to_show = search_result.review_date.nil? ? search_result.claim_date : search_result.review_date %>
-        <div style="color: #777;" class="text-sm"><span class="font-semibold"><%= t("search.reviewed"):</span> <%=  l(date_to_show, format: "%-d %b %Y") %></div>
+        <div style="color: #777;" class="text-sm"><span class="font-semibold"><%= t("search.reviewed") %>:</span> <%=  l(date_to_show, format: "%-d %b %Y") %></div>
     </div>
   </div>
 </div>
