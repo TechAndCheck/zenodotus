@@ -16,8 +16,8 @@ es:
     channel_created_on: "Canal creado"
     your_uploaded_media: "Tus medios publicados:"
     matching_mediavault_posts_found:
-      one: "Se encontraron 1 publicacion coincidente en MediaVault:"
-      other: "Se encontraron %{count} publicaciones coincidentes en MediaVault:"
+      one: "Se encontraron 1 publicacion coincidente en MediaVault"
+      other: "Se encontraron %{count} publicaciones coincidentes en MediaVault"
     matching_fact_check_explorer_results_found:
       one: "Se encontraron 1 resultado coincidente en Fact Check Explorer:"
       other: "Se encontraron %{count} resultados coincidentes en Fact Check Explorer:"
