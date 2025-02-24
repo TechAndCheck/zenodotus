@@ -2,7 +2,14 @@ class Admin::UsersController < ApplicationController
   USERS_PER_PAGE = 50
 
   def index
-    @users = User.all
+    @query = params[:query]
+
+    if @query.present?
+      @users = User.where("email LIKE ? OR name LIKE ?", "%#{@query}%", "%#{@query}%")
+    else
+      @users = User.all
+    end
+
     @pagy_items, @users = pagy_array(
       @users,
       page_param: :p,
