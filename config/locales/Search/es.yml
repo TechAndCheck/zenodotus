@@ -19,8 +19,8 @@ es:
       one: "Se encontraron 1 publicacion coincidente en MediaVault"
       other: "Se encontraron %{count} publicaciones coincidentes en MediaVault"
     matching_fact_check_explorer_results_found:
-      one: "Se encontraron 1 resultado coincidente en Fact Check Explorer:"
-      other: "Se encontraron %{count} resultados coincidentes en Fact Check Explorer:"
+      one: "Se encontraron 1 resultado coincidente en Fact Check Explorer"
+      other: "Se encontraron %{count} resultados coincidentes en Fact Check Explorer"
     no_results_found: "No se encontraron resultados"
     no_results_found_in_your_myvault: "No se encontraron resultados en su MyVault"
     claim_by: "Reclamar por"
