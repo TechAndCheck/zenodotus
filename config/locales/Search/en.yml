@@ -1,7 +1,11 @@
 en:
   search:
-    matching_authors_found: "%{count} matching author found:"
-    matching_posts_found: "%{count} matching post found:"
+    matching_authors_found:
+      one: "1 matching author found:"
+      other: "%{count} matching authors:"
+    matching_posts_found:
+      one: "1 matching post found:"
+      other: "%{count} matching posts"
     follower: "follower"
     following: "following"
     subscriber: "subscriber"
@@ -11,8 +15,12 @@ en:
     like: "like"
     channel_created_on: "Channel created on"
     your_uploaded_media: "Your uploaded media:"
-    matching_mediavault_posts_found: "%{count} matching MediaVault posts found:"
-    matching_fact_check_explorer_results_found: "%{count} matching Fact Check Explorer results found:"
+    matching_mediavault_posts_found:
+      one: "1 matching MediaVault post found:"
+      other: "%{count} matching MediaVault posts found:"
+    matching_fact_check_explorer_results_found:
+      one: "1 matching Fact Check Explorer result found:"
+      other: "%{count} matching Fact Check Explorer results found:"
     no_results_found: "No results found"
     no_results_found_in_your_myvault: "No results found in your MyVault"
     claim_by: "Claim By"
