@@ -24,7 +24,7 @@ gem "hiredis" # a more effective comms
 # Use PgSearch for Postgres multi-table search
 gem "pg_search", "~> 2.3.5"
 # Use pagy to paginate ActiveRecord relations
-gem "pagy", "~> 5.6"
+gem "pagy", "~> 5.6" # TODO: Upgrade this to v9.0
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 # use sidekiq for job queueing

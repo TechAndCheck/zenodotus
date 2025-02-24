@@ -85,6 +85,9 @@ Rails.application.routes.draw do
       end
 
       resources :fact_check_organizations, only: [:index]
+      resources :users, only: [:index, :show] do
+        post "reset_mfa", action: "reset_mfa", as: "reset_mfa"
+      end
     end
   end
 

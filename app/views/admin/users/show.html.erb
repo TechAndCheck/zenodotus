@@ -1,0 +1,60 @@
+<header class="bg-white">
+  <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+    <div class="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl"><%= @user.name %></h1>
+
+        <div class="flow-root">
+          <dl class="-my-3 divide-y divide-gray-100 text-sm">
+            <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+              <dt class="font-medium text-gray-900">Email Address</dt>
+              <dd class="text-gray-700 sm:col-span-2"><%= @user.email %></dd>
+            </div>
+
+            <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+              <dt class="font-medium text-gray-900">Created At</dt>
+              <dd class="text-gray-700 sm:col-span-2"><%= @user.created_at %></dd>
+            </div>
+
+            <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+              <dt class="font-medium text-gray-900">MFA Methods Enabled</dt>
+              <dd class="text-gray-700 sm:col-span-2">
+                <% @user.mfa_methods_enabled.each do |m| %>
+                  <span class="inline-flex items-center rounded-md bg-cyan-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset"><%= m %></span>
+                <% end %>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <%= link_to "Reset MFA", admin_user_reset_mfa_path(@user), data: { turbo_method: "post", turbo_confirm: 'Are you sure?'  }, class: "inline-block rounded-sm bg-indigo-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-indigo-700 focus:ring-3 focus:outline-hidden" %>
+      </div>
+    </div>
+
+    <div class="bg-white py-24 sm:py-32">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <dl class="grid grid-cols-1 gap-x-8 gap-y-16 text-center lg:grid-cols-4">
+          <div class="mx-auto flex max-w-xs flex-col gap-y-4">
+            <dt class="text-base/7 text-gray-600">Number of Archived Items</dt>
+            <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl"><%= @user.archive_items.count %></dd>
+          </div>
+          <div class="mx-auto flex max-w-xs flex-col gap-y-4">
+            <dt class="text-base/7 text-gray-600">Corpus Downloads</dt>
+            <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl"><%= @user.corpus_downloads.count %></dd>
+          </div>
+          <div class="mx-auto flex max-w-xs flex-col gap-y-4">
+            <dt class="text-base/7 text-gray-600">Text Searches</dt>
+            <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl"><%= @user.text_searches.count %></dd>
+          </div>
+          <div class="mx-auto flex max-w-xs flex-col gap-y-4">
+            <dt class="text-base/7 text-gray-600">Image Searches</dt>
+            <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl"><%= @user.image_searches.count %></dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+
+  </div>
+</header>

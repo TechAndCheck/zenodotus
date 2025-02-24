@@ -1,0 +1,65 @@
+layout {
+    default_tab_template {
+        // the default zellij tab-bar and status bar plugins
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        children
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+
+    tab name="Zenodotus" focus=true split_direction="vertical" {
+        pane command="bin/rails" {
+            args "server" "-p" "3000" "-b" "0.0.0.0"
+        }
+        pane {
+            command "bundle"
+            args "exec" "sidekiq"
+        }
+    }
+
+    tab split_direction="horizontal" name="Background" {
+        pane command="redis-server"
+        pane {
+            command "neo4j"
+            args "console"
+        }
+    }
+
+    tab split_direction="vertical" name="Grigori" {
+        pane {
+            command "bin/rails"
+            args "server" "-p" "3001" "-b" "0.0.0.0"
+            cwd "~/Repositories/Reporters_Lab/grigori"
+        }
+        pane {
+            command "bundle"
+            args "exec" "rake" "solid_queue:start"
+            cwd "~/Repositories/Reporters_Lab/grigori"
+        }
+    }
+
+    tab split_direction="horizontal" name="Proxies" {
+        pane {
+            command "ngrok"
+            args "http" "--domain=grigori-dev.ngrok.app" "3001"
+        }
+        pane {
+            command "conda"
+            args "activate" "py39" "&&" "python3" "~/pagekite.py"
+        }
+    }
+
+    tab split_direction="horizontal" name="Compilers" {
+        pane {
+            command "bin/rails"
+            args "tailwindcss:watch"
+        }
+        pane {
+            command "bin/rails"
+            args "dartsass:watch"
+        }
+    }
+}

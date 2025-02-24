@@ -154,6 +154,14 @@ class User < ApplicationRecord
     self.webauthn_credentials.count.positive? || self.totp_confirmed
   end
 
+  sig { returns(T::Array[Symbol]) }
+  def mfa_methods_enabled
+    methods = []
+    methods << :webauthn if self.webauthn_credentials.count.positive?
+    methods << :totp if self.totp_confirmed
+    methods
+  end
+
   # Generate a TOTP provisioning uri, overwriting the old one if it's not empty
   # This is generally implemented to support Firefox, though anyone can use it
   # The returned URI should be rendered as a QRCode and scanned by the user's authenticator app
@@ -209,6 +217,11 @@ class User < ApplicationRecord
     self.user_remote_keys.create!(user: self) # This will expire all other keys
   end
 
+  def reset_mfa!
+    self.webauthn_credentials.destroy_all
+    self.user_remote_keys.destroy_all
+    self.update!(totp_secret: nil, totp_confirmed: false, hashed_recovery_codes: [], webauthn_id: nil)
+  end
 
 private
 

@@ -1,0 +1,4 @@
+<div class="paginator-bar">
+	<%== pagy_info(@pagy_items, item_name: "user".pluralize(@pagy_items.count)) %>
+	<%== pagy_nav(@pagy_items) if @pagy_items.pages > 1 %>
+</div>
