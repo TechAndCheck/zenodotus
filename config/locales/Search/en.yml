@@ -1,10 +1,10 @@
 en:
   search:
     matching_authors_found:
-      one: "1 matching author found:"
-      other: "%{count} matching authors:"
+      one: "1 matching author found"
+      other: "%{count} matching authors"
     matching_posts_found:
-      one: "1 matching post found:"
+      one: "1 matching post found"
       other: "%{count} matching posts"
     follower: "follower"
     following: "following"
