@@ -4,7 +4,7 @@ es:
       one: "Se encontraron 1 autore coincidente"
       other: "Se encontraron %{count} autores coincidentes"
     matching_posts_found:
-      one: "Se encontraron 1 publicacione coincidente"
+      one: "Se encontraron 1 publicacion coincidente"
       other: "Se encontraron %{count} publicaciones coincidentes"
     follower: "seguidores"
     following: "siguiendo"
