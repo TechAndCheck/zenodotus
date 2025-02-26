@@ -272,3 +272,6 @@ gem "devise-i18n"
 
 # Heroku stats
 gem "barnes"
+
+# Profiling
+gem "skylight"

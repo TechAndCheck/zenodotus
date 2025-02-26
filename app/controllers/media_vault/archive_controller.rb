@@ -15,7 +15,7 @@ class MediaVault::ArchiveController < MediaVaultController
     to_date = (Date.today + 1).to_s
 
     unless params[:organization_id].blank? && params[:from_date].blank? && params[:to_date].blank?
-      @organization = FactCheckOrganization.find(params[:organization_id]) if params[:organization_id].present?
+      @organization = FactCheckOrganization.find(params[:organization_id]).load_async if params[:organization_id].present?
       from_date = params[:from_date] if params[:from_date].present?
       to_date = params[:to_date] if params[:to_date].present?
     end
@@ -31,7 +31,7 @@ class MediaVault::ArchiveController < MediaVaultController
     archive_items = archive_items.where({ posted_at: from_date...to_date }).includes(:media_review, { archivable_item: [:author, :images, :videos] }).order(posted_at: :desc)
 
     @pagy_items, @archive_items = pagy_array( # This is just `pagy(` when we get it back to and ActiveRecord collection
-      archive_items,
+      archive_items.load_async,
       page_param: :p,
       items: ARCHIVE_ITEMS_PER_PAGE
     )
@@ -41,7 +41,7 @@ class MediaVault::ArchiveController < MediaVaultController
     @to_date = to_date unless to_date == (Date.today + 1).to_s && from_date == "0000-01-01"
 
     # Yes, this is inefficient...
-    @fact_check_organizations = ArchiveItem.all.collect { |item| item.media_review&.media_review_author }.uniq.compact
+    @fact_check_organizations = ArchiveItem.all.load_async.collect { |item| item.media_review&.media_review_author }.uniq.compact
     @fact_check_organizations.sort_by! { |fco| fco.name&.downcase }
     @fact_check_organizations = @fact_check_organizations.map { |fco| [fco.name, fco.id] }
 

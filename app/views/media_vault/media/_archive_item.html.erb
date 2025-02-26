@@ -15,36 +15,43 @@
 >
   <div class="archive-item__inner">
     <% if include_author %>
-      <%= link_to author_canonical_path,
-          class: "author",
-          title: "MediaVault profile page for #{author_display_name}" do %>
-          <img
-              class="author__image"
-              src="<%= author_profile_image_url %>"
-              alt="Profile photo for <%= author_display_name %>"
-          />
-          <div class="author__profile">
-            <div class="author__name">
-                <span class="author__display-name"><%= author_display_name %></span>
-                <% unless author_username.nil? %>
-                    <span class="author__username">@<%= author_username %></span>
-                <% end %>
-            </div>
-            <div class="author__metadata">
-                <%= abbreviate_number(author_community_count) %>
-                <%= author_community_noun.pluralize(author_community_count) %>
-            </div>
-          </div>
-      <% end %>
+      <% cache author_canonical_path do %>
+          <%= link_to author_canonical_path,
+              class: "author",
+              title: "MediaVault profile page for #{author_display_name}" do %>
+              <img
+                  class="author__image"
+                  src="<%= author_profile_image_url %>"
+                  alt="Profile photo for <%= author_display_name %>"
+                  loading="lazy"
+              />
+              <div class="author__profile">
+                <div class="author__name">
+                    <span class="author__display-name"><%= author_display_name %></span>
+                    <% unless author_username.nil? %>
+                        <span class="author__username">@<%= author_username %></span>
+                    <% end %>
+                </div>
+                <div class="author__metadata">
+                    <%= abbreviate_number(author_community_count) %>
+                    <%= author_community_noun.pluralize(author_community_count) %>
+                </div>
+              </div>
+          <% end %>
+        <% end %>
     <% end %>
     <div class="archive-item__body">
         <% if archive_item_self.has_displayable_media? %>
             <div class="archive-item__body-media">
                 <% preview = false unless defined?(preview) %>
                 <% if archive_item_self.combined_media.length == 1 %>
-                    <%= render partial: "media_vault/media/archive_item_medium", locals: { media: archive_item_self.combined_media.first, preview: preview } %>
+                    <% cache archive_item_self.combined_media.first do %>
+                        <%= render partial: "media_vault/media/archive_item_medium", locals: { media: archive_item_self.combined_media.first, preview: preview } %>
+                    <% end %>
                 <% else %>
-                    <%= render partial: "media_vault/media/archive_item_medium_thumbnails", locals: { combined_media: archive_item_self.combined_media } %>
+                    <% cache archive_item_self.combined_media do %>
+                        <%= render partial: "media_vault/media/archive_item_medium_thumbnails", locals: { combined_media: archive_item_self.combined_media } %>
+                    <% end %>
                 <% end %>
             </div>
         <% end %>

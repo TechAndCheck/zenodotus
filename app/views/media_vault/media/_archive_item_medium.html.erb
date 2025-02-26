@@ -1,7 +1,7 @@
 <% preview = false unless defined?(preview) %>
 <% if media.try(:image_url) %>
     <!-- <a href="<%= media_vault_medium_path(media.parent_post.archive_item.id) %>"> -->
-        <img class="archive-item__body-media__image <%= "preview" if preview %>" src="<%= media.image_url %>" width="100%" height="auto">
+        <img class="archive-item__body-media__image <%= "preview" if preview %>" src="<%= media.image_url %>" width="100%" height="auto" loading="lazy">
     <!-- </a> -->
 <% elsif media.try(:video_url) %>
     <figure class="archive-item__body-media__video <%= "preview" if preview %>">
@@ -11,6 +11,7 @@
             poster="<%= media.video_derivatives[:preview].url %>"
             preload="none"
             controls
+            loading="lazy"
         >
             <source src="<%= media.video_url %>" type="video/mp4">
             <%= t("video_media_detail.your_browser_does_not_support") %>

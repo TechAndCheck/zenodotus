@@ -42,5 +42,6 @@ module Zenodotus
     }
 
     config.force_ssl = true
+    config.action_view.image_loading = :lazy
   end
 end

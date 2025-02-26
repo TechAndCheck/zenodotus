@@ -471,8 +471,8 @@ GEM
     puma (5.6.7)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (2.2.10)
-    rack-mini-profiler (2.3.4)
+    rack (2.2.11)
+    rack-mini-profiler (3.3.1)
       rack (>= 1.2.0)
     rack-session (1.0.2)
       rack (< 3)
@@ -618,6 +618,8 @@ GEM
     simplecov_json_formatter (0.1.4)
     simpleidn (0.2.1)
       unf (~> 0.1.4)
+    skylight (6.0.4)
+      activesupport (>= 5.2.0)
     solargraph (0.48.0)
       backport (~> 1.2)
       benchmark
@@ -843,6 +845,7 @@ DEPENDENCIES
   shrine!
   sidekiq (~> 6)
   simplecov
+  skylight
   solargraph
   sorbet
   sorbet-runtime
