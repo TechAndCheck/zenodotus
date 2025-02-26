@@ -26,6 +26,7 @@ class MediaVault::ArchiveController < MediaVaultController
       @myvault = true
     else
       archive_items = @organization.nil? ? ArchiveItem.publically_viewable : @organization.archive_items.publically_viewable
+      @fact_check_organizations = ArchiveItem.where.associated(:media_review).extract_associated(:media_review).collect(&:media_review_author).uniq.compact.sort_by! { |fco| fco&.name&.downcase }.map { |fco| [fco.name, fco.id] }
     end
 
     archive_items = archive_items.where({ posted_at: from_date...to_date }).includes(:media_review, { archivable_item: [:author, :images, :videos] }).order(posted_at: :desc)
@@ -41,10 +42,9 @@ class MediaVault::ArchiveController < MediaVaultController
     @to_date = to_date unless to_date == (Date.today + 1).to_s && from_date == "0000-01-01"
 
     # Yes, this is inefficient...
-    @fact_check_organizations = ArchiveItem.all.load_async.collect { |item| item.media_review&.media_review_author }.uniq.compact
-    @fact_check_organizations.sort_by! { |fco| fco.name&.downcase }
-    @fact_check_organizations = @fact_check_organizations.map { |fco| [fco.name, fco.id] }
-
+    # @fact_check_organizations = ArchiveItem.all.load_async.collect { |item| item.media_review&.media_review_author }.uniq.compact
+    # @fact_check_organizations.sort_by! { |fco| fco.name&.downcase }
+    # @fact_check_organizations = @fact_check_organizations.map { |fco| [fco.name, fco.id] }
     # TODO ##################################
     # Redirect to status page
     # Make sure to include email instructions
