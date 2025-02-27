@@ -133,11 +133,13 @@ class Sources::FacebookPost < ApplicationRecord
         end
       end
 
+      created_at_time = forki_post["created_at"].nil? ? nil : Time.at(forki_post["created_at"])
+
       hash = {
         url:               forki_post["url"],
         text:              forki_post["text"],
         facebook_id:       forki_post["id"],
-        posted_at:         Time.at(forki_post["created_at"]),
+        posted_at:         created_at_time,
         reactions:         forki_post["reactions"],
         num_comments:      forki_post["num_comments"],
         num_shares:        forki_post["num_shares"],
