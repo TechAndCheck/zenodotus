@@ -19,10 +19,10 @@
 			   time_filter_to = @to_date.nil? ? nil : @to_date %>
 
 			<% unless myvault %>
-			<div class="field field__wrapper--input">
+			<!-- <div class="field field__wrapper--input">
 				<label><%= t("dashboard.filter") %></label>
-				<%= select_tag("org-filter", options_for_select(@fact_check_organizations, selected: organization_id), prompt: t("dashboard.organization"), "data-media-vault--archive-target": "organizationFilter") %>
-			</div>
+				<%# select_tag("org-filter", options_for_select(@fact_check_organizations, selected: organization_id), prompt: t("dashboard.organization"), "data-media-vault--archive-target": "organizationFilter") %>
+			</div> -->
 			<% end %>
 			<div class="field field__wrapper--input">
 				<label><%= t("dashboard.from") %></label><%= date_field_tag("time-filter-start", time_filter_from, min: "1995-09-24", max: Date.today.to_s, "data-media-vault--archive-target": "fromDateFilter") %>

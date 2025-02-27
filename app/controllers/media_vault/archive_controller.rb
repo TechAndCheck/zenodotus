@@ -26,7 +26,7 @@ class MediaVault::ArchiveController < MediaVaultController
       @myvault = true
     else
       archive_items = @organization.nil? ? ArchiveItem.publically_viewable : @organization.archive_items.publically_viewable
-      @fact_check_organizations = ArchiveItem.where.associated(:media_review).extract_associated(:media_review).collect(&:media_review_author).uniq.compact.sort_by! { |fco| fco&.name&.downcase }.map { |fco| [fco.name, fco.id] }
+      # @fact_check_organizations = ArchiveItem.where.associated(:media_review).extract_associated(:media_review).collect(&:media_review_author).uniq.compact.sort_by! { |fco| fco&.name&.downcase }.map { |fco| [fco.name, fco.id] }
     end
 
     archive_items = archive_items.where({ posted_at: from_date...to_date }).includes(:media_review, { archivable_item: [:author, :images, :videos] }).order(posted_at: :desc)
