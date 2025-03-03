@@ -20,7 +20,7 @@ class PublicAccess::MediaController < ApplicationController
     images.concat @archive_item.videos.map { |video| video.video_derivatives[:preview].download_url } # Add videos as images since that's fine for previews too'
     videos = @archive_item.videos.map { |video| video.video.download_url }
 
-    @page_metadata = { title: "Archive", description: description, images: images, videos: videos }
+    @page_metadata = { title: "Archive", description: description, images: images, videos: videos, archive_item_caption: description }
     @locals = @archive_item.normalized_attrs_for_views
     @locals[:boxed] = true
     @locals[:myvault] = @myvault
