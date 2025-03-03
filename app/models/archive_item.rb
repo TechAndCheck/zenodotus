@@ -182,10 +182,9 @@ class ArchiveItem < ApplicationRecord
   # @returns Hash of normalized attributes.
   sig { returns(Hash) }
   def normalized_attrs_for_views
-    {
-      **self.archivable_item.normalized_attrs_for_views,
-      archived_at: self.created_at
-    }
+    attributes = self.archivable_item.normalized_attrs_for_views
+    attributes[:archived_at] = self.created_at
+    attributes
   end
 
   # A function to create a url for a pulic link to the archive item

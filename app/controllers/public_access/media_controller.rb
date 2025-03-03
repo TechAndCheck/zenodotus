@@ -21,5 +21,10 @@ class PublicAccess::MediaController < ApplicationController
     videos = @archive_item.videos.map { |video| video.video.download_url }
 
     @page_metadata = { title: "Archive", description: description, images: images, videos: videos }
+    @locals = @archive_item.normalized_attrs_for_views
+    @locals[:boxed] = true
+    @locals[:myvault] = @myvault
+    @locals[:single_page] = true
+    @locals[:public] = true
   end
 end
