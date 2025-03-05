@@ -266,5 +266,6 @@ protected
 
     cookies.permanent[:locale] = locale
     I18n.with_locale(locale, &action)
+    @pagy_locale = locale
   end
 end
