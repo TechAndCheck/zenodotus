@@ -9,7 +9,7 @@ class AccountsController < ApplicationController
   rescue_from InvalidTokenError, with: :invalid_token_error
   rescue_from InvalidUpdatePasswordError, with: :invalid_update_password_error
 
-  before_action :authenticate_user!, only: [
+  before_action :authenticate_stub, only: [
     :setup_mfa,
     :start_webauthn_setup,
     :finish_webauthn_setup,

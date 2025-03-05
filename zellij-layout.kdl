@@ -44,7 +44,7 @@ layout {
     tab split_direction="horizontal" name="Proxies" {
         pane {
             command "ngrok"
-            args "http" "--domain=grigori-dev.ngrok.app" "3001"
+            args "start" "--config=./ngrok.yml" "--all"
         }
         pane {
             command "conda"

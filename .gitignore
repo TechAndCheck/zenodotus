@@ -63,3 +63,5 @@ dump.rdb
 /google-feed*
 
 flamegraph.html
+
+ngrok.yml
