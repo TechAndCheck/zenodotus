@@ -66,7 +66,7 @@
  							<% end %>
   						</li>
    					</ol>
-   					<!-- <li class="site-nav__language-menu-wrapper">
+   					<li class="site-nav__language-menu-wrapper">
 						<button class="btn" data-action="site-nav#toggleLanguageMenu">
 						<span><%= t("layouts.header.language") %></span> %>
 						</button>
@@ -75,12 +75,12 @@
 							<li><%= link_to "En", select_locale_path(locale: "en", current_path: request_uri ) %></li>
 							<li><%= link_to "Es", select_locale_path(locale: "es", current_path: request_uri ) %></li>
 						</ol>
-					</li> -->
+					</li>
 				</li>
  			<% else %>
 				<li><%= link_to  t("layouts.header.request_access"), new_applicant_path, class: "btn" %></li>
 				<li><%= link_to t("layouts.header.log_in"), new_user_session_path, class: "btn btn--reversed" %></li>
-				<!-- <li class="site-nav__language-menu-wrapper">
+				<li class="site-nav__language-menu-wrapper">
 					<button class="btn" data-action="site-nav#toggleLanguageMenu">
 					<span><%= t("layouts.header.language") %></span>
 					</button>
@@ -89,7 +89,7 @@
 						<li><%= link_to "En", select_locale_path(locale: "en", current_path: request_uri ) %></li>
 						<li><%= link_to "Es", select_locale_path(locale: "es", current_path: request_uri ) %></li>
 					</ol>
-				</li> -->
+				</li>
     		</ol>
  			<% end %>
   		</ol>
