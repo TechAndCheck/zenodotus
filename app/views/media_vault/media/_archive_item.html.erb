@@ -106,7 +106,7 @@
                 </div>
             <% end %>
 
-            <% unless archive_item_self.archive_item.private || (!defined?(public) || !public) %>
+            <% unless archive_item_self.archive_item.private || !defined?(public) || !public %>
                 <%= link_to media_vault_export_media_metadata_path(archive_item_self.archive_item.id) do %>
                   <div class="archive-item__download__link"><%= t("dashboard.download_media_metadata") %></div>
                 <% end %>

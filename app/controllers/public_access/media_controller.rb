@@ -26,5 +26,7 @@ class PublicAccess::MediaController < ApplicationController
     @locals[:myvault] = @myvault
     @locals[:single_page] = true
     @locals[:public] = true
+
+    @public = true
   end
 end
