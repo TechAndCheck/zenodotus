@@ -43,7 +43,7 @@ group :development, :test do
   gem "bullet"
 
   # RuboCop is an excellent linter, we keep it in `test` for CI
-  gem "rubocop", require: false.
+  gem "rubocop", require: false
   gem "rubocop-rails", require: false # Rails specific styles
   gem "rubocop-rails_config", require: false # More Rails stuff
   gem "rubocop-performance", require: false # Performance checks
