@@ -39,7 +39,11 @@ protected
     unless current_user && current_user.can_access_media_vault?
       respond_to do |format|
         format.html do
-          redirect_back_or_to after_sign_in_path_for(current_user), allow_other_host: false, flash: { error: "You are not authorized to access that resource." }
+          if current_user
+            redirect_back_or_to after_sign_in_path_for(current_user), allow_other_host: false, flash: { error: "You are not authorized to access that resource." }
+          else
+            redirect_to new_user_session_path, flash: { error: "You are not authorized to access that resource." }
+          end
         end
         format.turbo_stream do
           flash.now[:error] = "You are not authorized to access that resource."

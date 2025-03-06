@@ -321,11 +321,7 @@ private
     schema = nil
     File.open("public/json-schemas/media-review-schema.json") { |file| schema = file.read }
 
-    if JSONSchemer.schema(schema, output_format: "basic").valid?(media_review)
-      true
-    else
-      JSONSchemer.schema(schema, output_format: "basic").validate(media_review)["errors"].to_a
-    end
+    JSONSchemer.schema(schema, output_format: "basic").valid?(media_review) || JSONSchemer.schema(schema, output_format: "basic").validate(media_review)["errors"].to_a
   rescue StandardError
     false
   end
@@ -338,11 +334,7 @@ private
     schema = nil
     File.open("public/json-schemas/claim-review-schema.json") { |file| schema = file.read }
 
-    if JSONSchemer.schema(schema, output_format: "basic").valid?(claim_review.to_json)
-      true
-    else
-      JSONSchemer.schema(schema, output_format: "basic").validate(claim_review.to_json)["errors"].to_a
-    end
+    JSONSchemer.schema(schema, output_format: "basic").valid?(claim_review.to_json) || JSONSchemer.schema(schema, output_format: "basic").validate(claim_review.to_json)["errors"].to_a
   rescue StandardError
     false
   end
