@@ -4,6 +4,7 @@
 	@archive_item.normalized_attrs_for_views[:author_display_name],
 ] %>
 
+<% debugger %>
 <%= Honeybadger.context({ local_data: @locals, archive_item: @arhive_item }) do %>
 	<div class="content content--md content--center">
 		<%= render partial: "media_vault/media/archive_item",

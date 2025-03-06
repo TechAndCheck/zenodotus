@@ -11,7 +11,7 @@ class PublicAccess::MediaController < ApplicationController
     @archive_item = ArchiveItem.find_by(public_id: params[:public_id])
 
     if @archive_item.nil?
-      render status: :not_found # TODO: Write a test for this!
+      render template: "public_access/media/not_found", status: :not_found # TODO: Write a test for this!
       return
     end
 
