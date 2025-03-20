@@ -510,6 +510,10 @@ GEM
       activerecord (>= 5.0.0)
       railties (>= 5.0.0)
     rails_refactor (1.4.6)
+    rails_semantic_logger (4.17.0)
+      rack
+      railties (>= 5.1)
+      semantic_logger (~> 4.16)
     railties (7.2.2.1)
       actionpack (= 7.2.2.1)
       activesupport (= 7.2.2.1)
@@ -607,6 +611,8 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    semantic_logger (4.16.1)
+      concurrent-ruby (~> 1.0)
     set (1.1.1)
     sidekiq (6.5.12)
       connection_pool (>= 2.2.5, < 3)
@@ -831,6 +837,7 @@ DEPENDENCIES
   rails-i18n (~> 7.0.0)
   rails-settings-cached (~> 2.9)
   rails_refactor
+  rails_semantic_logger
   rake
   redis (~> 4.0)
   rolify (~> 6.0)

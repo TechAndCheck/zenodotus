@@ -241,10 +241,6 @@ gem "tanakai"
 # For regular scraping
 gem "mechanize"
 
-# Better logging printing
-gem "amazing_print"
-# gem "rails_semantic_logger"
-
 gem "flipper", "~> 1.2"
 
 gem "flipper-active_record", "~> 1.2"
@@ -275,3 +271,7 @@ gem "barnes"
 
 # Profiling
 gem "skylight"
+
+# Logging
+gem "amazing_print"
+gem "rails_semantic_logger"

@@ -97,9 +97,10 @@ Rails.application.configure do
   # end
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
-    logger           = ActiveSupport::Logger.new(STDOUT)
-    logger.formatter = config.log_formatter
-    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+    $stdout.sync = true
+    config.rails_semantic_logger.add_file_appender = false
+    config.semantic_logger.add_appender(io: $stdout, formatter: config.rails_semantic_logger.format)
+    config.semantic_logger.add_appender(appender: :honeybadger_insights)
   end
 
   # Do not dump schema after migrations.
