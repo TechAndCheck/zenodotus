@@ -245,7 +245,7 @@ gem "flipper", "~> 1.2"
 
 gem "flipper-active_record", "~> 1.2"
 
-# Scraping management
+# Scraping management # UNUSED
 
 # This is a reversion to fix a bug because async was apparently massively updated in a
 # point release and it breaks neo4j-ruby-driver
