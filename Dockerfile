@@ -1,4 +1,3 @@
-ARG RUBY_VERSION=3.3.7
 FROM ruby:3.3.7
 LABEL maintainer="cguess@gmail.com"
 

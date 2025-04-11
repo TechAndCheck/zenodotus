@@ -311,6 +311,7 @@ GEM
       concurrent-ruby (~> 1.1)
       webrick (~> 1.7)
       websocket-driver (>= 0.6, < 0.8)
+    ffi (1.17.0-aarch64-linux-gnu)
     ffi (1.17.0-arm64-darwin)
     ffi (1.17.0-x86_64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
@@ -428,6 +429,8 @@ GEM
       net-protocol
     netrc (0.11.0)
     nio4r (2.7.4)
+    nokogiri (1.17.2-aarch64-linux)
+      racc (~> 1.4)
     nokogiri (1.17.2-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.17.2-x86_64-darwin)
@@ -646,6 +649,7 @@ GEM
     sorbet (0.5.11691)
       sorbet-static (= 0.5.11691)
     sorbet-runtime (0.5.11691)
+    sorbet-static (0.5.11691-aarch64-linux)
     sorbet-static (0.5.11691-universal-darwin)
     sorbet-static (0.5.11691-x86_64-linux)
     sorbet-static-and-runtime (0.5.11691)
@@ -675,6 +679,8 @@ GEM
     streamio-ffmpeg (3.0.2)
       multi_json (~> 1.8)
     stringio (3.1.2)
+    tailwindcss-rails (2.0.14-aarch64-linux)
+      railties (>= 6.0.0)
     tailwindcss-rails (2.0.14-arm64-darwin)
       railties (>= 6.0.0)
     tailwindcss-rails (2.0.14-x86_64-darwin)
@@ -773,6 +779,7 @@ GEM
     zeitwerk (2.7.1)
 
 PLATFORMS
+  aarch64-linux
   arm64-darwin
   arm64-darwin-21
   arm64-darwin-22

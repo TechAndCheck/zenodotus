@@ -1,0 +1,109 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile    
+      
+    restart: always
+    pull_policy: always
+
+    container_name: app
+    ports:
+      - 3000:3000
+
+    environment:
+      ON_DOCKER: "yes"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: s57LK#YFN{idME0r
+      POSTGRES_DB: zenodotus_production
+      DATABASE_URL: postgres://104.154.72.66:5432
+
+    env_file: .env
+
+    command:
+      - bundle
+      - exec
+      - rails
+      - s
+      - -b
+      - 0.0.0.0
+
+    volumes:
+      - .:/app
+
+    networks:
+     - caddy_net
+
+    # Uncomment the next line to use a non-root user for all processes.
+    # user: vscode
+
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+  sidekiq:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    depends_on:
+      - app
+    restart: always
+    pull_policy: always
+
+    container_name: sidekiq
+    environment:
+      ON_DOCKER: "yes"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: s57LK#YFN{idME0r
+      POSTGRES_DB: zenodotus_production
+      DATABASE_URL: postgres://104.154.72.66:5432
+
+
+    env_file: .env
+
+    command:
+      - bundle
+      - exec
+      - sidekiq
+      - -C
+      - config/sidekiq.yml
+
+    volumes:
+      - .:/app
+
+  redis:
+    image: redis
+
+  memcached:
+    image: memcached
+    command:
+      - --conn-limit=1024
+      - --memory-limit=64
+      - --threads=4
+
+  caddy_reverse_proxy:
+    # Use the caddy:latest image from Docker Hub
+    image: caddy:latest
+    # Restart policy: restart the container unless explicitly stopped
+    restart: unless-stopped
+    container_name: caddy_proxy
+    # ports for Caddy
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      # Mount the host Caddyfile
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    # Connect the Caddy container caddy_net
+    networks:
+      - caddy_net
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  # Docker network for Caddy
+  caddy_net:
