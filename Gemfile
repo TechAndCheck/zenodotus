@@ -251,8 +251,8 @@ gem "flipper-active_record", "~> 1.2"
 # point release and it breaks neo4j-ruby-driver
 gem "async", "2.12.0"
 # Note, v12beta.2 is the latest version of activegraph BUT does not work with the latest version of neo4j-ruby-driver
-gem "activegraph", git: "https://github.com/neo4jrb/activegraph", tag: "v11.5.0.beta.2" # For example, see https://rubygems.org/gems/activegraph/versions for the latest versions
-gem "neo4j-ruby-driver"
+# gem "activegraph", git: "https://github.com/neo4jrb/activegraph", tag: "v11.5.0.beta.2" # For example, see https://rubygems.org/gems/activegraph/versions for the latest versions
+# gem "neo4j-ruby-driver"
 
 # Caching
 gem "actionpack-action_caching"

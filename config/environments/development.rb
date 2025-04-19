@@ -75,6 +75,7 @@ Rails.application.configure do
   config.hosts << Figaro.env.FACT_CHECK_INSIGHTS_HOST
   config.hosts << Figaro.env.MEDIA_VAULT_HOST
   config.hosts << Figaro.env.PUBLIC_LINK_HOST
+  config.hosts << "dev.wnno.io"
 
   # Kept for testing later when we change loggers
   #

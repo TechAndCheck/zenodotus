@@ -1,7 +1,7 @@
 require_relative "boot"
 
 require "rails/all"
-require "active_graph/railtie"
+# require "active_graph/railtie"
 
 if defined?(Rails::Server) && Rails.env.development?
   require "debug/open_nonstop"

@@ -69,18 +69,6 @@ GIT
       typhoeus
 
 GIT
-  remote: https://github.com/neo4jrb/activegraph
-  revision: 6d892820668cd8c6519bdc7202b32c22de0385d9
-  tag: v11.5.0.beta.2
-  specs:
-    activegraph (11.5.0.beta.2)
-      activemodel (>= 7)
-      i18n (!= 1.8.8)
-      neo4j-ruby-driver (>= 4.4.1, < 5)
-      orm_adapter (>= 0.5.0)
-      sorted_set
-
-GIT
   remote: https://github.com/shrinerb/shrine
   revision: 708a7960670a2620d8dd1e5f6bfa766da1439420
   branch: master
@@ -186,8 +174,6 @@ GEM
       console (~> 1.25, >= 1.25.2)
       fiber-annotation
       io-event (~> 1.6)
-    async-io (1.43.2)
-      async
     awrence (1.2.1)
     aws-eventstream (1.2.0)
     aws-partitions (1.637.0)
@@ -407,11 +393,6 @@ GEM
     multi_json (1.15.0)
     murmurhash3 (0.1.7)
     mutex_m (0.3.0)
-    neo4j-ruby-driver (4.4.5)
-      activesupport (>= 5.2.0)
-      async-io
-      connection_pool
-      zeitwerk (>= 2.1.10)
     net-http (0.4.1)
       uri
     net-http-digest_auth (1.4.1)
@@ -782,7 +763,6 @@ PLATFORMS
 
 DEPENDENCIES
   actionpack-action_caching
-  activegraph!
   acts-as-taggable-on
   amazing_print
   async (= 2.12.0)
@@ -824,7 +804,6 @@ DEPENDENCIES
   mechanize
   memory_profiler
   minitest-hooks
-  neo4j-ruby-driver
   ollama-ai!
   os
   pagy (~> 5.6)

@@ -22,10 +22,10 @@ layout {
 
     tab split_direction="horizontal" name="Background" {
         pane command="redis-server"
-        pane {
-            command "neo4j"
-            args "console"
-        }
+        // pane {
+        //     command "neo4j"
+        //     args "console"
+        // }
     }
 
     tab split_direction="vertical" name="Grigori" {
